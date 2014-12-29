@@ -1,0 +1,27 @@
+CO-LOCALIZATION CODE V1
+========================================
+
+DESCRIPTION
+====================
+Given a set of images, the co-localization problem simultaneously localizes (with bounding boxes) the common object class present across each image. This code is an implementation of the box model introduced in [1]. If you use this code in your research, please cite our paper [1]. Note that several parts of the model from [1] are excluded (image model, saliency prior) in order to decrease the dependencies required by this release.
+
+
+USAGE
+====================
+1. In "globals.m", change the <base_dir> variable to point to the absolute path of this folder.
+
+2. Run the "colocalize.m" file to co-localize the images in <image_dir> defined in "globals.m". We've included some sample images from PASCAL in the default <image_dir> for testing purposes.
+
+
+EXTERNAL CODE
+====================
+In the ext/ directory, we include VLFeat [2] and Objectness [3], which are used in our code.
+
+
+REFERENCES
+====================
+[1] Kevin Tang, Armand Joulin, Li-Jia Li, and Li Fei-Fei. "Co-localization in Real-World Images". IEEE Conference on Computer Vision and Pattern Recognition (CVPR), 2014.
+
+[2] Andrea Vedaldi and Brian Fulkerson. "VLFeat: An open and portable library of computer vision algorithms". http://www.vlfeat.org/, 2008.
+
+[3] Bogdan Alexe, Thomas Deselaers, and Vittorio Ferrari. "Measuring the objectness of image windows". PAMI, November 2012.

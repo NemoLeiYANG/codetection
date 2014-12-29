@@ -1,0 +1,14 @@
+Notes file for object co-detection work
+
+27 Dec 14 
+--Starting notes file: general idea for this is 3 steps: 
+  1) proposals (machine-detected bounding boxes for objects within images)
+  2) similarity measure (a measure of the match between boxed objects in 
+     successive frames)
+  3) graphical model solution (formulate boxes with similarity measures as graph 
+     and then find max score path through graph by some method).
+--Beginning with tang2014co paper and associated co-localize-v1 code.  Also have
+  the other 10 papers on co-detection that Haonan posted to Mendeley.
+--Need to look through robot video to find examples of frames with objects in
+  the field of view.  Right now just need series of frames of same object, not
+  necessarily from the same video.
