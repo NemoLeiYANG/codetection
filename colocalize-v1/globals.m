@@ -8,7 +8,7 @@ param.mu = 0.4; % weight between laplacian/ridge regression term
 param.num_boxes = 10; % number of boxes to extract with objectness
 
 % SETUP DIRECTORIES
-base_dir = '/afs/cs/u/kdtang/code/release/colocalize-v1'; % CHANGE THIS TO CORRECT BASE DIRECTORY
+base_dir = '~/codetection/colocalize-v1';%'/afs/cs/u/kdtang/code/release/colocalize-v1'; % CHANGE THIS TO CORRECT BASE DIRECTORY
 image_dir = [base_dir '/images/']; % directory of images to co-localize
 tmp_dir = [base_dir '/tmp/']; % temporary directory for saving files
 vlfeat_dir = [base_dir '/ext/vlfeat-0.9.17/']; % vlfeat directory

@@ -28,7 +28,7 @@ function solve_qp
 	beq = ones(1, size(Aeq,1));
 
 	% set up options
-	opts = optimset('Diagnostics', 'on', 'Algorithm', 'interior-point-convex');
+	opts = optimset('Diagnostics', 'on', 'Algorithm', 'interior-point');%'interior-point-convex');
 
 	% solve qp
 	[x, fval, exitflag, output, lambda] = quadprog(A, b, [], [], Aeq, beq, zeros(1,N), ones(1,N), [], opts);

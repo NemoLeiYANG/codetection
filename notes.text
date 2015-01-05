@@ -3,12 +3,51 @@ Notes file for object co-detection work
 27 Dec 14 
 --Starting notes file: general idea for this is 3 steps: 
   1) proposals (machine-detected bounding boxes for objects within images)
-  2) similarity measure (a measure of the match between boxed objects in 
-     successive frames)
-  3) graphical model solution (formulate boxes with similarity measures as graph 
-     and then find max score path through graph by some method).
+
+  2) similarity measure (a measure of the match between boxed objects in
+  successive frames)
+
+  3) graphical model solution (formulate boxes with similarity measures as graph
+and then find max score path through graph by some method).
+
 --Beginning with tang2014co paper and associated co-localize-v1 code.  Also have
-  the other 10 papers on co-detection that Haonan posted to Mendeley.
+the other 10 papers on co-detection that Haonan posted to Mendeley.  
+
 --Need to look through robot video to find examples of frames with objects in
-  the field of view.  Right now just need series of frames of same object, not
-  necessarily from the same video.
+the field of view.  Right now just need series of frames of same object, not
+necessarily from the same video. 
+
+ -----------------git commit 861b30----------------
+
+5 Jan 15 
+
+--Epoxied tilt servo back onto pan servo gears.  Need to let set for 24 hours, 
+  then will reattach camera screw.   
+
+--First attempt at running colocalize-v1 code--had to change algorithm parameter
+  in solve_qp.m from 'interior-point-convex' to 'interior-point'.  Not very good
+  results on example horse pictures.  Tried on cone images from our rover
+  training dataset (MSEE1dataset), got equally poor results.
+
+--Noticed in readme for colocalize-v1 code that it is just an implementation of
+  the box model from tang2014co paper--does not implement the image model or the
+  saliency prior.  This could explain why results on provided test images are
+  poor. 
+
+--Got forests_edges_boxes.zip code from Haonan--used for proposal generation.
+  Need to start looking at this code.  Also still need to get similarity measure
+  code from Haonan.
+
+--Talking with Dan regarding poor results of colocalize-v1 on our cone images,
+  came up with the idea to infer a ground plane in the images based on our
+  knowledge of the dimensions of the robot (specifically camera height off
+  ground and camera tilt angle).  That should allow us to eliminate detections
+  that include the floor itself.  Also discussed how to infer a 3D location for
+  an object using the height/size of the object in the image with the (known)
+  location of the robot.  Can use the distance from the bottom of the image to
+  the bottom of the object box to infer a distance from the robot to the
+  object.  With that distance, can infer the object's size based on the
+  height/width of the box.  Can use this inferred 3D location to limit object
+  box comparisons--only need to check similarity of boxes at the same 3D
+  location.  Jeff also mentioned using Optical Flow to also aid in codetection,
+  since we know the motion of the robot and can apply that to the images.
