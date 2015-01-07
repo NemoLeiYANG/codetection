@@ -53,3 +53,23 @@ necessarily from the same video.
   since we know the motion of the robot and can apply that to the images.
 
  -----------------git commit 699a5c5----------------
+
+7 Jan 15
+
+--Got vlfeat.zip from Haonan, which has his similarity measure.  Started working
+  on getting this code running and understanding it.
+
+--Added file edgeBoxesOut.m to ./forests_edges_boxes/.  File was missing from
+  original zip file.  Also added it to forests_edges_boxes.zip.
+
+--Followed instructions in the readme.txt in ./forests_edges_boxes/ to install
+  required dependencies, such as Piotr's Matlab Toolbox and others, detailed in
+  section 3 of the readme.
+
+--Got phow_box_match.m from Haonan's vlfeat.zip running on images of traffic
+  cones.  His 'scores' variable is the chi-squared distance between the
+  phow_hist of boxes in the two images--ultimately a similarity score (lower = better).  This
+  replaces the 5th column of the output of edgeBoxesOut, which is the box
+  score (higher = better??).  Need to develop a cost function that uses both box
+  and similarity score to relate a pair of boxes to each other.  Then can
+  optimize this cost function using OpenGM (LOOK UP!!).
