@@ -51,3 +51,5 @@ necessarily from the same video.
   box comparisons--only need to check similarity of boxes at the same 3D
   location.  Jeff also mentioned using Optical Flow to also aid in codetection,
   since we know the motion of the robot and can apply that to the images.
+
+ -----------------git commit 699a5c5----------------
