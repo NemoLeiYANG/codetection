@@ -68,8 +68,17 @@ necessarily from the same video.
 
 --Got phow_box_match.m from Haonan's vlfeat.zip running on images of traffic
   cones.  His 'scores' variable is the chi-squared distance between the
-  phow_hist of boxes in the two images--ultimately a similarity score (lower = better).  This
-  replaces the 5th column of the output of edgeBoxesOut, which is the box
-  score (higher = better??).  Need to develop a cost function that uses both box
-  and similarity score to relate a pair of boxes to each other.  Then can
-  optimize this cost function using OpenGM (LOOK UP!!).
+  phow_hist of boxes in the two images--ultimately a similarity score (lower =
+  better).  This replaces the 5th column of the output of edgeBoxesOut, which is
+  the box score (higher = better??).  Need to develop a cost function that uses
+  both box and similarity score to relate a pair of boxes to each other.  Then
+  can optimize this cost function using OpenGM (LOOK UP!!).
+
+-----------------git commit eb7408d----------------
+
+8 Jan 15 
+
+--Used OpenCV camera calibration to get intrinsic matrix for robot front camera.
+  Data is saved in camera_calibration/out_camera_data.xml.  Using that intrinsic
+  matrix in Dan's  scheme projection code seems to improve the accuracy of the
+  projection, but it is still off a bit.
