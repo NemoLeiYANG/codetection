@@ -82,3 +82,9 @@ necessarily from the same video.
   Data is saved in camera_calibration/out_camera_data.xml.  Using that intrinsic
   matrix in Dan's  scheme projection code seems to improve the accuracy of the
   projection, but it is still off a bit.
+
+-----------------git commit ccea402----------------
+
+9 Jan 15
+
+--got rover-projection.sc and toollib-perspective-projection.sc from Dan.  Can use pixel-and-height->world in rover-projection.sc to go from a pixel location to a world location.  Need to look into matlab->scheme interface in darpa-collaboration/ideas/toollib-matlab.
