@@ -87,4 +87,13 @@ necessarily from the same video.
 
 9 Jan 15
 
---got rover-projection.sc and toollib-perspective-projection.sc from Dan.  Can use pixel-and-height->world in rover-projection.sc to go from a pixel location to a world location.  Need to look into matlab->scheme interface in darpa-collaboration/ideas/toollib-matlab.
+--got rover-projection.sc and toollib-perspective-projection.sc from Dan.  Can
+  use pixel-and-height->world in rover-projection.sc to go from a pixel location
+  to a world location.  Need to look into matlab->scheme interface in
+  darpa-collaboration/ideas/toollib-matlab.
+
+-----------------git commit e4cbb6e----------------
+
+14 Jan 15
+
+--Updated notes and added some papers.

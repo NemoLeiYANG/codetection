@@ -1,7 +1,31 @@
 tang2014co {Co-localization in real-world images}
+
   Main ideas:
+    --Co-localization: simultaneously localizing w/bounding boxes objects of the
+      same class across a set of distinct images.
+    --Present a joint image-box formulation (relaxed into convex quadratic
+      program)
+    --Goal is to simultaneously identify noisy images (ones w/o common object)
+      and localize common object in clean images.
+    --Method:
+      1. Generate set of candidate boxes in each image
+      2. Formulate image model for selecting clean images and box model for
+      selecting correct box in each clean image.
+      3. Combine into joint formulation->allow image model to prevent box model
+      from being affected by boxes in noisy images, and allow box model to help
+      image model determine noisy images based on localized info in images
+    --Similar to approach used in deselaers2012weakly
+    --Use measure of "objectness" found in alexe2012measuring
 
   Impressions:
+    --Authors talk about a box prior (p 3, col 2) using a saliency map from
+      (cheng2011global, perazzi2012saliency) and note that the "objectness"
+      saliency does not work as well--but their provided code (co-localize-v1)
+      just uses the "objectness" saliency measure--doesn't seem to work as well
+      as the advertised method, but README says it was done to reduce dependencies.
+    --This whole paper seems to be an exercise in throwing together tools that
+      other people built->not sure what exactly their contribution is.
+    --Re-read equations (starting on page 3) to better understand how it works.
 
   Interesting References:
     --http://www.vlfeat.org/
@@ -16,3 +40,37 @@ tang2014co {Co-localization in real-world images}
     --van2011segmentation
     --cheng2011global
     --perazzi2012saliency
+    --shi2000normalized
+    --belkin2003laplacian
+    --joulin2010discriminative
+
+alexe2012measuring {Measuring the objectness of image windows}
+  Main ideas:
+
+  Impressions:
+
+  Interesting References:
+    --dalal2005histograms (Dalal & Triggs HOG)
+    --leibe2004scale
+    --desai2011discriminative
+    --felzenszwalb2010object
+    --harzallah2009combining
+    --deselaers2010localizing **title seems to imply co-detection
+    --siva2011weakly **learning classes w/weak supervision
+    --lee2011learning **unsupervised object discovery
+    --hou2007saliency **saliency using log spectrum of image
+    --carreira2010constrained *similar object detection
+    --endres2010category *similar object detection
+    --felzenszwalb2004efficient *superpixels
+
+
+
+AFTER THIS GO BACK TO ORIGINAL CODETECTION PAPERS HAONAN FOUND!!!!
+
+bosch2007representing (introduces (??) PHOG)
+chum2007exemplar (pyramid of spatial histograms)
+bosch2007image (uses PHOG and PHOW)
+lampert2008beyond (??)
+vedaldi2010vlfeat (describes vlfeat and mentions PHOW)
+alexe2010classcut (more from the alexe/deselaers/ferrari group)
+object tracking in video (Van Gool's group at ETH Zurich)
