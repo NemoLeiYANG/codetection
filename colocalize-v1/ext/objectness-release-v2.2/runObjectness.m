@@ -27,7 +27,7 @@ function boxes = runObjectness(img,numberSamples,params)
 %boxes - samples windows from the objectness measure
 %      - each row contains a window using the format [xmin ymin xmax ymax score]
 
-%dir_root = pwd;%change this to an absolute path
+dir_root = '~/colocalize-v1/ext/objectness-release-v2.2';%change this to an absolute path
 
 img = gray2rgb(img);
 
@@ -38,7 +38,7 @@ if nargin < 3
         clear struct;
     catch
         params = defaultParams(dir_root);
-        save([dir_root '/Data/params.mat'],'params');
+        %save([dir_root '/Data/params.mat'],'params');
     end
 end
 %params = updatePath(dir_root,params);

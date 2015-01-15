@@ -97,3 +97,28 @@ necessarily from the same video.
 14 Jan 15
 
 --Updated notes and added some papers.
+
+-----------------git commit 49760af----------------
+
+15 Jan 15
+
+--Started working on some MATLAB code to approximate what is in
+  rover-projection.sc.  The idea is to use some of the various MATLAB-based
+  proposal generators along with the ability to map a pixel to a 3-D point (from
+  the Scheme code) to help in the eventual cost function for the similarity
+  between object boxes.  Have video imported and broken into frame images, and
+  sentence imported.  Next need to work on getting odometry and frame timing
+  information into MATLAB in order to associate frames with locations.  Then
+  need to get efficient method to find location of proposal box (probably center
+  of bottom of box), using the assumption that it is on the ground plane.  This
+  assumption won't be always valid, but using it should give us bogus (or at
+  least unique) locations for bad boxes.  For good boxes we should get a
+  relatively consistent 3-D location for the objects.
+
+--Had to tweak ~/Documents/MATLAB/startup.m to ensure that Piotr's Computer
+  Vision Matlab Toolbox (http://vision.ucsd.edu/~pdollar/toolbox/doc/index.html)
+  works every time MATLAB starts.  Saved a copy in MATLABstartup.m
+
+--Also downloaded EKFMonoSLAM and two related papers by Civera.  Need to get up
+  to speed on these, since at first glance they seem to be doing exactly what
+  we're doing.

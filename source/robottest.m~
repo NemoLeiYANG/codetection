@@ -1,0 +1,15 @@
+function imgs = robottest(datapath)
+
+addpath(genpath('~/codetection/forests_edges_boxes'));
+addpath('~/codetection/');
+
+%load images from video
+vid = mmreader([datapath '/video_front.avi']);
+h = vid.Height;
+w = vid.Width;
+d = vid.BitsPerPixel/8;
+nFrames = vid.NumberOfFrames;
+imgs = zeros(h,w,d,nFrames,'uint8');
+for i
+
+end
