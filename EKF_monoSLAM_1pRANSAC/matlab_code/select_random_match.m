@@ -19,7 +19,7 @@
 %           J. M. M. Montiel -- josemari@unizar.es
 
 % Robotics, Perception and Real Time Group
-% Aragón Institute of Engineering Research (I3A)
+% Aragï¿½n Institute of Engineering Research (I3A)
 % Universidad de Zaragoza, 50018, Zaragoza, Spain
 % Date   :  May 2010
 %-----------------------------------------------------------------------

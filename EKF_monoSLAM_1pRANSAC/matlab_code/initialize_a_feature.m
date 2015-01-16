@@ -19,7 +19,7 @@
 %           J. M. M. Montiel -- josemari@unizar.es
 
 % Robotics, Perception and Real Time Group
-% Aragón Institute of Engineering Research (I3A)
+% Aragï¿½n Institute of Engineering Research (I3A)
 % Universidad de Zaragoza, 50018, Zaragoza, Spain
 % Date   :  May 2010
 %-----------------------------------------------------------------------
@@ -64,7 +64,14 @@ for i=1:max_initialization_attempts
         +excluded_band+initializing_box_semisize(2);
     
     % Extract FAST corners
-    cd fast-matlab-src
+    %cd fast-matlab-src
+    
+%     search_region_center(2)
+%     initializing_box_semisize(2)
+%     
+%     search_region_center(2)-initializing_box_semisize(2)
+%     search_region_center(2)+initializing_box_semisize(2)
+    
     cs = fast_corner_detect_9(double(im_k(search_region_center(2)-initializing_box_semisize(2):search_region_center(2)+initializing_box_semisize(2),...
         search_region_center(1)-initializing_box_semisize(1):search_region_center(1)+initializing_box_semisize(1))),... % the image,
         100);
@@ -72,7 +79,7 @@ for i=1:max_initialization_attempts
         search_region_center(1)-initializing_box_semisize(1):search_region_center(1)+initializing_box_semisize(1))),... % the image,
         100, cs);
     all_uv = c';
-    cd ..
+    %cd ..
     
     if ~isempty(all_uv)
         all_uv = all_uv + [ (- initializing_box_semisize(1) + search_region_center(1) - 1)*ones(1,size(all_uv,2));...
