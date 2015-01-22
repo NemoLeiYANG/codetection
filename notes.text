@@ -127,4 +127,18 @@ necessarily from the same video.
 
 16 Jan 15
 
---Started working with
+--Started working with EKFMonoSLAM code, trying to adapt it to use our video.
+  Having a few problems with getting initial point matches on first iteration of
+  main loop--I think it is because we aren't getting enough candidate matches.
+  I think I need to either read their papers or dig a little deeper into the
+  code in order to figure out how they're doing their thing and see if I can
+  adapt the code to our images.  Already had to make a few mods, so have virgin
+  copy of code in ~/Downloads/EKF...
+
+-----------------git commit 73de280----------------
+
+22 Jan 15
+
+--More work on getting EKFMonoSLAM code to work with our videos.  I think I need
+  to get a camera calibration with our camera that is compatible with their
+  format.  Still working on this.
