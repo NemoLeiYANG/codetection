@@ -142,3 +142,28 @@ necessarily from the same video.
 --More work on getting EKFMonoSLAM code to work with our videos.  I think I need
   to get a camera calibration with our camera that is compatible with their
   format.  Still working on this.
+
+-----------------git commit ef63018----------------
+
+23 Jan 15
+
+--Redid OpenCV camera calibration using PPM images instead of JPGs.  Tried
+  calibration with a varying number of images to use for calibration.  Saved
+  each in camera_calibration/out_camera_data_#ppms.xml.  Ended up getting the
+  best results (judged by wall/door lines in background being parallel) from the
+  least number of images, 25.  Higher numbers had significant curvature in lines
+  that should have been straight.  Next step is to take calibration output and
+  figure out how to convert it into the format used by EKFMonoSLAM.
+--Figured out the mapping between the OpenCV camera parameters and the
+  parameters in the Bouguet model, which is the one that the EKFMonoSLAM code
+  can convert from into their model using the code in
+  EKF_monoSLAM_1pRANSAC/matlabcalibration2ourcalibration/Bouguet2Tsai.m.
+  Original data is saved in matlab_calibration.mat and output saved in
+  my_cam_params.m, both in the above directory.
+--Got EKFMonoSLAM to start working by doubling the window sizes in
+  initialize_a_feature.m (since original code was meant for 320x240 images and
+  we have 640x480).  It runs for a few steps and then starts throwing the
+  same error it was before--when in select_random_match.m, tries to index an
+  element of positions_individually_compatible but can't because
+  numel(positions_individually_compatible)=0. I need to figure out why it
+  doesn't find any positions that are compatible between frames.

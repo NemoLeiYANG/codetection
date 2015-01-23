@@ -26,12 +26,12 @@
 
 function [ filter, features_info, uv ] = initialize_a_feature( step, cam, im_k, filter, features_info )
 
-% numerical values
-half_patch_size_when_initialized = 20;
-half_patch_size_when_matching = 6;
+% numerical values %%DOUBLING WINDOW SIZES FOR 640x480
+half_patch_size_when_initialized = 40;%20;
+half_patch_size_when_matching = 12;%6;
 excluded_band = half_patch_size_when_initialized + 1;
 max_initialization_attempts = 1;
-initializing_box_size = [60,40];
+initializing_box_size = [120,80];%[60,40];
 initializing_box_semisize = initializing_box_size/2;
 initial_rho = 1;
 std_rho = 1;

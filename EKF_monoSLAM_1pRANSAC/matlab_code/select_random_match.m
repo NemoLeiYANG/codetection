@@ -26,7 +26,7 @@
 
 function [zi,position,num_IC_matches] = select_random_match(features_info)
 
-map_size = length(features_info);
+map_size = length(features_info)
 individually_compatible = zeros(map_size,1);
 
 for i=1:map_size

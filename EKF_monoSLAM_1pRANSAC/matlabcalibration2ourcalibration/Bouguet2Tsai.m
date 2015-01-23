@@ -17,7 +17,7 @@ alpha_c = alpha_c_frontal;
 % undistorted=[reshape(u_grid,1, nGrid*mGrid); reshape(v_grid,1,nGrid*mGrid)];
 % distorted = distort_bouguet(undistorted,kc,fc,cc)
 
-addpath TOOLBOX_Calib;
+addpath('TOOLBOX_calib/');
 
 cam = initialize_cam;
 Xini = [cam.k1; cam.k2; cam.f; cam.Cx; cam.Cy];

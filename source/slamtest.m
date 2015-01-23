@@ -77,19 +77,25 @@ measurements = []; predicted_measurements = [];
 im = mytakeImageFromAvi(vid,initIm);
 
 for step=initIm+1:lastIm
+    fprintf('Step %d\n', step);
     
     % Map management (adding and deleting features; and converting inverse depth to Euclidean)
     [ filter, features_info ] = map_management( filter, features_info, cam, im, min_number_of_features_in_image, step );
-
+    %features_info
+    
     % EKF prediction (state and measurement prediction)
     [ filter, features_info ] = ekf_prediction( filter, features_info );
+    %features_info
     
     % Grab image
     %im = takeImage( sequencePath, step );
     im = mytakeImageFromAvi(vid,step);
+    %size(im)
+    %imshow(im)
     
     % Search for individually compatible matches
     features_info = search_IC_matches( filter, features_info, cam, im );
+    %features_info
     
     % 1-Point RANSAC hypothesis and selection of low-innovation inliers
     features_info = ransac_hypotheses( filter, features_info, cam );
