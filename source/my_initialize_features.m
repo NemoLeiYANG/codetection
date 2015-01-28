@@ -24,24 +24,22 @@
 % Date   :  May 2010
 %-----------------------------------------------------------------------
 
-function [zi,position,num_IC_matches] = select_random_match(features_info)
+function [ filter, features_info ] = initialize_features( step, cam, filter,...
+    features_info, num_features_to_initialize, im )
 
-map_size = length(features_info);
-individually_compatible = zeros(map_size,1);
+% settings
+max_attempts = 50;
+attempts = 0;
+initialized = 0;
 
-for i=1:map_size
-    if features_info(i).individually_compatible
-        individually_compatible(i) = 1;
-    end
-end
-
-random_match_position = floor(rand(1)*sum(individually_compatible))+1;
-
-positions_individually_compatible = find(individually_compatible);
-
-position = positions_individually_compatible(random_match_position);
-
-zi = features_info(position).z;
-
-num_IC_matches = sum(individually_compatible);
+while ( initialized < num_features_to_initialize ) && ( attempts<max_attempts )
     
+    attempts = attempts+1;
+    
+    [ filter, features_info, uv ] = my_initialize_a_feature( step, cam, im, filter, features_info );
+    
+    if size(uv,1)~=0
+        initialized = initialized + 1;
+    end
+    
+end

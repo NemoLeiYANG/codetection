@@ -167,3 +167,161 @@ necessarily from the same video.
   element of positions_individually_compatible but can't because
   numel(positions_individually_compatible)=0. I need to figure out why it
   doesn't find any positions that are compatible between frames.
+
+-----------------git commit 6ad0f80----------------
+
+
+Email to Jeff 27 Jan 15
+
+I'm making progress.  I got the camera calibration and image size (they were
+using 320x240 images, and ours are 640x480, so I had to find and change a number
+of hard-coded parameters) issues figured out and now I can run their code on our
+videos.
+
+The problem I'm running into now is that the code runs for a few frames and then
+hits an error.  If I'm interpreting the error message correctly, what's
+happening is that it's not finding enough potential matches between the interest
+points detected in the two frames.  That is critical to their algorithm because
+they are using just the images to localize the camera.  However, since we have
+odometry data to work with, that's not as important to us.  Since we can
+localize the camera, the rough estimates of where a point is in relation to the
+camera can be useful.
+
+What I'm trying to do now is look within the data structures they use to find
+the location (presumably with error) estimates for interest points that they
+come up with via their algorithm.  Since I'll just be using these to trim the
+number of proposals, I don't think I need anything terribly accurate--I just
+want to be able to reject proposals that are clearly above or below the ground
+plane.
+
+
+Reply from Jeff 28 Jan 15
+
+   The problem I'm running into now is that the code runs for a few frames and
+   then hits an error.  If I'm interpreting the error message correctly, what's
+   happening is that it's not finding enough potential matches between the
+   interest points detected in the two frames.  That is critical to their
+   algorithm because they are using just the images to localize the camera.
+
+I'm not sure I understand how doing what appears below addresses the issue
+raised above.
+
+   However, since we have odometry data to work with, that's not as important to
+   us.  Since we can localize the camera, the rough estimates of where a point
+   is in relation to the camera can be useful.
+
+   What I'm trying to do now is look within the data structures they use to find
+   the location (presumably with error) estimates for interest points that they
+   come up with via their algorithm.  Since I'll just be using these to trim the
+   number of proposals, I don't think I need anything terribly accurate--I just
+   want to be able to reject proposals that are clearly above or below the
+   ground plane.
+
+Are you saying that
+
+ 1. You are not going to run their full algorithm. That their algorithm has two
+    parts or stages. The first works and the second doesn't. So you are going to
+    discard the second and just use the first because that is all you need?
+
+or
+
+ 2. Part of their algorithm fails. And you will replace or augment that part
+    with odemtry data and attempt to run their full algorithm with this change?
+
+    Jeff (http://engineering.purdue.edu/~qobi)
+
+
+My reply to Jeff 28 Jan 15
+
+I was trying to describe something like 1, where I would use parts of their
+algorithm to get additional data to use with proposals and similarity measures.
+
+However, after digging deeper into their code and talking with Dan yesterday,
+I've decided to put the monocular SLAM aside for now.  Their code is simply too
+opaque for me to easily find the data that I'm looking for.  As you said before,
+it's starting to become a rabbit hole.
+
+What I'm going to try instead is to use the code that Dan and I came up with a
+few weeks ago (where we were projecting the lines and shapes onto the video) to
+extract more data from the images in order to build additional similarity
+measures.
+
+The general idea is this: (Dan, please jump in if you see anything I missed in
+what we discussed yesterday)
+
+1) Get proposal boxes from one of the various proposal mechanisms we have.
+
+2) Use our code, along with the assumption that the bottom of the proposal box
+rests on the ground plane, to determine a world location for the box.  I know
+that the assumption will be invalid for some boxes, but those boxes will still
+get a world location. We can then use the known boundaries of our driving area
+to eliminate proposals that are outside our boundaries.  That should do roughly
+half of what I was trying to do with the monocular SLAM part.
+
+3) For the boxes that remain after this cut, do 3 different similarity measures:
+    1) Visual similarity (what the default similarity measures use) 
+    2) Location similarity (from 2 above) 
+    3) Object size similarity--like in 2, we can also compute the world height
+    and width of a box once we know its distance from the camera.  The thought
+    here is that boxes that surround the same object should be more similar in
+    size than two random boxes. 
+
+4) These 3 similarity measures should give us a reasonable amount of data to
+work with when formulating the graphical model.  Once we have the model
+formulated and have boxes grouped into clusters that represent the same object,
+we can then use some sort of average of the locations of those boxes to
+determine the object location.
+
+We also considered that we will probably get a lot of proposal boxes that detect
+the ground right in front of the rover.  These will not get rejected by 2
+because they will be in bounds.  While these boxes will probably get high visual
+similarity, I doubt that size and location similarity will be very high.  But
+should these boxes pass through and get clustered into one or more objects, we
+can still look at the area where the box locations are and set some sort of
+threshold to reject clusters where the proposal locations are spread over too
+wide an area.
+
+This is of course a work in progress.  I'm sure the plan will continue to evolve
+as we run into problems or think of things we hadn't thought of before.
+
+28 Jan 15
+
+--Stopped working on EKFMonoSLAM because it started to look like the
+  effort/reward ratio for using their code would not be worth it.  I think I can
+  get roughly half the effect of their code by using the code Dan and I
+  developed to project from pixel location to world
+  location. (source/rover-projection.sc) 
+
+--Resuming work on robottest.m to unite the projection stuff in Scheme with the
+  proposal and similarity stuff from MATLAB.
+
+--Using the assumption that all proposal boxes are on the ground plane, our code
+  can find the distance of a pixel from the cam, and with the odometry can turn
+  that into a world location.  We know this assumption is not valid in all
+  cases, but it should be the case that proposal boxes that are actually above
+  the ground plane will get distances that are farther away from the camera.
+  Since we know the boundaries of our driving area, we can exclude boxes that
+  have locations outside the boundaries.
+
+--From there, we can establish 3 similarity measures:
+       1) Visual similarity (should be the default for current methods).
+       2) Location similarity (from location determined as above).
+       3) Object size similarity--We can compute the world height and width of a
+       box once we know its distance from the camera.  The idea is that boxes
+       that surround the same object should have a similar size.
+
+--Use these 3 similarity measures in the graphical model formulation.  This
+  should allow us to group boxes in successive frames into clusters that
+  represent an object.  We can then use some sort of average (weighted somehow?)
+  of the box locations to determine object location.
+
+--May also have a lot of proposal boxes that detect the ground right in front of
+  the rover.  These will probably not get rejected based on distance because
+  they will be in bounds.  Visual similarity of these might be high, but
+  location similarity may be low, and size similarity most likely will be low.
+  Should these proposals cluster into an object anyways, we can look at the area
+  over which the locations are distributed and set some sort of threshold to
+  eliminate clusters spread over too wide an area.
+
+
+***NEED TO CALL log-to-track.out TO CHANGE IMU-LOG.TXT TO ESTIMATES

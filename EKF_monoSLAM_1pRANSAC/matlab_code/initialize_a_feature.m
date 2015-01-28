@@ -19,19 +19,19 @@
 %           J. M. M. Montiel -- josemari@unizar.es
 
 % Robotics, Perception and Real Time Group
-% Aragï¿½n Institute of Engineering Research (I3A)
+% Aragón Institute of Engineering Research (I3A)
 % Universidad de Zaragoza, 50018, Zaragoza, Spain
 % Date   :  May 2010
 %-----------------------------------------------------------------------
 
 function [ filter, features_info, uv ] = initialize_a_feature( step, cam, im_k, filter, features_info )
 
-% numerical values %%DOUBLING WINDOW SIZES FOR 640x480
-half_patch_size_when_initialized = 40;%20;
-half_patch_size_when_matching = 12;%6;
+% numerical values
+half_patch_size_when_initialized = 20;
+half_patch_size_when_matching = 6;
 excluded_band = half_patch_size_when_initialized + 1;
 max_initialization_attempts = 1;
-initializing_box_size = [120,80];%[60,40];
+initializing_box_size = [60,40];
 initializing_box_semisize = initializing_box_size/2;
 initial_rho = 1;
 std_rho = 1;
@@ -64,14 +64,7 @@ for i=1:max_initialization_attempts
         +excluded_band+initializing_box_semisize(2);
     
     % Extract FAST corners
-    %cd fast-matlab-src
-    
-%     search_region_center(2)
-%     initializing_box_semisize(2)
-%     
-%     search_region_center(2)-initializing_box_semisize(2)
-%     search_region_center(2)+initializing_box_semisize(2)
-    
+    cd fast-matlab-src
     cs = fast_corner_detect_9(double(im_k(search_region_center(2)-initializing_box_semisize(2):search_region_center(2)+initializing_box_semisize(2),...
         search_region_center(1)-initializing_box_semisize(1):search_region_center(1)+initializing_box_semisize(1))),... % the image,
         100);
@@ -79,7 +72,7 @@ for i=1:max_initialization_attempts
         search_region_center(1)-initializing_box_semisize(1):search_region_center(1)+initializing_box_semisize(1))),... % the image,
         100, cs);
     all_uv = c';
-    %cd ..
+    cd ..
     
     if ~isempty(all_uv)
         all_uv = all_uv + [ (- initializing_box_semisize(1) + search_region_center(1) - 1)*ones(1,size(all_uv,2));...

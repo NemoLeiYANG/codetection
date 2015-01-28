@@ -80,7 +80,7 @@ for step=initIm+1:lastIm
     fprintf('Step %d\n', step);
     
     % Map management (adding and deleting features; and converting inverse depth to Euclidean)
-    [ filter, features_info ] = map_management( filter, features_info, cam, im, min_number_of_features_in_image, step );
+    [ filter, features_info ] = my_map_management( filter, features_info, cam, im, min_number_of_features_in_image, step );
     %features_info
     
     % EKF prediction (state and measurement prediction)
