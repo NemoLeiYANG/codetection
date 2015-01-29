@@ -323,5 +323,19 @@ as we run into problems or think of things we hadn't thought of before.
   over which the locations are distributed and set some sort of threshold to
   eliminate clusters spread over too wide an area.
 
+-----------------git commit e46b217----------------
 
-***NEED TO CALL log-to-track.out TO CHANGE IMU-LOG.TXT TO ESTIMATES
+29 Jan 15
+
+--Modified log_to_track.cpp (in vader-rover/position) to have estimates inserted
+  with original sensor readings.  Need this so that the timing info in the
+  sensors is preserved, so that we can associate a time with a position
+  estimate.  Then we can use the times to link a frame to a position.
+
+--***WILL NEED TO USE THIS TO PRODUCE imu-log-with-estimates.txt FOR DATA ON
+     MANUALLY DRIVEN RUNS****
+
+--Have the reading of the position estimates (with time) is working from
+  imu-log-with-estimates.txt.  Should also work with imu-log.txt produced from
+  autodrive (have not tested this yet).  Next step is to match frames to
+  positions using the time data.

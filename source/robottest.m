@@ -1,4 +1,4 @@
-function [imgs, sentence, frame_times] = robottest(datapath)
+function [imgs, sentence, frame_times, positions] = robottest(datapath)
 
 addpath(genpath('~/codetection/forests_edges_boxes'));
 addpath('~/codetection/');
@@ -32,10 +32,29 @@ while (tline(19) ~= ' ') %ischar(tline)
     i = i + 1;
     tline = fgetl(fileID);
 end
+fclose(fileID);
 frame_times = timing(:,1);
 
-%load position estimates from imu-log.txt
-
+%load position estimates from imu-log.txt (or imu-log-with-estimates.txt)
+if exist([datapath '/imu-log-with-estimates.txt'], 'file') == 2  
+    fileID = fopen([datapath '/imu-log-with-estimates.txt'],'r');
+else
+    fileID = fopen([datapath '/imu-log.txt'],'r');
+end
+tline = fgetl(fileID);
+positions = zeros(1,4); %position is [time, x, y, theta]
+i = 1; prev_time = 0.0;
+while ischar(tline)
+    if (tline(1) == 'E') %we have an estimate
+        positions(i,1) = prev_time(1);
+        positions(i,2:4) = sscanf(tline,'ESTIMATE:X:%f:Y:%f:THETA:%f',...
+                                  [1,3]);
+        i = i + 1;
+    elseif (tline(1) == '1') % we have a time
+        [prev_time,~] = sscanf(tline,'%f:%s');
+    end
+    tline = fgetl(fileID); %get new line and start again
+end
 
 %match frames with positions by time
 
