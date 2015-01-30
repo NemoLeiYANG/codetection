@@ -339,3 +339,26 @@ as we run into problems or think of things we hadn't thought of before.
   imu-log-with-estimates.txt.  Should also work with imu-log.txt produced from
   autodrive (have not tested this yet).  Next step is to match frames to
   positions using the time data.
+
+-----------------git commit 7232960----------------
+
+30 Jan 15
+
+--Have frames matched with position using time data.  For test data, the mean
+  difference between frame time and position time is 0.97ms, with a max of
+  around 2 ms.  This should be good.
+
+--Working with just 2 images for now (frames 21 and 22) that are temporally
+  adjacent and have the cone prominent in them.
+
+--Jeff gave me the idea to use optical flow between frames for reprojecting
+  proposals.  See email dated 30Jan15.  Email has C code to do this.  Found some
+  MATLAB code (flow_code.zip) that claims to do similar stuff--need to check
+  this out more.
+
+--Also need to put camera calibration stuff into MATLAB to do projection of
+  boxes into world coordinates.
+
+--Talking with Dan and recognized the need to get at least a very simple dummy
+  GM solver built (with MATLAB-scheme-C glue) in order to test out how it all
+  will work together.  Look at code in ~/codetection/opengm.

@@ -1,4 +1,9 @@
-function [imgs, sentence, frame_times, positions] = robottest(datapath)
+function [imgs,...
+          sentence,...
+          frame_times,...
+          positions,...
+          frame_positions] ...
+    = robottest(datapath)
 
 addpath(genpath('~/codetection/forests_edges_boxes'));
 addpath('~/codetection/');
@@ -55,11 +60,24 @@ while ischar(tline)
     end
     tline = fgetl(fileID); %get new line and start again
 end
+fclose(fileID);
 
 %match frames with positions by time
-
+frame_positions = zeros(length(frame_times),5); 
+    %each row is [frame_time, pos_time, x, y, theta]
+frame_positions(:,1) = frame_times;
+for i = 1:length(frame_times)
+    temp = find(positions(:,1) < frame_times(i));
+    idx = temp(end);
+    frame_positions(i,2:5) = positions(idx,:);
+end
 
 %get proposals (edgeBoxesOut??)
+addpath(genpath('sentence-codetection'));
+
+%%%%TESTING with just 2 images (temporally adjacent with cone prominent)
+frames = imgs(:,:,:,21:22);
+[bboxes, simi] = proposals_and_similarity(10,frames);
 
 
 %camera calibration data
