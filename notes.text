@@ -362,3 +362,22 @@ as we run into problems or think of things we hadn't thought of before.
 --Talking with Dan and recognized the need to get at least a very simple dummy
   GM solver built (with MATLAB-scheme-C glue) in order to test out how it all
   will work together.  Look at code in ~/codetection/opengm.
+
+-----------------git commit 6484f48----------------
+
+5 Feb 15
+
+--Started working with Haonan's updated sentence-codetection code.  It's
+  currently built to be a stand-alone executable, but I think for my purposes it
+  would be better to have it built into DSCI so that I can call its functions
+  from the interpreter.  Going to look at how to compile it in, similar to how I
+  compiled in the stuff for the rover.  The goal of this part is to be able to
+  get the results of the GM solver (from C++) back into Scheme in order to use
+  Scheme to visualize the boxes.
+
+--Still working on getting codetection.sc (now called toollib-codetection.sc) to
+  compile into DSCI.  Getting compilation errors with duplicate
+  definitions--need to go through and resolve those
+
+---***WHY ARE WE USING MINIMIZER???? Don't we want to maximize the scores?
+      should be because we are adding scores, so minimization works with that...

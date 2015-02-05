@@ -1,10 +1,12 @@
-function [bboxes, simi] = proposals_and_similarity(top_k, frames)
+function [bboxes, simi] = proposals_and_similarity(top_k, frames, ssize)
 % proposals_and_similarity: given a sequence of frames, compute object
 %                           proposals in each frame, and similarity between
 %                           adjacent frames
 % INPUT: 
 %     top_k         proposal number in each frame
 %     frames        h*w*3*T
+%     ssize         the size to which each proposal is rescaled to
+%                   ssize should be 2^i; increase i to trade efficiency for accuracy
 % OUTPUT:
 %     bboxes        top_k*5*T, each row of top_k*5 is (x1,y1,x2,y2,f) 
 %     simi          top_k*top_k*(T-1), phow similarity between proposals in
@@ -17,8 +19,7 @@ function [bboxes, simi] = proposals_and_similarity(top_k, frames)
 addpath(genpath('piotr-toolbox'));
 addpath(genpath('vlfeat/toolbox'));
 addpath(genpath('forests_edges_boxes'));
-%run('vlfeat/toolbox/vl_setup');
-run('~/codetection/source/sentence-codetection/vlfeat/toolbox/vl_setup');
+run('vlfeat/toolbox/vl_setup');
 
 % enable parfor
 pools = matlabpool('size');
@@ -34,29 +35,38 @@ end
 [h, w, d, T] = size(frames);
 bboxes = zeros(top_k, 5, T);
 simi = zeros(top_k, top_k, T-1);
+
+% this will take 2.5 minutes for 12 frames with ssize = 64, top_k = 300 (default)
+%                3.5 minutes for 12 frames with ssize = 128, top_k = 300 
+%                1.5 minutes for 12 frames with ssize = 64, top_k = 200
+%                0.5 minutes for 12 frames with ssize = 64, top_k = 100
+%                0.25 minutes for 5 frames with ssize = 64, top_k = 100
+%tic;
 for t = 1:T
     img = frames(:,:,:,t);
-    bbs = edgeBoxesOut(img, top_k, 4);
+    bbs = edgeBoxesOut(img, top_k, 5);
     bbs(:,3) = bbs(:,3) + bbs(:,1) - 1;
     bbs(:,4) = bbs(:,4) + bbs(:,2) - 1;
     bboxes(:,:,t) = bbs;
-    if t > 1
-        img_prev = frames(:,:,:,t-1);
-        for i = 1:top_k
-            bi = bboxes(i,:,t);
-            costs = zeros(top_k, 1);
-            parfor j = 1:top_k
-                bj = bboxes(j,:,t-1);
-                histi = phow_hist(img(bi(2):bi(4),bi(1):bi(3),:));
-                histj = phow_hist(img_prev(bj(2):bj(4),bj(1):bj(3),:));
-                costs(j) = pdist2(histj', histi', 'chisq');
-            end
-            simi(:,i,t-1) = -costs;
-        end
-    end
-end
 
-function hist = phow_hist(im)
+    parfor i = 1:top_k
+        bi = bboxes(i,:,t);
+        hists{i} = phow_hist(img(bi(2):bi(4),bi(1):bi(3),:), ssize);
+    end
+    hist = cat(2, hists{:});
+    hist = hist';
+
+    if t > 1
+        simi(:,:,t-1) = -pdist2(hist_prev, hist, 'chisq');
+    end
+    hist_prev = hist;
+end
+%tt = toc;
+%fid = fopen('/tmp/output', 'w');
+%fprintf(fid, '%f', tt);
+%fclose(fid);
+
+function hist = phow_hist(im, ssize)
 load('phow-model/vocab.mat');
 model.vocab = vocab;
 model.phowOpts = {'Step', 3};
@@ -64,16 +74,16 @@ model.numSpatialX = [2, 4];
 model.numSpatialY = [2, 4];
 model.quantizer = 'kdtree';
 model.kdtree = vl_kdtreebuild(vocab);
-hist = getImageDescriptor(model, im);
+hist = getImageDescriptor(model, im, ssize);
 
-function im = standarizeImage(im)
+function im = standarizeImage(im, ssize)
 im = im2single(im) ;
-scaling = max([128/size(im,1) 128/size(im,2)]);
+scaling = max([ssize/size(im,1) ssize/size(im,2)]);
 newsize = round([size(im,1) size(im,2)]*scaling);
 im = imresize(im, newsize);
 
-function hist = getImageDescriptor(model, im)
-im = standarizeImage(im) ;
+function hist = getImageDescriptor(model, im, ssize)
+im = standarizeImage(im, ssize) ;
 width = size(im,2) ;
 height = size(im,1) ;
 numWords = size(model.vocab, 2) ;

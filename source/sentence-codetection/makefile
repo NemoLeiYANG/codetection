@@ -10,6 +10,10 @@ EXTRA_LDFLAGS = -lblas /usr/lib/libtbb.so.2
 
 TARGET = codetection
 
+OPENGM_I = -D IL_STD -I $(HOME)
+LIBDAI_I = -I ~/libDAI/include
+LIBDAI_L = -L ~/libDAI/lib -ldai -lgmpxx -lgmp
+
 MATLAB_CFLAGS = $(shell mbuild -f ${MATLAB}/bin/engopts.sh -v 2> /dev/null|grep CFLAGS|cut -d= -f2-)
 MATLAB_RAW_LDFLAGS = $(shell mbuild -f ${MATLAB}/bin/engopts.sh -v 2> /dev/null|grep CLIBS|cut -d= -f2-) \
  $(shell mbuild -f ${MATLAB}/bin/engopts.sh -v 2> /dev/null|grep LDFLAGS|cut -d= -f2-)
@@ -25,11 +29,13 @@ C_SRC = \
 	codetectionlib-c.c \
 
 CPP_SRC = \
+	inference.cpp \
 
 SC_SRC = \
 	pregexp.sc \
 	toollib-matlab.sc \
 	toollib-c-bindings.sc \
+	easy-ffi.sc \
 
 OBJ = $(SC_SRC:.sc=.o) $(C_SRC:.c=.o) $(CPP_SRC:.cpp=.o)
 SCH = $(SC_SRC:.sc=.sch)
@@ -49,8 +55,8 @@ ${TARGET_SCH}: $$(basename $$@).sc
 
 # -Ot -Ob -Og $(OPTFLAGS)
 ${TARGET}: $$(basename $$@).sc $$(basename $$@).sch $$(SCH) $(OBJ) $$@.o
-	scc-color -cc $(CC) $@.o $(SCCFLAGS) $(CFLAGS) $(DEBUG) $(MATLAB_LDFLAGS) $(OPTFLAGS) `imlib2-config --cflags` -DGL_GLEXT_PROTOTYPES $(OBJ) -o $@ $(LD_Q) ${EXTRA_LDFLAGS} $(FFMPEG_LDFLAGS) `imlib2-config --libs`
-	make clean
+	scc-color -cc $(CC) $@.o $(SCCFLAGS) $(CFLAGS) $(DEBUG) $(MATLAB_LDFLAGS) $(OPTFLAGS) `imlib2-config --cflags` -DGL_GLEXT_PROTOTYPES $(OBJ) -o $@ $(LD_Q) ${EXTRA_LDFLAGS} $(FFMPEG_LDFLAGS) `imlib2-config --libs` $(LIBDAI_L)
+#	make clean
 
 %.o: %.sc %.sch toollib-c-macros.sch
 	scc-color -cc $(CC) -sch 500 -scmh 800 $(SCCFLAGS) $(DEBUG) -I. -I ~/include $< -c $(CFLAGS) $(ARAVIS_CFLAGS) $(OPTFLAGS) `imlib2-config --cflags` -pthread
@@ -59,7 +65,7 @@ ${TARGET}: $$(basename $$@).sc $$(basename $$@).sch $$(SCH) $(OBJ) $$@.o
 	$(CC) $(DEBUG) $(CFLAGS) -DGL_GLEXT_PROTOTYPES -I ~/lib/$(ARCHITECTURE_PATH) -I. $(MATLAB_CFLAGS) -std=gnu99 -c $< $(OPTFLAGS) `imlib2-config --cflags` -pthread
 
 %.o: %.cpp
-	g++ $(DEBUG) $(CFLAGS) -DGL_GLEXT_PROTOTYPES -I. -c $< $(OPTFLAGS) `imlib2-config --cflags` -pthread
+	g++ $(DEBUG) $(CFLAGS) -DGL_GLEXT_PROTOTYPES -I. -c $< $(OPTFLAGS) `imlib2-config --cflags` -pthread $(OPENGM_I) $(LIBDAI_I)
 
 toollib-matlab.o: toollib-matlab.sc toollib-matlab.sch toollib-c-macros.sch
 	scc-color -cc $(CC) $(SCCFLAGS) $(CFLAGS) -I. -I ~/include -c toollib-matlab.sc $(MATLAB_CFLAGS) -std=gnu99
