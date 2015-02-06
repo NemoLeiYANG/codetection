@@ -56,33 +56,33 @@ struct ffmpeg_video {
   int videoFinished;
 };
 
-#ifdef S2CINTBITS
-/* Scheme->C */
-TSCP bool_tscp(int bool);
+// #ifdef S2CINTBITS
+// /* Scheme->C */
+// TSCP bool_tscp(int bool);
 
-int tscp_bool(TSCP bool);
+// int tscp_bool(TSCP bool);
 
-/* Fix Scheme->C signed integers */
-TSCP sc_int_tscp(int n);
+// /* Fix Scheme->C signed integers */
+// TSCP sc_int_tscp(int n);
 
-int sc_tscp_int(TSCP p);
-#endif
+// int sc_tscp_int(TSCP p);
+// #endif
 
-/* ffmpeg */
+// /* ffmpeg */
 
-int ffmpeg_first_video_stream(struct ffmpeg_video *ffmpeg_video);
+// int ffmpeg_first_video_stream(struct ffmpeg_video *ffmpeg_video);
 
-AVCodecContext *ffmpeg_get_codec(struct ffmpeg_video *ffmpeg_video);
+// AVCodecContext *ffmpeg_get_codec(struct ffmpeg_video *ffmpeg_video);
 
-int ffmpeg_next_frame(struct ffmpeg_video *ffmpeg_video);
+// int ffmpeg_next_frame(struct ffmpeg_video *ffmpeg_video);
 
-int ffmpeg_video_finished(struct ffmpeg_video *ffmpeg_video);
+// int ffmpeg_video_finished(struct ffmpeg_video *ffmpeg_video);
 
-void ffmpeg_close_and_free_video(struct ffmpeg_video *ffmpeg_video);
+// void ffmpeg_close_and_free_video(struct ffmpeg_video *ffmpeg_video);
 
-struct ffmpeg_video *ffmpeg_open_video(char *filename);
+// struct ffmpeg_video *ffmpeg_open_video(char *filename);
 
-Imlib_Image ffmpeg_get_frame_as_imlib(struct ffmpeg_video *ffmpeg_video);
+// Imlib_Image ffmpeg_get_frame_as_imlib(struct ffmpeg_video *ffmpeg_video);
 
 void *codetection_malloc(size_t size);
 

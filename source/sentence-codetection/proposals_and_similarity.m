@@ -16,6 +16,7 @@ function [bboxes, simi] = proposals_and_similarity(top_k, frames, ssize)
 %                                  second frame, the higher the better
 %
 % add paths
+%addpath(pwd);
 addpath(genpath('piotr-toolbox'));
 addpath(genpath('vlfeat/toolbox'));
 addpath(genpath('forests_edges_boxes'));

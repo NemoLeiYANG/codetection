@@ -4,6 +4,7 @@
 (include "toollib-c-macros.sch")
 (include "toollib-codetection.sch")
 (c-include "codetectionlib-c.h")
+(c-include "idealib-c.h")
 (c-include "inference.h")
 
 ;;(set! *program* "codetection")
@@ -31,13 +32,13 @@
 ;; (define imlib-context-set-image!
 ;;  (c-function void ("imlib_context_set_image" imlib-image)))
 
-;; (define (imlib:free-image-and-decache image)
-;;  (imlib-context-set-image! image)
-;;  ((c-function void ("imlib_free_image_and_decache"))))
+(define (imlib:free-image-and-decache image)
+ (imlib-context-set-image! image)
+ ((c-function void ("imlib_free_image_and_decache"))))
 
-;; (define (imlib:save-image image file)
-;;  (imlib-context-set-image! image)
-;;  ((c-function void ("imlib_save_image" pointer)) file))
+(define (imlib:save-image image file)
+ (imlib-context-set-image! image)
+ ((c-function void ("imlib_save_image" pointer)) file))
 
 ;; (define (imlib:height image)
 ;;  (imlib-context-set-image! image)
@@ -121,10 +122,13 @@
  (let* ((tt (length frames))
 	(one-frame (first frames))
 	(height (imlib:height one-frame))
-	(width (imlib:width one-frame)))
+	(width (imlib:width one-frame))
+	;; (prop-sim-path "/home/sbroniko/codetection/source/sentence-codetection/proposals_and_similarity")
+	)
   (start-matlab!)
   (matlab (format #f "frames=zeros(~a,~a,~a,~a,'uint8');" height width 3 tt))
   ;; convert frames to matlab matrix
+  ;;(format #f "before for-each-indexed")
   (for-each-indexed
    (lambda (frame i)
     ;;(format #t "converting imlib ~a/~a to matlab matrix...~%" i tt)
@@ -134,10 +138,11 @@
       ;; write scheme frame to file
       (imlib:save-image frame tmp-frame)
       ;; read file as matlab frame
-      (matlab (format #f "frame=imread('~a');" tmp-frame))   
+      (matlab (format #f "frame=imread('~a');" tmp-frame))
       (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
     (imlib:free-image-and-decache frame))    
    frames)
+  ;;(matlab (format #f "imshow(frames(:,:,:,20));"))
   ;; call proposals_and_similarity
   (matlab (format #f "[bboxes,simi]=proposals_and_similarity(~a,frames,~a);"
 		  top-k box-size))
