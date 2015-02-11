@@ -392,8 +392,40 @@ as we run into problems or think of things we hadn't thought of before.
   working.  Next step is to look at how the GM is formulated and see about
   adding classes.
 
+----------------git commit d94100b----------------
 
+11 Feb 15
 
----***WHY ARE WE USING MINIMIZER???? Don't we want to maximize the scores?
-      should be because we are adding scores, so minimization works with that...
+--Have box->world projection working. It eliminates both boxes that are outside
+  of boundaries as well as those that plot behind the camera (i.e., ones above
+  ground plane).  First test has 100 original boxes going down to 39 valid
+  boxes.
+--Next thought is to look at doing some sort of clustering based on box
+  locations.  General idea is to use a triangular or gaussian function with a
+  certain radius to build a count for each box based off the distance from that
+  box to the others (function value at that distance).  This might be suitable
+  for forming a new score for the box.
 
+******Look at saliency score for image/boxes as a substitute for f (proposal)
+      score.  saliency.mit.edu
+****Can look at using a comparison between some metric inside the box and
+      outside the box (or over the whole frame) to get a better proposal score.
+      First thought is to use average color.  Can find average color in each of
+      the 3 channels and then treat as a 3-vector and compute distance.  Bigger
+      distance = better score.  Could also use some different metric.
+****Consider optical flow as well.  Can find optical flow for whole image,
+      average it, subtract out the average, and then look at the optical flow
+      inside the proposal box.
+
+Looking at using a combination of saliency and average color to build a new
+unary score.--Current similarity measure seems to do a good job selecting
+consistent boxes, but which track wins depends on unary proposal score, which
+doesn't seem very good.
+
+First want to do distance/location measure on each box to reject boxes outside
+of boundaries (before sending to similarity measure).  Then can also use
+dist/loc as a factor for similarity.
+
+Seem to be getting different boxes when I pull image off of avi file vs. loading
+png of frame--not sure why that is.  Make sure the frame is actually the same
+one.  Have checked, and isequal(im1,im2) returns 0.  Is this even important?????
