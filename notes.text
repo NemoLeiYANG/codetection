@@ -400,11 +400,49 @@ as we run into problems or think of things we hadn't thought of before.
   of boundaries as well as those that plot behind the camera (i.e., ones above
   ground plane).  First test has 100 original boxes going down to 39 valid
   boxes.
+
 --Next thought is to look at doing some sort of clustering based on box
   locations.  General idea is to use a triangular or gaussian function with a
   certain radius to build a count for each box based off the distance from that
   box to the others (function value at that distance).  This might be suitable
   for forming a new score for the box.
+
+----------------git commit 1348533----------------
+
+12 Feb 15
+
+--Have unary scoring function based on distance between a box and all other
+  boxes.  This distance is used as an input to gaussmf (parameters are sigma=.25
+  and mu=0) to get a score (higher=better) for that neighbor.  These are summed
+  and then divided by the total number of proposals generated (top_k).  This
+  score seems to be a big improvement over old proposal score.  Testing with 2
+  frames (1 w/obj, 1 w/o) showed 39 valid boxes with scores max=.1689,
+  mean=.0982 for object, 9 valid boxes with scores max=.0382, mean=.0243 for no
+  object.  Need to think about how to incorporate--replace old score or do a
+  linear combination with some multipliers?  Also, can we use some of this info
+  to figure out a way to enable the "dummy" state?
+
+--Need to finish implementing this as a plug-in function to the existing Scheme
+  code.  Want to try it as a comparison against the original codetection.  Need
+  to figure out how to get frame times/locations synced up with video outside of
+  MATLAB-->Dan's code already does this, so need to adapt and use.
+
+--Also want to think about adding to the binary (similarity) score.  The one
+  Haonan uses seems pretty good, but I might be able to improve on it.  Two easy
+  ones are to compare the world location and world width of boxes.  Can compute
+  that easily from the data I have now.  Can't quite figure out how to do the
+  world height of the box though, so can't do area so easily.
+
+--Jeff also suggested using other scores, like distance from center of frame
+  (unary), optical flow (binary or unary???), and using pb or region contour
+  (??) edge detector within the box.  Not sure how to implement the last 2.
+
+--Want to focus on running the full detector on the shortened video in
+  training-videos/short (with corresponding video_front.txt and
+  imu-log-with-estimates.txt).  This is 18 frames of the cone being in the
+  frame.
+
+ 
 
 ******Look at saliency score for image/boxes as a substitute for f (proposal)
       score.  saliency.mit.edu

@@ -82,8 +82,14 @@ addpath(genpath('sentence-codetection'));
 
 %TEST with a single frame
 
+%%CONE LOCATION (specific to this frame, found with (first (first (fifth
+%%*foo*))) when *foo* is loaded from
+%%/aux/sbroniko/vader-rover/logs/MSEE1-dataset/training/msee1-dataset.sc
+cone_loc = [1.37 -1.304];
+cone_size = [.27 .27];
+
 %first do original scoring
-imnum = 18;
+imnum = 75;%75=no object, 18=object
 top_k = 100;
 frame = imgs(:,:,:,imnum);
 [h,w,~] = size(frame);
@@ -91,7 +97,7 @@ frame = imgs(:,:,:,imnum);
 origboxes = edgeBoxesOut(frame,top_k,5);
 maxscore = max(origboxes(:,5));
 boxes_to_plot = 20;
-colors = distinguishable_colors(10*boxes_to_plot);
+colors = distinguishable_colors(boxes_to_plot);
 figure();
 imshow(frame); hold all;
 rectangle('Position',[1 440 w h-440],'FaceColor','white','EdgeColor','white');
@@ -140,35 +146,86 @@ for i = 1:top_k
         nb_idx = nb_idx + 1;
     end
 end % for i
-new_boxes = new_boxes(1:(nb_idx-1),:);
+num_nboxes = nb_idx-1;
+new_boxes = new_boxes(1:num_nboxes,:);
+
+%could compute world width of box here easily...not sure how to compute
+%height
+
+newcolors = distinguishable_colors(num_nboxes);
 figure();
 hold on;
 title('floorplan');
-plot(new_boxes(:,6),new_boxes(:,7),'o');
+%plot(new_boxes(:,6),new_boxes(:,7),'o');
+plot(pose(1),pose(2),'k+');
+%plot(cone_loc(1), cone_loc(2),'rx');
+%scatter(cone_loc(1),cone_loc(2),(pi*(0.15^2)),'r');
+rectangle('Position',[(cone_loc - cone_size/2) cone_size],'LineWidth',2,...
+    'EdgeColor',[1 0.5 0]);
+plot(cone_loc(1), cone_loc(2),'*','color',[1 0.5 0]);
+scatter(new_boxes(:,6),new_boxes(:,7),[],newcolors);
+axis equal;
 hold off;
+
+%redo score of each box based on gaussian with distance between boxes
+gaussparam = [.25,0]; %setting sigma=.25,mu=0
+newscores = zeros(num_nboxes,1);
+X = new_boxes(:,6:7);
+D = pdist2(X,X,'euclidean'); %defaults to squared euclidean distance--good enough?
+    %%using pure euclidean distance appears to give better results...
+for i = 1:num_nboxes
+    for j = 1:num_nboxes
+        if (j ~= i)
+            newscores(i) = newscores(i) + gaussmf(D(i,j),gaussparam);
+        end %if
+    end %for j
+end %for i
+% newscores = newscores/(num_nboxes-1); %scale to number of boxes compared against
+% %%%NOT SURE THIS HELPS AT ALL
+newscores = newscores/top_k; %try scaling to total number of boxes at start
+new_boxes = [new_boxes newscores];
+new_boxes = sortrows(new_boxes, -8);
+
+% num_to_plot = 10;
+% num_plotting = min(num_to_plot,length(new_boxes));
+num_plotting=find(new_boxes(:,8)>mean(new_boxes(:,8)),1,'last');
 
 figure();
 imshow(frame); hold all;
 rectangle('Position',[1 440 w h-440],'FaceColor','white','EdgeColor','white');
 baseheight = 450;
 maxscore = max(new_boxes(:,5));
-for i = 1:length(new_boxes)
+for i = 1:num_plotting
     rectangle('Position',[new_boxes(i,1) new_boxes(i,2) new_boxes(i,3) ...
         new_boxes(i,4)],'LineWidth',2,'EdgeColor',...
-        (new_boxes(i,5)/maxscore)*colors(i,:));
+        (new_boxes(i,5)/maxscore)*newcolors(i,:));
     if (i > 80)
         text((i-80)*15, baseheight+30, num2str(i),'Color',...
-            (new_boxes(i,5)/maxscore)*colors(i,:));
+            (new_boxes(i,5)/maxscore)*newcolors(i,:));
     elseif (i > 40)
         text((i-40)*15, baseheight+15, num2str(i),'Color',...
-            (new_boxes(i,5)/maxscore)*colors(i,:));
+            (new_boxes(i,5)/maxscore)*newcolors(i,:));
     else
         text(i*15, baseheight, num2str(i),'Color',...
-            (new_boxes(i,5)/maxscore)*colors(i,:));
+            (new_boxes(i,5)/maxscore)*newcolors(i,:));
     end
 end
-title(['New boxes, ',num2str(length(new_boxes)),' boxes total']);
+title(['New boxes, ',num2str(size(new_boxes,1)),' total, showing top ',...
+    num2str(num_plotting)]);
 axis image;
+hold off;
+
+figure();
+hold on;
+title('floorplan with new boxes ');
+%plot(new_boxes(:,6),new_boxes(:,7),'o');
+rectangle('Position',[(cone_loc - cone_size/2) cone_size],'LineWidth',2,...
+    'EdgeColor',[1 0.5 0]);
+plot(pose(1),pose(2),'k+');
+plot(cone_loc(1), cone_loc(2),'*','color',[1 0.5 0]);
+scatter(new_boxes(1:num_plotting,6),new_boxes(1:num_plotting,7),[],...
+    newcolors(1:num_plotting,:));
+axis equal;
 hold off;
 
 % %%%%TESTING with just 2 images (temporally adjacent with cone prominent)
