@@ -442,7 +442,22 @@ as we run into problems or think of things we hadn't thought of before.
   imu-log-with-estimates.txt).  This is 18 frames of the cone being in the
   frame.
 
+----------------git commit 470062b----------------
  
+13 Feb 15
+
+--Have function in Scheme to align poses with frames.  Need to finish writing
+  scott-run-codetection-full-video and corresponding MATLAB function to do
+  different computations.  Want to do a linear combination of original proposal
+  score, my gaussian distance score, and maybe another gaussian distance score
+  based on distance from center of frame.  Later, look at doing a unary optical
+  flow score to compare whole frame's average flow to box's avg flow-->look at
+  computing using scheme->c bindings and then passing the result into MATLAB.
+
+--Also want to relook binary scores, such as flow between boxes in subsequent
+  frames, world distance between boxes, world box width (height is a problem),
+  etc.  Jeff also talked about doing binary scores between all frames (not just
+  subsequent ones), but can't quite wrap my head around that yet.
 
 ******Look at saliency score for image/boxes as a substitute for f (proposal)
       score.  saliency.mit.edu

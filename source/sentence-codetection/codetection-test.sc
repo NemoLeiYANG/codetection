@@ -76,6 +76,49 @@
   (map (lambda (b pool) (list-ref pool b))
 	   boxes proposals)
   ))
+
+(define (align-frames-with-poses datapath num-frames)
+ (let* (;;(frames (video->frames 1 (format #f "~a/video_front.avi" datapath)))
+	(cam-timing (read-camera-timing
+		     (format #f "~a/camera_front.txt" datapath)))
+	(timing-file (if (file-exists? (format #f "~a/imu-log-with-estimates.txt"
+					       datapath))
+			 (format #f "~a/imu-log-with-estimates.txt" datapath)
+			 (format #f "~a/imu-log.txt" datapath)))
+	(poses-with-timing (read-robot-estimated-pose-from-log-file timing-file)))
+  (if (not (= num-frames (length cam-timing)))
+      (dtrace "error: num-frames != cam-timing" #f)
+      (let loop ((cam-timing cam-timing)
+		 (poses poses-with-timing)
+		 (previous-pose #f)
+		 (frame-poses '()))
+       (if (or (null? poses) (null? cam-timing))
+	   (begin
+	   ;;;need to error check length of pose list here
+	    (dtrace "length = " (length frame-poses))
+	    (if (not (= num-frames (length frame-poses)))
+		(dtrace "error: num-frames != frame-poses" #f)
+		(reverse frame-poses)))
+	   ;; (if (< (first cam-timing) (first (first poses)))
+	   ;;     ;;(dtrace "error: first frame earlier than first pose" frame-poses)  
+	   (if previous-pose
+	       (if (< (abs (- (first previous-pose) (first cam-timing)))
+		      (abs (- (first (first poses)) (first cam-timing))))
+		    (loop (rest cam-timing)
+			  (rest poses)
+			  (first poses)
+			  (cons (second (first poses)) frame-poses))
+		   (loop cam-timing
+			 (rest poses)
+			 (first poses)
+			 frame-poses))
+	       (loop cam-timing
+		     (rest poses)
+		     (first poses)
+		     frame-poses)))))))
+	       
+       
+			    
        
 (define (frame-test)
  (let* ((video-path "/home/sbroniko/codetection/test-run-data/video_front.avi")
@@ -111,5 +154,36 @@
 	    (loop (rest images) (rest boxes) (+ n 1)))))
       (dtrace "error: frames != boxes" #f))))
 
+
+(define (scott-run-codetection-full-video data-path top-k box-size)
+ (let* ((video-path (format #f "~a/video_front.avi" data-path))
+	(frames (video->frames 1 video-path))
+	(tt (length frames))
+	(poses (align-frames-with-poses data-path tt))
+	;;NEED REPLACEMENT CALL FOR LINE BELOW WITH MY PROP-SIM CODE
+	;;(proposals-similarity (proposals&similarity top-k box-size downsample video-path))
+	(proposals (map (lambda (boxes) (map (lambda (x) (but-last x))
+					     (matrix->list-of-lists boxes)))
+			(first proposals-similarity)))
+	(f (map (lambda (boxes) (map fifth (matrix->list-of-lists boxes)))
+		(first proposals-similarity)))
+	(g (map (lambda (sim) (matrix->list-of-lists sim))
+		(second proposals-similarity)))
+	(f-c (easy-ffi:double-to-c 2 f))
+	(g-c (easy-ffi:double-to-c 3 g))
+	(boxes-c (list->c-exact-array (malloc (* c-sizeof-int (length f)))
+				      (map-n (lambda _ 0) (length f))
+				      c-sizeof-int #t))	
+	(score (bp-object-inference f-c g-c (length f) top-k boxes-c))
+	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t)))
+  (free boxes-c)
+  (easy-ffi:free 2 f f-c)
+  (easy-ffi:free 3 g g-c)
+  ;; (pp (map (lambda (b pool) (list b (list-ref pool b)))
+  ;; 	   boxes proposals))
+  (map (lambda (b pool) (list-ref pool b))
+	   boxes proposals)
+  ))	
+ 
   
 
