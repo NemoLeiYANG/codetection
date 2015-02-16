@@ -95,7 +95,7 @@
        (if (or (null? poses) (null? cam-timing))
 	   (begin
 	   ;;;need to error check length of pose list here
-	    (dtrace "length = " (length frame-poses))
+	    ;;(dtrace "length = " (length frame-poses))
 	    (if (not (= num-frames (length frame-poses)))
 		(dtrace "error: num-frames != frame-poses" #f)
 		(reverse frame-poses)))
@@ -155,13 +155,62 @@
       (dtrace "error: frames != boxes" #f))))
 
 
-(define (scott-run-codetection-full-video data-path top-k box-size)
+(define (scott-proposals&similarity-with-frames
+	 top-k box-size alpha beta frames poses tt)
+ (let* ((one-frame (first frames))
+	(height (imlib:height one-frame))
+	(width (imlib:width one-frame)))
+  (start-matlab!)
+  (scheme->matlab! "poses" poses)
+  (matlab (format #f "frames=zeros(~a,~a,~a,~a,'uint8');" height width 3 tt))
+  ;; convert frames to matlab matrix
+  ;;(format #f "before for-each-indexed")
+  (for-each-indexed
+   (lambda (frame i)
+    ;;(format #t "converting imlib ~a/~a to matlab matrix...~%" i tt)
+    (with-temporary-file
+     "/tmp/imlib-frame.ppm"
+     (lambda (tmp-frame)
+      ;; write scheme frame to file
+      (imlib:save-image frame tmp-frame)
+      ;; read file as matlab frame
+      (matlab (format #f "frame=imread('~a');" tmp-frame))
+      (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
+    (imlib:free-image-and-decache frame) ;;might want to comment this out
+    )    
+   frames)
+  ;;(matlab (format #f "imshow(frames(:,:,:,20));"))
+  ;; call proposals_and_similarity
+  ;; (matlab (format #f "[bboxes,simi]=proposals_and_similarity(~a,frames,~a);"
+  ;; 		  top-k box-size))
+  (matlab (format #f "[bboxes,simi]=scott_proposals_similarity(~a,~a,frames,poses,~a,~a);"
+		  top-k box-size alpha beta))
+  ;; convert matlab variables to scheme
+  (list (map-n (lambda (t)
+		(matlab (format #f "tmp=bboxes(:,:,~a);" (+ t 1)))
+		(matlab-get-variable "tmp"))
+	       tt)
+	(map-n (lambda (t)
+		(matlab (format #f "tmp=simi(:,:,~a);" (+ t 1)))
+		(matlab-get-variable "tmp"))
+	       (- tt 1)))))
+
+
+(define (scott-run-codetection-full-video data-path top-k box-size alpha beta)
  (let* ((video-path (format #f "~a/video_front.avi" data-path))
 	(frames (video->frames 1 video-path))
 	(tt (length frames))
 	(poses (align-frames-with-poses data-path tt))
 	;;NEED REPLACEMENT CALL FOR LINE BELOW WITH MY PROP-SIM CODE
 	;;(proposals-similarity (proposals&similarity top-k box-size downsample video-path))
+	(proposals-similarity
+	 (scott-proposals&similarity-with-frames top-k
+						 box-size
+						 alpha
+						 beta
+						 frames
+						 poses
+						 tt))
 	(proposals (map (lambda (boxes) (map (lambda (x) (but-last x))
 					     (matrix->list-of-lists boxes)))
 			(first proposals-similarity)))

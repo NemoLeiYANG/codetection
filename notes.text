@@ -459,6 +459,25 @@ as we run into problems or think of things we hadn't thought of before.
   etc.  Jeff also talked about doing binary scores between all frames (not just
   subsequent ones), but can't quite wrap my head around that yet.
 
+----------------git commit 15011c3----------------
+
+16 Feb 15
+
+--Started looking at Multiscale Combinatorial Grouping (arbelaez2014multiscale)
+  paper and associated code in source/sentence-codetection/MCG-PreTrained.
+  General idea is to have this code output a contour map for each frame and then
+  compare box proposals to contour map.  
+
+  Not exactly sure how to do comparison--could we compare area of box to area of
+  contour within box?  How to compute this? Also, need a way to prevent tiny
+  boxes that are completely inside contour from getting high score.
+
+--Want to use gaussian distance measure as a unary score across multiple
+  images.  Have first try at this implemented in
+  source/sentence-codetection/scott_proposals_similarity.m.  Had trouble with
+  calls to matlabpool() this afternoon--license wasn't available.  Need to try
+  again later. 
+
 ******Look at saliency score for image/boxes as a substitute for f (proposal)
       score.  saliency.mit.edu
 ****Can look at using a comparison between some metric inside the box and
