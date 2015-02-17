@@ -122,9 +122,9 @@
        
 (define (frame-test)
  (let* ((video-path "/home/sbroniko/codetection/test-run-data/video_front.avi")
-	(starting-frame 2)
-	(num-frames 200)
-	(top-k 20)
+	(starting-frame 12)
+	(num-frames 18)
+	(top-k 100)
 	(box-size 64)
 	(frames (select-frames video-path starting-frame num-frames))
 	(boxes (run-codetection-with-frames frames top-k box-size))
@@ -177,6 +177,7 @@
       (matlab (format #f "frame=imread('~a');" tmp-frame))
       (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
     (imlib:free-image-and-decache frame) ;;might want to comment this out
+              ;;but could cause a memory leak if I don't free image elsewhere
     )    
    frames)
   ;;(matlab (format #f "imshow(frames(:,:,:,20));"))
@@ -235,4 +236,39 @@
   ))	
  
   
-
+(define (frame-test2)
+ (let* ((data-path "/home/sbroniko/codetection/training-videos/short")
+	(video-path (format #f "~a/video_front.avi" data-path))
+	(top-k 100)
+	(box-size 64)
+	(alpha 0.2)
+	(beta 0.8)
+	(boxes (scott-run-codetection-full-video data-path
+						 top-k
+						 box-size
+						 alpha
+						 beta)))
+  (let loop ((images (video->frames 1 video-path))
+	     (boxes boxes)
+	     (n 0))
+   (if (or (null? images)
+	   (null? boxes))
+       (dtrace "done" #f)
+       (let* ((box (first boxes))
+	      (image (first images))
+	      (x1 (first box))
+	      (y1 (second box))
+	      (w (- (third box) (first box)))
+	      (h (- (fourth box) (second box))))
+	(imlib:draw-rectangle image x1 y1 w h (vector 0 0 255))
+	;;(show-image image)
+	;; ((c-function void ("imlib_context_set_image" imlib-image))
+	;;  (imlib-image-handle image))
+	;; ((c-function void ("imlib_save_image" string)) "/tmp/foo.ppm")
+	(imlib:save image (format #f "~a/detection-images-~a.png"
+				  data-path
+				  (number->padded-string-of-length n 5)))
+	(dtrace "saved image" n)
+	;;mlib:free-image-and-decache image)
+	(loop (rest images) (rest boxes) (+ n 1)))))
+      ))

@@ -478,6 +478,42 @@ as we run into problems or think of things we hadn't thought of before.
   calls to matlabpool() this afternoon--license wasn't available.  Need to try
   again later. 
 
+----------------git commit 26a82bc----------------
+
+17 Feb 15
+
+--matlabpool() call now working--must have been licenses taken up elsewhere on
+  campus yesterday afternoon.
+
+--Now having problem within the parfor loop because the number of boxes at each
+  iteration is different.  Tried padding out temp_bboxes with zeros, but that
+  caused problems with the references to img using bi(n) in the phow_hist()
+  call.  Then tried putting an if bi(1)>0 around that call, but got an error
+  with imresize.  Next want to try either padding temp_bboxes with ones, or
+  doing the parfor loop only from 1:num_nboxes.  If I do the latter, will
+  probably need to do something different with the simi(:,:,t-1) assignment.
+
+--Have Matlab code (scott_proposals_similarity.m) working correctly and
+  producing matrices of f and g scores.  Now need to test with Scheme.
+
+--Tested with Scheme and visualization and got good results.  Images saved in
+  training-videos/short/detection-images-*.png.  Box seems to track the cone
+  fairly well throughout, although in the first couple frames it is only on the
+  base of the cone, not the body.  The output of libDAI Belief Propagation for
+  this run is -2.19992 (not sure what this means--need to ask Haonan)
+
+--Compared these results to the original version run on the same frames.  These
+  images are saved in
+  test-run-data/codetection-17feb15-selected-frames-cone/detection-images*.png.
+  My version seems to work much better--the images from original version seem
+  random.  The output of libDAI Belief Propagation for this run is 1.2092.  I'm
+  assuming that since we're minimizing here, lower is better...
+
+--I think what I've got working here is probably good enough to use--now need to
+  work on getting it to work when there are no objects in the image (i.e., dummy
+  state, classes, etc...)
+
+
 ******Look at saliency score for image/boxes as a substitute for f (proposal)
       score.  saliency.mit.edu
 ****Can look at using a comparison between some metric inside the box and

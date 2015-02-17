@@ -108,21 +108,34 @@ for t = 1:T
 %     %storing in final output variable -- MAYBE MOVE THIS LATER????
 %     bboxes(:,:,t) = bbs;
 
-    temp_bboxes = zeros(
+    %temp_bboxes = zeros(top_k,5);
+    %temp_bboxes = ones(top_k,5);
+    temp_bboxes = zeros(num_nboxes,5);
+    %converting from [x y w h] to [x1 y1 x2 y2]
+    temp_bboxes(1:num_nboxes,1:2) = temp_box(:,1:2);
+    temp_bboxes(1:num_nboxes,5) = temp_box(:,7);
     
-
+    num_nboxes
+    
     %binary score(s)
-    parfor i = 1:top_k
-        bi = temp_box(i,:);%bboxes(i,:,t);
+    parfor i = 1:num_nboxes %top_k
+        i
+        bi = temp_bboxes(i,:); %bboxes(i,:,t);
+        size(img(bi(2):bi(4),bi(1):bi(3),:));
+        %if (bi(1) > 0)
         hists{i} = phow_hist(img(bi(2):bi(4),bi(1):bi(3),:), ssize);
+        %end
     end %parfor i
     hist = cat(2, hists{:});
     hist = hist';
 
+    nboxes_prev = num_nboxes;
+    
     if t > 1
         simi(:,:,t-1) = -pdist2(hist_prev, hist, 'chisq');
     end %if
     hist_prev = hist;
+    
 end %for t
 
 %probably need another loop through T here to do the between-frames

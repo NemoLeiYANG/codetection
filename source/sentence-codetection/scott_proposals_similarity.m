@@ -47,7 +47,7 @@ cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
 % compute
 [h, w, d, T] = size(frames);
 bboxes = zeros(top_k, 5, T);
-simi = zeros(top_k, top_k, T-1);
+simi = -inf(top_k, top_k, T-1); %zeros(top_k, top_k, T-1);
 temp_boxes{T} = [];  %cell array for holding boxes used in calculations
 
 %tic;
@@ -108,23 +108,46 @@ for t = 1:T
 %     %storing in final output variable -- MAYBE MOVE THIS LATER????
 %     bboxes(:,:,t) = bbs;
 
-    temp_bboxes = zeros(top_k,5);
-    temp_bboxes(1:num_nboxes,1:4) = temp_box(:,1:4);
+    %temp_bboxes = zeros(top_k,5);
+    %temp_bboxes = ones(top_k,5);
+    temp_bboxes = zeros(num_nboxes,5);
+    %converting from [x y w h] to [x1 y1 x2 y2]
+    temp_bboxes(:,1:2) = temp_box(:,1:2);
+    temp_bboxes(:,3) = temp_box(:,3) + temp_box(:,1) - 1;
+    temp_bboxes(:,4) = temp_box(:,4) + temp_box(:,2) - 1;
     temp_bboxes(1:num_nboxes,5) = temp_box(:,7);
     
-
+    %t
+    %num_nboxes
+    
+    
     %binary score(s)
-    parfor i = 1:top_k
+    hists{num_nboxes} = []; %declare new cell array every time
+    parfor i = 1:num_nboxes %top_k
+        %i
         bi = temp_bboxes(i,:); %bboxes(i,:,t);
+        %size(img(bi(2):bi(4),bi(1):bi(3),:));
+        %if (bi(1) > 0)
         hists{i} = phow_hist(img(bi(2):bi(4),bi(1):bi(3),:), ssize);
+        %end
     end %parfor i
     hist = cat(2, hists{:});
+    clear hists; %remove this variable so it's created new each iteration
     hist = hist';
-
+    
     if t > 1
-        simi(:,:,t-1) = -pdist2(hist_prev, hist, 'chisq');
+        %nboxes_prev
+        %fprintf('size of hist_prev, hist');
+        %size(hist_prev)
+        %size(hist)
+        simi(1:nboxes_prev,1:num_nboxes,t-1) = -pdist2(hist_prev, hist, 'chisq');
+        %foo = -pdist2(hist_prev, hist, 'chisq');
+        %foo
+        %fprintf('size of foo');
+        %size(foo)
     end %if
     hist_prev = hist;
+    nboxes_prev = num_nboxes;
 end %for t
 
 %probably need another loop through T here to do the between-frames
@@ -150,7 +173,7 @@ for t = 1:T
     end %for u
     bbs = zeros(num_curr_boxes,5);
     bbs(:,1:4) = curr_box(:,1:4);
-    bbs(:,5) = newscores;
+    bbs(:,5) = newscores/(T*top_k);
     
     %converting from [x y w h] to [x1 y1 x2 y2]
     bbs(:,3) = bbs(:,3) + bbs(:,1) - 1;
