@@ -184,7 +184,7 @@
   ;; call proposals_and_similarity
   ;; (matlab (format #f "[bboxes,simi]=proposals_and_similarity(~a,frames,~a);"
   ;; 		  top-k box-size))
-  (matlab (format #f "[bboxes,simi]=scott_proposals_similarity(~a,~a,frames,poses,~a,~a);"
+  (matlab (format #f "[bboxes,simi]=scott_proposals_similarity2(~a,~a,frames,poses,~a,~a);"
 		  top-k box-size alpha beta))
   ;; convert matlab variables to scheme
   (list (map-n (lambda (t)
@@ -237,7 +237,9 @@
  
   
 (define (frame-test2)
- (let* ((data-path "/home/sbroniko/codetection/training-videos/short")
+ (let* (;;(data-path "/home/sbroniko/codetection/training-videos/short")
+	;;(data-path "/home/sbroniko/codetection/test-run-data")
+	(data-path "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/training/plan4/2014-11-15-22:45:19")
 	(video-path (format #f "~a/video_front.avi" data-path))
 	(top-k 100)
 	(box-size 64)
@@ -269,6 +271,6 @@
 				  data-path
 				  (number->padded-string-of-length n 5)))
 	(dtrace "saved image" n)
-	;;mlib:free-image-and-decache image)
+	;;(imlib:free-image-and-decache image)
 	(loop (rest images) (rest boxes) (+ n 1)))))
       ))

@@ -23,10 +23,10 @@ for i = 1:nFrames
     imgs(:,:,:,i) = read(vid,i);
 end
 
-%load sentence from sentence.txt
-fileID = fopen([datapath '/sentence.txt'],'r');
-sentence = textscan(fileID, '%q');
-fclose(fileID);
+% %load sentence from sentence.txt
+% fileID = fopen([datapath '/sentence.txt'],'r');
+% sentence = textscan(fileID, '%q');
+% fclose(fileID);
 
 %load frame timing data from camera_front.txt
 fileID = fopen([datapath '/camera_front.txt'],'r');

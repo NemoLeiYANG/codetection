@@ -513,6 +513,73 @@ as we run into problems or think of things we hadn't thought of before.
   work on getting it to work when there are no objects in the image (i.e., dummy
   state, classes, etc...)
 
+----------------git commit 1f0e61c----------------
+
+27 Feb 15
+
+--Started working with MCG-PreTrained (from arbelaez2014multiscale) as a
+  replacement for EdgeBoxes as my proposal mechanism.  Trying to understand the
+  input and output of this code in order to integrate it into my framework.
+
+
+OPEN FILES IN MATLAB
+--------------------
+~/codetection/source/sentence-codetection/27feb.mat (in codetection-no-git also)
+~/codetection/source/robottest.m
+~/codetection/source/sentence-codetection/proposals_and_similarity.m
+~/codetection/source/sentence-codetection/scott_proposals_similarity2.m
+~/codetection/vlfeat-0.9.17/apps/phow_box_match.m (???)
+
+
+
+OPEN FILES IN EMACS
+-------------------
+.   notes.text           28772  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+    codetection-test.sc  10504  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc
+    toollib-codetection.: 6850  Scheme		  ~/codetection/source/sentence-codetection/toollib-codetection.sc
+    rover-projection.sc   9062  Scheme		  ~/codetection/source/rover-projection.sc
+ %  toollib-perspective: 18982  Scheme		  /home/dpbarret/imitate/tool/toollib-perspective-projection.sc
+ %  tmp-toollib-misc.s: 104697  Scheme		  /home/dpbarret/imitate/tool/tmp-toollib-misc.sc
+    inference.cpp         2776  C++/l		  ~/codetection/source/sentence-codetection/inference.cpp
+    codetectionlib-c.h    1953  C++/l		  ~/codetection/source/sentence-codetection/codetectionlib-c.h
+    idealib-c.c          40213  C/l		  ~/darpa-collaboration/ideas/idealib-c.c
+    codetectionlib-c.c    6720  C/l		  ~/codetection/source/sentence-codetection/codetectionlib-c.c
+    makefile|sentence-co: 2620  GNUmakefile	  ~/codetection/source/sentence-codetection/makefile
+ %  makefile|ideas       14656  GNUmakefile	  /home/dpbarret/darpa-collaboration/ideas/makefile
+    pregexp.sc           22557  Scheme		  ~/codetection/source/sentence-codetection/pregexp.sc
+    inference.h             83  C++/l		  ~/codetection/source/sentence-codetection/inference.h
+
+.   prelim-notes.txt       368  Text		  ~/research/prelim-notes.txt
+    research.bib         43019  BibTeX		  ~/research/research.bib
+    notes.text           29627  Text		  ~/research/1_lit_review/notes.text
+    toollib-farneback.sc  5122  Scheme		  ~/darpa-collaboration/ideas/toollib-farneback.sc
+    toollib-farneback-c: 12750  C/l		  ~/darpa-collaboration/ideas/toollib-farneback-c.c
+    toollib-image-proc: 125308  Scheme		  ~/darpa-collaboration/ideas/toollib-image-processing-scott.sc
+    rover-projection.sc   9062  Scheme		  ~/codetection/source/rover-projection.sc
+    toollib-image-proc: 124889  Scheme		  ~/darpa-collaboration/ideas/toollib-image-processing.sc
+    toollib-perspective: 18982  Scheme		  ~/codetection/source/toollib-perspective-projection.sc
+    hmm-def.c            11934  C/l		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/ideas/hmm-def.c
+    hmm-rand.c          306415  C/l		  ~/darpa-collaboration/ideas/hmm-rand.c
+
+
+
+
+* similarity (binary) score based on box location
+* similarity (binary) score based on box size
+* incorporate optical flow into binary score...how???
+* unary score based on box content-->edges/contours???
+* box optical flow vs. avg. optical flow might not work--need to look at how the
+  geometry works out.
+***DUMMY STATE!!!!
+
+**look at doing single-frame optical flow-->Dan has scheme code that can use C
+  bindings--will need to pull original scores out of MATLAB into scheme and then
+  add appropriately-weighted optical flow scores in scheme.
+
+**look at doing some sort of simple similarity measure (such as gaussian
+  distance) between all boxes in all frames.  Lots of computations, but if they
+  are small it shouldn't be too bad
+
 
 ******Look at saliency score for image/boxes as a substitute for f (proposal)
       score.  saliency.mit.edu
