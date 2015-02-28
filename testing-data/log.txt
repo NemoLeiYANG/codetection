@@ -1,0 +1,56 @@
+Log file created at 2014-11-15-22:49:17 GMT
+1416091767.285477: Logging started
+1416091767.286545: Bump switch monitoring active
+1416091768.198994: executed: pan_15500, tilt_14500
+1416091768.226948: executed: motor_stop
+1416091768.746067: executed: start_cameras
+1416091771.328664: executed: motor_pivot_right_1
+1416091771.367634: executed: motor_pivot_right_2
+1416091772.812935: executed: motor_stop
+1416091772.844154: executed: motor_pivot_left_1
+1416091772.859931: executed: motor_stop
+1416091773.156675: executed: motor_forward_1
+1416091773.289453: executed: motor_forward_2
+1416091774.351953: executed: motor_forward_right_2
+1416091774.750440: executed: motor_forward_right_1
+1416091774.883249: executed: motor_stop
+1416091775.211547: executed: motor_forward_1
+1416091775.242552: executed: motor_forward_2
+1416091778.461392: executed: motor_forward_1
+1416091778.508296: executed: motor_stop
+1416091778.945814: executed: motor_pivot_left_1
+1416091779.125435: executed: motor_pivot_left_2
+1416091779.578486: executed: motor_pivot_left_1
+1416091779.609765: executed: motor_stop
+1416091779.977156: executed: motor_forward_1
+1416091780.008100: executed: motor_forward_2
+1416091780.742819: executed: motor_forward_left_2
+1416091780.922410: executed: motor_pivot_left_2
+1416091781.359897: executed: motor_stop
+1416091781.391024: executed: motor_pivot_right_1
+1416091781.422243: executed: motor_stop
+1416091781.680109: executed: motor_forward_1
+1416091781.711419: executed: motor_forward_2
+1416091782.180125: executed: motor_forward_left_2
+1416091782.398808: executed: motor_pivot_left_2
+1416091782.805137: executed: motor_pivot_left_1
+1416091782.954120: executed: motor_stop
+1416091782.984820: executed: motor_pivot_right_1
+1416091783.016008: executed: motor_stop
+1416091783.078536: executed: motor_forward_1
+1416091783.117781: executed: motor_forward_2
+1416091784.008166: executed: motor_forward_left_2
+1416091784.648864: executed: motor_pivot_left_2
+1416091785.000416: executed: motor_forward_left_2
+1416091785.039722: executed: motor_forward_left_1
+1416091785.070757: executed: motor_pivot_left_1
+1416091785.086351: executed: motor_stop
+1416091785.992606: executed: motor_forward_1
+1416091786.023855: executed: motor_forward_2
+1416091793.047240: executed: motor_forward_1
+1416091793.360158: executed: motor_stop
+1416091793.391041: executed: motor_reverse_1
+1416091793.422168: executed: motor_stop
+1416091794.752634: executed: stop_cameras
+1416091800.610660: Logging completed
+Log file closed at 2014-11-15-22:50:00 GMT
