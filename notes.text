@@ -524,6 +524,19 @@ as we run into problems or think of things we hadn't thought of before.
 
 ----------------git commit 10b5261..e7ce79d----------------
 
+2 Mar 15
+
+--First tests using MCG look promising.  Getting good results on test
+  frames--top-scoring box is surrounding object pretty well.  
+
+--Need to create new penalty term computation.  Thinking about using an
+  exponential term to penalize boxes out of bounds, like e^(-xover)*e^(-yover).
+  Also need to compute term for boxes that end up projected back behind camera.
+
+--Since each frame takes ~5s to get boxes generated, might want to think about
+  doing all box generation in a single parfor loop before doing anything else.
+
+
 
 OPEN FILES IN MATLAB
 --------------------

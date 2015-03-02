@@ -1,5 +1,5 @@
 function [boxes_w_fscore, gscore] = ...
-    scott_proposals_similarity(top_k, ssize, frames, positions,alpha,beta)
+    scott_proposals_similarity2(top_k, ssize, frames, positions,alpha,beta)
 %inputs: top_k, box_size same as Haonan's code
 %        frames: h*w*3*num_frames matrix of images
 %        positions: num_frames*3 matrix of [x y theta]

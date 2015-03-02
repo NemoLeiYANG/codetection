@@ -274,3 +274,16 @@
 	;;(imlib:free-image-and-decache image)
 	(loop (rest images) (rest boxes) (+ n 1)))))
       ))
+
+(define (make-frames video-path)
+ (let* ((video (format #f "~a/video_front.avi" video-path))
+	(output-path (format #f "~a/video-frames" video-path)))
+  (let loop ((images (video->frames 1 video))
+	     (n 1))
+   (if (null? images)
+       (dtrace "done" #f)
+       (let* ((image (first images)))
+	(imlib:save image (format #f "~a/frame-~a.ppm"
+				  output-path
+				  (number->padded-string-of-length n 4)))
+	(loop (rest images) (+ n 1)))))))

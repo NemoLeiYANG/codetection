@@ -15,6 +15,6 @@
 % ------------------------------------------------------------------------
 function root_dir = root_dir()
 if strcmp(computer(), 'GLNXA64')
-   root_dir = '/path/to/root/dir';
+   root_dir = '/home/sbroniko/codetection/source/sentence-codetection/MCG-PreTrained';
 end
 end
