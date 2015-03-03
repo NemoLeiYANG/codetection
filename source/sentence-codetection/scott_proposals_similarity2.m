@@ -1,6 +1,6 @@
 function [boxes_w_fscore, gscore] = ...
     scott_proposals_similarity2(top_k, ssize, frames, positions,alpha,beta)
-%inputs: top_k, box_size same as Haonan's code
+%inputs: top_k, ssize same as Haonan's code
 %        frames: h*w*3*num_frames matrix of images
 %        positions: num_frames*3 matrix of [x y theta]
 %        alpha: scalar weight for proposal score
@@ -20,6 +20,7 @@ function [boxes_w_fscore, gscore] = ...
 
 % add paths
 %addpath(pwd);
+addpath(genpath('MCG-PreTrained'));
 addpath(genpath('piotr-toolbox'));
 addpath(genpath('vlfeat/toolbox'));
 addpath(genpath('forests_edges_boxes'));
@@ -47,45 +48,77 @@ cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
 % compute
 [h, w, d, T] = size(frames);
 bboxes = zeros(top_k, 5, T);
-boxes_and_unary_scores = zeros(top_k,5,T);
-%binary_scores = zeros(T*top_k); %GIANT matrix--BAD IDEA
-boxes_per_frame = zeros(1,T);
-simi = -inf(top_k, top_k, T-1); %zeros(top_k, top_k, T-1);
+simi = zeros(top_k, top_k, T-1);
 temp_boxes{T} = [];  %cell array for holding boxes used in calculations
 
+%first get boxes for all frames
+outboxes = zeros(top_k,5,T);
+parfor t = 1:T
+    outboxes(:,:,t) = MCGboxes(frames(:,:,:,t),top_k);
+end %parfor
+
 %tic;
+%now do re-scoring of proposal scores based on frames
 for t = 1:T
-    img = frames(:,:,:,t);
+    %img = frames(:,:,:,t);
     pose = positions(t,:);
     
     %unary score(s)
-    bbs = edgeBoxesOut(img, top_k, 5);
-    new_boxes = zeros(top_k, 7);
-    nb_idx = 1;
+    %bbs = edgeBoxesOut(img, top_k, 5);
+    bbs = outboxes(:,:,t);
+    new_boxes = zeros(top_k, 8);%[x y w h xloc yloc wwidth score]
+    new_boxes(:,1:4) = bbs(:,1:4);
+    new_boxes(:,8) = bbs(:,5);
+%    nb_idx = 1;
     for i = 1:top_k
         bc_point = [(bbs(i,1)+(bbs(i,3)/2)) (bbs(i,2)+bbs(i,4))];
         %assume box is on ground (height = 0)
-        loc = pixel_and_height_to_world(bc_point, 0, cam_k, pose, cam_offset);
-        if ((~isnan(loc(1))) &&... %reject boxes out of bounds
-            (loc(1) >= boundary(1)) &&...
-            (loc(1) <= boundary(2)) &&...
-            (loc(2) >= boundary(3)) &&...
-            (loc(2) <= boundary(4)))
-            new_boxes(nb_idx,:) = [bbs(i,1:4),loc(1),loc(2),bbs(i,5)];
-            nb_idx = nb_idx + 1;
-        end
+        [loc locflag] = pixel_and_height_to_world(bc_point, 0, cam_k, pose, cam_offset);
+        %PUT LOCATION INTO BOXES MATRIX FOR LATER USE
+        new_boxes(i,5) = loc(1); new_boxes(i,6) = loc(2);
+        %FIND WORLD WIDTH OF BOX AND SAVE
+       
+        %REDO UNARY SCORES HERE
+        if (locflag == 0) %box is behind camera
+            penalty = -10; %ARBITRARY penalty factor here
+            new_boxes(i,8) = new_boxes(i,8)*exp(penalty);
+            continue; %done with this box
+        end %if locflag
+        
+        if (loc(1) > boundary(1))
+            xpenalty = boundary(1) - loc(1);
+        elseif (loc(1) < boundary(2))
+            xpenalty = loc(1) - boundary(2);
+        else
+            xpenalty = 0;
+        end %if loc(1)
+        
+        if (loc(2) > boundary(3))
+            ypenalty = boundary(3) - loc(2);
+        elseif (loc(2) < boundary(4))
+            ypenalty = loc(2) - boundary(4);
+        else
+            ypenalty = 0;
+        end %if loc(2)
+        new_boxes(i,8) = new_boxes(i,8)*exp(xpenalty)*exp(ypenalty);
+            
+%         elseif (loc(1) >= boundary(1)) 
+%             
+%         end %if
+%         if ((~isnan(loc(1))) &&... %reject boxes out of bounds
+%             (loc(1) >= boundary(1)) &&...
+%             (loc(1) <= boundary(2)) &&...
+%             (loc(2) >= boundary(3)) &&...
+%             (loc(2) <= boundary(4)))
+%             new_boxes(nb_idx,:) = [bbs(i,1:4),loc(1),loc(2),bbs(i,5)];
+%             nb_idx = nb_idx + 1;
+%         end
     end %for i
-    num_nboxes = nb_idx-1;
-    boxes_per_frame(t) = num_nboxes;
+%   num_nboxes = nb_idx-1;
     new_boxes = new_boxes(1:num_nboxes,:);
     
-    %could compute world width of box here easily...not sure how to compute
-    %height
-    
-    
-    
-    
-    %%%%PROBABLY WANT TO TAKE THIS OUT--NOT A GOOD MEASURE
+
+%%THIS IS ALL FUBAR HERE    
     %redo score of each box based on gaussian with distance between boxes
     newscores = zeros(num_nboxes,1);
     X = new_boxes(:,5:6);
@@ -115,50 +148,24 @@ for t = 1:T
 %     %storing in final output variable -- MAYBE MOVE THIS LATER????
 %     bboxes(:,:,t) = bbs;
 
-    %temp_bboxes = zeros(top_k,5);
-    %temp_bboxes = ones(top_k,5);
-    temp_bboxes = zeros(num_nboxes,5);
-    %converting from [x y w h] to [x1 y1 x2 y2]
-    temp_bboxes(:,1:2) = temp_box(:,1:2);
-    temp_bboxes(:,3) = temp_box(:,3) + temp_box(:,1) - 1;
-    temp_bboxes(:,4) = temp_box(:,4) + temp_box(:,2) - 1;
+    temp_bboxes = zeros(top_k,5);
+    temp_bboxes(1:num_nboxes,1:4) = temp_box(:,1:4);
     temp_bboxes(1:num_nboxes,5) = temp_box(:,7);
     
-    %t
-    %num_nboxes
-    
-    
+
     %binary score(s)
-    hists{num_nboxes} = []; %declare new cell array every time
-    parfor i = 1:num_nboxes %top_k
-        %i
+    parfor i = 1:top_k
         bi = temp_bboxes(i,:); %bboxes(i,:,t);
-        %size(img(bi(2):bi(4),bi(1):bi(3),:));
-        %if (bi(1) > 0)
         hists{i} = phow_hist(img(bi(2):bi(4),bi(1):bi(3),:), ssize);
-        %end
     end %parfor i
     hist = cat(2, hists{:});
-    clear hists; %remove this variable so it's created new each iteration
     hist = hist';
-    
+
     if t > 1
-        %nboxes_prev
-        %fprintf('size of hist_prev, hist');
-        %size(hist_prev)
-        %size(hist)
-        simi(1:nboxes_prev,1:num_nboxes,t-1) = -pdist2(hist_prev, hist, 'chisq');
-        %foo = -pdist2(hist_prev, hist, 'chisq');
-        %foo
-        %fprintf('size of foo');
-        %size(foo)
+        simi(:,:,t-1) = -pdist2(hist_prev, hist, 'chisq');
     end %if
     hist_prev = hist;
-    nboxes_prev = num_nboxes;
 end %for t
-
-%display(boxes_per_frame);
-%display(sum(boxes_per_frame));
 
 %probably need another loop through T here to do the between-frames
 %distance measure for the box locations
@@ -183,7 +190,7 @@ for t = 1:T
     end %for u
     bbs = zeros(num_curr_boxes,5);
     bbs(:,1:4) = curr_box(:,1:4);
-    bbs(:,5) = newscores/(T*top_k);
+    bbs(:,5) = newscores;
     
     %converting from [x y w h] to [x1 y1 x2 y2]
     bbs(:,3) = bbs(:,3) + bbs(:,1) - 1;
@@ -312,7 +319,7 @@ function p = transform_point_3d(mat, point)
     p = homogeneous_to_point(temp);
 end
 
-function point = pixel_and_height_to_world(pix, height, cam_k, pose, cam_offset)
+function [point valid] = pixel_and_height_to_world(pix, height, cam_k, pose, cam_offset)
     world_to_cam = robot_pose_to_world__camera_txf(pose,cam_offset);
     cam_world = transform_point_3d(inv(world_to_cam),[0,0,0]);
     fx = cam_k(1,1); fy = cam_k(2,2);
@@ -322,9 +329,12 @@ function point = pixel_and_height_to_world(pix, height, cam_k, pose, cam_offset)
     pixel_world = transform_point_3d(inv(world_to_cam),[px,py,1]);
     dxyz = pixel_world - cam_world;
     if (dxyz(3) > 0)
-        point = [NaN, NaN];
+        %point = [NaN, NaN];
+        valid = false;
     else
-        l = (height - cam_world(3))/dxyz(3);
-        point = cam_world + dxyz*l;
+        valid = true;
     end
+    l = (height - cam_world(3))/dxyz(3);
+    point = cam_world + dxyz*l;
+    %end
 end 

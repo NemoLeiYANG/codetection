@@ -122,32 +122,35 @@ for t = 1:T
     
     
     %binary score(s)
-    hists{num_nboxes} = []; %declare new cell array every time
-    parfor i = 1:num_nboxes %top_k
-        %i
-        bi = temp_bboxes(i,:); %bboxes(i,:,t);
-        %size(img(bi(2):bi(4),bi(1):bi(3),:));
-        %if (bi(1) > 0)
-        hists{i} = phow_hist(img(bi(2):bi(4),bi(1):bi(3),:), ssize);
-        %end
-    end %parfor i
-    hist = cat(2, hists{:});
-    clear hists; %remove this variable so it's created new each iteration
-    hist = hist';
-    
-    if t > 1
-        %nboxes_prev
-        %fprintf('size of hist_prev, hist');
-        %size(hist_prev)
-        %size(hist)
-        simi(1:nboxes_prev,1:num_nboxes,t-1) = -pdist2(hist_prev, hist, 'chisq');
-        %foo = -pdist2(hist_prev, hist, 'chisq');
-        %foo
-        %fprintf('size of foo');
-        %size(foo)
+    if (num_nboxes > 0)
+        hists{num_nboxes} = []; %declare new cell array every time
+        parfor i = 1:num_nboxes %top_k
+            %i
+            bi = temp_bboxes(i,:); %bboxes(i,:,t);
+            %size(img(bi(2):bi(4),bi(1):bi(3),:));
+            %if (bi(1) > 0)
+            hists{i} = phow_hist(img(bi(2):bi(4),bi(1):bi(3),:), ssize);
+            %end
+        end %parfor i
+        hist = cat(2, hists{:});
+        clear hists; %remove this variable so it's created new each iteration
+        hist = hist';
+        
+        
+        if t > 1
+            %nboxes_prev
+            %fprintf('size of hist_prev, hist');
+            %size(hist_prev)
+            %size(hist)
+            simi(1:nboxes_prev,1:num_nboxes,t-1) = -pdist2(hist_prev, hist, 'chisq');
+            %foo = -pdist2(hist_prev, hist, 'chisq');
+            %foo
+            %fprintf('size of foo');
+            %size(foo)
+        end %if
+        hist_prev = hist;
+        nboxes_prev = num_nboxes;
     end %if
-    hist_prev = hist;
-    nboxes_prev = num_nboxes;
 end %for t
 
 %probably need another loop through T here to do the between-frames

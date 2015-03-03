@@ -1,7 +1,7 @@
 
 run('/home/sbroniko/codetection/source/sentence-codetection/MCG-PreTrained/install');
 
-img = imread('/home/sbroniko/codetection/testing-data/video-frames/frame-0075.ppm');
+img = imread('/home/sbroniko/codetection/testing-data/video-frames/frame-0018.ppm');
 
 figure; imshow(img); title('Original image');
 
@@ -19,18 +19,19 @@ figure; imshow(img); title('With boxes'); hold all;
 [h,w,~] = size(img);
 rectangle('Position',[1 440 w h-440],'FaceColor','white','EdgeColor','white');
 baseheight = 450;
-for i = 1:boxes_to_plot
+offset = 0;
+for i = 1+offset:boxes_to_plot+offset
     x = boxes(i,2);
     y = boxes(i,1);
     w = boxes(i,4)-boxes(i,2);
     h = boxes(i,3)-boxes(i,1);
-    rectangle('Position',[x,y,w,h],'LineWidth',2,'EdgeColor',colors(i,:));
+    rectangle('Position',[x,y,w,h],'LineWidth',2,'EdgeColor',colors(i-offset,:));
     if (i > 80)
-        text((i-80)*15, baseheight+30, num2str(i),'Color',colors(i,:));
+        text((i-80)*15, baseheight+30, num2str(i),'Color',colors(i-offset,:));
     elseif (i > 40)
-        text((i-40)*15, baseheight+15, num2str(i),'Color',colors(i,:));
+        text((i-40)*15, baseheight+15, num2str(i),'Color',colors(i-offset,:));
     else
-        text(i*15, baseheight, num2str(i),'Color',colors(i,:));
+        text(i*15, baseheight, num2str(i),'Color',colors(i-offset,:));
     end
 end
 title(['Original boxes, ',num2str(length(boxes)),' boxes total']);

@@ -536,6 +536,28 @@ as we run into problems or think of things we hadn't thought of before.
 --Since each frame takes ~5s to get boxes generated, might want to think about
   doing all box generation in a single parfor loop before doing anything else.
 
+----------------git commit bb86297..fda6e12---------------
+
+3 Mar 15
+
+--Benchmarking MCGboxes (new proposal generation method) and got ~330s run time
+  to find all boxes in a 204-frame video (run in parallel on 5 processors).
+  That is just for proposal generation--no processing of similarity or anything
+  else.
+
+--Re-ran original scott_proposals_similarity.m to compare and ran into some
+  issues.  Ended up having to put an 'if (num_nboxes > 0)' around entire binary
+  score part.  This shouldn't be a problem in my new method, since the bad boxes
+  will just have reduced scores, instead of being eliminated like they were
+  here.  Run time for this whole proposals & similarity computation was ~230s.
+
+--Rewriting scott_proposals_similarity2.m to use MCGboxes and different
+  scoring.  Have penalty terms for out of bounds and behind camera written.
+  Need to compute world width and use in binary score computations.  Need to
+  remove unary score piece based on intra-frame distance (marked in comments).
+  Also need to fix structure of how the calls to similarity scoring work.  I
+  think between-frames distance measure still needs to be in separate loop--but
+  can I move the current 1:T loop into the first parfor loop?
 
 
 OPEN FILES IN MATLAB
