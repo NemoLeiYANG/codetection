@@ -559,6 +559,18 @@ as we run into problems or think of things we hadn't thought of before.
   think between-frames distance measure still needs to be in separate loop--but
   can I move the current 1:T loop into the first parfor loop?
 
+----------------git commit c661acb---------------
+
+4 Mar 15
+
+--Think I have scott_proposals_similarity2.m working with MCG boxes and penalty
+  terms for unary scores.  Currently it uses Haonan's original adjacent-frame
+  similarity for binary scores.  Need to fix that to have binary scores between
+  all boxes in all frames.  Look at using pdist2 to do the distance computations
+  between box locations--should be able to just vectorize the x,y locations of
+  the boxes.  Also do width comparision (simple as abs(b1-b2)).  Then use that
+  as a threshold to decide which to send to the visual similarity measure.
+
 
 OPEN FILES IN MATLAB
 --------------------

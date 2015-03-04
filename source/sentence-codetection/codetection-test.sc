@@ -184,8 +184,8 @@
   ;; call proposals_and_similarity
   ;; (matlab (format #f "[bboxes,simi]=proposals_and_similarity(~a,frames,~a);"
   ;; 		  top-k box-size))
-  (matlab (format #f "[bboxes,simi]=scott_proposals_similarity2(~a,~a,frames,poses,~a,~a);"
-		  top-k box-size alpha beta))
+  (matlab (format #f "[bboxes,simi]=scott_proposals_similarity2(~a,~a,frames,poses);";,~a,~a);";dropping alpha and beta
+		  top-k box-size)); alpha beta))
   ;; convert matlab variables to scheme
   (list (map-n (lambda (t)
 		(matlab (format #f "tmp=bboxes(:,:,~a);" (+ t 1)))
@@ -239,7 +239,7 @@
 (define (frame-test2)
  (let* (;;(data-path "/home/sbroniko/codetection/training-videos/short")
 	;;(data-path "/home/sbroniko/codetection/test-run-data")
-	(data-path "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/training/plan4/2014-11-15-22:45:19")
+	(data-path "/home/sbroniko/codetection/testing-data")
 	(video-path (format #f "~a/video_front.avi" data-path))
 	(top-k 100)
 	(box-size 64)

@@ -1,11 +1,11 @@
 function [boxes_w_fscore, gscore] = ...
-    scott_proposals_similarity2(top_k, ssize, frames, positions,alpha,beta)
+    scott_proposals_similarity2(top_k, ssize, frames, positions)%,alpha,beta)
 %inputs: top_k, ssize same as Haonan's code
 %        frames: h*w*3*num_frames matrix of images
 %        positions: num_frames*3 matrix of [x y theta]
 %        alpha: scalar weight for proposal score
 %        beta: scalar weight for single-frame distance score
-%outputs: boxes_w_fscore: top_k*5*num_frames, each row of top_k*5 is (x1,y1,x2,y2,f) 
+%outputs: boxes_w_fscore: top_k*8*num_frames, each row of top_k*8 is (x1,y1,x2,y2,f,xloc,yloc,wwidth) 
 %                       (f is weighted sum of different proposal scores,
 %                       like Hanoan's prop score, my gaussian distance,
 %                       others... (maybe distance from center of frame,
@@ -20,11 +20,11 @@ function [boxes_w_fscore, gscore] = ...
 
 % add paths
 %addpath(pwd);
-addpath(genpath('MCG-PreTrained'));
 addpath(genpath('piotr-toolbox'));
 addpath(genpath('vlfeat/toolbox'));
 addpath(genpath('forests_edges_boxes'));
 run('vlfeat/toolbox/vl_setup');
+addpath(genpath('MCG-PreTrained'));
 
 % enable parfor
 pools = matlabpool('size');
@@ -39,7 +39,7 @@ end
 %experiment parameters--shouldn't change
 gaussparam = [.25,0]; %setting sigma=.25,mu=0
 cam_offset = [-0.03 0.16 -0.2]; %estimated measurement, in m
-boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
+world_boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
 %camera calibration data
 cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
         0.0 7.2412307134397406e+02 2.0310961045807585e+02;...
@@ -47,158 +47,130 @@ cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
 
 % compute
 [h, w, d, T] = size(frames);
-bboxes = zeros(top_k, 5, T);
+bboxes = zeros(top_k, 8, T); %each row: [x y w h score xloc yloc wwidth]
 simi = zeros(top_k, top_k, T-1);
-temp_boxes{T} = [];  %cell array for holding boxes used in calculations
+%temp_boxes{T} = [];  %cell array for holding boxes used in calculations
 
 %first get boxes for all frames
-outboxes = zeros(top_k,5,T);
-parfor t = 1:T
-    outboxes(:,:,t) = MCGboxes(frames(:,:,:,t),top_k);
-end %parfor
+% outboxes = zeros(top_k,5,T);
+% parfor t = 1:T
+%     img = frames(:,:,:,t);
+%     outboxes(:,:,t) = MCGboxes(img,top_k);
+% end %parfor
+% fprintf('After parfor loop to get all boxes\n');
 
-%tic;
-%now do re-scoring of proposal scores based on frames
-for t = 1:T
-    %img = frames(:,:,:,t);
+parfor t = 1:T
+%     display(t)
+    img = frames(:,:,:,t);
     pose = positions(t,:);
-    
-    %unary score(s)
-    %bbs = edgeBoxesOut(img, top_k, 5);
-    bbs = outboxes(:,:,t);
-    new_boxes = zeros(top_k, 8);%[x y w h xloc yloc wwidth score]
-    new_boxes(:,1:4) = bbs(:,1:4);
-    new_boxes(:,8) = bbs(:,5);
-%    nb_idx = 1;
+    bbs = MCGboxes(img,top_k);
+    %bbs = outboxes(:,:,t);
+    %now do re-scoring of proposal scores based on frames
+    new_boxes = zeros(top_k, 8);
+    new_boxes(:,1:5) = bbs;
+    boundary = world_boundary;
     for i = 1:top_k
+%         display(i)
         bc_point = [(bbs(i,1)+(bbs(i,3)/2)) (bbs(i,2)+bbs(i,4))];
         %assume box is on ground (height = 0)
         [loc locflag] = pixel_and_height_to_world(bc_point, 0, cam_k, pose, cam_offset);
         %PUT LOCATION INTO BOXES MATRIX FOR LATER USE
-        new_boxes(i,5) = loc(1); new_boxes(i,6) = loc(2);
+        new_boxes(i,6) = loc(1); new_boxes(i,7) = loc(2);
         %FIND WORLD WIDTH OF BOX AND SAVE
-       
+        lcorner = [bbs(i,1) (bbs(i,2)+bbs(i,4))];
+        rcorner = [(bbs(i,1)+bbs(i,3)) (bbs(i,2)+bbs(i,4))];
+        lcloc = pixel_and_height_to_world(lcorner,0,cam_k,pose,cam_offset);
+        rcloc = pixel_and_height_to_world(rcorner,0,cam_k,pose,cam_offset);
+%         display(lcloc); display(rcloc);
+        wwidth = pdist([lcloc'; rcloc'],'euclidean');
+%         display(wwidth)
+        new_boxes(i,8) = wwidth;
         %REDO UNARY SCORES HERE
         if (locflag == 0) %box is behind camera
-            penalty = -10; %ARBITRARY penalty factor here
-            new_boxes(i,8) = new_boxes(i,8)*exp(penalty);
+            penalty = -10; %ARBITRARY penalty factor here--might need to adjust
+            new_boxes(i,5) = new_boxes(i,5)*exp(penalty);
             continue; %done with this box
         end %if locflag
         
-        if (loc(1) > boundary(1))
-            xpenalty = boundary(1) - loc(1);
-        elseif (loc(1) < boundary(2))
-            xpenalty = loc(1) - boundary(2);
+        if (loc(1) > boundary(2))
+            xpenalty = boundary(2) - loc(1);
+        elseif (loc(1) < boundary(1))
+            xpenalty = loc(1) - boundary(1);
         else
             xpenalty = 0;
         end %if loc(1)
         
-        if (loc(2) > boundary(3))
-            ypenalty = boundary(3) - loc(2);
-        elseif (loc(2) < boundary(4))
-            ypenalty = loc(2) - boundary(4);
+        if (loc(2) > boundary(4))
+            ypenalty = boundary(4) - loc(2);
+        elseif (loc(2) < boundary(3))
+            ypenalty = loc(2) - boundary(3);
         else
             ypenalty = 0;
         end %if loc(2)
-        new_boxes(i,8) = new_boxes(i,8)*exp(xpenalty)*exp(ypenalty);
-            
-%         elseif (loc(1) >= boundary(1)) 
-%             
-%         end %if
-%         if ((~isnan(loc(1))) &&... %reject boxes out of bounds
-%             (loc(1) >= boundary(1)) &&...
-%             (loc(1) <= boundary(2)) &&...
-%             (loc(2) >= boundary(3)) &&...
-%             (loc(2) <= boundary(4)))
-%             new_boxes(nb_idx,:) = [bbs(i,1:4),loc(1),loc(2),bbs(i,5)];
-%             nb_idx = nb_idx + 1;
-%         end
+        new_boxes(i,5) = new_boxes(i,5)*exp(xpenalty)*exp(ypenalty);
     end %for i
-%   num_nboxes = nb_idx-1;
-    new_boxes = new_boxes(1:num_nboxes,:);
-    
+    bboxes(:,:,t) = new_boxes;
+%%I THINK UNARY SCORES COMPLETE HERE--TRUE?    
+end %parfor
 
-%%THIS IS ALL FUBAR HERE    
-    %redo score of each box based on gaussian with distance between boxes
-    newscores = zeros(num_nboxes,1);
-    X = new_boxes(:,5:6);
-    D = pdist2(X,X,'euclidean'); %defaults to squared euclidean distance--good enough?
-        %%using pure euclidean distance appears to give better results...
-    for i = 1:num_nboxes
-        for j = 1:num_nboxes
-            if (j ~= i)
-                newscores(i) = newscores(i) + gaussmf(D(i,j),gaussparam);
-            end %if
-        end %for j
-    end %for i
-    % newscores = newscores/(num_nboxes-1); %scale to number of boxes compared against
-    % %%%NOT SURE THIS HELPS AT ALL
-    newscores = newscores/top_k; %try scaling to total number of boxes at start
-    new_boxes2 = [new_boxes newscores]; %Now each row is [x y w h xloc yloc propscore myscore]
-    temp_box = zeros(num_nboxes,7);
-    temp_box(:,1:6) = new_boxes(:,1:6);
-    temp_box(:,7) = new_boxes2(:,7)*alpha + new_boxes2(:,8)*beta;
-        %temp_box is [x y w h xloc yloc combinedscore]
-    temp_boxes{t} = temp_box;
-    
-%     %converting from [x y w h] to [x1 y1 x2 y2]
-%     bbs(:,3) = bbs(:,3) + bbs(:,1) - 1;
-%     bbs(:,4) = bbs(:,4) + bbs(:,2) - 1;
-%     
-%     %storing in final output variable -- MAYBE MOVE THIS LATER????
-%     bboxes(:,:,t) = bbs;
+% fprintf('Unary scores computed\n');
 
-    temp_bboxes = zeros(top_k,5);
-    temp_bboxes(1:num_nboxes,1:4) = temp_box(:,1:4);
-    temp_bboxes(1:num_nboxes,5) = temp_box(:,7);
-    
+%converting from [x y w h] to [x1 y1 x2 y2]
+bboxes(:,3,:) = bboxes(:,3,:) + bboxes(:,1,:) - 1;
+bboxes(:,4,:) = bboxes(:,4,:) + bboxes(:,2,:) - 1;
 
+for t = 1:T
+    img = frames(:,:,:,t);
     %binary score(s)
     parfor i = 1:top_k
-        bi = temp_bboxes(i,:); %bboxes(i,:,t);
+        bi = bboxes(i,:,t);
+%         display(bi)
         hists{i} = phow_hist(img(bi(2):bi(4),bi(1):bi(3),:), ssize);
     end %parfor i
     hist = cat(2, hists{:});
     hist = hist';
 
     if t > 1
-        simi(:,:,t-1) = -pdist2(hist_prev, hist, 'chisq');
+        simi(:,:,t-1) = 1-pdist2(hist_prev, hist, 'chisq');
+        %scaled between 0 and 1, higer is better
     end %if
     hist_prev = hist;
 end %for t
 
-%probably need another loop through T here to do the between-frames
-%distance measure for the box locations
-for t = 1:T
-    curr_box = temp_boxes{t};
-    num_curr_boxes = size(curr_box,1);
-    newscores = zeros(num_curr_boxes,1);
-    X1 = curr_box(:,5:6);
-    for u = 1:T
-        if (u ~= t)
-            other_box = temp_boxes{u};
-            num_other_boxes = size(other_box,1);
-            X2 = other_box(:,5:6);
-            D = pdist2(X1,X2,'euclidean');
-            for i = 1:num_curr_boxes
-                for j = 1:num_other_boxes
-                    newscores(i) = newscores(i) +...
-                        curr_box(i,7)*gaussmf(D(i,j),gaussparam);
-                end %for j
-            end %for i
-        end %if
-    end %for u
-    bbs = zeros(num_curr_boxes,5);
-    bbs(:,1:4) = curr_box(:,1:4);
-    bbs(:,5) = newscores;
-    
-    %converting from [x y w h] to [x1 y1 x2 y2]
-    bbs(:,3) = bbs(:,3) + bbs(:,1) - 1;
-    bbs(:,4) = bbs(:,4) + bbs(:,2) - 1;
-    
-    %storing in final output variable
-    bboxes(1:num_curr_boxes,:,t) = bbs;
-end %for t
+%%NEED TO ADD UNARY AND BINARY SCORES FOR DUMMY BOXES
+
+% %probably need another loop through T here to do the between-frames
+% %distance measure for the box locations
+% for t = 1:T
+%     curr_box = temp_boxes{t};
+%     num_curr_boxes = size(curr_box,1);
+%     newscores = zeros(num_curr_boxes,1);
+%     X1 = curr_box(:,5:6);
+%     for u = 1:T
+%         if (u ~= t)
+%             other_box = temp_boxes{u};
+%             num_other_boxes = size(other_box,1);
+%             X2 = other_box(:,5:6);
+%             D = pdist2(X1,X2,'euclidean');
+%             for i = 1:num_curr_boxes
+%                 for j = 1:num_other_boxes
+%                     newscores(i) = newscores(i) +...
+%                         curr_box(i,7)*gaussmf(D(i,j),gaussparam);
+%                 end %for j
+%             end %for i
+%         end %if
+%     end %for u
+%     bbs = zeros(num_curr_boxes,5);
+%     bbs(:,1:4) = curr_box(:,1:4);
+%     bbs(:,5) = newscores;
+%     
+%     %converting from [x y w h] to [x1 y1 x2 y2]
+%     bbs(:,3) = bbs(:,3) + bbs(:,1) - 1;
+%     bbs(:,4) = bbs(:,4) + bbs(:,2) - 1;
+%     
+%     %storing in final output variable
+%     bboxes(1:num_curr_boxes,:,t) = bbs;
+% end %for t
 
 
 %tt = toc;
