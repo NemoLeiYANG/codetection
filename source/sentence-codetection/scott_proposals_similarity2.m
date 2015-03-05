@@ -1,4 +1,4 @@
-function [boxes_w_fscore, gscore] = ...
+function [boxes_w_fscore, gscore,d_score,w_score,s_score] = ...
     scott_proposals_similarity2(top_k, ssize, frames, positions)%,alpha,beta)
 %inputs: top_k, ssize same as Haonan's code
 %        frames: h*w*3*num_frames matrix of images
@@ -37,9 +37,11 @@ if pools ~= (cpus - 1)
 end
 
 %experiment parameters--shouldn't change
-gaussparam = [.25,0]; %setting sigma=.25,mu=0
+gaussparam1 = [.25,0]; %setting sigma=.25,mu=0 for distance
+gaussparam2 = [.1,0]; %setting sigma=.1,mu=0 for width difference
 cam_offset = [-0.03 0.16 -0.2]; %estimated measurement, in m
 world_boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
+distance_threshold = 0.5; %distance threshold for similarity score--in m
 %camera calibration data
 cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
         0.0 7.2412307134397406e+02 2.0310961045807585e+02;...
@@ -119,23 +121,90 @@ end %parfor
 bboxes(:,3,:) = bboxes(:,3,:) + bboxes(:,1,:) - 1;
 bboxes(:,4,:) = bboxes(:,4,:) + bboxes(:,2,:) - 1;
 
-for t = 1:T
-    img = frames(:,:,:,t);
-    %binary score(s)
-    parfor i = 1:top_k
-        bi = bboxes(i,:,t);
-%         display(bi)
-        hists{i} = phow_hist(img(bi(2):bi(4),bi(1):bi(3),:), ssize);
-    end %parfor i
-    hist = cat(2, hists{:});
-    hist = hist';
+%now compute binary scores:
+% 1) world distance between boxes (all boxes all frames)
+% 2) difference in world box width (all boxes all frames)
+% 3) visual similarity (Haonan's method) between boxes that are closer
+% together than some threshold
 
-    if t > 1
-        simi(:,:,t-1) = 1-pdist2(hist_prev, hist, 'chisq');
-        %scaled between 0 and 1, higer is better
-    end %if
-    hist_prev = hist;
-end %for t
+%first vectorize world xy and width measures for all boxes
+worldX = bboxes(:,6,:);
+worldY = bboxes(:,7,:);
+worldW = bboxes(:,8,:);
+worldX = reshape(worldX, T*top_k, 1);
+worldY = reshape(worldY, T*top_k, 1);
+worldXY = [worldX worldY];
+worldW = reshape(worldW, T*top_k, 1);
+
+%now compute distances -- using euclidean might be slow, but simpler than
+%using squared euclidean distance as input to gaussian kernel
+worldDist = real(pdist2(worldXY,worldXY,'euclidean')); 
+worldWdiff = real(pdist2(worldW,worldW,'euclidean')); 
+% worldDist = pdist2(worldXY,worldXY); 
+% worldWdiff = pdist2(worldW,worldW); 
+
+%use gaussian kernel to scale to (0,1), higher=better
+d_score = gaussmf(worldDist,gaussparam1);
+w_score = gaussmf(worldWdiff,gaussparam2);
+
+%now zero out scores for boxes in same frame
+blankscore = zeros(top_k);
+for i = 1:T
+    start = (i-1)*top_k + 1; stop = i*top_k;
+    d_score(start:stop,start:stop) = blankscore;
+    w_score(start:stop,start:stop) = blankscore;
+end % for i
+%d_score and w_score complete 
+
+%now do visual similarity (s_score) on boxes that are within some distance
+%threshold of each other
+s_score = zeros(T*top_k);
+for i = 1:T*top_k
+    for j = (i+1):T*top_k %can do this b/c matrix will be symmetric
+        if ((worldDist(i,j) < distance_threshold) && ...
+            (w_score(i,j) ~= 0)) %second condition ensures that we don't do
+                                 % similarity on boxes in same frame
+            frame_idx1 = fix((i-1)/top_k) + 1;        
+            frame_idx2 = fix((j-1)/top_k) + 1;
+            img1 = frames(:,:,:,frame_idx1);
+            img2 = frames(:,:,:,frame_idx2);
+            box_idx1 = mod(i,top_k);
+            if (box_idx1 == 0)
+                box_idx1 = top_k;
+            end %if
+            box_idx2 = mod(j,top_k);
+            if (box_idx2 == 0)
+                box_idx2 = top_k;
+            end %if
+            bx1 = bboxes(box_idx1,1:4,frame_idx1);
+            bx2 = bboxes(box_idx2,1:4,frame_idx2);
+            hist1 = phow_hist(img1(bx1(2):bx1(4),bx1(1):bx1(3),:),ssize);
+            hist2 = phow_hist(img2(bx2(2):bx2(4),bx2(1):bx2(3),:),ssize);
+            hist1 = hist1'; hist2 = hist2';
+            tempscore = 1-pdist2(hist1,hist2,'chisq');
+            s_score(i,j) = tempscore;
+            s_score(j,i) = tempscore; %b/c matrix is symmetric
+        end %if
+    end %for j
+end %for i
+
+% for t = 1:T
+%     img = frames(:,:,:,t);
+%     %binary score(s)
+%     parfor i = 1:top_k
+%         bi = bboxes(i,:,t);
+% %         display(bi)
+%         hists{i} = phow_hist(img(bi(2):bi(4),bi(1):bi(3),:), ssize);
+%     end %parfor i
+%     hist = cat(2, hists{:});
+%     hist = hist';
+% 
+%     if t > 1
+%         simi(:,:,t-1) = 1-pdist2(hist_prev, hist, 'chisq');
+%         %scaled between 0 and 1, higer is better
+%     end %if
+%     hist_prev = hist;
+% end %for t
 
 %%NEED TO ADD UNARY AND BINARY SCORES FOR DUMMY BOXES
 

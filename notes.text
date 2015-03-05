@@ -571,8 +571,23 @@ as we run into problems or think of things we hadn't thought of before.
   the boxes.  Also do width comparision (simple as abs(b1-b2)).  Then use that
   as a threshold to decide which to send to the visual similarity measure.
 
+----------------git commit b6abd8d---------------
 
-OPEN FILES IN MATLAB
+5 Mar 15
+
+--Got good results from MCGboxes unary scores.  System picked up both cone
+  and chair in all frames of test video that I expected it to do so.  Now need
+  to work on binary scores (world distance & world width & similarity between
+  boxes close in world location).
+
+--Have distance (d_score) and width (w_score) measures working.  I think I have
+  the visual similarity (s_score) worked out, currently testing.  Also need to
+  add a temporal coherency term (based on Optical Flow) to boxes in adjacent
+  frames.  Dan says there is Scheme code to do this--need to work with him to
+  figure out how to use this.
+
+
+OPEN FILES IN MATLAB (28 Feb 15)
 --------------------
 ~/codetection/source/sentence-codetection/27feb.mat (in codetection-no-git also)
 ~/codetection/source/robottest.m
@@ -582,7 +597,7 @@ OPEN FILES IN MATLAB
 
 
 
-OPEN FILES IN EMACS
+OPEN FILES IN EMACS (28 Feb 15)
 -------------------
 .   notes.text           28772  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
     codetection-test.sc  10504  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc
