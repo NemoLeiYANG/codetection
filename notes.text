@@ -586,6 +586,22 @@ as we run into problems or think of things we hadn't thought of before.
   frames.  Dan says there is Scheme code to do this--need to work with him to
   figure out how to use this.
 
+----------------git commit ff66f12---------------
+
+--s_score appears to be working, but it takes a LONG time (454s for 3 frames and
+  top_k = 100)
+
+--Need to be more efficient in computation.  I realized that I could be
+  computing the same histogram multiple times the way the loop is currently
+  written. Try instead to compute and store ALL histograms in the first parfor
+  loop (when boxes are found and scored) and then just reference the correct
+  histogram when computing the s_score.
+
+--What factors determine the size of each histogram???
+
+--Do I want to use single precision numbers in MATLAB?  Would reduce storage
+  space (and in theory, time to create/access).
+
 
 OPEN FILES IN MATLAB (28 Feb 15)
 --------------------

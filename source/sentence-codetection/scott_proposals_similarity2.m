@@ -51,6 +51,9 @@ cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
 [h, w, d, T] = size(frames);
 bboxes = zeros(top_k, 8, T); %each row: [x y w h score xloc yloc wwidth]
 simi = zeros(top_k, top_k, T-1);
+phist_size = [top_k, 12000];
+phists = zeros([phist_size,T],'single'); %for storing histograms--HARDCODED 12000 as size of phow_hist 
+valid_loc = false(top_k,T); %for storing where box location is valid (in front of cam)
 %temp_boxes{T} = [];  %cell array for holding boxes used in calculations
 
 %first get boxes for all frames
@@ -71,11 +74,14 @@ parfor t = 1:T
     new_boxes = zeros(top_k, 8);
     new_boxes(:,1:5) = bbs;
     boundary = world_boundary;
+    valid_locations = false(top_k,1);
+    temp_phists = zeros(phist_size,'single');
     for i = 1:top_k
 %         display(i)
         bc_point = [(bbs(i,1)+(bbs(i,3)/2)) (bbs(i,2)+bbs(i,4))];
         %assume box is on ground (height = 0)
         [loc locflag] = pixel_and_height_to_world(bc_point, 0, cam_k, pose, cam_offset);
+        valid_locations(i) = locflag;
         %PUT LOCATION INTO BOXES MATRIX FOR LATER USE
         new_boxes(i,6) = loc(1); new_boxes(i,7) = loc(2);
         %FIND WORLD WIDTH OF BOX AND SAVE
@@ -110,8 +116,15 @@ parfor t = 1:T
             ypenalty = 0;
         end %if loc(2)
         new_boxes(i,5) = new_boxes(i,5)*exp(xpenalty)*exp(ypenalty);
+        %compute histogram for box i
+        x1 = bbs(i,1); x2 = bbs(i,3) + bbs(i,1) - 1;
+        y1 = bbs(i,2); y2 = bbs(i,4) + bbs(i,2) - 1;
+        hist_out = phow_hist(img(y1:y2,x1:x2,:),ssize);
+        temp_phists(i,:) = hist_out';
     end %for i
     bboxes(:,:,t) = new_boxes;
+    valid_loc(:,t) = valid_locations;
+    phists(:,:,t) = temp_phists;
 %%I THINK UNARY SCORES COMPLETE HERE--TRUE?    
 end %parfor
 
@@ -162,12 +175,12 @@ s_score = zeros(T*top_k);
 for i = 1:T*top_k
     for j = (i+1):T*top_k %can do this b/c matrix will be symmetric
         if ((worldDist(i,j) < distance_threshold) && ...
-            (w_score(i,j) ~= 0)) %second condition ensures that we don't do
+            (w_score(i,j) ~= 0)) %last condition ensures that we don't do
                                  % similarity on boxes in same frame
-            frame_idx1 = fix((i-1)/top_k) + 1;        
-            frame_idx2 = fix((j-1)/top_k) + 1;
-            img1 = frames(:,:,:,frame_idx1);
-            img2 = frames(:,:,:,frame_idx2);
+            frame_idx1 = ceil(i/top_k);%fix((i-1)/top_k) + 1;        
+            frame_idx2 = ceil(j/top_k);%fix((j-1)/top_k) + 1;
+%             img1 = frames(:,:,:,frame_idx1);
+%             img2 = frames(:,:,:,frame_idx2);
             box_idx1 = mod(i,top_k);
             if (box_idx1 == 0)
                 box_idx1 = top_k;
@@ -176,14 +189,26 @@ for i = 1:T*top_k
             if (box_idx2 == 0)
                 box_idx2 = top_k;
             end %if
-            bx1 = bboxes(box_idx1,1:4,frame_idx1);
-            bx2 = bboxes(box_idx2,1:4,frame_idx2);
-            hist1 = phow_hist(img1(bx1(2):bx1(4),bx1(1):bx1(3),:),ssize);
-            hist2 = phow_hist(img2(bx2(2):bx2(4),bx2(1):bx2(3),:),ssize);
-            hist1 = hist1'; hist2 = hist2';
-            tempscore = 1-pdist2(hist1,hist2,'chisq');
-            s_score(i,j) = tempscore;
-            s_score(j,i) = tempscore; %b/c matrix is symmetric
+%             if ((~valid_loc(box_idx1,frame_idx1)) || ...
+%                 (~valid_loc(box_idx2,frame_idx2)))
+%                 continue; %at least one box not valid
+%             else %do pdist2 on histograms
+                hist1 = phists(box_idx1,:,frame_idx1);
+                hist2 = phists(box_idx2,:,frame_idx2);
+                tempscore = 1-pdist2(hist1,hist2,'chisq');
+%                 fprintf('Doing comparison (b%d,f%d,idx%d), (b%d,f%d,idx%d): %.4f\n',...
+%                     box_idx1, frame_idx1, i, box_idx2,frame_idx2,j,tempscore);
+                s_score(i,j) = tempscore;
+                s_score(j,i) = tempscore; %b/c matrix is symmetric
+%             end %If
+%             bx1 = bboxes(box_idx1,1:4,frame_idx1);
+%             bx2 = bboxes(box_idx2,1:4,frame_idx2);
+%             hist1 = phow_hist(img1(bx1(2):bx1(4),bx1(1):bx1(3),:),ssize);
+%             hist2 = phow_hist(img2(bx2(2):bx2(4),bx2(1):bx2(3),:),ssize);
+%             hist1 = hist1'; hist2 = hist2';
+%             tempscore = 1-pdist2(hist1,hist2,'chisq');
+%             s_score(i,j) = tempscore;
+%             s_score(j,i) = tempscore; %b/c matrix is symmetric
         end %if
     end %for j
 end %for i
