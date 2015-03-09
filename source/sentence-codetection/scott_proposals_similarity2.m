@@ -1,22 +1,25 @@
-function [boxes_w_fscore, gscore,d_score,w_score,s_score] = ...
-    scott_proposals_similarity2(top_k, ssize, frames, positions)%,alpha,beta)
-%inputs: top_k, ssize same as Haonan's code
+function [boxes_w_fscore, gscore] = ... %,d_score,w_score,s_score] = ...
+    scott_proposals_similarity2(top_k, ssize, frames, positions,alpha,beta,gamma)
+%inputs: top_k: number of proposals to generate in each frame
+%        ssize: the size to which each proposal is rescaled to (for
+%               phow_hist); ssize should be 2^i; increase i to trade efficiency for accuracy
 %        frames: h*w*3*num_frames matrix of images
 %        positions: num_frames*3 matrix of [x y theta]
-%        alpha: scalar weight for proposal score
-%        beta: scalar weight for single-frame distance score
+%        alpha: scalar weight visual similarity score (s_score)
+%        beta: scalar weight for distance score (d_score)
+%        gamma: scalar weight for width score (w_score)
+%        NOTE: IOT keep gscore values in range [0,1], need to make sure
+%        that alpha,beta,gamma,delta(not used in MATLAB) are scaled so that
+%        alpha+beta+gamma+delta = 1; NEED TO DO THIS IN SCHEME SINCE DELTA
+%        IS ONLY USED IN SCHEME
 %outputs: boxes_w_fscore: top_k*8*num_frames, each row of top_k*8 is (x1,y1,x2,y2,f,xloc,yloc,wwidth) 
-%                       (f is weighted sum of different proposal scores,
-%                       like Hanoan's prop score, my gaussian distance,
-%                       others... (maybe distance from center of frame,
-%                       optical flow (???), Jeff's pb/region contour(???)
-%         gscore: top_k*top_k*(num_frames-1), similarity between proposals in
-%                   adjacent frames (similarity score is weighted sum of
-%                   different similarity measures, like Haonan's simi,
-%                   others...
-%                   gscore(10,15,1): the similarity between the 10th box in 
-%                                  the first frame and the 15th box in the
-%                                  second frame, the higher the better
+%                        f is the unary score for each box (computed from
+%                        MCG proposal scores with penalty terms); in range
+%                        [0,1], higher is better.
+%         gscore: ??x5 matrix of [f1,b1,f2,b2,g] of binary scores; g is the
+%              binary score between frame1,box1 and frame2,box2; number of
+%              rows is variable based on which elements of the binary score
+%              matrices are non-zero
 
 % add paths
 %addpath(pwd);
@@ -50,56 +53,43 @@ cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
 % compute
 [h, w, d, T] = size(frames);
 bboxes = zeros(top_k, 8, T); %each row: [x y w h score xloc yloc wwidth]
-simi = zeros(top_k, top_k, T-1);
 phist_size = [top_k, 12000];
 phists = zeros([phist_size,T],'single'); %for storing histograms--HARDCODED 12000 as size of phow_hist 
 valid_loc = false(top_k,T); %for storing where box location is valid (in front of cam)
-%temp_boxes{T} = [];  %cell array for holding boxes used in calculations
 
-%first get boxes for all frames
-% outboxes = zeros(top_k,5,T);
-% parfor t = 1:T
-%     img = frames(:,:,:,t);
-%     outboxes(:,:,t) = MCGboxes(img,top_k);
-% end %parfor
-% fprintf('After parfor loop to get all boxes\n');
 
-parfor t = 1:T
-%     display(t)
+parfor t = 1:T %main parfor loop to do proposals and histogram scores
+    %first get boxes for all frames
     img = frames(:,:,:,t);
     pose = positions(t,:);
-    bbs = MCGboxes(img,top_k);
-    %bbs = outboxes(:,:,t);
-    %now do re-scoring of proposal scores based on frames
+    bbs = MCGboxes(img,top_k); %proposals
+    %now do adjust scores and add world x,y,w information to matrix
     new_boxes = zeros(top_k, 8);
     new_boxes(:,1:5) = bbs;
     boundary = world_boundary;
     valid_locations = false(top_k,1);
     temp_phists = zeros(phist_size,'single');
-    for i = 1:top_k
-%         display(i)
-        bc_point = [(bbs(i,1)+(bbs(i,3)/2)) (bbs(i,2)+bbs(i,4))];
-        %assume box is on ground (height = 0)
+    for i = 1:top_k %for each proposal
+        bc_point = [(bbs(i,1)+(bbs(i,3)/2)) (bbs(i,2)+bbs(i,4))]; %bottom center of box
+        %assume box is on ground (height = 0) to find x,y location
         [loc locflag] = pixel_and_height_to_world(bc_point, 0, cam_k, pose, cam_offset);
-        valid_locations(i) = locflag;
-        %PUT LOCATION INTO BOXES MATRIX FOR LATER USE
+        valid_locations(i) = locflag; %boxes not on ground plane will 
+            %project to a location behind the camera and be marked invalid
+        %save x,y in columns 6 and 7
         new_boxes(i,6) = loc(1); new_boxes(i,7) = loc(2);
-        %FIND WORLD WIDTH OF BOX AND SAVE
+        %find width and save in column 8
         lcorner = [bbs(i,1) (bbs(i,2)+bbs(i,4))];
         rcorner = [(bbs(i,1)+bbs(i,3)) (bbs(i,2)+bbs(i,4))];
         lcloc = pixel_and_height_to_world(lcorner,0,cam_k,pose,cam_offset);
         rcloc = pixel_and_height_to_world(rcorner,0,cam_k,pose,cam_offset);
-%         display(lcloc); display(rcloc);
         wwidth = pdist([lcloc'; rcloc'],'euclidean');
-%         display(wwidth)
         new_boxes(i,8) = wwidth;
-        %REDO UNARY SCORES HERE
+        %do penalty on f (unary) scores (column 5) here
         if (locflag == 0) %box is behind camera
             penalty = -10; %ARBITRARY penalty factor here--might need to adjust
             new_boxes(i,5) = new_boxes(i,5)*exp(penalty);
             continue; %done with this box
         end %if locflag
-        
         if (loc(1) > boundary(2))
             xpenalty = boundary(2) - loc(1);
         elseif (loc(1) < boundary(1))
@@ -107,7 +97,6 @@ parfor t = 1:T
         else
             xpenalty = 0;
         end %if loc(1)
-        
         if (loc(2) > boundary(4))
             ypenalty = boundary(4) - loc(2);
         elseif (loc(2) < boundary(3))
@@ -116,7 +105,7 @@ parfor t = 1:T
             ypenalty = 0;
         end %if loc(2)
         new_boxes(i,5) = new_boxes(i,5)*exp(xpenalty)*exp(ypenalty);
-        %compute histogram for box i
+        %compute histogram for box i (for s_score later)
         x1 = bbs(i,1); x2 = bbs(i,3) + bbs(i,1) - 1;
         y1 = bbs(i,2); y2 = bbs(i,4) + bbs(i,2) - 1;
         hist_out = phow_hist(img(y1:y2,x1:x2,:),ssize);
@@ -125,10 +114,8 @@ parfor t = 1:T
     bboxes(:,:,t) = new_boxes;
     valid_loc(:,t) = valid_locations;
     phists(:,:,t) = temp_phists;
-%%I THINK UNARY SCORES COMPLETE HERE--TRUE?    
+%%unary scores and histogram scores complete
 end %parfor
-
-% fprintf('Unary scores computed\n');
 
 %converting from [x y w h] to [x1 y1 x2 y2]
 bboxes(:,3,:) = bboxes(:,3,:) + bboxes(:,1,:) - 1;
@@ -153,8 +140,6 @@ worldW = reshape(worldW, T*top_k, 1);
 %using squared euclidean distance as input to gaussian kernel
 worldDist = real(pdist2(worldXY,worldXY,'euclidean')); 
 worldWdiff = real(pdist2(worldW,worldW,'euclidean')); 
-% worldDist = pdist2(worldXY,worldXY); 
-% worldWdiff = pdist2(worldW,worldW); 
 
 %use gaussian kernel to scale to (0,1), higher=better
 d_score = gaussmf(worldDist,gaussparam1);
@@ -177,10 +162,8 @@ for i = 1:T*top_k
         if ((worldDist(i,j) < distance_threshold) && ...
             (w_score(i,j) ~= 0)) %last condition ensures that we don't do
                                  % similarity on boxes in same frame
-            frame_idx1 = ceil(i/top_k);%fix((i-1)/top_k) + 1;        
-            frame_idx2 = ceil(j/top_k);%fix((j-1)/top_k) + 1;
-%             img1 = frames(:,:,:,frame_idx1);
-%             img2 = frames(:,:,:,frame_idx2);
+            frame_idx1 = ceil(i/top_k);
+            frame_idx2 = ceil(j/top_k);
             box_idx1 = mod(i,top_k);
             if (box_idx1 == 0)
                 box_idx1 = top_k;
@@ -196,85 +179,24 @@ for i = 1:T*top_k
                 hist1 = phists(box_idx1,:,frame_idx1);
                 hist2 = phists(box_idx2,:,frame_idx2);
                 tempscore = 1-pdist2(hist1,hist2,'chisq');
-%                 fprintf('Doing comparison (b%d,f%d,idx%d), (b%d,f%d,idx%d): %.4f\n',...
-%                     box_idx1, frame_idx1, i, box_idx2,frame_idx2,j,tempscore);
                 s_score(i,j) = tempscore;
                 s_score(j,i) = tempscore; %b/c matrix is symmetric
             end %If
-%             bx1 = bboxes(box_idx1,1:4,frame_idx1);
-%             bx2 = bboxes(box_idx2,1:4,frame_idx2);
-%             hist1 = phow_hist(img1(bx1(2):bx1(4),bx1(1):bx1(3),:),ssize);
-%             hist2 = phow_hist(img2(bx2(2):bx2(4),bx2(1):bx2(3),:),ssize);
-%             hist1 = hist1'; hist2 = hist2';
-%             tempscore = 1-pdist2(hist1,hist2,'chisq');
-%             s_score(i,j) = tempscore;
-%             s_score(j,i) = tempscore; %b/c matrix is symmetric
         end %if
     end %for j
 end %for i
 
-% for t = 1:T
-%     img = frames(:,:,:,t);
-%     %binary score(s)
-%     parfor i = 1:top_k
-%         bi = bboxes(i,:,t);
-% %         display(bi)
-%         hists{i} = phow_hist(img(bi(2):bi(4),bi(1):bi(3),:), ssize);
-%     end %parfor i
-%     hist = cat(2, hists{:});
-%     hist = hist';
-% 
-%     if t > 1
-%         simi(:,:,t-1) = 1-pdist2(hist_prev, hist, 'chisq');
-%         %scaled between 0 and 1, higer is better
-%     end %if
-%     hist_prev = hist;
-% end %for t
+%linear combination of s_score, d_score, and w_score
+G = alpha*s_score + beta*d_score + gamma*w_score;
 
-%%NEED TO ADD UNARY AND BINARY SCORES FOR DUMMY BOXES
-
-% %probably need another loop through T here to do the between-frames
-% %distance measure for the box locations
-% for t = 1:T
-%     curr_box = temp_boxes{t};
-%     num_curr_boxes = size(curr_box,1);
-%     newscores = zeros(num_curr_boxes,1);
-%     X1 = curr_box(:,5:6);
-%     for u = 1:T
-%         if (u ~= t)
-%             other_box = temp_boxes{u};
-%             num_other_boxes = size(other_box,1);
-%             X2 = other_box(:,5:6);
-%             D = pdist2(X1,X2,'euclidean');
-%             for i = 1:num_curr_boxes
-%                 for j = 1:num_other_boxes
-%                     newscores(i) = newscores(i) +...
-%                         curr_box(i,7)*gaussmf(D(i,j),gaussparam);
-%                 end %for j
-%             end %for i
-%         end %if
-%     end %for u
-%     bbs = zeros(num_curr_boxes,5);
-%     bbs(:,1:4) = curr_box(:,1:4);
-%     bbs(:,5) = newscores;
-%     
-%     %converting from [x y w h] to [x1 y1 x2 y2]
-%     bbs(:,3) = bbs(:,3) + bbs(:,1) - 1;
-%     bbs(:,4) = bbs(:,4) + bbs(:,2) - 1;
-%     
-%     %storing in final output variable
-%     bboxes(1:num_curr_boxes,:,t) = bbs;
-% end %for t
-
-
-%tt = toc;
-%fid = fopen('/tmp/output', 'w');
-%fprintf(fid, '%f', tt);
-%fclose(fid);    
+%%NEED TO ADD UNARY AND BINARY SCORES FOR DUMMY BOXES--do I want to do it
+%%before or after combining s_score, d_score, and w_score?  probably need
+%%it before converting output to list
 
 %set output
 boxes_w_fscore = bboxes;
-gscore = simi;
+%gscore = simi;
+gscore = zeros(T*top_k, 5); %each row is [f1,b1,f2,b2,g]
 end %function scott_proposals_similarity
 
 %Haonan's helper functions

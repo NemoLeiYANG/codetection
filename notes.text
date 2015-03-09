@@ -615,6 +615,12 @@ as we run into problems or think of things we hadn't thought of before.
   license for Parallel Computing Toolbox.  No known resolution to this other
   than to wait a while and try again when licenses might be available.
 
+--Working again.  Cleaned up code a bit and working on getting binary score
+  output into the format [f1,b1,f2,b2,g] for every link that exists in the giant
+  binary scores matrix.
+
+--Trying to run a test of the full code against the full video overnight.
+
 
 
 ***Thought on output: reformat output into a matrix of [box1 box2 edgeweight].
