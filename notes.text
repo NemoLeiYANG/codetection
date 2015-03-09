@@ -588,19 +588,40 @@ as we run into problems or think of things we hadn't thought of before.
 
 ----------------git commit ff66f12---------------
 
---s_score appears to be working, but it takes a LONG time (454s for 3 frames and
-  top_k = 100)
+6 Mar 15
 
---Need to be more efficient in computation.  I realized that I could be
-  computing the same histogram multiple times the way the loop is currently
-  written. Try instead to compute and store ALL histograms in the first parfor
+--Original s_score appears to be working, but it takes a LONG time (454s for 3
+  frames and top_k = 100)
+
+--Rewrote s_score to be more efficient in computation.  I realized that I could be
+  computing the same histogram multiple times the way the loop was originally
+  written. Changed to instead to compute and store ALL histograms in the first parfor
   loop (when boxes are found and scored) and then just reference the correct
-  histogram when computing the s_score.
+  histogram when computing the s_score.  Run time now ~20-25s for same data.
 
---What factors determine the size of each histogram???
+--Also discovered that the order of the boxes coming out is not deterministic.
+  My s_score had columns in different order from different runs on the same data.
 
---Do I want to use single precision numbers in MATLAB?  Would reduce storage
-  space (and in theory, time to create/access).
+----------------git commit af89418---------------
+
+9 Mar 15
+
+--Tried running a MATLAB test on the full video.  Had to manually kill all
+  MATLAB processes after about an hour--froze my system.  Looking at htop, it
+  appeared that the parallel workers were eating up all available RAM and
+  hanging the system--processors were fine.
+
+--After restarting MATLAB, had same problem as prior with inability to check out
+  license for Parallel Computing Toolbox.  No known resolution to this other
+  than to wait a while and try again when licenses might be available.
+
+
+
+***Thought on output: reformat output into a matrix of [box1 box2 edgeweight].
+   Gives fixed size of output element, with variability in the number of
+   elements.  Should be easy to manipulate as a Scheme list.
+
+
 
 
 OPEN FILES IN MATLAB (28 Feb 15)
@@ -645,10 +666,7 @@ OPEN FILES IN EMACS (28 Feb 15)
 
 
 
-* similarity (binary) score based on box location
-* similarity (binary) score based on box size
 * incorporate optical flow into binary score...how???
-* unary score based on box content-->edges/contours???
 * box optical flow vs. avg. optical flow might not work--need to look at how the
   geometry works out.
 ***DUMMY STATE!!!!

@@ -189,10 +189,10 @@ for i = 1:T*top_k
             if (box_idx2 == 0)
                 box_idx2 = top_k;
             end %if
-%             if ((~valid_loc(box_idx1,frame_idx1)) || ...
-%                 (~valid_loc(box_idx2,frame_idx2)))
-%                 continue; %at least one box not valid
-%             else %do pdist2 on histograms
+            if ((~valid_loc(box_idx1,frame_idx1)) || ...
+                (~valid_loc(box_idx2,frame_idx2)))
+                continue; %at least one box not valid
+            else %do pdist2 on histograms
                 hist1 = phists(box_idx1,:,frame_idx1);
                 hist2 = phists(box_idx2,:,frame_idx2);
                 tempscore = 1-pdist2(hist1,hist2,'chisq');
@@ -200,7 +200,7 @@ for i = 1:T*top_k
 %                     box_idx1, frame_idx1, i, box_idx2,frame_idx2,j,tempscore);
                 s_score(i,j) = tempscore;
                 s_score(j,i) = tempscore; %b/c matrix is symmetric
-%             end %If
+            end %If
 %             bx1 = bboxes(box_idx1,1:4,frame_idx1);
 %             bx2 = bboxes(box_idx2,1:4,frame_idx2);
 %             hist1 = phow_hist(img1(bx1(2):bx1(4),bx1(1):bx1(3),:),ssize);
