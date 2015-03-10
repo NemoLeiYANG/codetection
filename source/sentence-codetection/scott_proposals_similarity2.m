@@ -1,4 +1,4 @@
-function [boxes_w_fscore, gscore] = ... %,d_score,w_score,s_score] = ...
+function [boxes_w_fscore,gscore]= ... %d_score,w_score,s_score,G,distance_threshold,worldDist,phists,valid_loc]  
     scott_proposals_similarity2(top_k, ssize, frames, positions,alpha,beta,gamma)
 %inputs: top_k: number of proposals to generate in each frame
 %        ssize: the size to which each proposal is rescaled to (for
@@ -45,6 +45,8 @@ gaussparam2 = [.1,0]; %setting sigma=.1,mu=0 for width difference
 cam_offset = [-0.03 0.16 -0.2]; %estimated measurement, in m
 world_boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
 distance_threshold = 0.5; %distance threshold for similarity score--in m
+binary_score_threshold = 1e-6; %threshold for a binary score to go into ouput--ARBITRARY, may need to change
+dbox_fscore = 0.5; %dummy box fscore value
 %camera calibration data
 cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
         0.0 7.2412307134397406e+02 2.0310961045807585e+02;...
@@ -57,12 +59,14 @@ phist_size = [top_k, 12000];
 phists = zeros([phist_size,T],'single'); %for storing histograms--HARDCODED 12000 as size of phow_hist 
 valid_loc = false(top_k,T); %for storing where box location is valid (in front of cam)
 
-
+%t1=tic;
 parfor t = 1:T %main parfor loop to do proposals and histogram scores
     %first get boxes for all frames
     img = frames(:,:,:,t);
     pose = positions(t,:);
+    %tic;
     bbs = MCGboxes(img,top_k); %proposals
+    %fprintf('Time for single frame proposals: %f\n',toc);
     %now do adjust scores and add world x,y,w information to matrix
     new_boxes = zeros(top_k, 8);
     new_boxes(:,1:5) = bbs;
@@ -116,7 +120,8 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
     phists(:,:,t) = temp_phists;
 %%unary scores and histogram scores complete
 end %parfor
-
+% fprintf('Elapsed time for parfor loop: %f\n',toc(t1));
+% tic;
 %converting from [x y w h] to [x1 y1 x2 y2]
 bboxes(:,3,:) = bboxes(:,3,:) + bboxes(:,1,:) - 1;
 bboxes(:,4,:) = bboxes(:,4,:) + bboxes(:,2,:) - 1;
@@ -138,25 +143,26 @@ worldW = reshape(worldW, T*top_k, 1);
 
 %now compute distances -- using euclidean might be slow, but simpler than
 %using squared euclidean distance as input to gaussian kernel
-worldDist = real(pdist2(worldXY,worldXY,'euclidean')); 
-worldWdiff = real(pdist2(worldW,worldW,'euclidean')); 
+worldDist = triu(real(pdist2(worldXY,worldXY,'euclidean'))); 
+worldWdiff = triu(real(pdist2(worldW,worldW,'euclidean'))); 
 
 %use gaussian kernel to scale to (0,1), higher=better
-d_score = gaussmf(worldDist,gaussparam1);
-w_score = gaussmf(worldWdiff,gaussparam2);
+d_score = triu(single(gaussmf(worldDist,gaussparam1)));
+w_score = triu(single(gaussmf(worldWdiff,gaussparam2)));
 
 %now zero out scores for boxes in same frame
-blankscore = zeros(top_k);
+blankscore = zeros(top_k,'single');
 for i = 1:T
     start = (i-1)*top_k + 1; stop = i*top_k;
     d_score(start:stop,start:stop) = blankscore;
     w_score(start:stop,start:stop) = blankscore;
 end % for i
 %d_score and w_score complete 
-
+% fprintf('Binary score setup: %f\n',toc); 
+% tic;
 %now do visual similarity (s_score) on boxes that are within some distance
 %threshold of each other
-s_score = zeros(T*top_k);
+s_score = zeros(T*top_k,'single');
 for i = 1:T*top_k
     for j = (i+1):T*top_k %can do this b/c matrix will be symmetric
         if ((worldDist(i,j) < distance_threshold) && ...
@@ -188,15 +194,47 @@ end %for i
 
 %linear combination of s_score, d_score, and w_score
 G = alpha*s_score + beta*d_score + gamma*w_score;
-
+% fprintf('Elapsed time for binary score computation: %f\n',toc);
+% tic;
 %%NEED TO ADD UNARY AND BINARY SCORES FOR DUMMY BOXES--do I want to do it
 %%before or after combining s_score, d_score, and w_score?  probably need
 %%it before converting output to list
 
+% %DUMMY BOX SCORES
+% %unary dummy box scores/locations
+% for t = 1:T
+%     bboxes(top_k+1,:,t) = [0,0,0,0,dbox_fscore,-inf,-inf,-inf];
+% end %for
+
+
+%%DOING BOTH UNARY AND BINARY DUMMY BOX SCORES IN C!!!
+
 %set output
 boxes_w_fscore = bboxes;
 %gscore = simi;
-gscore = zeros(T*top_k, 5); %each row is [f1,b1,f2,b2,g]
+gscore = zeros(((T*top_k)^2)/2, 5,'single'); %each row is [f1,b1,f2,b2,g]
+g_idx = 0;
+for i = 1:T*top_k
+    for j = (i+1):T*top_k %can do this b/c matrix will be symmetric
+        if (G(i,j) > binary_score_threshold)%~= 0)
+            frame_idx1 = ceil(i/top_k);
+            frame_idx2 = ceil(j/top_k);
+            box_idx1 = mod(i,top_k);
+            if (box_idx1 == 0)
+                box_idx1 = top_k;
+            end %if
+            box_idx2 = mod(j,top_k);
+            if (box_idx2 == 0)
+                box_idx2 = top_k;
+            end %if
+            g_idx = g_idx + 1;
+            gscore(g_idx,:) = [frame_idx1, box_idx1, frame_idx2, ...
+                             box_idx2, G(i,j)];
+        end %if
+    end % for j
+end %for i
+gscore = gscore(1:g_idx,:);
+%fprintf('Elapsed time for output setup: %f\n',toc);
 end %function scott_proposals_similarity
 
 %Haonan's helper functions

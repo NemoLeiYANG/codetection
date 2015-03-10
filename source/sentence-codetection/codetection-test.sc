@@ -60,9 +60,9 @@
 	(f (map (lambda (boxes) (map fifth (matrix->list-of-lists boxes)))
 		(first proposals-similarity)))
 	(g (map (lambda (sim) (matrix->list-of-lists sim))
-		(second proposals-similarity)))
+		(second proposals-similarity)));;change
 	(f-c (easy-ffi:double-to-c 2 f))
-	(g-c (easy-ffi:double-to-c 3 g))
+	(g-c (easy-ffi:double-to-c 3 g));;change
 	(boxes-c (list->c-exact-array (malloc (* c-sizeof-int (length f)))
 				      (map-n (lambda _ 0) (length f))
 				      c-sizeof-int #t))	
@@ -70,7 +70,7 @@
 	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t)))
   (free boxes-c)
   (easy-ffi:free 2 f f-c)
-  (easy-ffi:free 3 g g-c)
+  (easy-ffi:free 3 g g-c);;
   ;; (pp (map (lambda (b pool) (list b (list-ref pool b)))
   ;; 	   boxes proposals))
   (map (lambda (b pool) (list-ref pool b))
@@ -233,7 +233,8 @@
   ;; 	   boxes proposals))
   (map (lambda (b pool) (list-ref pool b))
 	   boxes proposals)
-  ))	
+  ))
+
  
   
 (define (frame-test2)
@@ -287,3 +288,64 @@
 				  output-path
 				  (number->padded-string-of-length n 4)))
 	(loop (rest images) (+ n 1)))))))
+
+(define (get-matlab-proposals-similarity top-k
+					 box-size
+					 data-path
+					 first-frame;;here first-frame and last frame
+					 last-frame;;start at 1, not 0
+					 alpha
+					 beta
+					 gamma
+					 delta)
+ (let* ((video-path (format #f "~a/video_front.avi" data-path))
+	(all-frames (video->frames 1 video-path))
+	(all-poses (align-frames-with-poses data-path (length all-frames)))
+	(frames (sublist all-frames (- first-frame 1) last-frame))
+	(poses (sublist all-poses (- first-frame 1) last-frame))
+	(num-frames (- last-frame (- first-frame 1)))
+	(coeff-sum (+ alpha beta gamma delta))
+	(alpha-norm (/ alpha coeff-sum))
+	(beta-norm (/ beta coeff-sum))
+	(gamma-norm (/ gamma coeff-sum))
+	(delta-norm (/ delta coeff-sum))
+	(one-frame (first frames))
+	(height (imlib:height one-frame))
+	(width (imlib:width one-frame))
+	)
+  ;;(list frames poses)
+  (start-matlab!)
+  (scheme->matlab! "poses" poses)
+  (matlab (format #f "frames = zeros(~a,~a,~a,~a,'uint8');" height width 3 num-frames))
+  ;; convert frames to matlab matrix
+  (for-each-indexed
+   (lambda (frame i)
+    (with-temporary-file
+     "/tmp/imlib-frame.ppm"
+     (lambda (tmp-frame)
+      ;; write scheme frame to file
+      (imlib:save-image frame tmp-frame)
+      ;; read file as matlab frame
+      (matlab (format #f "frame=imread('~a');" tmp-frame))
+      (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
+    (imlib:free-image-and-decache frame) ;;might want to comment this out
+              ;;but could cause a memory leak if I don't free image elsewhere
+    )    
+   frames)
+  ;; call matlab function
+  (matlab (format #f "[boxes_w_fscore,gscore] = scott_proposals_similarity2(~a,~a,frames,poses,~a,~a,~a);" top-k box-size alpha-norm beta-norm gamma-norm))
+  ;; convert matlab variables to scheme
+  (list (map-n (lambda (t)
+		(matlab (format #f "tmp=boxes_w_fscore(:,:,~a);" (+ t 1)))
+		(matlab-get-variable "tmp"))
+	       num-frames)
+	  (matlab-get-variable "gscore"))
+
+  ))
+
+
+(define (load-data)
+ (define test-data-small (get-matlab-proposals-similarity 10 64 "/home/sbroniko/codetection/testing-data" 17 20 1 1 1 1))
+ (define test-data-medium (get-matlab-proposals-similarity 10 64 "/home/sbroniko/codetection/testing-data" 17 46 1 1 1 1))
+ (define test-data-large (get-matlab-proposals-similarity 10 64 "/home/sbroniko/codetection/testing-data" 17 116 1 1 1 1))
+ (define test-data-full (get-matlab-proposals-similarity 10 64 "/home/sbroniko/codetection/testing-data" 1 204 1 1 1 1)))

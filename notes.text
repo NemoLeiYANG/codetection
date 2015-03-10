@@ -621,12 +621,28 @@ as we run into problems or think of things we hadn't thought of before.
 
 --Trying to run a test of the full code against the full video overnight.
 
+----------------git commit 0fe710e..c487890---------------
+
+10 Mar 15
+
+--Overnight test run completed on full video with top_k=10 in ~409s.  Still need
+  to test with larger top_k.
+
+--Have MATLAB finished with output boxes_w_fscore in the same format as original
+  (with added world x,y,w values in further columns, and second output gscore as
+  a 2-D matrix with rows [f1,b1,f2,b2,g].  All scores coming from MATLAB are for
+  actual boxes--will be doing dummy box stuff in C.  Now need to work on changing
+  Scheme->C and C interfaces.
+
+--Started on Scheme work.  Have get-matlab-proposals-similarity that gets the
+  matlab outputs boxes_w_fscore and gscore back into Scheme.  Also have
+  load-data that loads 4 different groups of data into scheme variables.
+
 
 
 ***Thought on output: reformat output into a matrix of [box1 box2 edgeweight].
    Gives fixed size of output element, with variability in the number of
    elements.  Should be easy to manipulate as a Scheme list.
-
 
 
 
