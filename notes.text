@@ -638,12 +638,36 @@ as we run into problems or think of things we hadn't thought of before.
   matlab outputs boxes_w_fscore and gscore back into Scheme.  Also have
   load-data that loads 4 different groups of data into scheme variables.
 
+----------------git commit 978e470---------------
+
+11 Mar 15
+
+--Overnight test of (load-data) resulted in a crash when I came in this
+  morning.  Tried each of the four data set loads individually and they all
+  worked.  Running test-data-{small,medium,large} (4,40,100 frames) ran in ~7
+  minutes.  Running test-data-full by itself worked, but putting all the output
+  to my scheme buffer pretty much locked things up.  Had to kill the buffer and
+  try again.  Ran (load-data) again (to suppress buffer output) and it ran in
+  ~14 minutes.  Seems to work OK.
+
+--Rewrote get-matlab-proposals-similarity to be more general with inputs of
+  top-k, box-size, frames poses, and normalized coefficients.  Then wrote
+  helper/wrapper functions -by-frame and -full-video to deal with those cases
+  (and normalize the coefficients).
+
+--Added function run-codetection-with-proposals-similarity to run codetection
+  with the output from the get-matlab-proposals-similarity functions mentioned
+  above.  Believe I have the structure set up correctly.
+
+--Next starting work on changing the C++ code for bp_object_inference in
+  inference.cpp.  Have to change the structure of the g function and how its
+  factors are added.  Also need to add stuff here for dummy state.  Still
+  working on this--looking into how OpenGM works and how to add functions,
+  specifically trying a sparse function (SparseMarray) for my g function.
 
 
-***Thought on output: reformat output into a matrix of [box1 box2 edgeweight].
-   Gives fixed size of output element, with variability in the number of
-   elements.  Should be easy to manipulate as a Scheme list.
-
+**Still need to add binary score factor for temporal coherency / optical flow
+  (Scheme->C bindings or in C directly?)
 
 
 OPEN FILES IN MATLAB (28 Feb 15)

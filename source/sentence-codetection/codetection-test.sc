@@ -116,9 +116,6 @@
 		     (rest poses)
 		     (first poses)
 		     frame-poses)))))))
-	       
-       
-			    
        
 (define (frame-test)
  (let* ((video-path "/home/sbroniko/codetection/test-run-data/video_front.avi")
@@ -291,28 +288,16 @@
 
 (define (get-matlab-proposals-similarity top-k
 					 box-size
-					 data-path
-					 first-frame;;here first-frame and last frame
-					 last-frame;;start at 1, not 0
-					 alpha
-					 beta
-					 gamma
-					 delta)
- (let* ((video-path (format #f "~a/video_front.avi" data-path))
-	(all-frames (video->frames 1 video-path))
-	(all-poses (align-frames-with-poses data-path (length all-frames)))
-	(frames (sublist all-frames (- first-frame 1) last-frame))
-	(poses (sublist all-poses (- first-frame 1) last-frame))
-	(num-frames (- last-frame (- first-frame 1)))
-	(coeff-sum (+ alpha beta gamma delta))
-	(alpha-norm (/ alpha coeff-sum))
-	(beta-norm (/ beta coeff-sum))
-	(gamma-norm (/ gamma coeff-sum))
-	(delta-norm (/ delta coeff-sum))
+					 frames
+					 poses
+					 alpha-norm
+					 beta-norm
+					 gamma-norm
+					 delta-norm)
+ (let* ((num-frames (length frames))
 	(one-frame (first frames))
 	(height (imlib:height one-frame))
-	(width (imlib:width one-frame))
-	)
+	(width (imlib:width one-frame)))
   ;;(list frames poses)
   (start-matlab!)
   (scheme->matlab! "poses" poses)
@@ -343,9 +328,108 @@
 
   ))
 
+(define (get-matlab-proposals-similarity-by-frame top-k
+						  box-size
+						  data-path
+						  first-frame;;here first-frame and last-frame
+						  last-frame;;start at 1, not 0
+						  alpha
+						  beta
+						  gamma
+						  delta)
+ (let* ((video-path (format #f "~a/video_front.avi" data-path))
+	(all-frames (video->frames 1 video-path))
+	(all-poses (align-frames-with-poses data-path (length all-frames)))
+	(frames (sublist all-frames (- first-frame 1) last-frame))
+	(poses (sublist all-poses (- first-frame 1) last-frame))
+	(coeff-sum (+ alpha beta gamma delta))
+	(alpha-norm (/ alpha coeff-sum))
+	(beta-norm (/ beta coeff-sum))
+	(gamma-norm (/ gamma coeff-sum))
+	(delta-norm (/ delta coeff-sum)))
+  (get-matlab-proposals-similarity top-k
+				   box-size
+				   frames
+				   poses
+				   alpha-norm
+				   beta-norm
+				   gamma-norm
+				   delta-norm)))
+
+(define (get-matlab-proposals-similarity-full-video top-k
+						    box-size
+						    data-path
+						    alpha
+						    beta
+						    gamma
+						    delta)
+ (let* ((video-path (format #f "~a/video_front.avi" data-path))
+	(frames (video->frames 1 video-path))
+	(poses (align-frames-with-poses data-path (length all-frames)))
+	(coeff-sum (+ alpha beta gamma delta))
+	(alpha-norm (/ alpha coeff-sum))
+	(beta-norm (/ beta coeff-sum))
+	(gamma-norm (/ gamma coeff-sum))
+	(delta-norm (/ delta coeff-sum)))
+  (get-matlab-proposals-similarity top-k
+				   box-size
+				   frames
+				   poses
+				   alpha-norm
+				   beta-norm
+				   gamma-norm
+				   delta-norm)))
+
+(define (run-codetection-with-proposals-similarity proposals-similarity)
+						   
+ ;;(run-codetection-with-video video-path top-k downsample box-size)
+ (let* ((top-k (vector-length (first (first proposals-similarity))))
+	(proposals-boxes (map (lambda (boxes) (map (lambda (x) (sublist x 0 4))
+						   (matrix->list-of-lists boxes)))
+			      (first proposals-similarity)))
+	(proposals-xy (map (lambda (boxes) (map (lambda (x) (sublist x 5 7))
+						(matrix->list-of-lists boxes)))
+			   (first proposals-similarity)))
+	(f (map (lambda (boxes) (map fifth (matrix->list-of-lists boxes)))
+		(first proposals-similarity)))
+	(g (matrix->list-of-lists (second proposals-similarity)))
+	(f-c (easy-ffi:double-to-c 2 f))
+	(g-c (easy-ffi:double-to-c 2 g))
+	(boxes-c (list->c-exact-array (malloc (* c-sizeof-int (length f)))
+				      (map-n (lambda _ 0) (length f))
+				      c-sizeof-int #t))	
+	(score (bp-object-inference f-c g-c (length f) top-k boxes-c))
+	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t)))
+  (free boxes-c)
+  (easy-ffi:free 2 f f-c)
+  (easy-ffi:free 3 g g-c);;
+  ;; (pp (map (lambda (b pool) (list b (list-ref pool b)))
+  ;; 	   boxes proposals))
+  (map (lambda (b prop-xy prop-boxes) (list (list-ref prop-xy b)
+					    (list-ref prop-boxes b)))
+       boxes proposals-xy proposals-boxes)
+  ))
+
+
+;;;;----temporary testing-data stuff-------
+;;;COMMENT OUT THE FOUR LINES BELOW UNLESS TRYING TO RE-ADD THE DATA
+;; (define test-data-small #f)
+;; (define test-data-medium #f)
+;; (define test-data-large #f)
+;; (define test-data-full #f)
 
 (define (load-data)
- (define test-data-small (get-matlab-proposals-similarity 10 64 "/home/sbroniko/codetection/testing-data" 17 20 1 1 1 1))
- (define test-data-medium (get-matlab-proposals-similarity 10 64 "/home/sbroniko/codetection/testing-data" 17 46 1 1 1 1))
- (define test-data-large (get-matlab-proposals-similarity 10 64 "/home/sbroniko/codetection/testing-data" 17 116 1 1 1 1))
- (define test-data-full (get-matlab-proposals-similarity 10 64 "/home/sbroniko/codetection/testing-data" 1 204 1 1 1 1)))
+ (dtrace "starting load-data" #f)
+ (system "date")
+ (set! test-data-small (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 20 1 1 1 1))
+ (dtrace "loaded test-data-small" #f)
+ (system "date")
+ (set! test-data-medium (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 46 1 1 1 1))
+ (dtrace "loaded test-data-medium" #f)
+ (system "date")
+ (set! test-data-large (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 116 1 1 1 1))
+ (dtrace "loaded test-data-large" #f)
+ (system "date")
+ (set! test-data-full (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 1 204 1 1 1 1))
+ (dtrace "loaded test-data-full, load complete" #f)
+ (system "date"))
