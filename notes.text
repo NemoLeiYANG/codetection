@@ -665,6 +665,32 @@ as we run into problems or think of things we hadn't thought of before.
   working on this--looking into how OpenGM works and how to add functions,
   specifically trying a sparse function (SparseMarray) for my g function.
 
+----------------git commit 6513816---------------
+
+12 Mar 15
+
+--Continuing to work on OpenGM code in C++.  Discovered that the SparseMarray
+  template referenced in the documentation has been replaced by SparseFunction
+  with different variable types in the template.  Trying to figure out how to
+  use these.  Have an example that compiles, but with compiler warnings (see
+  inference-google-groups-post.cpp and
+  compiler-warnings-google-groups-post.txt).  Posted a question to the OpenGM
+  Google Group, but not very hopeful for an answer (low traffic).  Still
+  searching for other documentation or examples.  Found something from Jason
+  Corso's course at UMich at https://github.com/wecacuee/opengmdemo, but it
+  doesn't do anything with SparseFunction
+
+--Abandoning SparseFunction now and instead trying to do my binary scores as an
+  ExplicitFunction.  Not as memory efficient, but should still work.  Saved
+  previous work with SparseFunction in
+  inference-with-sparsefunction-questionable.cpp. 
+
+--Working on adding binary score functions in a loop through gscore rows.  Once
+  this is finished, should be able to run a full test and see if dummy boxes get
+  selected in frames with bad boxes.  Also still need to add temporal coherence
+  via optical flow as fourth element to binary score (second g-like structure
+  where I add its binary value to the binary value coming from g).
+
 
 **Still need to add binary score factor for temporal coherency / optical flow
   (Scheme->C bindings or in C directly?)

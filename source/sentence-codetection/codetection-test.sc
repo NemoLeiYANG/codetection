@@ -318,13 +318,14 @@
     )    
    frames)
   ;; call matlab function
-  (matlab (format #f "[boxes_w_fscore,gscore] = scott_proposals_similarity2(~a,~a,frames,poses,~a,~a,~a);" top-k box-size alpha-norm beta-norm gamma-norm))
+  (matlab (format #f "[boxes_w_fscore,gscore,num_gscore] = scott_proposals_similarity2(~a,~a,frames,poses,~a,~a,~a);" top-k box-size alpha-norm beta-norm gamma-norm))
   ;; convert matlab variables to scheme
   (list (map-n (lambda (t)
 		(matlab (format #f "tmp=boxes_w_fscore(:,:,~a);" (+ t 1)))
 		(matlab-get-variable "tmp"))
 	       num-frames)
-	  (matlab-get-variable "gscore"))
+	  (matlab-get-variable "gscore")
+	  (matlab-get-variable "num_gscore"))
 
   ))
 
@@ -380,8 +381,9 @@
 				   gamma-norm
 				   delta-norm)))
 
-(define (run-codetection-with-proposals-similarity proposals-similarity)
-						   
+(define (run-codetection-with-proposals-similarity proposals-similarity
+						   dummy-f
+						   dummy-g)
  ;;(run-codetection-with-video video-path top-k downsample box-size)
  (let* ((top-k (vector-length (first (first proposals-similarity))))
 	(proposals-boxes (map (lambda (boxes) (map (lambda (x) (sublist x 0 4))
@@ -395,10 +397,12 @@
 	(g (matrix->list-of-lists (second proposals-similarity)))
 	(f-c (easy-ffi:double-to-c 2 f))
 	(g-c (easy-ffi:double-to-c 2 g))
+	(num-g (exact-round (x (x (third proposals-similarity)))))
 	(boxes-c (list->c-exact-array (malloc (* c-sizeof-int (length f)))
 				      (map-n (lambda _ 0) (length f))
 				      c-sizeof-int #t))	
-	(score (bp-object-inference f-c g-c (length f) top-k boxes-c))
+	(score (bp-object-inference f-c g-c (length f)
+				    top-k dummy-f dummy-g num-g boxes-c))
 	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t)))
   (free boxes-c)
   (easy-ffi:free 2 f f-c)
@@ -421,15 +425,15 @@
 (define (load-data)
  (dtrace "starting load-data" #f)
  (system "date")
- (set! test-data-small (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 20 1 1 1 1))
+ (set! test-data-small (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 20 1 1 1 0))
  (dtrace "loaded test-data-small" #f)
  (system "date")
- (set! test-data-medium (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 46 1 1 1 1))
+ (set! test-data-medium (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 46 1 1 1 0))
  (dtrace "loaded test-data-medium" #f)
  (system "date")
- (set! test-data-large (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 116 1 1 1 1))
+ (set! test-data-large (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 116 1 1 1 0))
  (dtrace "loaded test-data-large" #f)
  (system "date")
- (set! test-data-full (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 1 204 1 1 1 1))
+ (set! test-data-full (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 1 204 1 1 1 0))
  (dtrace "loaded test-data-full, load complete" #f)
  (system "date"))

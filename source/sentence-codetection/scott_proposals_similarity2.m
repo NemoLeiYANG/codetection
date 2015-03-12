@@ -1,4 +1,4 @@
-function [boxes_w_fscore,gscore]= ... %d_score,w_score,s_score,G,distance_threshold,worldDist,phists,valid_loc]  
+function [boxes_w_fscore,gscore,num_gscore]= ... %d_score,w_score,s_score,G,distance_threshold,worldDist,phists,valid_loc]  
     scott_proposals_similarity2(top_k, ssize, frames, positions,alpha,beta,gamma)
 %inputs: top_k: number of proposals to generate in each frame
 %        ssize: the size to which each proposal is rescaled to (for
@@ -16,10 +16,11 @@ function [boxes_w_fscore,gscore]= ... %d_score,w_score,s_score,G,distance_thresh
 %                        f is the unary score for each box (computed from
 %                        MCG proposal scores with penalty terms); in range
 %                        [0,1], higher is better.
-%         gscore: ??x5 matrix of [f1,b1,f2,b2,g] of binary scores; g is the
-%              binary score between frame1,box1 and frame2,box2; number of
-%              rows is variable based on which elements of the binary score
-%              matrices are non-zero
+%         gscore: num_gscorex5 matrix of [f1,b1,f2,b2,g] of binary scores; 
+%              g is the binary score between frame1,box1 and frame2,box2;
+%              number of rows is variable based on which elements of the
+%              binary score matrices are non-zero
+%         num_gscore: number of rows in gscore
 
 % add paths
 %addpath(pwd);
@@ -234,6 +235,8 @@ for i = 1:T*top_k
     end % for j
 end %for i
 gscore = gscore(1:g_idx,:);
+gscore = sortrows(gscore,3);
+num_gscore = g_idx;
 %fprintf('Elapsed time for output setup: %f\n',toc);
 end %function scott_proposals_similarity
 
