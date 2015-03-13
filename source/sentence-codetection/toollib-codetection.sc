@@ -162,8 +162,13 @@
 
 ;;;;;;;;;; codetection inference with BP ;;;;;;;;;;
 
+;; (define bp-object-inference
+;;  (c-function double ("bp_object_inference" pointer pointer int int pointer)))
+
+
 (define bp-object-inference
- (c-function double ("bp_object_inference" pointer pointer int int pointer)))
+ (c-function double ("bp_object_inference" pointer pointer int int
+		     double double int pointer)))
 
 
 ;;;;;NEED TO REBUILD THIS AS A STAND-ALONE PROCEDURE

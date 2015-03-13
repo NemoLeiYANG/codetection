@@ -409,8 +409,9 @@
   (easy-ffi:free 3 g g-c);;
   ;; (pp (map (lambda (b pool) (list b (list-ref pool b)))
   ;; 	   boxes proposals))
-  (map (lambda (b prop-xy prop-boxes) (list (list-ref prop-xy b)
-					    (list-ref prop-boxes b)))
+  (map (lambda (b prop-xy prop-boxes) (list b
+				       (list-ref prop-xy b)
+				       (list-ref prop-boxes b)))
        boxes proposals-xy proposals-boxes)
   ))
 

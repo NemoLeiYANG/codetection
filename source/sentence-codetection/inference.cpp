@@ -23,7 +23,8 @@ typedef opengm::MessagePassing<GraphModel, opengm::Minimizer, UpdateRules, openg
 typedef opengm::external::libdai::Bp<GraphModel, opengm::Minimizer> libdaiBP;
 
 extern "C" double bp_object_inference(double **f, double **g, 
-				      int T, int top_k, int dummy_f, int dummy_g, 
+				      int T, int top_k, 
+				      double dummy_f, double dummy_g, 
 				      int num_gscores, int *boxes) {
 
   // each frame has a variable with top_k possible labels
@@ -40,7 +41,7 @@ extern "C" double bp_object_inference(double **f, double **g,
   for (unsigned int t = 0; t < numVariables; t ++){
     FID fid;
     size_t fshape[] = {numLabels}; 
-    Function ff(fshape, fshape+1, dummy_f); 
+    Function ff(fshape, fshape+1, -dummy_f); 
     for (int i = 0; i < top_k; i ++){
       ff(i) = -f[t][i];
     }
@@ -53,49 +54,42 @@ extern "C" double bp_object_inference(double **f, double **g,
   // add binary score functions
   size_t gshape[] = {numLabels, numLabels};
   bool newBinaryMatrix = true;
+  size_t frame1, box1, frame2, box2;
+  double score;
+  Function gg(gshape, gshape + 2, 0.0);
   for (int i = 0; i < num_gscores; i++){ //loop through lines of g
-    if newBinaryMatrix {
+    if (newBinaryMatrix) {
 	Function gg(gshape, gshape + 2, 0.0);
 	newBinaryMatrix = false;
 	for (unsigned int j = 0; j < numLabels; j++){
-	  gg(numLabels-1,j) = dummy_g;
-	  gg(j,numLabels-1) = dummy_g;
+	  gg(numLabels-1,j) = -dummy_g;
+	  gg(j,numLabels-1) = -dummy_g;
 	}
       }
-    size_t frame1 = g[i][1];
-    size_t box1 = g[i][2];
+    //add score from each row of g
+    frame1 = g[i][1] - 1; //need a -1 here b/c MATLAB vs. C
+    box1 = g[i][2] - 1;
+    frame2 = g[i][3] - 1;
+    box2 = g[i][4] - 1;
+    score = g[i][5];
+    gg(box1,box2) = -score;
+    //added this row--check to see if more rows for this frame1/frame2 combo or not
+    if ((i == (num_gscores - 1)) ||    //if i == num_gscores-1, we know we're done
+	(frame1 != (g[i+1][1] - 1)) || //check if next frame1 or frame2 
+	(frame2 != (g[i+1][3] - 1))) { //is different from current
+      //if so, mark newBinaryMatrix true 
+      newBinaryMatrix = true;
+      //also want to add binary scores from temporal coherency to gg here 
+      //(so its only done once per gg function)
 
-    //check if next frame1 or frame2 is different from current
-    //if so, mark newBinaryMatrix true and add current gg to factors
-    
+      //add function
+      FID gid = gm.addFunction(gg);
+      //add factors
+      size_t gv[] = {size_t(frame1),size_t(frame2)};
+      gm.addFactor(gid, gv, gv+2);
+      
+    }
   }
-
-
-  // // add functions
-  // for (unsigned int t = 0; t < numVariables; t ++){
-  //   FID fid, gid;
-  //   size_t fshape[] = {size_t(top_k)+1}; 
-  //   //size_t gshape[] = {size_t(top_k), size_t(top_k)};
-  //   Function ff(fshape, fshape+1, dummy_f); 
-  //   //Function gg(gshape, gshape+2, -INFINITY);
-  //   for (int i = 0; i < top_k; i ++){
-  //     ff(i) = -f[t][i];
-  //     // if (t > 0){
-  //     // 	for (int k = 0; k < top_k; k ++)
-  //     // 	  gg(k,i) = -g[t-1][k][i];
-  //     // }
-  //   }
-  //   fid = gm.addFunction(ff);
-  //   // if (t > 0)
-  //   //   gid = gm.addFunction(gg);
-  //   // add factors
-  //   size_t fv[] = {size_t(t)};
-  //   //*****REMEMBER THAT IN C THE FRAMES ARE NUMBERED 0 TO T-1 WHILE IN MATLAB THEY ARE NUMBERED 1 TO T******************
-  //   // size_t gv[] = {size_t(t-1), size_t(t)};
-  //   gm.addFactor(fid, fv, fv+1);
-  //   // if (t > 0)
-  //   //   gm.addFactor(gid, gv, gv+2);
-  // }
 
   //  inference
   const size_t maxIterations=100;

@@ -691,6 +691,18 @@ as we run into problems or think of things we hadn't thought of before.
   via optical flow as fourth element to binary score (second g-like structure
   where I add its binary value to the binary value coming from g).
 
+----------------git commit 9efaaf3---------------
+
+13 Mar 15
+
+--Got a reply to my google groups post from one of the code authors(Jorg
+  Kappes).  He said just to comment out the offending line and not worry about
+  it.  Not sure it matters much, since I think it will just be easier to use
+  Explicit Function instead of Sparse Function.
+
+--Finished first draft of new OpenGM code.  Throwing a runtime error at this
+  point.  Will investigate more.
+
 
 **Still need to add binary score factor for temporal coherency / optical flow
   (Scheme->C bindings or in C directly?)
