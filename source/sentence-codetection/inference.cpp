@@ -50,6 +50,13 @@ extern "C" double bp_object_inference(double **f, double **g,
     size_t fv[] = {size_t(t)};
     gm.addFactor(fid, fv, fv+1);
   }
+  // printf("Unary functions added\n");
+
+  // printf("--------------------\n");
+  // for (int i = 0; i < num_gscores; i++){
+  //   printf("%f %f %f %f %f\n",g[i][0],g[i][1],g[i][2],g[i][3],g[i][4]);
+  // }
+  // printf("--------------------\n");
 
   // add binary score functions
   size_t gshape[] = {numLabels, numLabels};
@@ -67,29 +74,39 @@ extern "C" double bp_object_inference(double **f, double **g,
 	}
       }
     //add score from each row of g
-    frame1 = g[i][1] - 1; //need a -1 here b/c MATLAB vs. C
-    box1 = g[i][2] - 1;
-    frame2 = g[i][3] - 1;
-    box2 = g[i][4] - 1;
-    score = g[i][5];
+    frame1 = size_t(g[i][0]) - 1; //need a -1 here b/c MATLAB vs. C
+    box1 = size_t(g[i][1]) - 1;
+    frame2 = size_t(g[i][2]) - 1;
+    box2 = size_t(g[i][3]) - 1;
+    score = g[i][4];
     gg(box1,box2) = -score;
+    // printf("i = %d, frame1 = %zu, box1 = %zu, frame2 = %zu, box2 = %zu, score = %f\n",
+    // 	   i, frame1, box1, frame2, box2, score);
     //added this row--check to see if more rows for this frame1/frame2 combo or not
     if ((i == (num_gscores - 1)) ||    //if i == num_gscores-1, we know we're done
-	(frame1 != (g[i+1][1] - 1)) || //check if next frame1 or frame2 
-	(frame2 != (g[i+1][3] - 1))) { //is different from current
+	(frame1 != (size_t(g[i+1][0]) - 1)) || //check if next frame1 or frame2 
+	(frame2 != (size_t(g[i+1][2]) - 1))) { //is different from current
       //if so, mark newBinaryMatrix true 
       newBinaryMatrix = true;
       //also want to add binary scores from temporal coherency to gg here 
       //(so its only done once per gg function)
-
+      printf("gg for frame1=%zu,frame2=%zu\n",frame1,frame2);
+      for (unsigned int j = 0; j < numLabels; j++){
+	for (unsigned int k = 0; k < numLabels; k++){
+	  printf("%0.4f ",gg(j,k));
+	}
+	printf("\n");
+      }
       //add function
       FID gid = gm.addFunction(gg);
+      // printf("added function for frame1 = %zu, frame2 = %zu\n",frame1,frame2);
       //add factors
       size_t gv[] = {size_t(frame1),size_t(frame2)};
       gm.addFactor(gid, gv, gv+2);
-      
+      // printf("added factor for frame1 = %zu, frame2 = %zu\n",frame1,frame2);
     }
   }
+  // printf("Binary scores complete\n");
 
   //  inference
   const size_t maxIterations=100;

@@ -366,7 +366,7 @@
 						    delta)
  (let* ((video-path (format #f "~a/video_front.avi" data-path))
 	(frames (video->frames 1 video-path))
-	(poses (align-frames-with-poses data-path (length all-frames)))
+	(poses (align-frames-with-poses data-path (length frames)))
 	(coeff-sum (+ alpha beta gamma delta))
 	(alpha-norm (/ alpha coeff-sum))
 	(beta-norm (/ beta coeff-sum))
@@ -404,24 +404,26 @@
 	(score (bp-object-inference f-c g-c (length f)
 				    top-k dummy-f dummy-g num-g boxes-c))
 	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t)))
+;;  (dtrace "before (free boxes-c)" #f)
   (free boxes-c)
+;;  (dtrace "before (easy-ffi:free 2 f f-c)" #f)
   (easy-ffi:free 2 f f-c)
-  (easy-ffi:free 3 g g-c);;
+;;  (dtrace "before (easy-ffi:free 2 g g-c)" #f)
+  (easy-ffi:free 2 g g-c);;
+;;  (dtrace "before (list boxes)" #f)
   ;; (pp (map (lambda (b pool) (list b (list-ref pool b)))
   ;; 	   boxes proposals))
-  (map (lambda (b prop-xy prop-boxes) (list b
-				       (list-ref prop-xy b)
-				       (list-ref prop-boxes b)))
-       boxes proposals-xy proposals-boxes)
+  ;; (map (lambda (b prop-xy prop-boxes) (list b
+  ;; 				       (list-ref prop-xy b)
+  ;; 				       (list-ref prop-boxes b)))
+  ;;      boxes proposals-xy proposals-boxes)
+  (list boxes)
   ))
 
 
 ;;;;----temporary testing-data stuff-------
 ;;;COMMENT OUT THE FOUR LINES BELOW UNLESS TRYING TO RE-ADD THE DATA
-;; (define test-data-small #f)
-;; (define test-data-medium #f)
-;; (define test-data-large #f)
-;; (define test-data-full #f)
+;; (define test-data-small #f) (define test-data-medium #f) (define test-data-large #f) (define test-data-full #f)
 
 (define (load-data)
  (dtrace "starting load-data" #f)
@@ -435,6 +437,6 @@
  (set! test-data-large (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 116 1 1 1 0))
  (dtrace "loaded test-data-large" #f)
  (system "date")
- (set! test-data-full (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 1 204 1 1 1 0))
+ (set! test-data-full (get-matlab-proposals-similarity-full-video 10 64 "/home/sbroniko/codetection/testing-data" 1 1 1 0))
  (dtrace "loaded test-data-full, load complete" #f)
  (system "date"))

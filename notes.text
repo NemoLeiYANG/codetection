@@ -703,10 +703,32 @@ as we run into problems or think of things we hadn't thought of before.
 --Finished first draft of new OpenGM code.  Throwing a runtime error at this
   point.  Will investigate more.
 
+----------------git commit 7b5a615---------------
+
+14 Mar 15
+
+--Worked on debugging run-codetection-with-proposals-similarity.  Believe I have
+  it working correctly now.  It returns the correct list of box numbers for
+  test-data-small. 
+
+--Having problems when run against other data sets.  For test-data-medium, it
+  never picks a dummy box when it should.  Strangely, changing the values for
+  dummy-f and dummy-g seem to have no effect on this.  Need to troubleshoot
+  more.
+
+--Found in troubleshooting that when I print out my gg matrices, the columns
+  that should have -1.0 for dummy_g are showing up with 0.0 instead.  This could
+  be why dummy boxes are not getting selected.  Need to figure out why this is
+  happening. 
+
+
+
+
+**Still need to figure out how to add an empty list (append?) to the end of the
+  proposals-boxes and proposals-xy lists.
 
 **Still need to add binary score factor for temporal coherency / optical flow
   (Scheme->C bindings or in C directly?)
-
 
 OPEN FILES IN MATLAB (28 Feb 15)
 --------------------
