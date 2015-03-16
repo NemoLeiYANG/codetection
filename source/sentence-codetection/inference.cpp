@@ -37,6 +37,13 @@ extern "C" double bp_object_inference(double **f, double **g,
   Space space(vars, vars + numVariables);
   GraphModel gm(space);
 
+  double some_small_number = 1e-10;
+  double default_f_score = -log(some_small_number);
+    if (dummy_f != 0.0)
+      default_f_score = -log(dummy_f);
+    if (dummy_f == 1.0)
+      default_f_score = -log(1.0-some_small_number);
+
   //debugging
   //printf("dummy_f = %f, dummy_g = %f\n",dummy_f,dummy_g);
 
@@ -44,16 +51,23 @@ extern "C" double bp_object_inference(double **f, double **g,
   for (unsigned int t = 0; t < numVariables; t ++){
     FID fid;
     size_t fshape[] = {numLabels}; 
-    Function ff(fshape, fshape+1, -dummy_f); 
+    Function ff(fshape, fshape+1, default_f_score); 
     for (int i = 0; i < top_k; i ++){
-      ff(i) = -f[t][i];
+      ff(i) = -log(f[t][i]);
     }
     fid = gm.addFunction(ff);
     // add factors
     size_t fv[] = {size_t(t)};
     gm.addFactor(fid, fv, fv+1);
+
+    //debugging
+    // printf("ff values for t = %u: ",t);
+    // for (unsigned int i = 0; i < numLabels; i++){
+    //   printf("%f ",ff(i));
+    // }
+    // printf("\n");
   }
-  // printf("Unary functions added\n");
+  printf("Unary functions added\n");
 
   // printf("--------------------\n");
   // for (int i = 0; i < num_gscores; i++){
@@ -66,19 +80,24 @@ extern "C" double bp_object_inference(double **f, double **g,
   bool newBinaryMatrix = true;
   size_t frame1, box1, frame2, box2;
   double score;
-  Function gg(gshape, gshape + 2, 0.0);
+  double dummy_g_score = -log(some_small_number);
+  if (dummy_g != 0.0)
+    dummy_g_score = -log(dummy_g);
+  if (dummy_g == 1.0)
+    dummy_g_score = -log(1.0-some_small_number);
+  Function gg(gshape, gshape + 2, -log(some_small_number));
   for (int i = 0; i < num_gscores; i++){ //loop through lines of g
     if (newBinaryMatrix) { //re-initialize gg
       //printf("in newBinaryMatrix conditional\n");
       //Function gg(gshape, gshape + 2, 0.0);
       for (unsigned int i = 0; i < numLabels; i++){
 	for (unsigned int j = 0; j < numLabels; j++) {
-	  gg(i,j) = 0.0;
+	  gg(i,j) = -log(some_small_number);
 	}
       }
       for (unsigned int j = 0; j < numLabels; j++){
-	gg(numLabels-1,j) = -dummy_g;
-	gg(j,numLabels-1) = -dummy_g;
+	gg(numLabels-1,j) = dummy_g_score;
+	gg(j,numLabels-1) = dummy_g_score;
       }
       newBinaryMatrix = false;
 
@@ -97,7 +116,7 @@ extern "C" double bp_object_inference(double **f, double **g,
     frame2 = size_t(g[i][2]) - 1;
     box2 = size_t(g[i][3]) - 1;
     score = g[i][4];
-    gg(box1,box2) = -score;
+    gg(box1,box2) = -log(score);
     // printf("i = %d, frame1 = %zu, box1 = %zu, frame2 = %zu, box2 = %zu, score = %f\n",
     // 	   i, frame1, box1, frame2, box2, score);
     //added this row--check to see if more rows for this frame1/frame2 combo or not
@@ -120,14 +139,14 @@ extern "C" double bp_object_inference(double **f, double **g,
 
       //add function
       FID gid = gm.addFunction(gg);
-      // printf("added function for frame1 = %zu, frame2 = %zu\n",frame1,frame2);
+      //printf("added function for frame1 = %zu, frame2 = %zu\n",frame1,frame2);
       //add factors
       size_t gv[] = {size_t(frame1),size_t(frame2)};
       gm.addFactor(gid, gv, gv+2);
-      // printf("added factor for frame1 = %zu, frame2 = %zu\n",frame1,frame2);
+      //printf("added function & factor for frame1 = %zu, frame2 = %zu\n",frame1,frame2);
     }
   }
-  // printf("Binary scores complete\n");
+  printf("Binary scores complete\n");
 
   //  inference
   const size_t maxIterations=100;
@@ -137,12 +156,16 @@ extern "C" double bp_object_inference(double **f, double **g,
   libdaiBP::UpdateRule updateRule = libdaiBP::PARALL;
   size_t verboseLevel=0;
   libdaiBP::Parameter parameter(maxIterations, damping, tolerance, updateRule,verboseLevel);
+  printf("before bp call\n");
   libdaiBP bp(gm, parameter);
+  printf("after bp call\n");
   // optimize (approximately)
   clock_t t1, t2;
+  printf("before bp.infer\n");
   t1 = clock();
   bp.infer( );
   t2 = clock();
+  printf("after bp.infer\n");
   std::cout << (double(t2) - double(t1))/CLOCKS_PER_SEC*1000 << " ms" << std::endl;
   std::cout << "libDAI Belief Propagation " << -bp.value() << std::endl;
   std::vector<size_t> labeling(T); 

@@ -726,7 +726,7 @@ as we run into problems or think of things we hadn't thought of before.
 16 Mar 15
 
 --Fixed problem with dummy_g not in gg matrices.  Doing different initialization
-  on GG fixed the problem.
+  on gg fixed the problem.
 
 --Now having problem that running run-codetection-with-proposals-similarity on
   full video causes the following error:
@@ -742,6 +742,30 @@ as we run into problems or think of things we hadn't thought of before.
   Might need to try other combinations of dummy_g and dummy_f.
 
 --Committing before making change to have scores in log domain.
+
+----------------git commit 3d85740---------------
+
+16 Mar 15 (2)
+
+--Still having same error after changing to log space, but now with
+  test-data-medium.  Error is happening in the call to bp.infer().  Tried
+  changing around the data so that there are no 0's in the gg matrices (i.e.,
+  dummy_f=0.99 instead of 1.0).  Still have inf in the gg matrices though--could
+  that be the problem?  Is the problem even in the gg matrices?  
+
+--Removed all zeros and infinities from the ff and gg matrices by using
+  some_small_number (currently set to 1e-10).  Instead of infinity I use
+  -log(some_small_number) and instead of 0 I use -log(1-some_small_number).  Got
+  it to run on test-data-medium without crashing (although the result was all
+  dummy boxes--that can probably be fixed by adjusting the dummy_f and dummy_g
+  parameters).  Next testing on test-data-large and test-data-full.
+
+--Ran without crashing on test-data-large, but still crashed on test-data-full
+  on the bp.infer() call.  Not sure how to debug that.  Is the graphical model
+  just too damn big?  Do I need to use a different inference algorithm--maybe
+  the default BP instead of libDAI BP?
+
+
 
 
 
