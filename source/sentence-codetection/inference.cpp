@@ -37,6 +37,9 @@ extern "C" double bp_object_inference(double **f, double **g,
   Space space(vars, vars + numVariables);
   GraphModel gm(space);
 
+  //debugging
+  //printf("dummy_f = %f, dummy_g = %f\n",dummy_f,dummy_g);
+
   // add unary score functions
   for (unsigned int t = 0; t < numVariables; t ++){
     FID fid;
@@ -65,14 +68,29 @@ extern "C" double bp_object_inference(double **f, double **g,
   double score;
   Function gg(gshape, gshape + 2, 0.0);
   for (int i = 0; i < num_gscores; i++){ //loop through lines of g
-    if (newBinaryMatrix) {
-	Function gg(gshape, gshape + 2, 0.0);
-	newBinaryMatrix = false;
-	for (unsigned int j = 0; j < numLabels; j++){
-	  gg(numLabels-1,j) = -dummy_g;
-	  gg(j,numLabels-1) = -dummy_g;
+    if (newBinaryMatrix) { //re-initialize gg
+      //printf("in newBinaryMatrix conditional\n");
+      //Function gg(gshape, gshape + 2, 0.0);
+      for (unsigned int i = 0; i < numLabels; i++){
+	for (unsigned int j = 0; j < numLabels; j++) {
+	  gg(i,j) = 0.0;
 	}
       }
+      for (unsigned int j = 0; j < numLabels; j++){
+	gg(numLabels-1,j) = -dummy_g;
+	gg(j,numLabels-1) = -dummy_g;
+      }
+      newBinaryMatrix = false;
+
+      //debugging
+      // for (unsigned int j = 0; j < numLabels; j++){
+      // 	for (unsigned int k = 0; k < numLabels; k++){
+      // 	  printf("%.4f ",gg(j,k));
+      // 	}
+      // 	printf("\n");
+      // }
+
+    }
     //add score from each row of g
     frame1 = size_t(g[i][0]) - 1; //need a -1 here b/c MATLAB vs. C
     box1 = size_t(g[i][1]) - 1;
@@ -90,13 +108,16 @@ extern "C" double bp_object_inference(double **f, double **g,
       newBinaryMatrix = true;
       //also want to add binary scores from temporal coherency to gg here 
       //(so its only done once per gg function)
-      printf("gg for frame1=%zu,frame2=%zu\n",frame1,frame2);
-      for (unsigned int j = 0; j < numLabels; j++){
-	for (unsigned int k = 0; k < numLabels; k++){
-	  printf("%0.4f ",gg(j,k));
-	}
-	printf("\n");
-      }
+
+      //debugging
+      // printf("gg for frame1=%zu,frame2=%zu\n",frame1,frame2);
+      // for (unsigned int j = 0; j < numLabels; j++){
+      // 	for (unsigned int k = 0; k < numLabels; k++){
+      // 	  printf("%.4f ",gg(j,k));
+      // 	}
+      // 	printf("\n");
+      // }
+
       //add function
       FID gid = gm.addFunction(gg);
       // printf("added function for frame1 = %zu, frame2 = %zu\n",frame1,frame2);

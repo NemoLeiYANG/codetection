@@ -721,6 +721,27 @@ as we run into problems or think of things we hadn't thought of before.
   be why dummy boxes are not getting selected.  Need to figure out why this is
   happening. 
 
+----------------git commit ccaed7d---------------
+
+16 Mar 15
+
+--Fixed problem with dummy_g not in gg matrices.  Doing different initialization
+  on GG fixed the problem.
+
+--Now having problem that running run-codetection-with-proposals-similarity on
+  full video causes the following error:
+       terminate called after throwing an instance of 'opengm::RuntimeError'
+         what():  OpenGM error: libdai Error: Quantity not normalizableQuantity
+	   not normalizable 	 
+  Not sure why this error occurs.  Initial googling leads me to believe it might
+  have to do with an approximate marginal of the factor graph being zero--going
+  to try converting all score values to log domain to see if this helps.
+
+--Also seeing the problem that when I run against test-data-medium or
+  test-data-large, I tend to get all dummy boxes when I have dummy_g = 1.0.
+  Might need to try other combinations of dummy_g and dummy_f.
+
+--Committing before making change to have scores in log domain.
 
 
 
