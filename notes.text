@@ -779,6 +779,25 @@ as we run into problems or think of things we hadn't thought of before.
   that index to jump through the g score matrix.  Saving a copy of the old
   inference.cpp to inference-before-restructure.cpp and committing.
 
+----------------git commit 80e7d34---------------
+
+17 Mar 15 (2)
+
+--Tried the restructure that Haonan suggested and still had the same crash when
+  running against the full video. 
+
+--Added (~line 130 of inference.cpp) frame_distance_threshold to limit the
+  difference between frame numbers when adding a gg function.  The thought was
+  to just reduce the number of gg functions/factors added, since it ran fine on
+  smaller data sets.  This appears to work.  Got program to run against
+  test-data-full with frame_distance_threshold = {50,60}, but it crashed with it
+  = {75,100}.  Might this be related to the length of the video?  Probably
+  should make this number a parameter to the function.  Also need to switch
+  function back to using actual read-in data, rather than testing values.
+
+
+****MIGHT WANT TO KEY DUMMY BOX SCORE TO ADJACENCY--IF FRAMES ARE NOT ADJACENT,
+    DUMMY SCORE IS BAD?????****
 
 **Still need to figure out how to add an empty list (append?) to the end of the
   proposals-boxes and proposals-xy lists.

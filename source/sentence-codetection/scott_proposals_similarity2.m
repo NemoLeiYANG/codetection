@@ -236,6 +236,7 @@ for i = 1:T*top_k
 end %for i
 gscore = gscore(1:g_idx,:);
 gscore = sortrows(gscore,3);
+%might want to do sortrows(gscore,[1,3]) to sort by 1st then 3rd columns
 num_gscore = g_idx;
 %fprintf('Elapsed time for output setup: %f\n',toc);
 end %function scott_proposals_similarity
