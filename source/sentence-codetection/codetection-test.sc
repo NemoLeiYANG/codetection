@@ -440,3 +440,9 @@
  (set! test-data-full (get-matlab-proposals-similarity-full-video 10 64 "/home/sbroniko/codetection/testing-data" 1 1 1 0))
  (dtrace "loaded test-data-full, load complete" #f)
  (system "date"))
+
+;;(define (read-data)
+ (define test-data-small (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-small.sc"))
+ (define test-data-medium (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-medium.sc"))
+ (define test-data-large (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-large.sc"))
+ (define test-data-full (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-full.sc"))

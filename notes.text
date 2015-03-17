@@ -765,8 +765,19 @@ as we run into problems or think of things we hadn't thought of before.
   just too damn big?  Do I need to use a different inference algorithm--maybe
   the default BP instead of libDAI BP?
 
+----------------git commit 4f10dce---------------
 
+17 Mar 15
 
+--Saved test data to test-data-*.sc in /home/sbroniko/codetection/testing-data
+  to speed up loading of data.  Defined reading of each in codetection-test.sc.
+
+--Still having crash on test-data-full when all ff and gg values set to
+  -log(0.5).  Trying a restructuring of the code (suggested by Haonan) so that I 
+  can declare a new gg function in every iteration of the loop--basically
+  amounts to first finding the frame breaks in the g score matrix and then using
+  that index to jump through the g score matrix.  Saving a copy of the old
+  inference.cpp to inference-before-restructure.cpp and committing.
 
 
 **Still need to figure out how to add an empty list (append?) to the end of the

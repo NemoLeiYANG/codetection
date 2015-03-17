@@ -38,11 +38,12 @@ extern "C" double bp_object_inference(double **f, double **g,
   GraphModel gm(space);
 
   double some_small_number = 1e-10;
-  double default_f_score = -log(some_small_number);
-    if (dummy_f != 0.0)
-      default_f_score = -log(dummy_f);
-    if (dummy_f == 1.0)
-      default_f_score = -log(1.0-some_small_number);
+  double default_f_score = -log(0.5); // for testing-log(some_small_number);
+  //removed for testing
+  // if (dummy_f != 0.0)
+  //   default_f_score = -log(dummy_f);
+  // if (dummy_f == 1.0)
+  //   default_f_score = -log(1.0-some_small_number);
 
   //debugging
   //printf("dummy_f = %f, dummy_g = %f\n",dummy_f,dummy_g);
@@ -53,7 +54,7 @@ extern "C" double bp_object_inference(double **f, double **g,
     size_t fshape[] = {numLabels}; 
     Function ff(fshape, fshape+1, default_f_score); 
     for (int i = 0; i < top_k; i ++){
-      ff(i) = -log(f[t][i]);
+      ff(i) = -log(0.5);//for testing-log(f[t][i]); //might need conditioning here
     }
     fid = gm.addFunction(ff);
     // add factors
@@ -66,6 +67,7 @@ extern "C" double bp_object_inference(double **f, double **g,
     //   printf("%f ",ff(i));
     // }
     // printf("\n");
+
   }
   printf("Unary functions added\n");
 
@@ -80,19 +82,20 @@ extern "C" double bp_object_inference(double **f, double **g,
   bool newBinaryMatrix = true;
   size_t frame1, box1, frame2, box2;
   double score;
-  double dummy_g_score = -log(some_small_number);
-  if (dummy_g != 0.0)
-    dummy_g_score = -log(dummy_g);
-  if (dummy_g == 1.0)
-    dummy_g_score = -log(1.0-some_small_number);
-  Function gg(gshape, gshape + 2, -log(some_small_number));
+  double dummy_g_score = -log(0.5);// for testing some_small_number);
+  // removed for testing
+  // if (dummy_g != 0.0)
+  //   dummy_g_score = -log(dummy_g);
+  // if (dummy_g == 1.0)
+  //   dummy_g_score = -log(1.0-some_small_number);
+  Function gg(gshape, gshape + 2, -log(0.5));// for testing some_small_number));
   for (int i = 0; i < num_gscores; i++){ //loop through lines of g
     if (newBinaryMatrix) { //re-initialize gg
       //printf("in newBinaryMatrix conditional\n");
       //Function gg(gshape, gshape + 2, 0.0);
-      for (unsigned int i = 0; i < numLabels; i++){
+      for (unsigned int k = 0; k < numLabels; k++){
 	for (unsigned int j = 0; j < numLabels; j++) {
-	  gg(i,j) = -log(some_small_number);
+	  gg(k,j) = -log(0.5);// for testing some_small_number);
 	}
       }
       for (unsigned int j = 0; j < numLabels; j++){
@@ -101,7 +104,7 @@ extern "C" double bp_object_inference(double **f, double **g,
       }
       newBinaryMatrix = false;
 
-      //debugging
+      //debugging initialization
       // for (unsigned int j = 0; j < numLabels; j++){
       // 	for (unsigned int k = 0; k < numLabels; k++){
       // 	  printf("%.4f ",gg(j,k));
@@ -116,7 +119,7 @@ extern "C" double bp_object_inference(double **f, double **g,
     frame2 = size_t(g[i][2]) - 1;
     box2 = size_t(g[i][3]) - 1;
     score = g[i][4];
-    gg(box1,box2) = -log(score);
+    gg(box1,box2) = -log(0.5); // for testing score); //might need conditioning here
     // printf("i = %d, frame1 = %zu, box1 = %zu, frame2 = %zu, box2 = %zu, score = %f\n",
     // 	   i, frame1, box1, frame2, box2, score);
     //added this row--check to see if more rows for this frame1/frame2 combo or not
