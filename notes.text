@@ -795,6 +795,26 @@ as we run into problems or think of things we hadn't thought of before.
   should make this number a parameter to the function.  Also need to switch
   function back to using actual read-in data, rather than testing values.
 
+----------------git commit 60b1a93---------------
+
+18 Mar 15 
+
+--Email conversation with Jeff helped me clarify some of my thoughts as to why I
+  had to put the frame_distance_threshold hack into my code and why that hack is
+  a bad idea.  Believe I'm hitting some sort of limit on the number of
+  variables/labels/factors that can be added, and I think the problem is coming
+  from libDAI.  Started conversations on both the OpenGM and libDAI Google
+  Groups boards asking whether this limit exists.  If I know the limit, then I
+  can try to find a way to stay within it.  Have some other ideas (switch to
+  OpenGM BP, use a numerical or top-n limit on the number of binary scores taken
+  from MATLAB, etc...) in email to Jeff.
+
+--First trying the switch from libDAI BP to OpenGM BP to see if a crash still
+  happens on the full dataset.  With frame_distance_threshold still in place,
+  OpenGM BP ran successfully on test-data-full.  Was significantly slower (~5s
+  vs. ~0.1s), but still pretty fast.  Ran with frame_distance_threshold removed,
+  and it ran without crashing--took ~15s, but that's still not bad.  Committing
+  now before I start changing back to using real data (probably in log space).
 
 ****MIGHT WANT TO KEY DUMMY BOX SCORE TO ADJACENCY--IF FRAMES ARE NOT ADJACENT,
     DUMMY SCORE IS BAD?????****

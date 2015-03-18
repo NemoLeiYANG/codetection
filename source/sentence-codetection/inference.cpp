@@ -20,7 +20,7 @@ typedef opengm::GraphicalModel<double, opengm::Adder, Function, Space> GraphMode
 typedef GraphModel::FunctionIdentifier FID;
 typedef opengm::BeliefPropagationUpdateRules<GraphModel, opengm::Minimizer> UpdateRules;
 typedef opengm::MessagePassing<GraphModel, opengm::Minimizer, UpdateRules, opengm::MaxDistance> BP;
-typedef opengm::external::libdai::Bp<GraphModel, opengm::Minimizer> libdaiBP;
+//typedef opengm::external::libdai::Bp<GraphModel, opengm::Minimizer> libdaiBP;
 
 extern "C" double bp_object_inference(double **f, double **g, 
 				      int T, int top_k, 
@@ -125,10 +125,10 @@ extern "C" double bp_object_inference(double **f, double **g,
     frame1 = size_t(g[start_ind][0]) - 1;  //need a -1 here b/c MATLAB vs. C
     frame2 = size_t(g[start_ind][2]) - 1;
 
-    //put a limit here to limit the distance between frames (limiting the number of gg functions added)
-    size_t frame_distance_threshold = 60;
-    if (abs(frame2-frame1) > frame_distance_threshold)
-      continue;
+    // //put a limit here to limit the distance between frames (limiting the number of gg functions added)
+    // size_t frame_distance_threshold = 60;
+    // if (abs(frame2-frame1) > frame_distance_threshold)
+    //   continue;
 
     Function gg(gshape, gshape + 2, -log(0.5));// for testing some_small_number));
     //initialize dummy values in gg ****MIGHT I WANT TO KEY THIS TO ADJACENCY****
@@ -177,13 +177,16 @@ extern "C" double bp_object_inference(double **f, double **g,
   //  inference
   const size_t maxIterations=100;
   const double damping=0.0;
-  const double tolerance=1e-5;
+  //const double tolerance=1e-5;
+  const double convergenceBound = 1e-7;
   // libdaiBp::UpdateRule = PARALL | SEQFIX | SEQRND | SEQMAX
-  libdaiBP::UpdateRule updateRule = libdaiBP::PARALL;
-  size_t verboseLevel=0;
-  libdaiBP::Parameter parameter(maxIterations, damping, tolerance, updateRule,verboseLevel);
+  //libdaiBP::UpdateRule updateRule = libdaiBP::PARALL;
+  //size_t verboseLevel=0;
+  //libdaiBP::Parameter parameter(maxIterations, damping, tolerance, updateRule,verboseLevel);
+  BP::Parameter parameter(maxIterations,convergenceBound,damping);
   printf("before bp call\n");
-  libdaiBP bp(gm, parameter);
+  //libdaiBP bp(gm, parameter);
+  BP bp(gm, parameter);
   printf("after bp call\n");
   // optimize (approximately)
   clock_t t1, t2;
@@ -193,7 +196,7 @@ extern "C" double bp_object_inference(double **f, double **g,
   t2 = clock();
   printf("after bp.infer\n");
   std::cout << (double(t2) - double(t1))/CLOCKS_PER_SEC*1000 << " ms" << std::endl;
-  std::cout << "libDAI Belief Propagation " << -bp.value() << std::endl;
+  std::cout << "OpenGM Belief Propagation " << -bp.value() << std::endl;
   std::vector<size_t> labeling(T); 
   bp.arg(labeling);
   for (unsigned int i = 0; i < labeling.size(); i ++)
