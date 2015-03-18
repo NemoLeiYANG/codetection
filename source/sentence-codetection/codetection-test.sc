@@ -441,8 +441,35 @@
  (dtrace "loaded test-data-full, load complete" #f)
  (system "date"))
 
-;;(define (read-data)
- (define test-data-small (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-small.sc"))
- (define test-data-medium (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-medium.sc"))
- (define test-data-large (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-large.sc"))
- (define test-data-full (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-full.sc"))
+
+(define (matlab-data-to-files top-k ssize alpha beta gamma delta)
+ (let* ((basedir "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/training")
+	(log-to-track "/home/sbroniko/vader-rover/position/log-to-track.out")
+	(baseplans `("plan4" "plan5" "plan6" "plan7" "plan8" "plan9"));;(system-output (format #f "ls ~a | grep plan" basedir)))
+	)
+  (for-each
+   (lambda (plan)
+    (for-each
+     (lambda (dir)
+      (unless
+	(file-exists? (format
+		       #f
+		       "~a/~a/~a/imu-log-with-estimates.txt"
+		       basedir plan dir))
+       (system (format
+		#f
+		"~a none ~a/~a/~a/imu-log-with-estimates.txt ~a/~a/~a/imu-log-with-estimates.sc"
+		log-to-track basedir plan dir basedir plan dir)))
+      (write-object-to-file
+       (get-matlab-proposals-similarity-full-video
+	top-k ssize (format #f "~a/~a/~a" basedir plan dir) alpha beta gamma delta)
+       (format #f "~a/~a/~a/frame-data.sc" basedir plan dir)))
+     (system-output (format #f "ls ~a/~a" basedir plan)) ))
+   baseplans)))
+
+	  
+
+ ;; (define test-data-small (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-small.sc"))
+ ;; (define test-data-medium (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-medium.sc"))
+ ;; (define test-data-large (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-large.sc"))
+ ;; (define test-data-full (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-full.sc"))

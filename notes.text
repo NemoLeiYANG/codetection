@@ -816,8 +816,25 @@ as we run into problems or think of things we hadn't thought of before.
   and it ran without crashing--took ~15s, but that's still not bad.  Committing
   now before I start changing back to using real data (probably in log space).
 
+----------------git commit 33314c5---------------
+
+18 Mar 15
+
+--Wrote matlab-data-to-files in codetection-test.sc to run on a
+  server and put matlab output into frame-data.sc files in each directory of
+  training data (plan4 thru plan9, since plan0 thru plan3 had no objects in
+  video).  Left running overnight on jalitusteabe.
+
+--Next need to revise inference.cpp to use real data (try log space first).
+  Then need to write a Scheme wrapper that loads the matlab data from file, does
+  the codetection, and then visualizes and saves the result.  Could also try a
+  system call that takes the saved frames and puts it into a video and then
+  deletes the images.  ***NEED TO APPEND EMPTY LIST TO END OF BOXES, XY BEFORE
+  THIS WILL WORK***
+
+
 ****MIGHT WANT TO KEY DUMMY BOX SCORE TO ADJACENCY--IF FRAMES ARE NOT ADJACENT,
-    DUMMY SCORE IS BAD?????****
+    DUMMY SCORE IS BAD?????**** Maybe not--talking with Dan convinced me otherwise
 
 **Still need to figure out how to add an empty list (append?) to the end of the
   proposals-boxes and proposals-xy lists.
