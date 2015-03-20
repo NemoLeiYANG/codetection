@@ -868,17 +868,46 @@ as we run into problems or think of things we hadn't thought of before.
   other videos (should be able to once the job running on jalitusteabe saves all
   the matlab data).
 
+----------------git commit a137c47---------------
 
+20 Mar 15
 
+--Overnight run completed in ~28 minutes (with precomputed Matlab data, which
+  took ~10 minutes itself) for a single 204-frame video.  Results look somewhat
+  reasonable--it usually got sensible boxes around the objects it was supposed
+  to detect, but there were quite a few spurious boxes chosen (~40% of the time)
+  when it should have been choosing the dummy box.  It did choose the dummy box
+  ~60% of the time when it should have chosen it, and it never chose the dummy
+  box when it should have been choosing an object box.  This run was done with
+  the parameters set at dummy-f = dummy-g = 0.6.  Not sure how to change these
+  parameters would improve results, or if that is even worth the effort.  It
+  might be more beneficial to set up a large run on one of the servers that will
+  processs many of the videos and save all the output to a .sc file.  
 
+--Jaliusteabe job to precompute matlab data is still running--plan{4,5,6,7,8} are
+  complete, currently working on plan9 (last one).
+
+--Rebuilt visualize-results to take only a path and dummy-f and dummy-g values
+  as arguments.  It saves the full results or
+  run-codetection-with-proposals-similarity to results-dummy-f-dummy-g.sc, and
+  puts image output into the subdirectory /images-dummy-f-dummy-g/.  
+
+--Using this with Dan's synchronous-run-commands-in-parallel-with-queueing from
+  toollib-multi-process.sc to run this against all the videos we currently have
+  on the 2G servers over the weekend.  New procedure is (run-full-results
+  dummy-f dummy-g output-directory).  I don't think this job will end up
+  overtaking the matlab precompute job that's currently running on jalitusteabe
+  (which is providing the data that run-codetection-with-proposals-similarity
+  takes as input), but if it does and the job doesn't finish, we should still
+  have usable results from the videos that it does process.
+
+--Will check tomorrow on the results of this run.  Will also be starting on
+  preparing my prelim document this weekend.
 
 
 
 ****MIGHT WANT TO KEY DUMMY BOX SCORE TO ADJACENCY--IF FRAMES ARE NOT ADJACENT,
     DUMMY SCORE IS BAD?????**** Maybe not--talking with Dan convinced me otherwise
-
-**Still need to figure out how to add an empty list (append?) to the end of the
-  proposals-boxes and proposals-xy lists.
 
 **Still need to add binary score factor for temporal coherency / optical flow
   (Scheme->C bindings or in C directly?)

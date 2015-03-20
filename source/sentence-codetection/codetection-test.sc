@@ -1,3 +1,5 @@
+(load "/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc")
+;; made edits to this file in rsync-directory-to-server in order to NOT exclude image files
 (load "/home/sbroniko/codetection/source/rover-projection.sc")
 ;;(load "/home/sbroniko/codetection/source/toollib-perspective-projection.sc")
 ;;(load "/home/sbroniko/codetection/source/sentence-codetection/codetection.sc")
@@ -451,7 +453,7 @@
   ;;(list boxes) ;;just box indices
   ))
 
-(define (visualize-results data frames path name-prefix dummy-f dummy-g)
+(define (visualize-results-test data frames path name-prefix dummy-f dummy-g)
  (let* ((results (run-codetection-with-proposals-similarity data
 							    dummy-f
 							    dummy-g))
@@ -468,7 +470,7 @@
 	    (imlib-draw-text-on-image image ;;we have a dummy box
 				      "DUMMY BOX" ;;string
 				      (vector 255 0 0) ;;text color
-				      12 ;;font size?
+				      18 ;;font size?
 				      320 ;; x?
 				      240 ;; y?
 				      (vector 255 255 255) ;;bg color
@@ -484,11 +486,86 @@
 	(dtrace "saved image" n)
 	(loop (rest images) (rest boxes) (+ n 1)))))))
 
+(define (visualize-results path dummy-f dummy-g)
+ (let* ((data (read-object-from-file (format #f "~a/frame-data.sc" path)))
+	(img-path (format #f "~a/images-~a-~a" path
+			  (number->padded-string-of-length dummy-f 3)
+			  (number->padded-string-of-length dummy-g 3)))
+	(results (run-codetection-with-proposals-similarity data
+							    dummy-f
+							    dummy-g))
+	(boxes (third results))
+	(video-path (format #f "~a/video_front.avi" path))
+	(frames (video->frames 1 video-path))
+	)
+  (write-object-to-file results (format #f "~a/results-~a-~a.sc" path
+					(number->padded-string-of-length dummy-f 3)
+					(number->padded-string-of-length dummy-g 3)))
+ ;; (dtrace "img-path" img-path)
+  (mkdir-p img-path)
+  (let loop ((images (map (lambda (f) (imlib:clone f)) frames))
+	     (boxes boxes)
+	     (n 0))
+   (if (or (null? images)
+	   (null? boxes))
+       (dtrace (format #f "finished in ~a" path) #f)
+       (let* ((box (first boxes))
+	      (image (first images)))
+	(if (null? box)
+	    (imlib-draw-text-on-image image ;;we have a dummy box
+				      "DUMMY BOX" ;;string
+				      (vector 255 0 0) ;;text color
+				      18 ;;font size?
+				      320 ;; x?
+				      240 ;; y?
+				      (vector 255 255 255) ;;bg color
+				      ) 
+	    (let* ((x1 (first box)) ;;we have a real box
+		   (y1 (second box))
+		   (w (- (third box) (first box)))
+		   (h (- (fourth box) (second box))))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0))))
+	(imlib:save image (format #f "~a/~a.png"
+				  img-path
+				  (number->padded-string-of-length n 5)))
+	(dtrace "saved image" n)
+	(loop (rest images) (rest boxes) (+ n 1)))))))
+
+
+(define (run-full-results dummy-f dummy-g output-directory)
+ (let* ((servers (list "jalitusteabe" "cuddwybodaeth" "istihbarat" "wywiad"))
+	(source "jalitusteabe")
+	(cpus-per-job 1)
+	(rsync-directory "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/training/")
+	(plandirs (system-output (format #f "ls ~a | grep plan" rsync-directory)))
+	(arg-list (join
+		   (map
+		    (lambda (p)
+		     (map (lambda (d) (format #f "~a/~a/~a" rsync-directory p d))
+			  (system-output (format #f "ls ~a/~a" rsync-directory
+						 p)))) plandirs)))
+	(commands (map (lambda (arg) (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"
+					     arg
+					     dummy-f
+					     dummy-g)) arg-list))
+	)
+ ;; (first arg-list)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands
+  						      servers
+  						      cpus-per-job
+  						      output-directory
+  						      source
+  						      rsync-directory)
+  (system "date")
+  ))
+
+
 ;;this does the matlab stuff with given parameters and saves it in the same directory as the original data.
 (define (matlab-data-to-files top-k ssize alpha beta gamma delta)
  (let* ((basedir "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/training")
 	(log-to-track "/home/sbroniko/vader-rover/position/log-to-track.out")
-	(baseplans `("plan4" "plan5" "plan6" "plan7" "plan8" "plan9"));;(system-output (format #f "ls ~a | grep plan" basedir)))
+	(baseplans `("plan9"));;"plan4" "plan5" "plan6" "plan7" "plan8" "plan9"));;(system-output (format #f "ls ~a | grep plan" basedir)))
 	)
   (for-each
    (lambda (plan)
@@ -542,18 +619,19 @@
  (system "date"))
 
 
- (define test-data-small (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-small.sc"))
- (define test-data-medium (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-medium.sc"))
- (define test-data-large (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-large.sc"))
- (define test-data-full (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-full.sc"))
+;;  (define test-data-small (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-small.sc"))
+;;  (define test-data-medium (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-medium.sc"))
+;;  (define test-data-large (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-large.sc"))
+;;  (define test-data-full (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-full.sc"))
 
-(define test-frames-full
- (let* ((data-path "/home/sbroniko/codetection/testing-data")
-	(video-path (format #f "~a/video_front.avi" data-path)))
-  (video->frames 1 video-path)))
+;; (define test-frames-full
+;;  (let* ((data-path "/home/sbroniko/codetection/testing-data")
+;; 	(video-path (format #f "~a/video_front.avi" data-path)))
+;;   (video->frames 1 video-path)))
 
-(define test-frames-small (sublist test-frames-full 16 20))
+;; (define test-frames-small (sublist test-frames-full 16 20))
 
-(define test-frames-medium (sublist test-frames-full 16 46))
+;; (define test-frames-medium (sublist test-frames-full 16 46))
 
-(define test-frames-large (sublist test-frames-full 16 116))
+;; (define test-frames-large (sublist test-frames-full 16 116))
+
