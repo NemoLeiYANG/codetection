@@ -86,36 +86,55 @@
 			 (format #f "~a/imu-log-with-estimates.txt" datapath)
 			 (format #f "~a/imu-log.txt" datapath)))
 	(poses-with-timing (read-robot-estimated-pose-from-log-file timing-file)))
-  (if (not (= num-frames (length cam-timing)))
-      (dtrace "error: num-frames != cam-timing" #f)
-      (let loop ((cam-timing cam-timing)
-		 (poses poses-with-timing)
-		 (previous-pose #f)
-		 (frame-poses '()))
-       (if (or (null? poses) (null? cam-timing))
-	   (begin
+  (begin
+   ;; (dtrace "in align-frames-with-poses" #f)
+   ;; (dtrace (format #f "num-frames = ~a, (length cam-timing) = ~a"
+   ;; 		   num-frames (length cam-timing)) #f)
+   (if (> num-frames (length cam-timing))
+       (dtrace "error: num-frames > cam-timing" #f)
+       (let loop ((cam-timing cam-timing)
+		  (poses poses-with-timing)
+		  (previous-pose #f)
+		  (frame-poses '()))
+	(if (or (null? poses) (null? cam-timing))
+	    (begin
 	   ;;;need to error check length of pose list here
-	    ;;(dtrace "length = " (length frame-poses))
-	    (if (not (= num-frames (length frame-poses)))
-		(dtrace "error: num-frames != frame-poses" #f)
-		(reverse frame-poses)))
-	   ;; (if (< (first cam-timing) (first (first poses)))
-	   ;;     ;;(dtrace "error: first frame earlier than first pose" frame-poses)  
-	   (if previous-pose
-	       (if (< (abs (- (first previous-pose) (first cam-timing)))
-		      (abs (- (first (first poses)) (first cam-timing))))
+	     ;;(dtrace "length = " (length frame-poses))
+	     ;; (dtrace (format #f "num-frames = ~a, (length frame-poses) = ~a"
+   	     ;; 	   num-frames (length frame-poses)) #f)
+	     (if (not (= num-frames (length frame-poses)))
+		 ;; (begin
+		 ;;  (dtrace "error: num-frames != frame-poses" #f)
+		  (if (> num-frames (length frame-poses))
+		      (begin
+		       (dtrace (format #f
+				       "copying poses to end of list: num-frames = ~a, (length frame-poses) = ~a"
+				       num-frames (length frame-poses )) #f)
+		       (loop cam-timing
+			     poses
+			     previous-pose
+			     (cons (first frame-poses) frame-poses))
+		       )
+		      (dtrace "error: num-frames < frame-poses" #f))
+		  ;; )
+		 (reverse frame-poses)))
+	    ;; (if (< (first cam-timing) (first (first poses)))
+	    ;;     ;;(dtrace "error: first frame earlier than first pose" frame-poses)  
+	    (if previous-pose
+		(if (< (abs (- (first previous-pose) (first cam-timing)))
+		       (abs (- (first (first poses)) (first cam-timing))))
 		    (loop (rest cam-timing)
 			  (rest poses)
 			  (first poses)
 			  (cons (second (first poses)) frame-poses))
-		   (loop cam-timing
-			 (rest poses)
-			 (first poses)
-			 frame-poses))
-	       (loop cam-timing
-		     (rest poses)
-		     (first poses)
-		     frame-poses)))))))
+		    (loop cam-timing
+			  (rest poses)
+			  (first poses)
+			  frame-poses))
+		(loop cam-timing
+		      (rest poses)
+		      (first poses)
+		      frame-poses))))))))
        
 (define (frame-test)
  (let* ((video-path "/home/sbroniko/codetection/test-run-data/video_front.avi")
@@ -318,7 +337,11 @@
     )    
    frames)
   ;; call matlab function
-  (matlab (format #f "[boxes_w_fscore,gscore,num_gscore] = scott_proposals_similarity2(~a,~a,frames,poses,~a,~a,~a);" top-k box-size alpha-norm beta-norm gamma-norm))
+  (matlab
+   (format
+    #f
+    "[boxes_w_fscore,gscore,num_gscore] = scott_proposals_similarity2(~a,~a,frames,poses,~a,~a,~a);"
+    top-k box-size alpha-norm beta-norm gamma-norm))
   ;; convert matlab variables to scheme
   (list (map-n (lambda (t)
 		(matlab (format #f "tmp=boxes_w_fscore(:,:,~a);" (+ t 1)))
@@ -404,21 +427,98 @@
 	(score (bp-object-inference f-c g-c (length f)
 				    top-k dummy-f dummy-g num-g boxes-c))
 	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t)))
-;;  (dtrace "before (free boxes-c)" #f)
+  ;;  (dtrace "before (free boxes-c)" #f)
   (free boxes-c)
-;;  (dtrace "before (easy-ffi:free 2 f f-c)" #f)
+  ;;  (dtrace "before (easy-ffi:free 2 f f-c)" #f)
   (easy-ffi:free 2 f f-c)
-;;  (dtrace "before (easy-ffi:free 2 g g-c)" #f)
+  ;;  (dtrace "before (easy-ffi:free 2 g g-c)" #f)
   (easy-ffi:free 2 g g-c);;
-;;  (dtrace "before (list boxes)" #f)
-  ;; (pp (map (lambda (b pool) (list b (list-ref pool b)))
-  ;; 	   boxes proposals))
-  ;; (map (lambda (b prop-xy prop-boxes) (list b
-  ;; 				       (list-ref prop-xy b)
-  ;; 				       (list-ref prop-boxes b)))
-  ;;      boxes proposals-xy proposals-boxes)
-  (list boxes)
+
+  ;;output
+  (list boxes
+	(map (lambda
+	       (b prop-xy) (list-ref prop-xy b))
+	     boxes
+	     (map (lambda (prop-xy) (append prop-xy '(())))
+		  proposals-xy))
+	(map (lambda
+	       (b prop-boxes) (list-ref prop-boxes b))
+	     boxes
+	     (map (lambda (prop-boxes) (append prop-boxes '(())))
+		  proposals-boxes))
+	     )
+
+  ;;(list boxes) ;;just box indices
   ))
+
+(define (visualize-results data frames path name-prefix dummy-f dummy-g)
+ (let* ((results (run-codetection-with-proposals-similarity data
+							    dummy-f
+							    dummy-g))
+	(boxes (third results)))
+  (let loop ((images (map (lambda (f) (imlib:clone f)) frames))
+	     (boxes boxes)
+	     (n 0))
+   (if (or (null? images)
+	   (null? boxes))
+       (dtrace "done" #f)
+       (let* ((box (first boxes))
+	      (image (first images)))
+	(if (null? box)
+	    (imlib-draw-text-on-image image ;;we have a dummy box
+				      "DUMMY BOX" ;;string
+				      (vector 255 0 0) ;;text color
+				      12 ;;font size?
+				      320 ;; x?
+				      240 ;; y?
+				      (vector 255 255 255) ;;bg color
+				      ) 
+	    (let* ((x1 (first box)) ;;we have a real box
+		   (y1 (second box))
+		   (w (- (third box) (first box)))
+		   (h (- (fourth box) (second box))))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0))))
+	(imlib:save image (format #f "~a/~a-~a.png"
+				  path name-prefix
+				  (number->padded-string-of-length n 5)))
+	(dtrace "saved image" n)
+	(loop (rest images) (rest boxes) (+ n 1)))))))
+
+;;this does the matlab stuff with given parameters and saves it in the same directory as the original data.
+(define (matlab-data-to-files top-k ssize alpha beta gamma delta)
+ (let* ((basedir "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/training")
+	(log-to-track "/home/sbroniko/vader-rover/position/log-to-track.out")
+	(baseplans `("plan4" "plan5" "plan6" "plan7" "plan8" "plan9"));;(system-output (format #f "ls ~a | grep plan" basedir)))
+	)
+  (for-each
+   (lambda (plan)
+    (for-each
+     (lambda (dir)
+      (unless
+	(file-exists? (format
+		       #f
+		       "~a/~a/~a/imu-log-with-estimates.txt"
+		       basedir plan dir))
+       (system (format
+		#f
+		"~a none ~a/~a/~a/imu-log.txt ~a/~a/~a/imu-log-with-estimates.txt ~a/~a/~a/imu-log-with-estimates.sc"
+		log-to-track basedir plan dir basedir plan dir basedir plan dir)))
+      (write-object-to-file
+       (get-matlab-proposals-similarity-full-video
+	top-k ssize (format #f "~a/~a/~a" basedir plan dir) alpha beta gamma delta)
+       (format #f "~a/~a/~a/frame-data.sc" basedir plan dir))
+      (dtrace (format #f "wrote ~a/~a/~a/frame-data.sc" basedir plan dir) #f)
+      )
+     ;;(sublist
+      (system-output (format #f "ls ~a/~a" basedir plan))
+     ;; 0 1)
+     ))
+   ;;(sublist
+    baseplans
+   ;; 0 1)
+    )))
+
+
 
 
 ;;;;----temporary testing-data stuff-------
@@ -442,34 +542,18 @@
  (system "date"))
 
 
-(define (matlab-data-to-files top-k ssize alpha beta gamma delta)
- (let* ((basedir "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/training")
-	(log-to-track "/home/sbroniko/vader-rover/position/log-to-track.out")
-	(baseplans `("plan4" "plan5" "plan6" "plan7" "plan8" "plan9"));;(system-output (format #f "ls ~a | grep plan" basedir)))
-	)
-  (for-each
-   (lambda (plan)
-    (for-each
-     (lambda (dir)
-      (unless
-	(file-exists? (format
-		       #f
-		       "~a/~a/~a/imu-log-with-estimates.txt"
-		       basedir plan dir))
-       (system (format
-		#f
-		"~a none ~a/~a/~a/imu-log-with-estimates.txt ~a/~a/~a/imu-log-with-estimates.sc"
-		log-to-track basedir plan dir basedir plan dir)))
-      (write-object-to-file
-       (get-matlab-proposals-similarity-full-video
-	top-k ssize (format #f "~a/~a/~a" basedir plan dir) alpha beta gamma delta)
-       (format #f "~a/~a/~a/frame-data.sc" basedir plan dir)))
-     (system-output (format #f "ls ~a/~a" basedir plan)) ))
-   baseplans)))
+ (define test-data-small (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-small.sc"))
+ (define test-data-medium (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-medium.sc"))
+ (define test-data-large (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-large.sc"))
+ (define test-data-full (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-full.sc"))
 
-	  
+(define test-frames-full
+ (let* ((data-path "/home/sbroniko/codetection/testing-data")
+	(video-path (format #f "~a/video_front.avi" data-path)))
+  (video->frames 1 video-path)))
 
- ;; (define test-data-small (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-small.sc"))
- ;; (define test-data-medium (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-medium.sc"))
- ;; (define test-data-large (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-large.sc"))
- ;; (define test-data-full (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-full.sc"))
+(define test-frames-small (sublist test-frames-full 16 20))
+
+(define test-frames-medium (sublist test-frames-full 16 46))
+
+(define test-frames-large (sublist test-frames-full 16 116))

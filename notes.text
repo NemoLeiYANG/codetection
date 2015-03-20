@@ -832,6 +832,47 @@ as we run into problems or think of things we hadn't thought of before.
   deletes the images.  ***NEED TO APPEND EMPTY LIST TO END OF BOXES, XY BEFORE
   THIS WILL WORK***
 
+----------------git commit a5da3af---------------
+
+19 Mar 15
+
+--Ran into a problem with the overnight run of matlab-data-to-files.  For
+  certain runs (only found 1 so far), I get an error num-frames != frame-poses
+  from within align-frames-with-poses.  This appears to be happening because
+  there are frame times that are later than the latest imu log time.  Need to
+  figure out a way to overcome this--perhaps just copy the last pose for all the
+  rest of the frames.
+
+--Fix by copying last pose for rest of frames seems to work,
+  matlab-data-to-files no longer errors out.  Will have to see if the
+  visualization generated from this data is any good
+  (.../training/plan4/2014-11-15-22:47:10/frame-data.sc) 
+
+--Found a problem in the data--some of the camera_front.txt files were missing
+  one of the footer lines (Camera logging stopped), which was causing
+  align-frames-with-poses to error out.  That line was the last one written from
+  the rover, so the connection must have been closed before those messages made
+  it into the socket on the rover end.  I found the files with the line missing
+  and added the line so that the code would work correctly.  Also relaxed the
+  condition in align-frames-with-poses so that now as long as there are not more
+  frames than frame times, it will run and just ignore the extra frame times at
+  the end of the list.
+
+--Changed inference.cpp back to using real data in log space.  Built a
+  visualization wrapper around it so that we can visualize the effects of
+  changing the parameters (dummy_{f,g}, alpha, beta, gamma, etc.).  Right now
+  just playing with dummy_f and dummy_g values to see how that affects when a
+  dummy box is selected.  Initial testing on short video segment gave fairly
+  good results when dummy_f = dummy_g = 0.6.  Running test on full test video
+  overnight to see how that does--timing it with (system "date").  Also need to run on
+  other videos (should be able to once the job running on jalitusteabe saves all
+  the matlab data).
+
+
+
+
+
+
 
 ****MIGHT WANT TO KEY DUMMY BOX SCORE TO ADJACENCY--IF FRAMES ARE NOT ADJACENT,
     DUMMY SCORE IS BAD?????**** Maybe not--talking with Dan convinced me otherwise

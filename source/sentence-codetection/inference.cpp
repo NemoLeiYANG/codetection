@@ -38,15 +38,16 @@ extern "C" double bp_object_inference(double **f, double **g,
   GraphModel gm(space);
 
   double some_small_number = 1e-10;
-  double default_f_score = -log(0.5); // for testing-log(some_small_number);
-  //removed for testing
-  // if (dummy_f != 0.0)
-  //   default_f_score = -log(dummy_f);
-  // if (dummy_f == 1.0)
+  double default_f_score = -log(some_small_number);
+  if (dummy_f != 0.0)
+    default_f_score = -log(dummy_f);
+  if (dummy_f == 1.0)
+    default_f_score = 0.0;
+  // if (dummy_f == 1.0) //not necessary--0's are OK in log space
   //   default_f_score = -log(1.0-some_small_number);
 
   //debugging
-  //printf("dummy_f = %f, dummy_g = %f\n",dummy_f,dummy_g);
+  // printf("dummy_f = %f, dummy_g = %f\n",dummy_f,dummy_g);
 
   // add unary score functions
   for (unsigned int t = 0; t < numVariables; t ++){
@@ -54,7 +55,7 @@ extern "C" double bp_object_inference(double **f, double **g,
     size_t fshape[] = {numLabels}; 
     Function ff(fshape, fshape+1, default_f_score); 
     for (int i = 0; i < top_k; i ++){
-      ff(i) = -log(0.5);//for testing-log(f[t][i]); //might need conditioning here
+      ff(i) = -log(f[t][i]); //might need conditioning here if f[t][i]==0 (or very close)
     }
     fid = gm.addFunction(ff);
     // add factors
@@ -80,16 +81,18 @@ extern "C" double bp_object_inference(double **f, double **g,
   // add binary score functions
   size_t gshape[] = {numLabels, numLabels};
   size_t prevf1, prevf2;
-  double dummy_g_score = -log(0.5);// for testing some_small_number);
-  // removed for testing
-  // if (dummy_g != 0.0)
-  //   dummy_g_score = -log(dummy_g);
-  // if (dummy_g == 1.0)
+  double default_g_score = -log(some_small_number);
+  double dummy_g_score = -log(some_small_number);
+  if (dummy_g != 0.0)
+    dummy_g_score = -log(dummy_g);
+  if (dummy_g == 1.0)
+    dummy_g_score = 0.0;
+  // if (dummy_g == 1.0) //not necessary--0's are OK in log space
   //   dummy_g_score = -log(1.0-some_small_number);
 
   //first find indices into g matrix where frame change breaks are
   int numbreaks = (numVariables*(numVariables-1))/2; //nChoose2
-  int breaks[numbreaks];// = {0}; 
+  int breaks[numbreaks];// can't do = {0} b/c variably-sized array
   memset(breaks, 0, numbreaks*sizeof(int)); //manually initializing array
   breaks[0] = 0;
   int b_ind = 1;
@@ -97,7 +100,8 @@ extern "C" double bp_object_inference(double **f, double **g,
   prevf2 = size_t(g[0][2]);
   for (int i = 0; i < num_gscores; i++) {
     if ((prevf1 != (size_t(g[i][0]))) ||
-	(prevf2 != (size_t(g[i][2])))) {
+	(prevf2 != (size_t(g[i][2])))) 
+    {
       breaks[b_ind] = i;
       b_ind++;
       prevf1 = size_t(g[i][0]);
@@ -130,7 +134,7 @@ extern "C" double bp_object_inference(double **f, double **g,
     // if (abs(frame2-frame1) > frame_distance_threshold)
     //   continue;
 
-    Function gg(gshape, gshape + 2, -log(0.5));// for testing some_small_number));
+    Function gg(gshape, gshape + 2, default_g_score);
     //initialize dummy values in gg ****MIGHT I WANT TO KEY THIS TO ADJACENCY****
     for (unsigned int k = 0; k < numLabels; k++){
 	gg(numLabels-1,k) = dummy_g_score;
@@ -149,7 +153,7 @@ extern "C" double bp_object_inference(double **f, double **g,
       box1 = size_t(g[i][1]) - 1;  //need a -1 here b/c MATLAB vs. C
       box2 = size_t(g[i][3]) - 1;
       score = g[i][4];
-      gg(box1,box2) = -log(0.5); // for testing score); //might need conditioning here
+      gg(box1,box2) = -log(score); //might need conditioning here
       // printf("i = %d, frame1 = %zu, box1 = %zu, frame2 = %zu, box2 = %zu, score = %f\n",
       // 	   i, frame1, box1, frame2, box2, score);
     }
@@ -196,11 +200,11 @@ extern "C" double bp_object_inference(double **f, double **g,
   t2 = clock();
   printf("after bp.infer\n");
   std::cout << (double(t2) - double(t1))/CLOCKS_PER_SEC*1000 << " ms" << std::endl;
-  std::cout << "OpenGM Belief Propagation " << -bp.value() << std::endl;
+  std::cout << "OpenGM Belief Propagation " << bp.value() << std::endl;
   std::vector<size_t> labeling(T); 
   bp.arg(labeling);
   for (unsigned int i = 0; i < labeling.size(); i ++)
     boxes[i] = int(labeling[i]);
   delete [] vars;
-  return -bp.value();
+  return bp.value();
 }
