@@ -901,9 +901,26 @@ as we run into problems or think of things we hadn't thought of before.
   takes as input), but if it does and the job doesn't finish, we should still
   have usable results from the videos that it does process.
 
+--Got run-full-results going after some debugging and figuring out some issues
+  with my .bashrc file.  Job appears to be running and producing output.
+
 --Will check tomorrow on the results of this run.  Will also be starting on
   preparing my prelim document this weekend.
 
+----------------git commit eaf3e6f---------------
+
+21 Mar 15
+
+--Job from last night looks like it completed successfully, with a runtime of
+  about 4 hours.  The data from plan9 didn't get processed completely because
+  the matlab preprocessing job wasn't complete by the time the results job got
+  to those directories.  Starting a new job just to run on plan9, and added a
+  line to run-full-results to rsync all the data back to jalitusteabe when it's
+  complete.  Will check on this job tomorrow--runtime should be less than an
+  hour (only processing 25 runs, while the previous 4 hour job processed 125
+  runs). 
+
+**when job is done running, need to rsync result data BACK to jalitusteabe
 
 
 ****MIGHT WANT TO KEY DUMMY BOX SCORE TO ADJACENCY--IF FRAMES ARE NOT ADJACENT,

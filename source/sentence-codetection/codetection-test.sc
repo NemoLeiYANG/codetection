@@ -537,7 +537,7 @@
 	(source "jalitusteabe")
 	(cpus-per-job 1)
 	(rsync-directory "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/training/")
-	(plandirs (system-output (format #f "ls ~a | grep plan" rsync-directory)))
+	(plandirs (list "plan9"));;(system-output (format #f "ls ~a | grep plan" rsync-directory)))
 	(arg-list (join
 		   (map
 		    (lambda (p)
@@ -557,6 +557,9 @@
   						      output-directory
   						      source
   						      rsync-directory)
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server rsync-directory source))
+	    servers) ;;copy results back to source
   (system "date")
   ))
 
