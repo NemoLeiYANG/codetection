@@ -321,6 +321,7 @@
 	(width (imlib:width one-frame)))
   ;;(list frames poses)
   (start-matlab!)
+  (matlab "addpath(genpath('/home/sbroniko/codetection/source/sentence-codetection/'))")
   (scheme->matlab! "poses" poses)
   (matlab (format #f "frames = zeros(~a,~a,~a,~a,'uint8');" height width 3 num-frames))
   ;; convert frames to matlab matrix
@@ -566,9 +567,9 @@
 
 ;;this does the matlab stuff with given parameters and saves it in the same directory as the original data.
 (define (matlab-data-to-files top-k ssize alpha beta gamma delta)
- (let* ((basedir "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/training")
+ (let* ((basedir "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation")
 	(log-to-track "/home/sbroniko/vader-rover/position/log-to-track.out")
-	(baseplans `("plan9"));;"plan4" "plan5" "plan6" "plan7" "plan8" "plan9"));;(system-output (format #f "ls ~a | grep plan" basedir)))
+	(baseplans (system-output (format #f "ls ~a | grep plan" basedir)));;`("plan9"));;"plan4" "plan5" "plan6" "plan7" "plan8" "plan9"));;(system-output (format #f "ls ~a | grep plan" basedir)))
 	)
   (for-each
    (lambda (plan)
@@ -598,8 +599,94 @@
    ;; 0 1)
     )))
 
+(define (get-matlab-data-training-or-generation
+	 path top-k ssize alpha beta gamma delta)
+ (let* ((log-to-track "/home/sbroniko/vader-rover/position/log-to-track.out"))
+  (unless ;;comment out this unless if doing autodrive
+    (file-exists? (format #f "~a/imu-log-with-estimates.txt" path))
+   (system (format #f "~a none ~a/imu-log.txt ~a/imu-log-with-estimates.txt ~a/imu-log-with-estimates.sc" log-to-track path path path)))
+  (write-object-to-file
+   (get-matlab-proposals-similarity-full-video
+    top-k ssize (format #f "~a" path) alpha beta gamma delta)
+   (format #f "~a/frame-data.sc" path))
+  (dtrace (format #f "wrote ~a/frame-data.sc" path) #f)))
 
+(define (get-matlab-data-auto-drive path top-k ssize alpha beta gamma delta)
+ (begin
+  (write-object-to-file
+   (get-matlab-proposals-similarity-full-video
+    top-k ssize (format #f "~a" path) alpha beta gamma delta)
+   (format #f "~a/frame-data.sc" path))
+  (dtrace (format #f "wrote ~a/frame-data.sc" path) #f)))
 
+(define (results-end-to-end data-directory ;; NEED slash on data-dir
+			    top-k
+			    ssize
+			    alpha
+			    beta
+			    gamma
+			    delta
+			    dummy-f
+			    dummy-g
+			    output-directory) ;;NO slash on output-dir
+ (let* ((servers *2g-servers*)
+	(source "jalitusteabe")
+	(matlab-cpus-per-job 1);; 7) ;;if using parfor
+	(c-cpus-per-job 1)
+	(output-matlab (format #f "~a-matlab/" output-directory))
+	(output-c (format #f "~a-c/" output-directory))
+	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	(dir-list (join
+		   (map
+		    (lambda (p)
+		     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+			  (system-output (format #f "ls ~a/~a" data-directory p))))
+		    plandirs)))
+	(commands-matlab (map
+			  (lambda (dir) ;;change get-matlab... command if using auto-drive
+			   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation \"~a\" ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta)) dir-list))
+	(commands-c (map
+		     (lambda (dir)
+		      (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"
+					     dir
+					     dummy-f
+					     dummy-g)) dir-list))
+	)
+  (dtrace "starting results-end-to-end" #f)
+  (system "date")
+  ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
+  ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab output-c))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+		       servers))
+	    (list output-matlab output-c))
+  (dtrace "starting matlab processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-matlab
+  						      servers
+  						      matlab-cpus-per-job
+  						      output-matlab
+  						      source
+  						      data-directory)
+  (dtrace "matlab processing complete" #f)
+  (system "date")
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "matlab results rsync'd, starting c processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-c
+  						      servers
+  						      c-cpus-per-job
+  						      output-c
+  						      source
+  						      data-directory)
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "processing complete" #f)
+  (system "date")))
 
 ;;;;----temporary testing-data stuff-------
 ;;;COMMENT OUT THE FOUR LINES BELOW UNLESS TRYING TO RE-ADD THE DATA

@@ -23,22 +23,22 @@ function [boxes_w_fscore,gscore,num_gscore]= ... %d_score,w_score,s_score,G,dist
 %         num_gscore: number of rows in gscore
 
 % add paths
-%addpath(pwd);
+addpath(pwd);
 addpath(genpath('piotr-toolbox'));
 addpath(genpath('vlfeat/toolbox'));
 addpath(genpath('forests_edges_boxes'));
-run('vlfeat/toolbox/vl_setup');
+run('/home/sbroniko/codetection/source/sentence-codetection/vlfeat/toolbox/vl_setup');
 addpath(genpath('MCG-PreTrained'));
 
-% enable parfor
-pools = matlabpool('size');
-cpus = feature('numCores');
-if pools ~= (cpus - 1)
-    if pools > 0
-        matlabpool('close');
-    end
-    matlabpool('open', cpus - 1);
-end
+% % enable parfor
+% pools = matlabpool('size');
+% cpus = feature('numCores');
+% if pools ~= (cpus - 1)
+%     if pools > 0
+%         matlabpool('close');
+%     end
+%     matlabpool('open', cpus - 1);
+% end
 
 %experiment parameters--shouldn't change
 gaussparam1 = [.25,0]; %setting sigma=.25,mu=0 for distance
@@ -47,7 +47,8 @@ cam_offset = [-0.03 0.16 -0.2]; %estimated measurement, in m
 world_boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
 distance_threshold = 0.5; %distance threshold for similarity score--in m
 binary_score_threshold = 1e-6; %threshold for a binary score to go into ouput--ARBITRARY, may need to change
-dbox_fscore = 0.5; %dummy box fscore value
+%dbox_fscore = 0.5; %dummy box fscore value
+width_threshold = 1.5; %threshold on wwidth of boxes (world with of object) in m -- ARBITRARY, may need to change
 %camera calibration data
 cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
         0.0 7.2412307134397406e+02 2.0310961045807585e+02;...
@@ -95,21 +96,26 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
             new_boxes(i,5) = new_boxes(i,5)*exp(penalty);
             continue; %done with this box
         end %if locflag
-        if (loc(1) > boundary(2))
+        if (loc(1) > boundary(2)) %xpenalty
             xpenalty = boundary(2) - loc(1);
         elseif (loc(1) < boundary(1))
             xpenalty = loc(1) - boundary(1);
         else
             xpenalty = 0;
         end %if loc(1)
-        if (loc(2) > boundary(4))
+        if (loc(2) > boundary(4)) %ypenalty
             ypenalty = boundary(4) - loc(2);
         elseif (loc(2) < boundary(3))
             ypenalty = loc(2) - boundary(3);
         else
             ypenalty = 0;
         end %if loc(2)
-        new_boxes(i,5) = new_boxes(i,5)*exp(xpenalty)*exp(ypenalty);
+        if (wwidth > width_threshold) %wpenalty
+            wpenalty = width_threshold - wwidth;
+        else
+            wpenalty = 0;
+        end %if wwidth
+        new_boxes(i,5) = new_boxes(i,5)*exp(xpenalty)*exp(ypenalty)*exp(wpenalty);
         %compute histogram for box i (for s_score later)
         x1 = bbs(i,1); x2 = bbs(i,3) + bbs(i,1) - 1;
         y1 = bbs(i,2); y2 = bbs(i,4) + bbs(i,2) - 1;

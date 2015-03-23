@@ -920,7 +920,47 @@ as we run into problems or think of things we hadn't thought of before.
   hour (only processing 25 runs, while the previous 4 hour job processed 125
   runs). 
 
-**when job is done running, need to rsync result data BACK to jalitusteabe
+----------------git commit 94fab98---------------
+
+23 Mar 15
+
+--Job for processing all videos in training/plan{4,5,6,7,8,9} completed and
+  results rsynced back to jalitusteabe.  Will sync these results back to
+  seykhl.  Want to think about setting up a job to process the auto-drive and
+  generation runs as well.
+
+--Go through processed videos and mark each in 1 of 3 states: out of scope (no
+  objects in field of view in video), at least one target object detected
+  (good), no target objects detected even though they were in field of view
+  (bad).
+
+--Think about adding a constraint on the boxes that they get penalized (or
+  rejected) if their height or width is > half the image size--will probably
+  have to implement that in MATLAB.
+
+--Implemented size constraint for boxes in MATLAB.  Based the constraint on a
+  world width_threshold--boxes that are > than this (currently arbitrarily set
+  at 1.5m) have a penalty term of exp(width_threshold-wwidth).  Will have to see
+  if it improves results.  Don't think I need to do anything for height, or
+  anything based solely on box size within image, since very close objects WILL
+  take up a large portion of the field of view.
+
+--Built results-end-to-end that runs matlab results and then c results.  Had to
+  make a few changes to scott_proposals_similarity2.m to stop using parallel
+  toolbox--had license problems again.  Now just doing images in simple for
+  loop, but should still speed up b/c running on servers in parallel.  Running
+  this overnight
+
+--Still need to finish going through videos processed over the weekend.
+
+
+running command:
+(results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150323")
+
+
+
+**if we need it, Dan and I worked out the math to compute box world height--on
+  paper on my desk.
 
 
 ****MIGHT WANT TO KEY DUMMY BOX SCORE TO ADJACENCY--IF FRAMES ARE NOT ADJACENT,
@@ -974,15 +1014,10 @@ OPEN FILES IN EMACS (28 Feb 15)
 * incorporate optical flow into binary score...how???
 * box optical flow vs. avg. optical flow might not work--need to look at how the
   geometry works out.
-***DUMMY STATE!!!!
 
 **look at doing single-frame optical flow-->Dan has scheme code that can use C
   bindings--will need to pull original scores out of MATLAB into scheme and then
   add appropriately-weighted optical flow scores in scheme.
-
-**look at doing some sort of simple similarity measure (such as gaussian
-  distance) between all boxes in all frames.  Lots of computations, but if they
-  are small it shouldn't be too bad
 
 
 ******Look at saliency score for image/boxes as a substitute for f (proposal)
