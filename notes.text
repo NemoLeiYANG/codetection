@@ -953,10 +953,62 @@ as we run into problems or think of things we hadn't thought of before.
 
 --Still need to finish going through videos processed over the weekend.
 
+----------------git commit ae69da9---------------
+
+24 Mar 15
+
+--Run on generation dataset complete at 1154. Started at 1828 last night, so
+  overall runtime was ~17.5 hours.  Rsync'd data from jalitusteabe back to
+  seykhl.  Based on advice from Jeff, going to do the run on the auto-drive
+  dataset on the workstations instead of the 2G servers.
+
+--Started run on auto-drive dataset at 1350.  Using 7 workstations (all but
+  mine, Dan's, Jeff's, Haonan's), 42 cores total.
+
+--Had to change matlab code to replace pdist function because of issues with
+  licenses for the Statistics Toolbox.  The norm function should be a direct
+  replacement for computing Euclidean distance.  Testing in matlab seems to
+  work. Runtime seems to be about the same.  Restarted job at 1430.
+
+--Noticed problem with done-22, done-28, done-27.  All ran into the error
+  'error: num-frames > cam-timing', which should be in align-frames-with-poses.
+  Looks like it's the same problem I noticed before, with the 'Camera logging
+  stopped' footer line missing in camera_front.txt.  Need to find all instances
+  of that and fix, then restart job.
+
+--Fixed bad camera_front.txt files and restarted job at 1544.  Scripts to check
+  for footer line are saved below.
+
+--Finished reviewing output of training dataset run.  Out of 150 videos: 82 out
+  of scope, 21 bad, 47 good.  For in scope videos, percent good 69.1 (47/68),
+  percent bad 30.9 (21/68).
+
+--Need to review output from generation dataset run.
+
+
 
 running command:
-(results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150323")
+(results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/auto-drive/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150324")
 
+******SEGMENT VIDEOS WITH SENTENCES IS NEXT STEP*******
+
+
+***BASH SCRIPTS TO LOOK FOR MISSING FOOTER LINES IN CAMERA_FRONT.TXT****
+**to list filenames with grep output below 
+for i in `ls | grep plan`;
+ do 
+ for j in `ls $i`;
+  do
+   echo $i/$j 
+   fgrep "logging stopped" $i/$j/camera_front.txt
+ done
+done
+
+**to do a count by directory
+for i in `ls | grep plan`;
+ do echo $i 
+  fgrep "logging stopped" $i/*/camera_front.txt | wc -l
+done
 
 
 **if we need it, Dan and I worked out the math to compute box world height--on

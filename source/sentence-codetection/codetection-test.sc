@@ -629,8 +629,8 @@
 			    dummy-f
 			    dummy-g
 			    output-directory) ;;NO slash on output-dir
- (let* ((servers *2g-servers*)
-	(source "jalitusteabe")
+ (let* ((servers (list "chino" "buddhi" "maniishaa" "alykkyys" "seulki" "rongovosai" "faisneis")) ;;*2g-servers*)
+	(source "seykhl");;"jalitusteabe")
 	(matlab-cpus-per-job 1);; 7) ;;if using parfor
 	(c-cpus-per-job 1)
 	(output-matlab (format #f "~a-matlab/" output-directory))
@@ -644,7 +644,7 @@
 		    plandirs)))
 	(commands-matlab (map
 			  (lambda (dir) ;;change get-matlab... command if using auto-drive
-			   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation \"~a\" ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta)) dir-list))
+			   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-auto-drive \"~a\" ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta)) dir-list))
 	(commands-c (map
 		     (lambda (dir)
 		      (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"
@@ -657,8 +657,13 @@
   ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
   ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
   (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab output-c))
+  ;; (for-each (lambda (dir)
+  ;; 	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  ;; 		       servers))
+  ;; 	    (list output-matlab output-c))
   (for-each (lambda (dir)
-	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
 		       servers))
 	    (list output-matlab output-c))
   (dtrace "starting matlab processing" #f)

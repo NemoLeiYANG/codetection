@@ -88,7 +88,8 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
         rcorner = [(bbs(i,1)+bbs(i,3)) (bbs(i,2)+bbs(i,4))];
         lcloc = pixel_and_height_to_world(lcorner,0,cam_k,pose,cam_offset);
         rcloc = pixel_and_height_to_world(rcorner,0,cam_k,pose,cam_offset);
-        wwidth = pdist([lcloc'; rcloc'],'euclidean');
+        wwidth = norm(lcloc-rcloc); %had to replace pdist b/c license issues (statistics toolbox)
+                %pdist([lcloc'; rcloc'],'euclidean');
         new_boxes(i,8) = wwidth;
         %do penalty on f (unary) scores (column 5) here
         if (locflag == 0) %box is behind camera
