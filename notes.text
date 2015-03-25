@@ -985,12 +985,38 @@ as we run into problems or think of things we hadn't thought of before.
 
 --Need to review output from generation dataset run.
 
+----------------git commit 13274c2---------------
 
+25 Mar 15
+
+--Run on auto-drive dataset complete at 0935 (120 videos).  Started at 1544
+  yesterday, so overall runtime was ~17h 51m--nearly the same runtime as the
+  generation dataset, but with 20% more videos.  So 7 workstations > 4 2G
+  servers. 
+
+--Based on initial observations in output from generation dataset, the penalty
+  term on world width didn't seem to have much of an effect.  Decreased the
+  width_threshold from 1.5m to 1.0m.  Also added a penalty term to the w_score
+  component of the g_score (binary score).  **THIS HAS NOT BEEN TESTED YET**
+
+--Also added a penalty term unary score to penalize boxes that have edges within
+  10 pixels (arbitrarily set) of image boundary.
+
+--Re-running job on generation dataset with new changes to matlab code.  Have
+  data saving with -new appended to the end of file/dir names.  Will compare
+  against first run to see if improvement (although since results/scores have
+  some degree of randomness, can't be sure a direct comparison will be all that
+  informative).  Basically looking to see if it gets rid of the spurious large
+  boxes. Started job at 1445.
 
 running command:
-(results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/auto-drive/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150324")
+(results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150325")
 
 ******SEGMENT VIDEOS WITH SENTENCES IS NEXT STEP*******
+
+**RECHECK WPENALTY TERM-->DOESN'T APPEAR TO BE DOING WHAT I EXPECT-->ADD A
+  MULTIPLIER???  Might need to add a penalty to w_score (binary based on width)
+
 
 
 ***BASH SCRIPTS TO LOOK FOR MISSING FOOTER LINES IN CAMERA_FRONT.TXT****

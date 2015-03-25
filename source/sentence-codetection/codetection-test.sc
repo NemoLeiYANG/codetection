@@ -488,8 +488,8 @@
 	(loop (rest images) (rest boxes) (+ n 1)))))))
 
 (define (visualize-results path dummy-f dummy-g)
- (let* ((data (read-object-from-file (format #f "~a/frame-data.sc" path)))
-	(img-path (format #f "~a/images-~a-~a" path
+ (let* ((data (read-object-from-file (format #f "~a/frame-data-new.sc" path)))
+	(img-path (format #f "~a/images-~a-~a-new" path
 			  (number->padded-string-of-length dummy-f 3)
 			  (number->padded-string-of-length dummy-g 3)))
 	(results (run-codetection-with-proposals-similarity data
@@ -499,7 +499,7 @@
 	(video-path (format #f "~a/video_front.avi" path))
 	(frames (video->frames 1 video-path))
 	)
-  (write-object-to-file results (format #f "~a/results-~a-~a.sc" path
+  (write-object-to-file results (format #f "~a/results-~a-~a-new.sc" path
 					(number->padded-string-of-length dummy-f 3)
 					(number->padded-string-of-length dummy-g 3)))
  ;; (dtrace "img-path" img-path)
@@ -608,8 +608,8 @@
   (write-object-to-file
    (get-matlab-proposals-similarity-full-video
     top-k ssize (format #f "~a" path) alpha beta gamma delta)
-   (format #f "~a/frame-data.sc" path))
-  (dtrace (format #f "wrote ~a/frame-data.sc" path) #f)))
+   (format #f "~a/frame-data-new.sc" path))
+  (dtrace (format #f "wrote ~a/frame-data-new.sc" path) #f)))
 
 (define (get-matlab-data-auto-drive path top-k ssize alpha beta gamma delta)
  (begin
@@ -644,7 +644,7 @@
 		    plandirs)))
 	(commands-matlab (map
 			  (lambda (dir) ;;change get-matlab... command if using auto-drive
-			   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-auto-drive \"~a\" ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta)) dir-list))
+			   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation \"~a\" ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta)) dir-list))
 	(commands-c (map
 		     (lambda (dir)
 		      (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"

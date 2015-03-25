@@ -1,4 +1,4 @@
-function [boxes_w_fscore,gscore,num_gscore]= ... %d_score,w_score,s_score,G,distance_threshold,worldDist,phists,valid_loc]  
+function [boxes_w_fscore,gscore,num_gscore]= ... %d_score,w_score,s_score,G,distance_threshold,worldDist,phists,valid_loc,worldWpenexpmat]  
     scott_proposals_similarity2(top_k, ssize, frames, positions,alpha,beta,gamma)
 %inputs: top_k: number of proposals to generate in each frame
 %        ssize: the size to which each proposal is rescaled to (for
@@ -48,7 +48,8 @@ world_boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
 distance_threshold = 0.5; %distance threshold for similarity score--in m
 binary_score_threshold = 1e-6; %threshold for a binary score to go into ouput--ARBITRARY, may need to change
 %dbox_fscore = 0.5; %dummy box fscore value
-width_threshold = 1.5; %threshold on wwidth of boxes (world with of object) in m -- ARBITRARY, may need to change
+width_threshold = 1.0; %threshold on wwidth of boxes (world with of object) in m -- ARBITRARY, may need to change
+pixel_threshold = 10; %threshold on pixel distance from edges of frame -- ARBITRARY, may need to change
 %camera calibration data
 cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
         0.0 7.2412307134397406e+02 2.0310961045807585e+02;...
@@ -92,7 +93,11 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
                 %pdist([lcloc'; rcloc'],'euclidean');
         new_boxes(i,8) = wwidth;
         %do penalty on f (unary) scores (column 5) here
-        if (locflag == 0) %box is behind camera
+        if ((bbs(i,1) < pixel_threshold) || ... %penalize boxes too close to edges of image
+            (bbs(i,2) < pixel_threshold) || ...
+            ((bbs(i,1) + bbs(i,3)) > (w - pixel_threshold)) || ...
+            ((bbs(i,2) + bbs(i,4)) > (h - pixel_threshold)) ||...
+            (locflag == 0)) %box is behind camera
             penalty = -10; %ARBITRARY penalty factor here--might need to adjust
             new_boxes(i,5) = new_boxes(i,5)*exp(penalty);
             continue; %done with this box
@@ -112,7 +117,9 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
             ypenalty = 0;
         end %if loc(2)
         if (wwidth > width_threshold) %wpenalty
-            wpenalty = width_threshold - wwidth;
+            wpenalty = width_threshold - wwidth; %%NOT SURE THIS IS DOING WHAT I WANT IT TO DO
+            %display(wpenalty);
+            %display(exp(wpenalty));
         else
             wpenalty = 0;
         end %if wwidth
@@ -165,6 +172,14 @@ for i = 1:T
     d_score(start:stop,start:stop) = blankscore;
     w_score(start:stop,start:stop) = blankscore;
 end % for i
+
+%threshold-related penalty on w_score here **EXPERIMENTAL**
+worldWpen = width_threshold - worldW;
+worldWpen(worldWpen > 0) = 0;
+worldWpenexp = exp(worldWpen);
+worldWpenexpmat = worldWpenexp * worldWpenexp';
+w_score = w_score .* worldWpenexpmat;
+
 %d_score and w_score complete 
 % fprintf('Binary score setup: %f\n',toc); 
 % tic;
