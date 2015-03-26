@@ -15,86 +15,86 @@ MSEE1-dataset/generation/plan1/2014-11-20-02:50:52/results-0.6-0.6.sc good
 MSEE1-dataset/generation/plan1/2014-11-20-02:51:45/results-0.6-0.6.sc bad (misses chair, cone, box)
 MSEE1-dataset/generation/plan1/2014-11-20-02:52:32/results-0.6-0.6.sc good (finds cone, misses stool)
 MSEE1-dataset/generation/plan1/2014-11-20-02:53:17/results-0.6-0.6.sc good
-MSEE1-dataset/generation/plan1/2014-11-20-02:54:20/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan1/2014-11-20-02:55:17/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan1/2014-11-20-02:56:12/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan2/2014-11-20-02:57:53/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan2/2014-11-20-02:59:46/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan2/2014-11-20-03:00:38/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan2/2014-11-20-03:01:26/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan2/2014-11-20-03:02:24/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan2/2014-11-20-03:03:07/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan2/2014-11-20-03:03:41/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan2/2014-11-20-03:04:22/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan2/2014-11-20-03:05:16/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan2/2014-11-20-03:06:04/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan3/2014-11-21-03:39:53/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan3/2014-11-21-03:40:45/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan3/2014-11-21-03:41:36/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan3/2014-11-21-03:42:21/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan3/2014-11-21-03:43:16/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan3/2014-11-21-03:44:13/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan3/2014-11-21-03:45:05/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan3/2014-11-21-03:46:21/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan3/2014-11-21-03:47:04/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan3/2014-11-21-03:47:48/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan4/2014-11-21-03:49:04/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan4/2014-11-21-03:50:44/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan4/2014-11-21-03:51:40/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan4/2014-11-21-03:52:35/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan4/2014-11-21-03:53:11/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan4/2014-11-21-03:53:50/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan4/2014-11-21-03:54:46/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan4/2014-11-21-03:55:23/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan4/2014-11-21-03:56:19/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan4/2014-11-21-03:57:19/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan5/2014-11-21-03:58:38/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan5/2014-11-21-04:00:32/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan5/2014-11-21-04:01:57/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan5/2014-11-21-04:03:07/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan5/2014-11-21-04:03:55/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan5/2014-11-21-04:04:40/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan5/2014-11-21-04:05:25/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan5/2014-11-21-04:08:00/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan5/2014-11-21-04:09:01/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan5/2014-11-21-04:09:54/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan6/2014-11-21-04:10:57/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan6/2014-11-21-04:12:28/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan6/2014-11-21-04:13:07/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan6/2014-11-21-04:14:08/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan6/2014-11-21-04:14:57/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan6/2014-11-21-04:15:38/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan6/2014-11-21-04:16:26/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan6/2014-11-21-04:17:15/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan6/2014-11-21-04:18:10/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan6/2014-11-21-04:19:20/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan7/2014-11-21-04:23:49/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan7/2014-11-21-04:25:06/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan7/2014-11-21-04:28:51/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan7/2014-11-21-04:30:29/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan7/2014-11-21-04:31:21/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan7/2014-11-21-04:32:01/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan7/2014-11-21-04:32:37/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan7/2014-11-21-04:33:32/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan7/2014-11-21-04:34:17/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan7/2014-11-21-04:35:38/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan8/2014-11-21-04:36:45/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan8/2014-11-21-04:38:01/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan8/2014-11-21-04:38:37/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan8/2014-11-21-04:39:22/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan8/2014-11-21-04:40:00/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan8/2014-11-21-04:40:44/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan8/2014-11-21-04:41:43/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan8/2014-11-21-04:42:37/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan8/2014-11-21-04:43:29/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan8/2014-11-21-04:44:02/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan9/2014-11-21-04:45:19/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan9/2014-11-21-04:46:51/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan9/2014-11-21-04:48:03/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan9/2014-11-21-04:48:54/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan9/2014-11-21-04:49:42/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan9/2014-11-21-04:53:33/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan9/2014-11-21-04:55:46/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan9/2014-11-21-04:56:25/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan9/2014-11-21-04:57:14/results-0.6-0.6.sc
-MSEE1-dataset/generation/plan9/2014-11-21-04:58:06/results-0.6-0.6.sc
+MSEE1-dataset/generation/plan1/2014-11-20-02:54:20/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan1/2014-11-20-02:55:17/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan1/2014-11-20-02:56:12/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan2/2014-11-20-02:57:53/results-0.6-0.6.sc bad (misses chair, cone, box)
+MSEE1-dataset/generation/plan2/2014-11-20-02:59:46/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan2/2014-11-20-03:00:38/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan2/2014-11-20-03:01:26/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan2/2014-11-20-03:02:24/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan2/2014-11-20-03:03:07/results-0.6-0.6.sc bad (misses table, chair)
+MSEE1-dataset/generation/plan2/2014-11-20-03:03:41/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan2/2014-11-20-03:04:22/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan2/2014-11-20-03:05:16/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan2/2014-11-20-03:06:04/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan3/2014-11-21-03:39:53/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan3/2014-11-21-03:40:45/results-0.6-0.6.sc bad (misses bag (x2), cone, chair, table)
+MSEE1-dataset/generation/plan3/2014-11-21-03:41:36/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan3/2014-11-21-03:42:21/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan3/2014-11-21-03:43:16/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan3/2014-11-21-03:44:13/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan3/2014-11-21-03:45:05/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan3/2014-11-21-03:46:21/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan3/2014-11-21-03:47:04/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan3/2014-11-21-03:47:48/results-0.6-0.6.sc bad (misses bag, chair)
+MSEE1-dataset/generation/plan4/2014-11-21-03:49:04/results-0.6-0.6.sc bad (misses bag, cone, chair)
+MSEE1-dataset/generation/plan4/2014-11-21-03:50:44/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan4/2014-11-21-03:51:40/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan4/2014-11-21-03:52:35/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan4/2014-11-21-03:53:11/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan4/2014-11-21-03:53:50/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan4/2014-11-21-03:54:46/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan4/2014-11-21-03:55:23/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan4/2014-11-21-03:56:19/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan4/2014-11-21-03:57:19/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan5/2014-11-21-03:58:38/results-0.6-0.6.sc bad (misses box, bag)
+MSEE1-dataset/generation/plan5/2014-11-21-04:00:32/results-0.6-0.6.sc bad (misses box, bag)
+MSEE1-dataset/generation/plan5/2014-11-21-04:01:57/results-0.6-0.6.sc bad (misses box, bag)
+MSEE1-dataset/generation/plan5/2014-11-21-04:03:07/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan5/2014-11-21-04:03:55/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan5/2014-11-21-04:04:40/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan5/2014-11-21-04:05:25/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan5/2014-11-21-04:08:00/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan5/2014-11-21-04:09:01/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan5/2014-11-21-04:09:54/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan6/2014-11-21-04:10:57/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan6/2014-11-21-04:12:28/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan6/2014-11-21-04:13:07/results-0.6-0.6.sc bad (misses cone, stool--but objects only in ~9 out of 185 frames)
+MSEE1-dataset/generation/plan6/2014-11-21-04:14:08/results-0.6-0.6.sc good (VERY WEIRD--starts facing the wrong way--missing frames??)
+MSEE1-dataset/generation/plan6/2014-11-21-04:14:57/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan6/2014-11-21-04:15:38/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan6/2014-11-21-04:16:26/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan6/2014-11-21-04:17:15/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan6/2014-11-21-04:18:10/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan6/2014-11-21-04:19:20/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan7/2014-11-21-04:23:49/results-0.6-0.6.sc bad (misses stool, chair, box)
+MSEE1-dataset/generation/plan7/2014-11-21-04:25:06/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan7/2014-11-21-04:28:51/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan7/2014-11-21-04:30:29/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan7/2014-11-21-04:31:21/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan7/2014-11-21-04:32:01/results-0.6-0.6.sc bad (misses bag, box, chair)
+MSEE1-dataset/generation/plan7/2014-11-21-04:32:37/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan7/2014-11-21-04:33:32/results-0.6-0.6.sc bad (misses chair, stool, bag)
+MSEE1-dataset/generation/plan7/2014-11-21-04:34:17/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan7/2014-11-21-04:35:38/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan8/2014-11-21-04:36:45/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan8/2014-11-21-04:38:01/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan8/2014-11-21-04:38:37/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan8/2014-11-21-04:39:22/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan8/2014-11-21-04:40:00/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan8/2014-11-21-04:40:44/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan8/2014-11-21-04:41:43/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan8/2014-11-21-04:42:37/results-0.6-0.6.sc bad (misses box, stool, bag, chair, table---ALL DUMMY BOXES)
+MSEE1-dataset/generation/plan8/2014-11-21-04:43:29/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan8/2014-11-21-04:44:02/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan9/2014-11-21-04:45:19/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan9/2014-11-21-04:46:51/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan9/2014-11-21-04:48:03/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan9/2014-11-21-04:48:54/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan9/2014-11-21-04:49:42/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan9/2014-11-21-04:53:33/results-0.6-0.6.sc bad (misses stool, cone, table)
+MSEE1-dataset/generation/plan9/2014-11-21-04:55:46/results-0.6-0.6.sc bad (misses stool, bag, cone)
+MSEE1-dataset/generation/plan9/2014-11-21-04:56:25/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan9/2014-11-21-04:57:14/results-0.6-0.6.sc good
+MSEE1-dataset/generation/plan9/2014-11-21-04:58:06/results-0.6-0.6.sc good

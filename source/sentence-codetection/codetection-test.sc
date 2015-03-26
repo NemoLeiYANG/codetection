@@ -608,7 +608,7 @@
   (write-object-to-file
    (get-matlab-proposals-similarity-full-video
     top-k ssize (format #f "~a" path) alpha beta gamma delta)
-   (format #f "~a/frame-data-new.sc" path))
+   (format #f "~a/frame-data-new.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
   (dtrace (format #f "wrote ~a/frame-data-new.sc" path) #f)))
 
 (define (get-matlab-data-auto-drive path top-k ssize alpha beta gamma delta)
@@ -616,8 +616,8 @@
   (write-object-to-file
    (get-matlab-proposals-similarity-full-video
     top-k ssize (format #f "~a" path) alpha beta gamma delta)
-   (format #f "~a/frame-data.sc" path))
-  (dtrace (format #f "wrote ~a/frame-data.sc" path) #f)))
+   (format #f "~a/frame-data-new.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
+  (dtrace (format #f "wrote ~a/frame-data-new.sc" path) #f)))
 
 (define (results-end-to-end data-directory ;; NEED slash on data-dir
 			    top-k
@@ -629,7 +629,7 @@
 			    dummy-f
 			    dummy-g
 			    output-directory) ;;NO slash on output-dir
- (let* ((servers (list "chino" "buddhi" "maniishaa" "alykkyys" "seulki" "rongovosai" "faisneis")) ;;*2g-servers*)
+ (let* ((servers (list "chino" "maniishaa" "alykkyys" "seulki" "faisneis" "cuddwybodaeth" "istihbarat" "wywiad" ));;"jalitusteabe")) ;;*2g-servers*) "buddhi" "zhineng" "rongovosai"
 	(source "seykhl");;"jalitusteabe")
 	(matlab-cpus-per-job 1);; 7) ;;if using parfor
 	(c-cpus-per-job 1)
@@ -644,7 +644,7 @@
 		    plandirs)))
 	(commands-matlab (map
 			  (lambda (dir) ;;change get-matlab... command if using auto-drive
-			   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation \"~a\" ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta)) dir-list))
+			   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-auto-drive \"~a\" ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta)) dir-list))
 	(commands-c (map
 		     (lambda (dir)
 		      (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"
@@ -693,6 +693,27 @@
   (dtrace "processing complete" #f)
   (system "date")))
 
+
+(define (join-images basedir subdir1 subdir2)
+ (let* ((images (system-output (format #f "ls ~a/~a" basedir subdir1)))
+	(joindir (format #f "~a/joined" basedir)))
+  (mkdir-p joindir)
+  (for-each (lambda (img)
+	     (system (format #f "montage -tile 2x1 -geometry +0+0 \"~a\"/\"~a\"/\"~a\" \"~a\"/\"~a\"/\"~a\" \"~a\"/\"~a\""
+			     basedir subdir1 img basedir subdir2 img joindir img)))
+	    images)
+  (dtrace (format #f "wrote images in ~a" joindir) #f)))
+
+(define (join-all-images datasetdir subdir1 subdir2)
+ (let* ((plandirs (system-output (format #f "ls ~a | grep plan" datasetdir)))
+	(dir-list (join
+		   (map
+		    (lambda (p)
+		     (map (lambda (d) (format #f "~a/~a/~a" datasetdir p d))
+			  (system-output (format #f "ls ~a/~a" datasetdir p))))
+		    plandirs))))
+  (for-each (lambda (dir) (join-images dir subdir1 subdir2)) dir-list)
+  (dtrace "join-all-images complete" #f)))
 ;;;;----temporary testing-data stuff-------
 ;;;COMMENT OUT THE FOUR LINES BELOW UNLESS TRYING TO RE-ADD THE DATA
 ;; (define test-data-small #f) (define test-data-medium #f) (define test-data-large #f) (define test-data-full #f)

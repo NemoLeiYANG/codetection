@@ -1009,13 +1009,58 @@ as we run into problems or think of things we hadn't thought of before.
   informative).  Basically looking to see if it gets rid of the spurious large
   boxes. Started job at 1445.
 
+----------------git commit c6d16a0---------------
+
+26 Mar 15
+
+--Re-run of generation finished at 2155 last night.  Total runtime was 7h 10m.
+  HUGE improvement over running on 2g servers.  Wonder if the changes to the
+  matlab code had an effect.
+
+--Going to re-run the auto-drive dataset with new matlab code.  Should probably
+  re-run the training dataset as well.  For auto-drive dataset, using 6
+  workstations plus the 4 2G servers.  Started job at 0933.  For some reason,
+  the rsync of the data to all the machines is taking a LONG time, >2 hours...
+  Turned out there was something funky going on with jalitusteabe, so I just
+  removed that machine from the list of servers.  Now 6 workstations plus 3 2G
+  servers, 60 cores total (51 jobs started in first batch since the job-starting
+  code rounds down on the number of available processors).
+
+--Had to restart the above at 1302 because of an error in
+  get-matlab-data-auto-drive.  I forgot to append -new on the end of
+  frame-data.sc, so it would have overwritten previous data if it had run, and
+  also it would have errored when visualize-data tried to find
+  frame-data-new.sc.  Also removed Abdullah's workstation from the pool.  Now
+  using 5 workstations and 3 2G servers (54 cores).
+
+--Initial look at one generation run with both methods one-by-one showed that
+  the new method eliminated almost all of the spurious boxes, but it also
+  eliminated many valid boxes as well.  Might need to relax some of the
+  constraints there--I think the pixel limitation is still OK, but might need
+  width threshold back to 1.5m, and maybe eliminate the width penalty in the
+  binary score.  However, looking at the next run in the series didn't show that
+  problem.  Maybe a way to evaluate would be to have the matching images
+  stitched side-by-side into a single image.
+
+--Finished analyzing first run on generation dataset.  Stats: total videos =
+  100, out of scope = 0, good = 80, bad = 20.
+
+
+
+**DO I want to think about relaxing some constraints in the matlab code, like
+  maybe the binary width penalty??
+
 running command:
-(results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150325")
+(results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/auto-drive/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150326")
+
 
 ******SEGMENT VIDEOS WITH SENTENCES IS NEXT STEP*******
+**look at learning.sc in acl2015/code
 
-**RECHECK WPENALTY TERM-->DOESN'T APPEAR TO BE DOING WHAT I EXPECT-->ADD A
-  MULTIPLIER???  Might need to add a penalty to w_score (binary based on width)
+***In auto-drive dataset, plan0 (and plan1?) have 20 runs, but floorplans are
+   different between 1st and 2nd 10***
+
+
 
 
 

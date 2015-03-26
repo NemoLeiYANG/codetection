@@ -1,0 +1,120 @@
+MSEE1-dataset/auto-drive/plan0/2014-11-20-01:06:28/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-20-01:11:13/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-20-01:12:09/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-20-01:13:11/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-20-01:14:25/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-20-01:16:53/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-20-01:19:20/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-20-01:23:35/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-20-01:25:47/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-20-01:28:11/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-21-00:38:47/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-21-00:39:42/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-21-00:41:19/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-21-00:43:15/results-0.6-0.6.sc bad (misses table, box, cone, stool--ALL DUMMY BOXES--ROVER IS PICKED UP AT END)
+MSEE1-dataset/auto-drive/plan0/2014-11-21-00:45:34/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-21-00:47:16/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-21-00:48:31/results-0.6-0.6.sc bad (misses table, cone--ALL DUMMY BOXES)
+MSEE1-dataset/auto-drive/plan0/2014-11-21-00:50:59/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan0/2014-11-21-00:51:59/results-0.6-0.6.sc bad (misses table, cone, bag)
+MSEE1-dataset/auto-drive/plan0/2014-11-21-00:53:24/results-0.6-0.6.sc bad (misses table, cone, bag--almost all dummy boxes)
+MSEE1-dataset/auto-drive/plan1/2014-11-20-01:29:32/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-20-01:32:14/results-0.6-0.6.sc bad (misses bag (x2), chair cone)
+MSEE1-dataset/auto-drive/plan1/2014-11-20-01:34:32/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-20-01:36:13/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-20-01:40:54/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-20-01:49:15/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-20-01:50:17/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-20-01:54:05/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-20-01:55:50/results-0.6-0.6.sc bad (bad run??)
+MSEE1-dataset/auto-drive/plan1/2014-11-20-01:58:16/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-21-00:56:32/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-21-00:57:29/results-0.6-0.6.sc 
+MSEE1-dataset/auto-drive/plan1/2014-11-21-00:58:20/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan1/2014-11-21-00:59:59/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan1/2014-11-21-01:01:35/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan1/2014-11-21-01:04:02/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan1/2014-11-21-01:07:33/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan1/2014-11-21-01:08:28/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan1/2014-11-21-01:09:35/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan1/2014-11-21-01:11:07/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan2/2014-11-21-01:13:55/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan2/2014-11-21-01:15:52/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan2/2014-11-21-01:16:26/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan2/2014-11-21-01:17:16/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan2/2014-11-21-01:18:35/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan2/2014-11-21-01:19:40/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan2/2014-11-21-01:20:32/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan2/2014-11-21-01:21:16/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan2/2014-11-21-01:23:28/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan2/2014-11-21-01:42:03/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan3/2014-11-21-01:43:22/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan3/2014-11-21-01:46:19/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan3/2014-11-21-01:47:51/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan3/2014-11-21-01:49:35/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan3/2014-11-21-01:50:43/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan3/2014-11-21-01:51:32/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan3/2014-11-21-01:52:36/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan3/2014-11-21-01:53:25/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan3/2014-11-21-01:54:42/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan3/2014-11-21-01:55:28/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan4/2014-11-21-01:57:36/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan4/2014-11-21-02:00:46/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan4/2014-11-21-02:01:38/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan4/2014-11-21-02:02:31/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan4/2014-11-21-02:03:46/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan4/2014-11-21-02:04:52/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan4/2014-11-21-02:08:51/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan4/2014-11-21-02:10:04/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan4/2014-11-21-02:11:13/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan4/2014-11-21-02:12:23/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan5/2014-11-21-02:18:49/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan5/2014-11-21-02:21:23/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan5/2014-11-21-02:22:26/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan5/2014-11-21-02:23:42/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan5/2014-11-21-02:24:49/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan5/2014-11-21-02:25:53/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan5/2014-11-21-02:27:02/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan5/2014-11-21-02:27:38/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan5/2014-11-21-02:28:51/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan5/2014-11-21-02:32:03/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan6/2014-11-21-02:34:16/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan6/2014-11-21-02:36:29/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan6/2014-11-21-02:41:05/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan6/2014-11-21-02:42:07/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan6/2014-11-21-02:43:19/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan6/2014-11-21-02:44:33/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan6/2014-11-21-02:45:13/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan6/2014-11-21-02:46:25/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan6/2014-11-21-02:47:04/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan6/2014-11-21-02:48:09/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan7/2014-11-21-02:51:58/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan7/2014-11-21-02:52:36/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan7/2014-11-21-02:55:37/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan7/2014-11-21-02:56:46/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan7/2014-11-21-02:57:27/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan7/2014-11-21-02:58:18/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan7/2014-11-21-02:59:08/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan7/2014-11-21-03:00:28/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan7/2014-11-21-03:01:27/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan7/2014-11-21-03:02:33/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan8/2014-11-21-03:03:46/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan8/2014-11-21-03:06:16/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan8/2014-11-21-03:07:34/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan8/2014-11-21-03:08:44/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan8/2014-11-21-03:09:47/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan8/2014-11-21-03:10:35/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan8/2014-11-21-03:11:22/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan8/2014-11-21-03:12:37/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan8/2014-11-21-03:13:29/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan8/2014-11-21-03:14:24/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan9/2014-11-21-03:15:51/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan9/2014-11-21-03:18:16/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan9/2014-11-21-03:20:43/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan9/2014-11-21-03:21:47/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan9/2014-11-21-03:23:07/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan9/2014-11-21-03:24:17/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan9/2014-11-21-03:25:20/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan9/2014-11-21-03:26:21/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan9/2014-11-21-03:27:30/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan9/2014-11-21-03:28:20/results-0.6-0.6.sc
