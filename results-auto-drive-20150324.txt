@@ -29,15 +29,15 @@ MSEE1-dataset/auto-drive/plan1/2014-11-20-01:54:05/results-0.6-0.6.sc good
 MSEE1-dataset/auto-drive/plan1/2014-11-20-01:55:50/results-0.6-0.6.sc bad (bad run??)
 MSEE1-dataset/auto-drive/plan1/2014-11-20-01:58:16/results-0.6-0.6.sc good
 MSEE1-dataset/auto-drive/plan1/2014-11-21-00:56:32/results-0.6-0.6.sc good
-MSEE1-dataset/auto-drive/plan1/2014-11-21-00:57:29/results-0.6-0.6.sc 
-MSEE1-dataset/auto-drive/plan1/2014-11-21-00:58:20/results-0.6-0.6.sc
-MSEE1-dataset/auto-drive/plan1/2014-11-21-00:59:59/results-0.6-0.6.sc
-MSEE1-dataset/auto-drive/plan1/2014-11-21-01:01:35/results-0.6-0.6.sc
-MSEE1-dataset/auto-drive/plan1/2014-11-21-01:04:02/results-0.6-0.6.sc
-MSEE1-dataset/auto-drive/plan1/2014-11-21-01:07:33/results-0.6-0.6.sc
-MSEE1-dataset/auto-drive/plan1/2014-11-21-01:08:28/results-0.6-0.6.sc
-MSEE1-dataset/auto-drive/plan1/2014-11-21-01:09:35/results-0.6-0.6.sc
-MSEE1-dataset/auto-drive/plan1/2014-11-21-01:11:07/results-0.6-0.6.sc
+MSEE1-dataset/auto-drive/plan1/2014-11-21-00:57:29/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-21-00:58:20/results-0.6-0.6.sc good (bad run??)
+MSEE1-dataset/auto-drive/plan1/2014-11-21-00:59:59/results-0.6-0.6.sc bad (misses chair, box, bag -- ALL DUMMY BOXES)
+MSEE1-dataset/auto-drive/plan1/2014-11-21-01:01:35/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-21-01:04:02/results-0.6-0.6.sc bad (bad run??)
+MSEE1-dataset/auto-drive/plan1/2014-11-21-01:07:33/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-21-01:08:28/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-21-01:09:35/results-0.6-0.6.sc good
+MSEE1-dataset/auto-drive/plan1/2014-11-21-01:11:07/results-0.6-0.6.sc good
 MSEE1-dataset/auto-drive/plan2/2014-11-21-01:13:55/results-0.6-0.6.sc
 MSEE1-dataset/auto-drive/plan2/2014-11-21-01:15:52/results-0.6-0.6.sc
 MSEE1-dataset/auto-drive/plan2/2014-11-21-01:16:26/results-0.6-0.6.sc

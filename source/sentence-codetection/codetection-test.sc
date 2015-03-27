@@ -488,8 +488,8 @@
 	(loop (rest images) (rest boxes) (+ n 1)))))))
 
 (define (visualize-results path dummy-f dummy-g)
- (let* ((data (read-object-from-file (format #f "~a/frame-data-new.sc" path)))
-	(img-path (format #f "~a/images-~a-~a-new" path
+ (let* ((data (read-object-from-file (format #f "~a/frame-data-new2.sc" path)))
+	(img-path (format #f "~a/images-~a-~a-new2" path
 			  (number->padded-string-of-length dummy-f 3)
 			  (number->padded-string-of-length dummy-g 3)))
 	(results (run-codetection-with-proposals-similarity data
@@ -499,7 +499,7 @@
 	(video-path (format #f "~a/video_front.avi" path))
 	(frames (video->frames 1 video-path))
 	)
-  (write-object-to-file results (format #f "~a/results-~a-~a-new.sc" path
+  (write-object-to-file results (format #f "~a/results-~a-~a-new2.sc" path
 					(number->padded-string-of-length dummy-f 3)
 					(number->padded-string-of-length dummy-g 3)))
  ;; (dtrace "img-path" img-path)
@@ -608,8 +608,8 @@
   (write-object-to-file
    (get-matlab-proposals-similarity-full-video
     top-k ssize (format #f "~a" path) alpha beta gamma delta)
-   (format #f "~a/frame-data-new.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
-  (dtrace (format #f "wrote ~a/frame-data-new.sc" path) #f)))
+   (format #f "~a/frame-data-new2.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
+  (dtrace (format #f "wrote ~a/frame-data-new2.sc" path) #f)))
 
 (define (get-matlab-data-auto-drive path top-k ssize alpha beta gamma delta)
  (begin
@@ -629,7 +629,7 @@
 			    dummy-f
 			    dummy-g
 			    output-directory) ;;NO slash on output-dir
- (let* ((servers (list "chino" "maniishaa" "alykkyys" "seulki" "faisneis" "cuddwybodaeth" "istihbarat" "wywiad" ));;"jalitusteabe")) ;;*2g-servers*) "buddhi" "zhineng" "rongovosai"
+ (let* ((servers (list "chino" "maniishaa" "alykkyys" "seulki" "faisneis" "buddhi" "rongovosai" "cuddwybodaeth" "istihbarat"));;)) ;;*2g-servers*)  "zhineng" "wywiad" "jalitusteabe"
 	(source "seykhl");;"jalitusteabe")
 	(matlab-cpus-per-job 1);; 7) ;;if using parfor
 	(c-cpus-per-job 1)
@@ -644,7 +644,7 @@
 		    plandirs)))
 	(commands-matlab (map
 			  (lambda (dir) ;;change get-matlab... command if using auto-drive
-			   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-auto-drive \"~a\" ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta)) dir-list))
+			   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation \"~a\" ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta)) dir-list))
 	(commands-c (map
 		     (lambda (dir)
 		      (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"
@@ -696,7 +696,7 @@
 
 (define (join-images basedir subdir1 subdir2)
  (let* ((images (system-output (format #f "ls ~a/~a" basedir subdir1)))
-	(joindir (format #f "~a/joined" basedir)))
+	(joindir (format #f "~a/joined2" basedir)))
   (mkdir-p joindir)
   (for-each (lambda (img)
 	     (system (format #f "montage -tile 2x1 -geometry +0+0 \"~a\"/\"~a\"/\"~a\" \"~a\"/\"~a\"/\"~a\" \"~a\"/\"~a\""

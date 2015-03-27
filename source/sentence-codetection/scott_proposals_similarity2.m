@@ -173,12 +173,12 @@ for i = 1:T
     w_score(start:stop,start:stop) = blankscore;
 end % for i
 
-%threshold-related penalty on w_score here **EXPERIMENTAL**
-worldWpen = width_threshold - worldW;
-worldWpen(worldWpen > 0) = 0;
-worldWpenexp = exp(worldWpen);
-worldWpenexpmat = worldWpenexp * worldWpenexp';
-w_score = w_score .* worldWpenexpmat;
+% %threshold-related penalty on w_score here **EXPERIMENTAL**
+% worldWpen = width_threshold - worldW;
+% worldWpen(worldWpen > 0) = 0;
+% worldWpenexp = exp(worldWpen);
+% worldWpenexpmat = worldWpenexp * worldWpenexp';
+% w_score = w_score .* worldWpenexpmat;
 
 %d_score and w_score complete 
 % fprintf('Binary score setup: %f\n',toc); 

@@ -1045,14 +1045,30 @@ as we run into problems or think of things we hadn't thought of before.
 --Finished analyzing first run on generation dataset.  Stats: total videos =
   100, out of scope = 0, good = 80, bad = 20.
 
+----------------git commit 5984fe6---------------
+
+27 Mar 15
+
+--Re-run of auto-drive still going at 1055.  One last job running on
+  cuddwybodaeth, a 536-frame video that's been running in the C (OpenGM) portion
+  for >13 hours.  Run finished at 1149 (~26 hour runtime with restarts).
+
+--Going to restart another run (suffix -new2) on the generation dataset.  The
+  idea is to relax some constraints in matlab, specifically the width penalty in
+  the binary score.  Then going to stitch those frames together with the 1x2
+  already built so 3 frames will be in a row for comparison.  Going to add
+  buddhi, rongovosai, jalitusteabe back to the server pool.
+
+--Started new run at 1111.  Joined images (3-way w/ Original|25Mar run|27Mar
+  run) will be in /joined2 when done.  Had to remove wywiad and jalitusteabe
+  from the server pool because the rsync kept getting hung up.  Restarted at
+  1410.
 
 
-**DO I want to think about relaxing some constraints in the matlab code, like
-  maybe the binary width penalty??
 
 running command:
-(results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/auto-drive/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150326")
-
+(results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150327")
+(join-all-images "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation" "joined" "images-0.6-0.6-new2")
 
 ******SEGMENT VIDEOS WITH SENTENCES IS NEXT STEP*******
 **look at learning.sc in acl2015/code
