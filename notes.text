@@ -1064,7 +1064,14 @@ as we run into problems or think of things we hadn't thought of before.
   from the server pool because the rsync kept getting hung up.  Restarted at
   1410.
 
+----------------git commit 55a56f5---------------
 
+28 Mar 15
+
+--Re-run of generation with binary width penalty removed didn't seem to fix the
+  problem, based on early observations.  Redoing anothe run on generation with
+  width_threshold set back to 1.5m, so that the only difference in the matlab
+  code is the addition of the pixel threshold.  Results will be in -new3 and joined3.
 
 running command:
 (results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150327")

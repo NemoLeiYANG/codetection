@@ -48,7 +48,7 @@ world_boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
 distance_threshold = 0.5; %distance threshold for similarity score--in m
 binary_score_threshold = 1e-6; %threshold for a binary score to go into ouput--ARBITRARY, may need to change
 %dbox_fscore = 0.5; %dummy box fscore value
-width_threshold = 1.0; %threshold on wwidth of boxes (world with of object) in m -- ARBITRARY, may need to change
+width_threshold = 1.5; %threshold on wwidth of boxes (world with of object) in m -- ARBITRARY, may need to change
 pixel_threshold = 10; %threshold on pixel distance from edges of frame -- ARBITRARY, may need to change
 %camera calibration data
 cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...

@@ -488,8 +488,8 @@
 	(loop (rest images) (rest boxes) (+ n 1)))))))
 
 (define (visualize-results path dummy-f dummy-g)
- (let* ((data (read-object-from-file (format #f "~a/frame-data-new2.sc" path)))
-	(img-path (format #f "~a/images-~a-~a-new2" path
+ (let* ((data (read-object-from-file (format #f "~a/frame-data-new3.sc" path)))
+	(img-path (format #f "~a/images-~a-~a-new3" path
 			  (number->padded-string-of-length dummy-f 3)
 			  (number->padded-string-of-length dummy-g 3)))
 	(results (run-codetection-with-proposals-similarity data
@@ -499,7 +499,7 @@
 	(video-path (format #f "~a/video_front.avi" path))
 	(frames (video->frames 1 video-path))
 	)
-  (write-object-to-file results (format #f "~a/results-~a-~a-new2.sc" path
+  (write-object-to-file results (format #f "~a/results-~a-~a-new3.sc" path
 					(number->padded-string-of-length dummy-f 3)
 					(number->padded-string-of-length dummy-g 3)))
  ;; (dtrace "img-path" img-path)
@@ -608,8 +608,8 @@
   (write-object-to-file
    (get-matlab-proposals-similarity-full-video
     top-k ssize (format #f "~a" path) alpha beta gamma delta)
-   (format #f "~a/frame-data-new2.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
-  (dtrace (format #f "wrote ~a/frame-data-new2.sc" path) #f)))
+   (format #f "~a/frame-data-new3.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
+  (dtrace (format #f "wrote ~a/frame-data-new3.sc" path) #f)))
 
 (define (get-matlab-data-auto-drive path top-k ssize alpha beta gamma delta)
  (begin
@@ -629,7 +629,7 @@
 			    dummy-f
 			    dummy-g
 			    output-directory) ;;NO slash on output-dir
- (let* ((servers (list "chino" "maniishaa" "alykkyys" "seulki" "faisneis" "buddhi" "rongovosai" "cuddwybodaeth" "istihbarat"));;)) ;;*2g-servers*)  "zhineng" "wywiad" "jalitusteabe"
+ (let* ((servers (list "chino" "maniishaa" "alykkyys" "seulki" "faisneis" "buddhi" "rongovosai"));; "cuddwybodaeth" "istihbarat"));;)) ;;*2g-servers*)  "zhineng" "wywiad" "jalitusteabe"
 	(source "seykhl");;"jalitusteabe")
 	(matlab-cpus-per-job 1);; 7) ;;if using parfor
 	(c-cpus-per-job 1)
@@ -696,7 +696,7 @@
 
 (define (join-images basedir subdir1 subdir2)
  (let* ((images (system-output (format #f "ls ~a/~a" basedir subdir1)))
-	(joindir (format #f "~a/joined2" basedir)))
+	(joindir (format #f "~a/joined3" basedir)))
   (mkdir-p joindir)
   (for-each (lambda (img)
 	     (system (format #f "montage -tile 2x1 -geometry +0+0 \"~a\"/\"~a\"/\"~a\" \"~a\"/\"~a\"/\"~a\" \"~a\"/\"~a\""
@@ -714,6 +714,11 @@
 		    plandirs))))
   (for-each (lambda (dir) (join-images dir subdir1 subdir2)) dir-list)
   (dtrace "join-all-images complete" #f)))
+
+(define (run-my-shit)
+ (results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150328")
+ (join-all-images "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation" "joined" "images-0.6-0.6-new3"))
+
 ;;;;----temporary testing-data stuff-------
 ;;;COMMENT OUT THE FOUR LINES BELOW UNLESS TRYING TO RE-ADD THE DATA
 ;; (define test-data-small #f) (define test-data-medium #f) (define test-data-large #f) (define test-data-full #f)
