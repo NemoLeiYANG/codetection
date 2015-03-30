@@ -1069,9 +1069,43 @@ as we run into problems or think of things we hadn't thought of before.
 28 Mar 15
 
 --Re-run of generation with binary width penalty removed didn't seem to fix the
-  problem, based on early observations.  Redoing anothe run on generation with
+  problem, based on early observations.  Redoing another run on generation with
   width_threshold set back to 1.5m, so that the only difference in the matlab
   code is the addition of the pixel threshold.  Results will be in -new3 and joined3.
+
+
+----------------git commit 3f1925e---------------
+
+30 Mar 15
+
+--Saturday's re-run of generation dataset with threshold back to 1.5m still
+  didn't produce the results I expected.  On the first run of plan0, around
+  frame 60, the cone comes clearly into view and stays there for about 15
+  frames.  The original run from 23 March finds the cone in these frames, but
+  all later runs do not.  Currently looking at the diff between the current
+  matlab code and the matlab code from that date to figure out why.  The only
+  substantive changes I could find was the change from pdist to norm for
+  computing wwidth, and the conditions to apply the large penalty term for boxes
+  too close to the boundary.  I wrote a quick test that confirmed that the
+  change from pdist to norm was not a problem--computed wwidth both ways, and
+  looked at the sum of the absolute difference between the ways on 15 frames
+  with 10 proposals each (150 measurements)-->the sum was 6e-15, which shows
+  that there two functions give the same answers.  Next need to look at the
+  penalty for boxes too close to image boundary-->perhaps a penalty term
+  separate from the locflag penalty (behind camera).
+
+--Trying to do separate flags for bad_r, bad_l, bad_t, bad_b, bad_w, bad_h and
+  then only impose the penalty if 2 or more flags are set.
+
+--Started new run with run-my-shit set at:
+	  (define (run-my-shit)
+	   (results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150330")
+ 	   (join-all-images "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation" "joined" "images-0.6-0.6-new4"))
+  Output will be in joined4.  Run started at 1715.
+
+
+
+
 
 running command:
 (results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150327")

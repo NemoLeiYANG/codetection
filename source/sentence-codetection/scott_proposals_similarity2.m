@@ -30,15 +30,15 @@ addpath(genpath('forests_edges_boxes'));
 run('/home/sbroniko/codetection/source/sentence-codetection/vlfeat/toolbox/vl_setup');
 addpath(genpath('MCG-PreTrained'));
 
-% % enable parfor
-% pools = matlabpool('size');
-% cpus = feature('numCores');
-% if pools ~= (cpus - 1)
-%     if pools > 0
-%         matlabpool('close');
-%     end
-%     matlabpool('open', cpus - 1);
-% end
+% enable parfor
+pools = matlabpool('size');
+cpus = feature('numCores');
+if pools ~= (cpus - 1)
+    if pools > 0
+        matlabpool('close');
+    end
+    matlabpool('open', cpus - 1);
+end
 
 %experiment parameters--shouldn't change
 gaussparam1 = [.25,0]; %setting sigma=.25,mu=0 for distance
@@ -50,13 +50,14 @@ binary_score_threshold = 1e-6; %threshold for a binary score to go into ouput--A
 %dbox_fscore = 0.5; %dummy box fscore value
 width_threshold = 1.5; %threshold on wwidth of boxes (world with of object) in m -- ARBITRARY, may need to change
 pixel_threshold = 10; %threshold on pixel distance from edges of frame -- ARBITRARY, may need to change
+pct_threshold = 0.65; %threshold on percent of height/width a box takes up -- ARBITRARY, may need to change
 %camera calibration data
 cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
         0.0 7.2412307134397406e+02 2.0310961045807585e+02;...
         0.0 0.0 1.0]; %not sure of units here
 
 % compute
-[h, w, d, T] = size(frames);
+[h, w, ~, T] = size(frames);
 bboxes = zeros(top_k, 8, T); %each row: [x y w h score xloc yloc wwidth]
 phist_size = [top_k, 12000];
 phists = zeros([phist_size,T],'single'); %for storing histograms--HARDCODED 12000 as size of phow_hist 
@@ -80,8 +81,8 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
         bc_point = [(bbs(i,1)+(bbs(i,3)/2)) (bbs(i,2)+bbs(i,4))]; %bottom center of box
         %assume box is on ground (height = 0) to find x,y location
         [loc locflag] = pixel_and_height_to_world(bc_point, 0, cam_k, pose, cam_offset);
-        valid_locations(i) = locflag; %boxes not on ground plane will 
-            %project to a location behind the camera and be marked invalid
+        valid_locations(i) = locflag; %boxes not on ground plane will
+        %project to a location behind the camera and be marked invalid
         %save x,y in columns 6 and 7
         new_boxes(i,6) = loc(1); new_boxes(i,7) = loc(2);
         %find width and save in column 8
@@ -90,18 +91,39 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
         lcloc = pixel_and_height_to_world(lcorner,0,cam_k,pose,cam_offset);
         rcloc = pixel_and_height_to_world(rcorner,0,cam_k,pose,cam_offset);
         wwidth = norm(lcloc-rcloc); %had to replace pdist b/c license issues (statistics toolbox)
-                %pdist([lcloc'; rcloc'],'euclidean');
+        %pdist([lcloc'; rcloc'],'euclidean');
         new_boxes(i,8) = wwidth;
         %do penalty on f (unary) scores (column 5) here
-        if ((bbs(i,1) < pixel_threshold) || ... %penalize boxes too close to edges of image
-            (bbs(i,2) < pixel_threshold) || ...
-            ((bbs(i,1) + bbs(i,3)) > (w - pixel_threshold)) || ...
-            ((bbs(i,2) + bbs(i,4)) > (h - pixel_threshold)) ||...
-            (locflag == 0)) %box is behind camera
+        %         if ((bbs(i,1) < pixel_threshold) || ... %penalize boxes too close to edges of image
+        %             (bbs(i,2) < pixel_threshold) || ...
+        %             ((bbs(i,1) + bbs(i,3)) > (w - pixel_threshold)) || ...
+        %             ((bbs(i,2) + bbs(i,4)) > (h - pixel_threshold)) ||...
+        %             (locflag == 0)) %box is behind camera
+        if (locflag == 0) %box is behind camera
             penalty = -10; %ARBITRARY penalty factor here--might need to adjust
             new_boxes(i,5) = new_boxes(i,5)*exp(penalty);
             continue; %done with this box
         end %if locflag
+        %do penalty for boundaries/width/height
+        bad_r = 0; bad_l = 0; bad_t = 0; bad_b = 0; bad_w = 0; bad_h = 0;
+        if (bbs(i,1) < pixel_threshold) 
+            bad_l = 1; end
+        if (bbs(i,2) < pixel_threshold)
+            bad_t = 1; end
+        if ((bbs(i,1) + bbs(i,3) - 1) > (w - pixel_threshold))
+            bad_r = 1; end
+        if ((bbs(i,2) + bbs(i,4) - 1) > (h - pixel_threshold))
+            bad_b = 1; end
+        if (bbs(i,3) > (pct_threshold * w))
+            bad_w = 1; end
+        if (bbs(i,4) > (pct_threshold * h))
+            bad_h = 1; end
+        numbad = sum([bad_r,bad_l,bad_t,bad_b,bad_w,bad_h]);
+        if (numbad >= 2)
+            penalty = -10; %ARBITRARY penalty factor here--might need to adjust
+            new_boxes(i,5) = new_boxes(i,5)*exp(penalty);
+            continue; %done with this box
+        end %if numbad
         if (loc(1) > boundary(2)) %xpenalty
             xpenalty = boundary(2) - loc(1);
         elseif (loc(1) < boundary(1))
@@ -292,12 +314,13 @@ numWords = size(model.vocab, 2) ;
 % quantize local descriptors into visual words
 switch model.quantizer
   case 'vq'
-    [drop, binsa] = min(vl_alldist(model.vocab, single(descrs)), [], 1) ;
+    [~, binsa] = min(vl_alldist(model.vocab, single(descrs)), [], 1) ;
   case 'kdtree'
     binsa = double(vl_kdtreequery(model.kdtree, model.vocab, ...
                                   single(descrs), ...
                                   'MaxComparisons', 50)) ;
 end
+hists = cell(length(model.numSpatialX));
 for i = 1:length(model.numSpatialX)
     binsx = vl_binsearch(linspace(1,width,model.numSpatialX(i)+1), frames(1,:)) ;
     binsy = vl_binsearch(linspace(1,height,model.numSpatialY(i)+1), frames(2,:)) ;
