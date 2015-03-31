@@ -1103,7 +1103,16 @@ as we run into problems or think of things we hadn't thought of before.
  	   (join-all-images "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation" "joined" "images-0.6-0.6-new4"))
   Output will be in joined4.  Run started at 1715.
 
+----------------git commit 02ce3f4---------------
 
+31 Mar 15
+
+--Last night's run errored out because I forgot to comment out the parfor stuff
+  in matlab and I couldn't get enough licenses to run the parallel toolbox.
+  Restarting job at 0941.
+
+--Job appeared to run successfully.  At 1740, it is currently working through
+  the join-all-images portion.
 
 
 

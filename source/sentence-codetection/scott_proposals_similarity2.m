@@ -30,15 +30,15 @@ addpath(genpath('forests_edges_boxes'));
 run('/home/sbroniko/codetection/source/sentence-codetection/vlfeat/toolbox/vl_setup');
 addpath(genpath('MCG-PreTrained'));
 
-% enable parfor
-pools = matlabpool('size');
-cpus = feature('numCores');
-if pools ~= (cpus - 1)
-    if pools > 0
-        matlabpool('close');
-    end
-    matlabpool('open', cpus - 1);
-end
+% % enable parfor
+% pools = matlabpool('size');
+% cpus = feature('numCores');
+% if pools ~= (cpus - 1)
+%     if pools > 0
+%         matlabpool('close');
+%     end
+%     matlabpool('open', cpus - 1);
+% end
 
 %experiment parameters--shouldn't change
 gaussparam1 = [.25,0]; %setting sigma=.25,mu=0 for distance
