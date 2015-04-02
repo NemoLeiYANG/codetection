@@ -3,6 +3,8 @@
 (load "/home/sbroniko/codetection/source/rover-projection.sc")
 ;;(load "/home/sbroniko/codetection/source/toollib-perspective-projection.sc")
 ;;(load "/home/sbroniko/codetection/source/sentence-codetection/codetection.sc")
+(load "/home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-plotting.sc") ;;for plotting stuff in matlab
+
 
 ;; (define-command
 ;;  (main (at-most-one
@@ -489,8 +491,8 @@
 
 (define (visualize-results path dummy-f dummy-g)
  (let* (;; (data (read-object-from-file (format #f "~a/frame-data-new3.sc" path)))
-	(data (read-object-from-file (format #f "~a/frame-data-new4.sc" path)))
-	(img-path (format #f "~a/images-~a-~a-new4" path
+	(data (read-object-from-file (format #f "~a/frame-data-~a-~a.sc" path dummy-f dummy-g)))
+	(img-path (format #f "~a/images-~a-~a" path
 			  (number->padded-string-of-length dummy-f 3)
 			  (number->padded-string-of-length dummy-g 3)))
 	(results (run-codetection-with-proposals-similarity data
@@ -500,7 +502,7 @@
 	(video-path (format #f "~a/video_front.avi" path))
 	(frames (video->frames 1 video-path))
 	)
-  (write-object-to-file results (format #f "~a/results-~a-~a-new4.sc" path
+  (write-object-to-file results (format #f "~a/results-~a-~a.sc" path
 					(number->padded-string-of-length dummy-f 3)
 					(number->padded-string-of-length dummy-g 3)))
  ;; (dtrace "img-path" img-path)
@@ -601,7 +603,7 @@
     )))
 
 (define (get-matlab-data-training-or-generation
-	 path top-k ssize alpha beta gamma delta)
+	 path top-k ssize alpha beta gamma delta dummy-f dummy-g)
  (let* ((log-to-track "/home/sbroniko/vader-rover/position/log-to-track.out"))
   (unless ;;comment out this unless if doing autodrive
     (file-exists? (format #f "~a/imu-log-with-estimates.txt" path))
@@ -609,17 +611,24 @@
   (write-object-to-file
    (get-matlab-proposals-similarity-full-video
     top-k ssize (format #f "~a" path) alpha beta gamma delta)
-      (format #f "~a/frame-data-new4.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
+   (format #f "~a/frame-data-~a-~a.sc" path
+	   (number->padded-string-of-length dummy-f 3)
+	   (number->padded-string-of-length dummy-g 3)))
+      ;; (format #f "~a/frame-data-new4.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
    ;; (format #f "~a/frame-data-new3.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
-  (dtrace (format #f "wrote ~a/frame-data-new4.sc" path) #f)))
+  (dtrace (format #f "wrote ~a/frame-data-~a-~a.sc" path
+		  (number->padded-string-of-length dummy-f 3)
+		  (number->padded-string-of-length dummy-g 3)) #f)))
 
-(define (get-matlab-data-auto-drive path top-k ssize alpha beta gamma delta)
- (begin
-  (write-object-to-file
-   (get-matlab-proposals-similarity-full-video
-    top-k ssize (format #f "~a" path) alpha beta gamma delta)
-   (format #f "~a/frame-data-new.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
-  (dtrace (format #f "wrote ~a/frame-data-new.sc" path) #f)))
+
+;;NEEDS REWRITE TO MATCH ABOVE WITH DUMMY-F AND DUMMY-G
+;; (define (get-matlab-data-auto-drive path top-k ssize alpha beta gamma delta)
+;;  (begin
+;;   (write-object-to-file
+;;    (get-matlab-proposals-similarity-full-video
+;;     top-k ssize (format #f "~a" path) alpha beta gamma delta)
+;;    (format #f "~a/frame-data-new.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
+;;   (dtrace (format #f "wrote ~a/frame-data-new.sc" path) #f)))
 
 (define (results-end-to-end data-directory ;; NEED slash on data-dir
 			    top-k
@@ -637,7 +646,9 @@
 	(c-cpus-per-job 1)
 	(output-matlab (format #f "~a-matlab/" output-directory))
 	(output-c (format #f "~a-c/" output-directory))
-	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	;; (plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	;; (plandirs (list "plan4" "plan7" "plan8")) ;;these are the only plans with visible objects in the TRAINING corpus
+	(plandirs (list "plan0" "plan1" "plan2")) ;;for testing dummy-f and dummy-g changes
 	(dir-list (join
 		   (map
 		    (lambda (p)
@@ -646,7 +657,7 @@
 		    plandirs)))
 	(commands-matlab (map
 			  (lambda (dir) ;;change get-matlab... command if using auto-drive
-			   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation \"~a\" ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta)) dir-list))
+			   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation \"~a\" ~a ~a ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta dummy-f dummy-g)) dir-list))
 	(commands-c (map
 		     (lambda (dir)
 		      (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"
@@ -692,13 +703,13 @@
   (for-each (lambda (server)
 	     (rsync-directory-to-server server data-directory source))
 	    servers) ;;copy results back to source
-  (dtrace "processing complete" #f)
+  (dtrace "processing complete for results-end-to-end" #f)
   (system "date")))
 
 
-(define (join-images basedir subdir1 subdir2)
+(define (join-images basedir subdir1 subdir2 dir-suffix)
  (let* ((images (system-output (format #f "ls ~a/~a" basedir subdir1)))
-	(joindir (format #f "~a/joined4" basedir)))
+	(joindir (format #f "~a/joined-~a" basedir dir-suffix)))
   (mkdir-p joindir)
   (for-each (lambda (img)
 	     (system (format #f "montage -tile 2x1 -geometry +0+0 \"~a\"/\"~a\"/\"~a\" \"~a\"/\"~a\"/\"~a\" \"~a\"/\"~a\""
@@ -706,21 +717,56 @@
 	    images)
   (dtrace (format #f "wrote images in ~a" joindir) #f)))
 
-(define (join-all-images datasetdir subdir1 subdir2)
- (let* ((plandirs (system-output (format #f "ls ~a | grep plan" datasetdir)))
+(define (join-all-images datasetdir subdir1 subdir2 dir-suffix)
+ (let* (;;(plandirs (system-output (format #f "ls ~a | grep plan" datasetdir)))
+	(plandirs (list "plan0" "plan1" "plan2")) ;;for testing dummy-f and dummy-g changes
 	(dir-list (join
 		   (map
 		    (lambda (p)
 		     (map (lambda (d) (format #f "~a/~a/~a" datasetdir p d))
 			  (system-output (format #f "ls ~a/~a" datasetdir p))))
 		    plandirs))))
-  (for-each (lambda (dir) (join-images dir subdir1 subdir2)) dir-list)
+  (for-each (lambda (dir) (join-images dir subdir1 subdir2 dir-suffix)) dir-list)
   (dtrace "join-all-images complete" #f)))
 
+
+;;NEEDS REWRITE TO MATCH ABOVE WRT DUMMY-F AND DUMMY-G
+;; (define (join-all-images-training datasetdir subdir1 subdir2)
+;;  (let* ((plandirs (list "plan4" "plan7" "plan8"));;(system-output (format #f "ls ~a | grep plan" datasetdir)))
+;; 	(dir-list (join
+;; 		   (map
+;; 		    (lambda (p)
+;; 		     (map (lambda (d) (format #f "~a/~a/~a" datasetdir p d))
+;; 			  (system-output (format #f "ls ~a/~a" datasetdir p))))
+;; 		    plandirs))))
+;;   (for-each (lambda (dir) (join-images dir subdir1 subdir2)) dir-list)
+;;   (dtrace "join-all-images-training complete" #f)))
+
 (define (run-my-shit)
- (results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150331")
- (join-all-images "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation" "joined" "images-0.6-0.6-new4")
- (system "date"))
+ ;; ;; (results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150331")
+ ;; (results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/training/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150402")
+ ;; ;; (join-all-images "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation" "joined" "images-0.6-0.6-new4")
+ ;;  (join-all-images-training "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/training" "images-0.6-0.6" "images-0.6-0.6-new4")
+ (let* ((data-path "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.3)
+	(dummy-g 0.6)
+	(output-path "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150420a"))
+  (results-end-to-end data-path top-k ssize alpha beta gamma delta dummy-f dummy-g output-path)
+  (join-all-images data-path
+		   "images-0.6-0.6-new4"
+		   (format #f "images-~a-~a"
+			   (number->padded-string-of-length dummy-f 3)
+			   (number->padded-string-of-length dummy-g 3))
+		   (format #f "~a-~a"
+			   (number->padded-string-of-length dummy-f 3)
+			   (number->padded-string-of-length dummy-g 3)))
+  (system "date")))
 
 (define (run-my-shit-2)
  (let* ((path "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/plan0/2014-11-20-02:31:11")
@@ -735,25 +781,69 @@
   (get-matlab-data-training-or-generation path top-k ssize alpha beta gamma delta)
   (visualize-results path dummy-f dummy-g)))
 
+;;;--------------plotting stuff----------------------
+
+(define (get-xy-from-results-file file)
+ (let* ((filedata (read-object-from-file file))
+	(raw-xys (second filedata)))
+  (let loop ((xys '())
+	     (raw-xys raw-xys))
+   (if (null? raw-xys)
+       xys ;; done
+       (if (null? (first raw-xys))
+	   (loop xys (rest raw-xys))
+	   (loop (cons (first raw-xys) xys) (rest raw-xys)))))))
+
+(define (plot-objects-from-file file)
+ (let* ((xys (get-xy-from-results-file file))
+	(xs (map first xys))
+	(ys (map second xys)))
+  (start-matlab!)
+  (plot-lines-in-matlab (list xs) (list ys) (list "'foo'") "x")))
+
+(define *boundaries* '((-3 -2.62) (-3 3.93) (3.05 3.93) (3.05 -2.62) (-3 -2.62)))
+
+(define (plot-objects-from-floorplan floorplan-dir filename)
+ (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
+	(xys ;;(join
+	 (map
+	  (lambda (f)
+	   (get-xy-from-results-file
+	    (format #f "~a~a" f filename)))
+	  rundirs))
+	;;)
+	(xs (map (lambda (f) (map first f)) xys))
+	(ys (map (lambda (f) (map second f ))xys)))
+  (start-matlab!)
+  (plot-lines-in-matlab-with-symbols xs ys
+				     (map-indexed (lambda (f i) (format #f "'~a'" i)) xys)
+				     (map-indexed (lambda (f i) (format #f "o")) xys))
+  ;; (matlab "hold on;")
+  ;; (plot-lines-in-matlab (list (map first *boundaries*))
+  ;; 			(list (map second *boundaries*))
+  ;; 			(list "'boundaries'")
+  ;; 			"g-")
+  ))
+
 ;;;;----temporary testing-data stuff-------
 ;;;COMMENT OUT THE FOUR LINES BELOW UNLESS TRYING TO RE-ADD THE DATA
 ;; (define test-data-small #f) (define test-data-medium #f) (define test-data-large #f) (define test-data-full #f)
 
-(define (load-data)
- (dtrace "starting load-data" #f)
- (system "date")
- (set! test-data-small (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 20 1 1 1 0))
- (dtrace "loaded test-data-small" #f)
- (system "date")
- (set! test-data-medium (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 46 1 1 1 0))
- (dtrace "loaded test-data-medium" #f)
- (system "date")
- (set! test-data-large (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 116 1 1 1 0))
- (dtrace "loaded test-data-large" #f)
- (system "date")
- (set! test-data-full (get-matlab-proposals-similarity-full-video 10 64 "/home/sbroniko/codetection/testing-data" 1 1 1 0))
- (dtrace "loaded test-data-full, load complete" #f)
- (system "date"))
+;; (define (load-data)
+;;  (dtrace "starting load-data" #f)
+;;  (system "date")
+;;  (set! test-data-small (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 20 1 1 1 0))
+;;  (dtrace "loaded test-data-small" #f)
+;;  (system "date")
+;;  (set! test-data-medium (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 46 1 1 1 0))
+;;  (dtrace "loaded test-data-medium" #f)
+;;  (system "date")
+;;  (set! test-data-large (get-matlab-proposals-similarity-by-frame 10 64 "/home/sbroniko/codetection/testing-data" 17 116 1 1 1 0))
+;;  (dtrace "loaded test-data-large" #f)
+;;  (system "date")
+;;  (set! test-data-full (get-matlab-proposals-similarity-full-video 10 64 "/home/sbroniko/codetection/testing-data" 1 1 1 0))
+;;  (dtrace "loaded test-data-full, load complete" #f)
+;;  (system "date"))
 
 
 ;;  (define test-data-small (read-object-from-file "/home/sbroniko/codetection/testing-data/test-data-small.sc"))

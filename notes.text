@@ -1125,6 +1125,38 @@ as we run into problems or think of things we hadn't thought of before.
   detected.  I think that the current version is good enough to move forward
   with. 
 
+----------------git commit 17c4cce---------------
+
+2 Apr 15
+
+--Starting a run on plans 4,7,8 of training dataset (the only ones with objects
+  in the videos) so that we can have at least 3 floorplans where we have 25 runs
+  per plan, instead of the 10 per plan in generation and autodrive.
+
+--Sent prelim abstract and check sheet to Matt Golden.
+
+--Run completed in ~4 hours on 75 training videos.  Run errored out at join
+  stage because of misconfiguration--fixed and rerunning the join.
+
+--Started looking at plots of box xy locations on floorplan.  Have a function to
+  plot the boxes from a single run, need to write another function that plots
+  the boxes from all runs on a single floorplan.
+
+--Talking with Dan, decided to do a small re-run over 30 runs (i.e., < # of
+  processors available) to look a the effect of changing the values for dummy-f
+  and dummy-g.  Going to start with dummy-f first.  Since original value was at
+  0.6, going to try 0.3 first.  Started at 1547.  This run is still going as of
+  1730.
+
+--Looking at plot of all runs in a floor plan, can clearly see clusters near
+  where we know the objects are.  Need to create a sort of mesh grid over the
+  area and then at each point in the mesh, do a gaussian kernel (of what
+  variance?) for distance from point to box and then multiply that by the box's
+  f-score.  This should give us a function with peaks where the objects are.
+  Should also be able to determine the number of peaks (i.e., objects) from
+  analyzing the sentences.  Then we can just pick this number of maxima from the
+  function to get our object points.
+
 
 
 
