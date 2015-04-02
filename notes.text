@@ -1114,6 +1114,18 @@ as we run into problems or think of things we hadn't thought of before.
 --Job appeared to run successfully.  At 1740, it is currently working through
   the join-all-images portion.
 
+----------------git commit 24995ed---------------
+
+1 Apr 15
+
+--Run completed at 1856 yesterday.  Total run time of 9h 15m.  Looking at the
+  results shows general improvement--most of the spurious boxes are suppressed,
+  and while some objects that were detected in the original version are missed
+  in the new one, some objects that were missed in the original version are now
+  detected.  I think that the current version is good enough to move forward
+  with. 
+
+
 
 
 running command:
@@ -1125,9 +1137,6 @@ running command:
 
 ***In auto-drive dataset, plan0 (and plan1?) have 20 runs, but floorplans are
    different between 1st and 2nd 10***
-
-
-
 
 
 ***BASH SCRIPTS TO LOOK FOR MISSING FOOTER LINES IN CAMERA_FRONT.TXT****
