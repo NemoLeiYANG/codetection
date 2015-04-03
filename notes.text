@@ -1157,7 +1157,35 @@ as we run into problems or think of things we hadn't thought of before.
   analyzing the sentences.  Then we can just pick this number of maxima from the
   function to get our object points.
 
+----------------git commit c859642---------------
 
+3 Apr 15
+
+--First impressions of looking at results of small re-run in plan0, plan1, plan2
+  of generation dataset shows improved results--more objects detected, but also
+  more spurious detections.  However, looking at the scatter plot of detections
+  in the xy plane shows a lot more noise--not sure if the correct peaks/clusters
+  will be found.  Need to finish writing the function to score the points in
+  this plot for peaks.  Also need to modify the current code to export the
+  winning box's fscore, as well as testing code to grab these fscores from the
+  matlab data.
+
+--Modified run-codetection-with-proposals-similarity to have the fscores of the
+  selected boxes as the fourth list in its output.  Shouldn't have any effect on
+  previously written code that only uses the xy and pixel locations (lists 2 and
+  3) of the boxes.  ANY FUTURE CODE THAT USES SCORES WILL HAVE TO HAVE DATA THAT
+  WAS RE-RUN WITH THIS NEW CODE.
+
+--Wrote ensure-scores to put winning box fscores onto results that don't have
+  it.
+
+--Modified plot-objects-from-floorplan to have boundaries and grid lines.  Base
+  version plots all runs in single color, -multicolor plots each run as a
+  different color.
+
+--Built function to pass data back to matlab and currently working on
+  score_detections.m in matlab to compute the score for each point in a grid.
+  Need to finish testing this.
 
 
 running command:

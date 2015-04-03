@@ -440,17 +440,22 @@
   (easy-ffi:free 2 g g-c);;
 
   ;;output
-  (list boxes
-	(map (lambda
+  (list boxes ;;box numbers
+	(map (lambda  ;;xy locations as list (empty list if dummy)
 	       (b prop-xy) (list-ref prop-xy b))
 	     boxes
 	     (map (lambda (prop-xy) (append prop-xy '(())))
 		  proposals-xy))
-	(map (lambda
+	(map (lambda ;;pixel locations as list (empty list if dummy)
 	       (b prop-boxes) (list-ref prop-boxes b))
 	     boxes
 	     (map (lambda (prop-boxes) (append prop-boxes '(())))
 		  proposals-boxes))
+	(map (lambda ;;f-score value (NOT A LIST) (empty list if dummy)
+	       (b scores) (list-ref scores b))
+	     boxes
+	     (map (lambda (scores) (append scores '(())))
+		  f))
 	     )
 
   ;;(list boxes) ;;just box indices
@@ -801,29 +806,145 @@
   (start-matlab!)
   (plot-lines-in-matlab (list xs) (list ys) (list "'foo'") "x")))
 
-(define *boundaries* '((-3 -2.62) (-3 3.93) (3.05 3.93) (3.05 -2.62) (-3 -2.62)))
+;;(define *boundaries* '((-3 -2.62) (-3 3.93) (3.05 3.93) (3.05 -2.62) (-3 -2.62)))
+(define *xmin* -3)
+(define *xmax* 3.05)
+(define *ymin* -2.62)
+(define *ymax* 3.93)
+(define *boundaries* (list (list *xmin* *ymin*)
+			   (list *xmin* *ymax*)
+			   (list *xmax* *ymax*)
+			   (list *xmax* *ymin*)
+			   (list *xmin* *ymin*)))
+(define *x-1* -1.37)
+(define *x0* 0)
+(define *x+1* 1.37)
+(define *y-1* -1.31)
+(define *y0* 0)
+(define *y+1* 1.31)
+(define *y+2* 2.62)
+
+(define (point-locations x1 x2 cm-between)
+ (let* ((distance (- x2 x1))
+	(num-points (+ 1 (exact-round (/ distance (/ cm-between 100))))))
+  (linspace x1 x2 num-points)))
+
+(define (plot-grid)
+ (start-matlab!)
+ (plot-lines-in-matlab (list (list *xmin* *xmin* *xmax* *xmax* *xmin*)
+			     (list *xmin* *xmax*)
+			     (list *x0* *x0*))
+		       (list (list *ymin* *ymax* *ymax* *ymin* *ymin*)
+			     (list *y0* *y0*)
+			     (list *ymin* *ymax*))
+		       (list "'boundaries'")
+		       "k-")
+ (matlab "hold on;")
+ (plot-lines-in-matlab (list (list *xmin* *xmax*)
+			     (list *xmin* *xmax*)
+			     (list *xmin* *xmax*)
+			     (list *x-1* *x-1*)
+			     (list *x+1* *x+1*)
+			     )
+ 		       (list (list *y-1* *y-1*)
+			     (list *y+1* *y+1*)
+			     (list *y+2* *y+2*)
+			     (list *ymin* *ymax*)
+			     (list *ymin* *ymax*)
+			     )
+ 		       (list "'hash marks'")
+ 		       "k--")
+ )
+
 
 (define (plot-objects-from-floorplan floorplan-dir filename)
  (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
-	(xys ;;(join
+	(xys (join
+	      (map
+	       (lambda (f)
+		(get-xy-from-results-file
+		 (format #f "~a~a" f filename)))
+	       rundirs)))
+	(xs (map first xys))
+	(ys (map second xys)))
+  (plot-grid)
+  (matlab "hold on;")
+  (plot-lines-in-matlab (list xs) (list ys) (list "'detections'") "o")))
+
+(define (plot-objects-from-floorplan-multicolor floorplan-dir filename)
+ (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
+	(xys 
 	 (map
 	  (lambda (f)
 	   (get-xy-from-results-file
 	    (format #f "~a~a" f filename)))
 	  rundirs))
-	;;)
 	(xs (map (lambda (f) (map first f)) xys))
 	(ys (map (lambda (f) (map second f ))xys)))
-  (start-matlab!)
+  (plot-grid)
+  (matlab "hold on;")
   (plot-lines-in-matlab-with-symbols xs ys
-				     (map-indexed (lambda (f i) (format #f "'~a'" i)) xys)
-				     (map-indexed (lambda (f i) (format #f "o")) xys))
-  ;; (matlab "hold on;")
-  ;; (plot-lines-in-matlab (list (map first *boundaries*))
-  ;; 			(list (map second *boundaries*))
-  ;; 			(list "'boundaries'")
-  ;; 			"g-")
+				     (map-indexed (lambda (f i) (format #f "'run ~a'" i)) xys)
+				     (map-indexed (lambda (f i) (format #f "o")) xys))))
+
+(define (ensure-scores results-file frame-data-file)
+ ;;this makes sure that results have the fscores of winning boxes as 4th list
+ (let* ((results (read-object-from-file results-file))
+	(frame-data (read-object-from-file frame-data-file))
+	(fscores (map (lambda (boxes)
+		       (map fifth (matrix->list-of-lists boxes)))
+		      (first frame-data)))
+	(boxes (first results))
+	(winning-fscores (map (lambda (b scores)
+			       (list-ref scores b))
+			      boxes
+			      (map (lambda (scores) (append scores '(())))
+				   fscores)))
+	)
+  (if (= (length results) 4)
+      results
+      (append results (list winning-fscores)))))
+
+(define (get-scores-from-results-and-frame-data-files results-file frame-data-file)
+ (let* ((raw-scores (fourth (ensure-scores results-file frame-data-file))))
+  (let loop ((scores '())
+	     (raw-scores raw-scores))
+   (if (null? raw-scores)
+       scores ;; done
+       (if (null? (first raw-scores))
+	   (loop scores (rest raw-scores))
+	   (loop (cons (first raw-scores) scores) (rest raw-scores)))))))
+
+(define (make-test-file floorplan-dir results-file frame-data-file output-file)
+ (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
+	(xys (join
+	      (map
+	       (lambda (f)
+		(get-xy-from-results-file
+		 (format #f "~a~a" f results-file)))
+	       rundirs)))
+	(scores (join
+		 (map
+		  (lambda (f)
+		   (get-scores-from-results-and-frame-data-files
+		    (format #f "~a~a" f results-file)
+		    (format #f "~a~a" f frame-data-file)))
+		  rundirs)))
+	(mydata (map (lambda (xy score)
+  			      (list->vector (append xy (list score))))
+  			     xys
+  			     scores)))
+  ;;use most of what's above here to pass this data back into matlab
+  (start-matlab!)
+  (scheme->matlab! "detection_data" mydata)
+  (matlab (format #f "save('~a','detection_data')" output-file))
+  
   ))
+			      
+
+			 ;;append xys (list scores)) output-file)))
+	     
+ 
 
 ;;;;----temporary testing-data stuff-------
 ;;;COMMENT OUT THE FOUR LINES BELOW UNLESS TRYING TO RE-ADD THE DATA
