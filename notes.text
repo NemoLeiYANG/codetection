@@ -1187,10 +1187,33 @@ as we run into problems or think of things we hadn't thought of before.
   score_detections.m in matlab to compute the score for each point in a grid.
   Need to finish testing this.
 
+----------------git commit 0cd6d12---------------
 
-running command:
-(results-end-to-end "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/" 10 64 1 1 1 0 0.6 0.6 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results20150327")
-(join-all-images "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation" "joined" "images-0.6-0.6-new2")
+6 Apr 15
+
+--Got plots done on Saturday (in /tmp/sbroniko and an email to Jeff) and they
+  look pretty good.  Runtime for doing the scoring function with fscore=0.6 and
+  gscore=0.6 was roughly 1 hour.  Still need to do the max-finding on the
+  scoring function to find the exact locations of the peaks IOT be able to
+  compare them with the ground truth locations.
+
+--Also tried a scoring function run with fscore=0.3.  That run took about 2.25
+  hours, which makes sense since there were about 2.25 more detections in that
+  run than in the previous run with fscore=0.6.  This is currently saved as
+  scores2 in 20150406.mat.  Need to do the plots of this function.
+
+--Need to write up plotting and max finding as functions and then wrap them in
+  Scheme calls to Matlab.
+
+
+
+
+****COMMENTS FROM JEFF 6 APR 15: Look at redoing scoring function as some sort
+    of Expectation Maximization (k-means, gaussian mixture models, etc.) as a
+    faster way of finding clusters.  
+**Thoughts from talking with Dan about the above: Can also look at using my
+    current scoring function with a larger grid spacing (5cm, 10cm, etc.) to
+    find initial points to use with GMM or K-means
 
 ******SEGMENT VIDEOS WITH SENTENCES IS NEXT STEP*******
 **look at learning.sc in acl2015/code

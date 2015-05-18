@@ -736,6 +736,7 @@
 
 
 ;;NEEDS REWRITE TO MATCH ABOVE WRT DUMMY-F AND DUMMY-G
+;; This was what was used to generate results (boxes & scores) for the testing portion of MSEE1 dataset
 ;; (define (join-all-images-training datasetdir subdir1 subdir2)
 ;;  (let* ((plandirs (list "plan4" "plan7" "plan8"));;(system-output (format #f "ls ~a | grep plan" datasetdir)))
 ;; 	(dir-list (join
@@ -854,6 +855,9 @@
 			     )
  		       (list "'hash marks'")
  		       "k--")
+ (matlab "axis([-4 4 -3 4.5])")
+ (matlab "ylabel('world Y (in m)')")
+ (matlab "xlabel('world X (in m)')")
  )
 
 
@@ -936,15 +940,29 @@
   			     scores)))
   ;;use most of what's above here to pass this data back into matlab
   (start-matlab!)
-  (scheme->matlab! "detection_data" mydata)
-  (matlab (format #f "save('~a','detection_data')" output-file))
+  (scheme->matlab! "detection_data_reduced" mydata)
+  (matlab (format #f "save('~a','detection_data_reduced')" output-file))
   
   ))
 			      
-
-			 ;;append xys (list scores)) output-file)))
+(define (make-scheme-file-of-xys floorplan-dir results-file output-file)
+ (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
+	(xys (join
+	      (map
+	       (lambda (f)
+		(get-xy-from-results-file
+		 (format #f "~a~a" f results-file)))
+	       rundirs))))
+  (write-object-to-file xys output-file)))
 	     
- 
+ (define (make-scheme-file-of-xys-separated floorplan-dir results-file output-file)
+ (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
+	(xys (map
+	      (lambda (f)
+	       (get-xy-from-results-file
+		(format #f "~a~a" f results-file)))
+	      rundirs)))
+  (write-object-to-file xys output-file)))
 
 ;;;;----temporary testing-data stuff-------
 ;;;COMMENT OUT THE FOUR LINES BELOW UNLESS TRYING TO RE-ADD THE DATA

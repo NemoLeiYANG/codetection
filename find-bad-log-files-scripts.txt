@@ -1,0 +1,14 @@
+
+for i in `ls | grep plan`;
+ do 
+ for j in `ls $i`;
+  do
+   echo $i/$j 
+   fgrep "logging stopped" $i/$j/camera_front.txt
+ done
+done
+
+for i in `ls | grep plan`;
+ do echo $i 
+  fgrep "logging stopped" $i/*/camera_front.txt | wc -l
+done
