@@ -1205,8 +1205,43 @@ as we run into problems or think of things we hadn't thought of before.
 --Need to write up plotting and max finding as functions and then wrap them in
   Scheme calls to Matlab.
 
+18 May 15
 
+--Cleanup commit to account for all AMT stuff in codetection-test.sc.
 
+----------------git commit 9fa4041---------------
+
+28 May 15
+
+--Starting back on codetection stuff.  Found FastPeakFind function from
+  http://www.mathworks.com/matlabcentral/fileexchange/37388-fast-2d-peak-finder
+  that seems to work pretty well on finding the peaks in my scoring function.
+  Using its sub-pixel resolution mode (case 2) does pretty well with finding the
+  centroids of peaks.  Probably need to look at making my own version of this
+  using the regionprops command.
+
+--Talked with Dan about how to use these locations of my peaks as floorplans.  I
+  hadn't realized that the way our acquisition system learns is by using the
+  labels (and not just the locations) of the objects (so that 2 objects of the
+  same type already start with the same label).  So I can't just give the
+  acquisition system xy coordinates, I have to have the objects labeled (with
+  the SAME label for objects of the same class).  Dan and I came up with using
+  the boxed images that were located in the first step of codetection to build a
+  set of images at every found peak location (within some distance of the peak)
+  and then run some sort of similarity measure (reuse the old similarity
+  measure, or something else?) to determine whether two objects at different
+  locations were of the same class.  Do a full every-to-every image similarity
+  measure between every pair of points (IN EVERY FLOORPLAN AS WELL) to determine
+  an average similarity, and then use a threshold to decide if similar enough to
+  be the same class.  Can then label these as OBJECT1...OBJECTN and use as
+  floorplan. 
+
+***CONVERSATION with Dan 18 May 15-->Can account for viewing objects from one
+   side by taking into account the width of the object--can be as simple as
+   using the width of the object to push the object "back" 1/2 object width on
+   each detection...need to look at this more systematically to make sure that
+   this is really what's happening.
+		
 
 ****COMMENTS FROM JEFF 6 APR 15: Look at redoing scoring function as some sort
     of Expectation Maximization (k-means, gaussian mixture models, etc.) as a
