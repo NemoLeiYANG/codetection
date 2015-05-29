@@ -1236,6 +1236,34 @@ as we run into problems or think of things we hadn't thought of before.
   be the same class.  Can then label these as OBJECT1...OBJECTN and use as
   floorplan. 
 
+----------------git commit a2c3bae---------------
+
+29 May 15
+
+--Built my own version of FastPeakFind in find_score_peaks.m.  Seems to work
+  correctly.  Right now it returns pixel locations (w/sub-pixel accuracy) for
+  the centroids of peaks.  Thinking about integrating it into score_detections.m
+  so that it can return actual xy locations for peaks.
+
+--Have find_objects.m working.  Returns number of objects found and their xy
+  locations. HARDCODED the noise threshold at 0.3--might need to relook this.
+
+
+
+**Now how to collect up all the object images within a certain radius of these
+  points? 
+  - Have xy points where objects were detected (in each floorplan).
+  - results-.-..sc in each run directory has 4 lists: 1st is index of selected
+  box in each frame, 2nd is world xy locations of selected box in each frame,
+  3rd is pixel coordinates of box in frame (x1 y1 x2 y2), 4th is f-score value
+  of winning box.
+  - Take list of detections (detection_data in MATLAB) and use first 2 columns
+  for xy locations.  Then associate each with one of the object locations.
+  - BUT how to go from xy locations back to frame data?  Should I somehow
+  restructure my previous code to save that data somewhere?  Or can I match by
+  xy location (would have to search in each of the runs, since detection_data is
+  aggregated at the floorplan level).
+
 ***CONVERSATION with Dan 18 May 15-->Can account for viewing objects from one
    side by taking into account the width of the object--can be as simple as
    using the width of the object to push the object "back" 1/2 object width on
