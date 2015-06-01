@@ -1248,7 +1248,15 @@ as we run into problems or think of things we hadn't thought of before.
 --Have find_objects.m working.  Returns number of objects found and their xy
   locations. HARDCODED the noise threshold at 0.3--might need to relook this.
 
+----------------git commit 41c0d15---------------
 
+1 Jun 15
+
+--Working on make-test-file-new to add run numbers, frame numbers and pixel
+  coordinates to the detection_data structure in MATLAB.
+
+***TO JEFF: list of 5-10 bullet points of a publishable increment over tacl2015
+   -> schedule of milestones to get a paper out for 15sep15 (ICRA or AAAI).
 
 **Now how to collect up all the object images within a certain radius of these
   points? 
@@ -1263,6 +1271,8 @@ as we run into problems or think of things we hadn't thought of before.
   restructure my previous code to save that data somewhere?  Or can I match by
   xy location (would have to search in each of the runs, since detection_data is
   aggregated at the floorplan level).
+  - Look at putting extra columns into detection_data for run#, frame#,
+  proposal#--that should be enough to get back to the actual detection image.
 
 ***CONVERSATION with Dan 18 May 15-->Can account for viewing objects from one
    side by taking into account the width of the object--can be as simple as

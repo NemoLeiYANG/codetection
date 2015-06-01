@@ -940,8 +940,39 @@
   			     scores)))
   ;;use most of what's above here to pass this data back into matlab
   (start-matlab!)
-  (scheme->matlab! "detection_data_reduced" mydata)
-  (matlab (format #f "save('~a','detection_data_reduced')" output-file))
+  (scheme->matlab! "detection_data" mydata)
+  (matlab (format #f "save('~a','detection_data')" output-file))
+  ;; (scheme->matlab! "detection_data_reduced" mydata)
+  ;; (matlab (format #f "save('~a','detection_data_reduced')" output-file))
+  
+  ))
+
+(define (make-test-file-new floorplan-dir results-file frame-data-file output-file)
+ (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
+	(xys (join
+	      (map
+	       (lambda (f)
+		(get-xy-from-results-file
+		 (format #f "~a~a" f results-file)))
+	       rundirs)))
+	(scores (join
+		 (map
+		  (lambda (f)
+		   (get-scores-from-results-and-frame-data-files
+		    (format #f "~a~a" f results-file)
+		    (format #f "~a~a" f frame-data-file)))
+		  rundirs)))
+	(run-numbers )
+	(frame-numbers )
+	(proposal-pixels )
+	(mydata (map (lambda (xy score)
+  			      (list->vector (append xy (list score))))
+  			     xys
+  			     scores)))
+  ;;use most of what's above here to pass this data back into matlab
+  (start-matlab!)
+  (scheme->matlab! "detection_data_new" mydata)
+  (matlab (format #f "save('~a','detection_data_new')" output-file))
   
   ))
 			      
