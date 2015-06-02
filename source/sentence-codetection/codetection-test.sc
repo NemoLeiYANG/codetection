@@ -919,6 +919,31 @@
 	   (loop scores (rest raw-scores))
 	   (loop (cons (first raw-scores) scores) (rest raw-scores)))))))
 
+(define (get-detection-images run-path results-file)
+ ;;returns a list of imlib handles to cropped detection images from a single run
+ (let* ((video-path (format #f "~a/video_front.avi" run-path))
+	(frames (video->frames 1 video-path))
+	(results-file-with-path (format #f "~a/~a" run-path results-file))
+	(results (read-object-from-file results-file-with-path))
+	(detection-pixels (third results)))
+  (let loop ((images '())
+	     (detection-pixels detection-pixels)
+	     (frames frames))
+   (if (null? detection-pixels)
+       images ;;done
+       (if (null? (first detection-pixels))
+	   (begin ;;no detection this frame
+	    (imlib:free-image-and-decache (first frames))
+	    (loop images (rest detection-pixels) (rest frames)))
+	   (let* ((x1 (first (first detection-pixels)))
+		  (y1 (second (first detection-pixels)))
+		  (width (- (third (first detection-pixels)) x1))
+		  (height (- (fourth (first detection-pixels)) y1))
+		  (det-image (imlib:create-cropped
+			      (first frames) x1 y1 width height)))
+	    (imlib:free-image-and-decache (first frames))
+	    (loop (cons det-image images) (rest detection-pixels) (rest frames))))))))
+
 (define (make-test-file floorplan-dir results-file frame-data-file output-file)
  (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
 	(xys (join
@@ -947,34 +972,62 @@
   
   ))
 
-(define (make-test-file-new floorplan-dir results-file frame-data-file output-file)
+(define (get-detection-data-for-floorplan floorplan-dir
+					  results-filename
+					  frame-data-filename
+					  output-dirname ;;under floorplan-dir
+					  matlab-output-filename)
+;;(define (make-test-file-new floorplan-dir results-file frame-data-file output-file)
  (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
-	(xys (join
+	(xys (dtrace "xys"
+	 (join
 	      (map
 	       (lambda (f)
 		(get-xy-from-results-file
-		 (format #f "~a~a" f results-file)))
+		 (format #f "~a~a" f results-filename)))
 	       rundirs)))
-	(scores (join
+	     )
+	(scores (dtrace "scores"
+	 (join
 		 (map
 		  (lambda (f)
 		   (get-scores-from-results-and-frame-data-files
-		    (format #f "~a~a" f results-file)
-		    (format #f "~a~a" f frame-data-file)))
+		    (format #f "~a~a" f results-filename)
+		    (format #f "~a~a" f frame-data-filename)))
 		  rundirs)))
-	(run-numbers )
-	(frame-numbers )
-	(proposal-pixels )
-	(mydata (map (lambda (xy score)
-  			      (list->vector (append xy (list score))))
-  			     xys
-  			     scores)))
-  ;;use most of what's above here to pass this data back into matlab
+		)
+	(matlab-data (dtrace "matlab-data"
+	 (map (lambda (xy score)
+			   (list->vector (append xy (list score))))
+			  xys
+			  scores))
+		     )
+	;;use most of what's above here to pass this data back into matlab
+	(image-list (dtrace "image-list"
+	 (join
+		     (map
+		      (lambda (f)
+		       (get-detection-images f results-filename))
+		      rundirs))))
+	)
+  (mkdir-p (format #f "~a/~a" floorplan-dir output-dirname))
+  (for-each-indexed
+   (lambda (image i)    
+    (imlib:save image (format #f
+			      "~a/~a/~a.png"
+			      floorplan-dir
+			      output-dirname
+			      (number->padded-string-of-length (+ i 1) 5)))
+    (imlib:free-image-and-decache image)
+    (dtrace "saved image" (+ i 1)))
+   image-list)		     			
   (start-matlab!)
-  (scheme->matlab! "detection_data_new" mydata)
-  (matlab (format #f "save('~a','detection_data_new')" output-file))
-  
-  ))
+  (scheme->matlab! "detection_data" matlab-data)
+  (matlab (format #f
+		  "save('~a/~a/~a','detection_data')"
+		  floorplan-dir
+		  output-dirname
+		  matlab-output-filename))))
 			      
 (define (make-scheme-file-of-xys floorplan-dir results-file output-file)
  (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))

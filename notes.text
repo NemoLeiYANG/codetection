@@ -1255,8 +1255,100 @@ as we run into problems or think of things we hadn't thought of before.
 --Working on make-test-file-new to add run numbers, frame numbers and pixel
   coordinates to the detection_data structure in MATLAB.
 
+----------------git commit da4ef42---------------
+
+2 Jun 15
+
+--Have find_object_error.m working; this finds the error between detections and
+  ground truth for a single floor plan.  Need to automate the extraction of
+  ground truth from the *dataset.sc file and also wrap to work over all floor
+  plans (probably at the same time as I wrap everything else for all floor
+  plans).
+
+--Have get-detection-data-for-floorplan working in codetection-test.sc.  This
+  produces the matlab detection_data file as well as saving detection images in
+  a separate directory.  Need to look at possibly doing something with the
+  clustering to eliminate detection images that are too far away from cluster
+  centers (i.e., bad detections).  Also need to look at (ensure-scores) to
+  restructure it for faster running--list-refs appear to be slowing it down.
+
+--------------------------------------------------------------------------------
 ***TO JEFF: list of 5-10 bullet points of a publishable increment over tacl2015
    -> schedule of milestones to get a paper out for 15sep15 (ICRA or AAAI).
+
+Bullet points:
+1. Detect objects in video frames using off-the-shelf object detector (done).
+
+2. Find real-world locations for detected objects (done).
+
+3. Cluster detection locations and extract N cluster centers to find
+detected locations of N objects (done).
+
+4. Measure error as distance between detected and ground-truth locations.
+
+5. Group detection images by cluster and do visual similarity
+comparison of clusters--both within and between the various floor
+plans--so that like objects have same temporary label.
+
+6. Use observed floor plans with temporary labels as replacement for
+hand-coded ground-truth floor plans.  Re-run acquisition with these
+observed floor plans.  This should result in learning the object
+classes, as was done in the original acquisition runs.
+
+   A. From original Acquisition part of MSEE1-dataset, we only have
+3/10 floor plans (75/250 runs) that have observable objects in them,
+which is not enough to use for Acquisition.  Can fix this in one of a
+couple ways:
+     1. Do a manual re-drive of the other 7 floor plans (from original
+machine-generated sentences) with physical objects this time.  Traces
+should be similar enough to the original traces that we could use the
+AMT-generated sentences with these new traces.
+     2. Do the same as (1) above, except put the new traces back up on
+AMT to get new sentences for each, just to be sure that the traces and
+sentences match.
+     3. Machine generate 7 new floor plans with 25 new sentences each,
+drive them, and get AMT sentences from the traces.
+
+  B. Another option is to repurpose the Generation, Autodrive (MSEE1),
+or Autodrive (MSEE2) data for this experiment.  I have been using the
+Generation data (manually-driven traces) in the testing of the work
+I've done so far.  We don't have human-generated sentences for these
+traces, but we do for both the old (MSEE1--10 runs/floor plan) and new
+(MSEE2--30 runs/floor plan) Autodrive data sets.  I don't know if it
+matters that the Autodrive traces were not driven by hand.  We could
+also put the original Generation traces up on AMT to collect
+human-created sentences for those 100 traces and then use that for the
+new acquisition run.
+
+7. Compare learned object classes to ground truth to measure error.
+
+--------------------------------------------------------------------------------
+I think the above should be enough of an increment beyond tacl2015 to
+be publishable.  If not, I can look at doing the following additional
+tasks:
+
+8. Use detected image data to train class-specific object detectors.
+
+9. Substitute these object detectors for the generic object detector
+in (1) above, and re-run steps 1-4 to find out if trained object
+detectors give more accurate (i.e., closer to ground truth) detections
+than the generic object detector.
+
+
+Schedule:
+1-3: already complete
+4: complete by m8jun
+5: complete by m15jun
+6: Decide on course of action for collecting additional data for new
+acquisition run by m15jun.  Collect data and put up on AMT (if
+necessary) by f19jun.  Anticipate AMT data back no later than f26jun.
+Start running acquisition week of m29jun.
+7: Estimate that getting results from new acquisition run will take ~1
+week.  If results available m6jul, comparison should be complete by
+f10jul.
+8&9: Start working on these tasks around m13jul (~2 months to
+ICRA/AAAI deadline).
+--------------------------------------------------------------------------------
 
 **Now how to collect up all the object images within a certain radius of these
   points? 
