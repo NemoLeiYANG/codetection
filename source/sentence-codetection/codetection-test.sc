@@ -451,9 +451,11 @@
 	     boxes
 	     (map (lambda (prop-boxes) (append prop-boxes '(())))
 		  proposals-boxes))
+	;;(ensure-scores ) is the function to make sure that the below list is
+	;;included in the results file
 	(map (lambda ;;f-score value (NOT A LIST) (empty list if dummy)
 	       (b scores) (list-ref scores b))
-	     boxes
+	     boxes 
 	     (map (lambda (scores) (append scores '(())))
 		  f))
 	     )
@@ -891,23 +893,42 @@
 				     (map-indexed (lambda (f i) (format #f "'run ~a'" i)) xys)
 				     (map-indexed (lambda (f i) (format #f "o")) xys))))
 
+;;OLD VERSION--worked as of 2 Jun 15
+;; (define (ensure-scores results-file frame-data-file)
+;;  ;;this makes sure that results have the fscores of winning boxes as 4th list
+;;  (let* ((results (read-object-from-file results-file))
+;; 	(frame-data (read-object-from-file frame-data-file))
+;; 	(fscores (map (lambda (boxes)
+;; 		       (map fifth (matrix->list-of-lists boxes)))
+;; 		      (first frame-data)))
+;; 	(boxes (first results))
+;; 	(winning-fscores (map (lambda (b scores)
+;; 			       (list-ref scores b))
+;; 			      boxes
+;; 			      (map (lambda (scores) (append scores '(())))
+;; 				   fscores)))
+;; 	)
+;;   (if (= (length results) 4)
+;;       results
+;;       (append results (list winning-fscores)))))
+
 (define (ensure-scores results-file frame-data-file)
  ;;this makes sure that results have the fscores of winning boxes as 4th list
- (let* ((results (read-object-from-file results-file))
-	(frame-data (read-object-from-file frame-data-file))
-	(fscores (map (lambda (boxes)
-		       (map fifth (matrix->list-of-lists boxes)))
-		      (first frame-data)))
-	(boxes (first results))
-	(winning-fscores (map (lambda (b scores)
-			       (list-ref scores b))
-			      boxes
-			      (map (lambda (scores) (append scores '(())))
-				   fscores)))
-	)
+ (let* ((results (read-object-from-file results-file)))
   (if (= (length results) 4)
       results
-      (append results (list winning-fscores)))))
+      (let* ((frame-data (read-object-from-file frame-data-file))
+	     (fscores (map (lambda (boxes)
+			    (map fifth (matrix->list-of-lists boxes)))
+			   (first frame-data)))
+	     (boxes (first results))
+	     (winning-fscores (map (lambda (b scores)
+				    (list-ref scores b))
+				   boxes
+				   (map (lambda (scores) (append scores '(())))
+					fscores))))
+       (append results (list winning-fscores))))))
+
 
 (define (get-scores-from-results-and-frame-data-files results-file frame-data-file)
  (let* ((raw-scores (fourth (ensure-scores results-file frame-data-file))))
@@ -978,16 +999,16 @@
 					  output-dirname ;;under floorplan-dir
 					  matlab-output-filename)
 ;;(define (make-test-file-new floorplan-dir results-file frame-data-file output-file)
- (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
-	(xys (dtrace "xys"
+ (let* ((rundirs (system-output (format #f "ls -d ~a/20*/" floorplan-dir)))
+	(xys ;;(dtrace "xys"
 	 (join
 	      (map
 	       (lambda (f)
 		(get-xy-from-results-file
 		 (format #f "~a~a" f results-filename)))
 	       rundirs)))
-	     )
-	(scores (dtrace "scores"
+	    ;; )
+	(scores ;;(dtrace "scores"
 	 (join
 		 (map
 		  (lambda (f)
@@ -995,21 +1016,21 @@
 		    (format #f "~a~a" f results-filename)
 		    (format #f "~a~a" f frame-data-filename)))
 		  rundirs)))
-		)
-	(matlab-data (dtrace "matlab-data"
+		;;)
+	(matlab-data ;;(dtrace "matlab-data"
 	 (map (lambda (xy score)
 			   (list->vector (append xy (list score))))
 			  xys
 			  scores))
-		     )
+		    ;; )
 	;;use most of what's above here to pass this data back into matlab
-	(image-list (dtrace "image-list"
+	(image-list ;;(dtrace "image-list"
 	 (join
 		     (map
 		      (lambda (f)
 		       (get-detection-images f results-filename))
 		      rundirs))))
-	)
+	;;)
   (mkdir-p (format #f "~a/~a" floorplan-dir output-dirname))
   (for-each-indexed
    (lambda (image i)    
@@ -1019,7 +1040,7 @@
 			      output-dirname
 			      (number->padded-string-of-length (+ i 1) 5)))
     (imlib:free-image-and-decache image)
-    (dtrace "saved image" (+ i 1)))
+    ;;(dtrace "saved image" (+ i 1)))
    image-list)		     			
   (start-matlab!)
   (scheme->matlab! "detection_data" matlab-data)
@@ -1028,7 +1049,15 @@
 		  floorplan-dir
 		  output-dirname
 		  matlab-output-filename))))
-			      
+
+(define (get-ground-truth-from-dataset-file dataset-file)
+ ;;should return list of lists of vectors of ground-truth object locations
+ ;;for entire dataset
+ (let* ((raw-data (read-object-from-file dataset-file))
+	(labeled-floorplans (map (lambda (f) (first (first f))) raw-data))
+	(ground-truth-lists (map (lambda (f) (map second f)) labeled-floorplans)))
+  ground-truth-lists))
+	
 (define (make-scheme-file-of-xys floorplan-dir results-file output-file)
  (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
 	(xys (join

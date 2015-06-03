@@ -1272,6 +1272,41 @@ as we run into problems or think of things we hadn't thought of before.
   centers (i.e., bad detections).  Also need to look at (ensure-scores) to
   restructure it for faster running--list-refs appear to be slowing it down.
 
+----------------git commit 24a4df6---------------
+
+3 Jun 15
+
+--Wrote (get-ground-truth-from-dataset-file) function to pull ground truth data
+  from *dataset.sc files.  Gives list of lists of vectors of the ground truth
+  object locations for whole dataset (all floor plans).
+
+--Rewrote (ensure-scores) to skip the time-consuming part if the results file is
+  of the new type (4 lists).  Looking more into the time of it, found that the
+  slowest part is the reading of the frame data file.  Not sure that I can do
+  anything about this, since these are HUGE (~90MB) text files--it's just going
+  to take a bit to read them.  But with the new type of results file including
+  the winning fscores, this should be avoided on future runs.
+
+--Working on cluster_detections_by_object.m to do clustering.  It seems to
+  cluster correctly (NEED TO CHECK THIS MORE).  Still need to implement a
+  threshold to reject (mark as invalid) detections that are too far away from a
+  cluster center.  This SHOULD get rid of most of the detections that are just
+  of open floor and other garbage.  Then I need to write a function (scheme or
+  matlab?) that sorts the saved images by cluster--put in separate directories,
+  or something else??
+
+
+
+
+* don't think that I can eliminate detection images at this point, since they're
+  created at the same time the matlab data is (i.e., before clustering).
+  Instead look at doing something with the files after grouping them by cluster
+  (and throwing away ones that are too far from any cluster center)
+
+* remember that (run-codetection-with-proposals-similarity ) is the main
+  function to generate the results; currently only called in
+  (visualize-results), which will probably not be useful much longer 
+
 --------------------------------------------------------------------------------
 ***TO JEFF: list of 5-10 bullet points of a publishable increment over tacl2015
    -> schedule of milestones to get a paper out for 15sep15 (ICRA or AAAI).
