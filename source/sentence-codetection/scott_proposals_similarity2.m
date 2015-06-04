@@ -285,7 +285,7 @@ num_gscore = g_idx;
 %fprintf('Elapsed time for output setup: %f\n',toc);
 end %function scott_proposals_similarity
 
-%Haonan's helper functions
+%helper functions from phow_caltech101
 function hist = phow_hist(im, ssize)
 load('phow-model/vocab.mat');
 model.vocab = vocab;

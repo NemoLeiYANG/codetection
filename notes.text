@@ -1295,6 +1295,32 @@ as we run into problems or think of things we hadn't thought of before.
   matlab?) that sorts the saved images by cluster--put in separate directories,
   or something else??
 
+----------------git commit 2ae6453---------------
+
+4 Jun 15
+
+--Added thresholding to cluster_detections_by_object.m as input parameter.
+
+--Have sort_by_cluster.m working to sort images by their nearest cluster center
+  into tmpN directories. Seems to work pretty well with thresholds of 0.5m and
+  0.4m (used in cluster_detections_by_object) to reject non-cluster detections.
+  The lower threshold rejects some detections that look like they should be
+  good, but there are still a good number in each directory.  Next step is to do
+  comparison between each of the tmpN directories to find which items are alike
+  and then move into final directories with all like images together.
+
+--Working on sort_clusters_single_floorplan.m.  Seems to work correctly so far.
+  Need to figure out a way to determine which temp labels are related to which.
+  Right now doing a comparison of each image in tmpM to each image in tmpN.
+  Putting those similarity values into a MxN matrix and then playing around with
+  how to reduce that matrix to a single score (max of max, max of mean, mean of
+  max).  Mean of max produced an interesting result--labels that should have
+  matched had an element in their row/col that was HIGHER than their diagonal
+  (self-similarity) measure.  I should be able to make this work: if a diagonal
+  value is the largest value in the row/col, declare it a unique label; else
+  find the item larger than diagonal value and use that label.  Something like
+  that--will have to be careful how I write that code (what if the 1,1 element
+  is not the largest in its row?)
 
 
 
