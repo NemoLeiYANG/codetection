@@ -1,7 +1,12 @@
-function [xy_with_label,avg_similarity_matrix] = sort_clusters_single_floorplan(objectxys, img_dir)
+function xy_with_label = ... %[xy_with_label,avg_similarity_matrix] = 
+    sort_clusters_single_floorplan(objectxys, img_dir)
 %This function takes the images sorted into clusters (tmpN directories) and
 %finds the like objects, then re-sorts the images into new directories and
 %returns the xy locations with labels (like objects labeled alike)
+
+%ALSO moves the files from the tmp* directories into fplabel* directories
+%based on floorplan labels, and saves the xy_with_label data to a .mat file
+
 %inputs: objectxys: M x 2 matrix of cluster center xy locations
 %        img_dir: directory where detection images are
 %output: xy_with_label M x 3 matrix of [x y label]
@@ -50,14 +55,41 @@ for i = 1:M
                 simi_matrix(k,l)= 1 - pdist2(hist1,hist2,'chisq');
             end %for l
         end %for k
-        avg_simi = max(mean(simi_matrix));
+        avg_simi = max(mean(simi_matrix,1));
+        avg_simi2 = max(mean(simi_matrix,2));
         avg_similarity_matrix(i,j) = avg_simi;
-        avg_similarity_matrix(j,i) = avg_simi; %b/c matrix is symmetric
+        avg_similarity_matrix(j,i) = avg_simi2; 
     end %for j
 end %for i
 
 %now look at avg_similarity values to determine which are alike
+%diagonal elements are self-similarity--look in row and column to see if
+%any other values are higher
 
+unique_label = 1; %first unique label value
+labels = zeros(M,1);
+while (min(labels) == 0) %keep going until all labels set
+    for i = 1:M
+        if (labels(i) == 0)  %only do stuff if label not already set
+            [~,rowidx] = max(avg_similarity_matrix(i,:));
+            [~,colidx] = max(avg_similarity_matrix(:,i));
+            if ((rowidx == i) && (colidx == i)) %we have a new unique label
+                labels(i) = unique_label;
+                unique_label = unique_label + 1;
+            elseif (colidx ~= i) %copy label from colidx
+                labels(i) = labels(colidx);
+            elseif (rowidx ~= i) %copy label from rowidx
+                labels(i) = labels(rowidx);
+            else
+                fprintf('THIS SHOULDN''T HAPPEN');
+            end % if row && col
+        end %if        
+    end %for i
+end %while
+xy_with_label(:,3) = labels; %done with this
+
+
+%now do sorting and saving
 
 end %function
 

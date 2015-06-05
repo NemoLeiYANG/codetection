@@ -1050,6 +1050,8 @@
 		  output-dirname
 		  matlab-output-filename))))
 
+;;somewhere around here I should write a scheme wrapper to call all of the matlab functions, like find_objects, cluster_detections, sort_*, ...
+
 (define (get-ground-truth-from-dataset-file dataset-file)
  ;;should return list of lists of vectors of ground-truth object locations
  ;;for entire dataset

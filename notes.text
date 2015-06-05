@@ -1322,12 +1322,27 @@ as we run into problems or think of things we hadn't thought of before.
   that--will have to be careful how I write that code (what if the 1,1 element
   is not the largest in its row?)
 
+----------------git commit cc14e25---------------
+
+5 Jun 15
+
+--Have sort_clusters_single_floorplan.m working.  It gives unique labels to
+  clusters, and the same label to like clusters (in my test floorplan, 3
+  clusters were of a chair, and all 3 got the same label.  Did this by doing an
+  every-to-every comparison of the phow features of images in M clusters, putting
+  the similarity scores into a matrix, then taking the max of the mean of both
+  the rows and columns (two values).  Then put these values into an MxM matrix
+  of average similarity scores.  The diagonal elements of this represent
+  self-similarity.  Then compare these diagonal elements to the max of its row
+  and column.  If the diagonal is the max, then it is a unique label.  If it is
+  not, then it gets the unique label from the value that is the max.
+
+--Next need to work on moving images to unique label folders--should be similar
+  to sort_by_cluster.m.  Going to do this at the end of
+  sort_clusters_single_floorplan.m.  Will also save output (xy_with_label) to
+  .mat file for later use.
 
 
-* don't think that I can eliminate detection images at this point, since they're
-  created at the same time the matlab data is (i.e., before clustering).
-  Instead look at doing something with the files after grouping them by cluster
-  (and throwing away ones that are too far from any cluster center)
 
 * remember that (run-codetection-with-proposals-similarity ) is the main
   function to generate the results; currently only called in
