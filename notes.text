@@ -1342,6 +1342,21 @@ as we run into problems or think of things we hadn't thought of before.
   sort_clusters_single_floorplan.m.  Will also save output (xy_with_label) to
   .mat file for later use.
 
+----------------git commit 5f37a4e---------------
+
+8 Jun 15
+
+--Finished sort_clusters_single_floorplan.m.  It now saves the xy_with_label in
+  the file object_xy_with_label.mat (in img_dir) and sorts the like images into
+  fplabel* directories (under img_dir).
+
+--Next need to write scheme wrapper around all the matlab stuff for a single
+  floorplan.  Also need to write some code to run an entire dataset (all
+  floorplans) which will eventually produce the *dataset.sc map file (same one
+  that ground-truth comes from).
+
+--Start thinking about OTHER BIG STEPS (below) to add to this--Jeff doesn't
+  think what I've got so far is a big enough step to publish.
 
 
 * remember that (run-codetection-with-proposals-similarity ) is the main
@@ -1425,6 +1440,17 @@ f10jul.
 8&9: Start working on these tasks around m13jul (~2 months to
 ICRA/AAAI deadline).
 --------------------------------------------------------------------------------
+
+
+***OTHER BIG STEPS***
+--Deal interactively with unknown objects
+  --Might need to add rangefinder to reduce processing
+  --Might need to rewrite the-force to allow changing of path mid-stream
+  (processing done on laptop/workstation)
+--Add more prepositions (around, between, past, etc.)
+--Change frame of reference: outside observer becomes N,S,E,W, robot frame is
+L,R,front, behind.
+--
 
 **Now how to collect up all the object images within a certain radius of these
   points? 

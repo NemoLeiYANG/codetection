@@ -18,8 +18,7 @@ for i = 0:num_obj
     for j = 1:length(img_list)
         src = strcat(img_dir, sprintf('%05d',img_list(j)),'.png');
         dest = strcat(dest_dir, sprintf('%05d',img_list(j)),'.png');
-        %change copy to move after testing complete
-        copyfile(src,dest);
+        movefile(src,dest);
     end %for j
     %do I want to just delete the no_cluster images here?
 end %for i

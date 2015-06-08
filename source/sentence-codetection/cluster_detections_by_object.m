@@ -22,7 +22,4 @@ for i = 1:N
         cluster_data(i,:) = [idx,dist];
     end %if
 end % for i
-
-
-
 end %function

@@ -88,8 +88,30 @@ while (min(labels) == 0) %keep going until all labels set
 end %while
 xy_with_label(:,3) = labels; %done with this
 
-
 %now do sorting and saving
+outfilename = strcat(img_dir,'/object_xy_with_label.mat');
+save(outfilename,'xy_with_label'); %object locations/labels saved
+
+for i = 1:(unique_label - 1)
+    new_dir = strcat(img_dir,'fplabel',num2str(i),'/');
+    if (exist(new_dir,'dir'))
+        rmdir(new_dir,'s'); %get rid of old data
+    end %if
+    mkdir(new_dir); %make fplabel directories
+end %for i
+
+for i = 1:M %for each temp label
+    src_dir = strcat(img_dir,'tmp',num2str(i),'/');
+    src_file_list = dir(src_dir);
+    num_files = numel(src_file_list) - 2; % -2 is because of . and ..
+    dest_dir = strcat(img_dir,'fplabel',num2str(xy_with_label(i,3)),'/');
+    for j = 1:num_files %for each image in tmpN dir
+        src = strcat(src_dir,src_file_list(j+2).name);
+        dest = strcat(dest_dir,src_file_list(j+2).name);
+        movefile(src,dest);
+    end %for j
+    rmdir(src_dir,'s');
+end %for i
 
 end %function
 
