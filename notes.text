@@ -1358,6 +1358,15 @@ as we run into problems or think of things we hadn't thought of before.
 --Start thinking about OTHER BIG STEPS (below) to add to this--Jeff doesn't
   think what I've got so far is a big enough step to publish.
 
+----------------git commit f22ef4c---------------
+
+9 Jun 15
+
+--Working on (detect-sort-label-objects-single-floorplan), the scheme wrapper to
+  all the matlab stuff.  Keep hitting a 'Error: Unexpected MATLAB operator.'
+  when calling sort_by_cluster and sort_clusters_single_floorplan.  Need to
+  figure out what I'm doing wrong here.
+
 
 * remember that (run-codetection-with-proposals-similarity ) is the main
   function to generate the results; currently only called in

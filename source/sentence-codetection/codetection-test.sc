@@ -1039,7 +1039,7 @@
 			      floorplan-dir
 			      output-dirname
 			      (number->padded-string-of-length (+ i 1) 5)))
-    (imlib:free-image-and-decache image)
+    (imlib:free-image-and-decache image))
     ;;(dtrace "saved image" (+ i 1)))
    image-list)		     			
   (start-matlab!)
@@ -1049,6 +1049,36 @@
 		  floorplan-dir
 		  output-dirname
 		  matlab-output-filename))))
+
+(define (detect-sort-label-objects-single-floorplan floorplan-dir
+						    results-filename
+						    frame-data-filename)
+ (let* ((output-dirname "detections") ;;under floorplan-dir
+	(matlab-output-filename "detection_data.mat")
+	(img-dir (format #f "~a/~a/" floorplan-dir output-dirname)))
+  (start-matlab!)
+  (get-detection-data-for-floorplan floorplan-dir
+				    results-filename
+				    frame-data-filename
+				    output-dirname 
+				    matlab-output-filename)
+  ;;don't think I need to load detection_data.mat here b/c matlab already has detection_data
+  (matlab (format #f
+		  "[numobj, objxys] = find_objects(detection_data,~a,~a,~a,~a,~a,~a);"
+		  *xmin* *xmax* *ymin* *ymax*
+		  5 ;; cm_between HARDCODED
+		  0.25));; gaussian_variance HARDCODED
+  (matlab (format #f
+		  "cluster_data = cluster_detections_by_object(detection_data,objxys,~a);"
+		  0.5)) ;; threshold in m HARDCODED
+  (matlab (format #f
+		  "sort_by_cluster(cluster_data,'~a');"
+		  img-dir))
+  (matlab (format #f
+		  "xy_with_label = sort_clusters_single_floorplan(objxys,'~a');"
+		  img-dir ))
+
+  ))
 
 ;;somewhere around here I should write a scheme wrapper to call all of the matlab functions, like find_objects, cluster_detections, sort_*, ...
 
