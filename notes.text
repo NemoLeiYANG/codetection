@@ -1367,6 +1367,36 @@ as we run into problems or think of things we hadn't thought of before.
   when calling sort_by_cluster and sort_clusters_single_floorplan.  Need to
   figure out what I'm doing wrong here.
 
+----------------git commit 92fb758---------------
+
+10 Jun 15
+
+--Figured out error was from not having single quotes around a string to be
+  passed into a matlab function.  Also added code to write the xy_with_label
+  variable out as a scheme vector of vectors.
+
+--Created a backup copy of the MSEE1 dataset in
+  /aux/sbroniko/backup-MSEE1-dataset-as-of-10-jun-15/ on buddhi, seulki, and
+  rongovosai. 
+
+**NEXT clean up dataset to get rid of all old testing results
+
+**THEN start figuring out the wrapper to do codetection, sort/label objects in
+  single floorplan, and then compare and label objects consistently across all
+  floorplans. 
+   --probably need some new matlab code to run the similarity comparison
+   --have to think about dataflow--detections on each run can be done
+     independently, but then will need to have an rsync back to a common dataset
+     to do floorplans, then another rsync before doing entire dataset (this will
+     probably only be one processor unless I can figure out a way to
+     parallelize)
+   --should also think about reorganizing output data (like in a 'codetection'
+     dir under each run)
+   --Do I already have code that ensures track.sc is present?? I think so.
+
+
+
+
 
 * remember that (run-codetection-with-proposals-similarity ) is the main
   function to generate the results; currently only called in

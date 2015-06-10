@@ -1053,6 +1053,9 @@
 (define (detect-sort-label-objects-single-floorplan floorplan-dir
 						    results-filename
 						    frame-data-filename)
+ ;;this is the wrapper function that calls get-detection-data-for-floorplan
+ ;;and matlab functions find_objects, cluster_detections_by_object,
+ ;;sort_by_cluster, and sort_clusters_single_floorplan
  (let* ((output-dirname "detections") ;;under floorplan-dir
 	(matlab-output-filename "detection_data.mat")
 	(img-dir (format #f "~a/~a/" floorplan-dir output-dirname)))
@@ -1077,10 +1080,13 @@
   (matlab (format #f
 		  "xy_with_label = sort_clusters_single_floorplan(objxys,'~a');"
 		  img-dir ))
-
+  ;;write xy_with_label to scheme-style file
+  (write-object-to-file (matlab-get-variable "xy_with_label")
+			(format #f "~axy_with_label.sc" img-dir))
   ))
 
-;;somewhere around here I should write a scheme wrapper to call all of the matlab functions, like find_objects, cluster_detections, sort_*, ...
+
+
 
 (define (get-ground-truth-from-dataset-file dataset-file)
  ;;should return list of lists of vectors of ground-truth object locations
