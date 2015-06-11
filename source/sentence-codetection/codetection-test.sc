@@ -609,6 +609,36 @@
    ;; 0 1)
     )))
 
+;;just like get-matlab-data-training-or-generation, but puts output into data-output-dir (under path)
+(define (get-matlab-data-training-or-generation-improved
+	 path top-k ssize alpha beta gamma delta dummy-f dummy-g data-output-dir)
+ (let* ((log-to-track "/home/sbroniko/vader-rover/position/log-to-track.out"))
+  (unless ;;comment out this unless if doing autodrive
+    (file-exists? (format #f "~a/imu-log-with-estimates.txt" path))
+   (system (format #f "~a none ~a/imu-log.txt ~a/imu-log-with-estimates.txt ~a/imu-log-with-estimates.sc" log-to-track path path path)))
+  (write-object-to-file
+   (get-matlab-proposals-similarity-full-video
+    top-k ssize (format #f "~a" path) alpha beta gamma delta)
+   (format #f "~a/~a/frame-data-~a-~a.sc" path data-output-dir
+	   (number->padded-string-of-length dummy-f 3)
+	   (number->padded-string-of-length dummy-g 3)))
+      ;; (format #f "~a/frame-data-new4.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
+   ;; (format #f "~a/frame-data-new3.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
+  (dtrace (format #f "wrote ~a/~a/frame-data-~a-~a.sc" path data-output-dir
+		  (number->padded-string-of-length dummy-f 3)
+		  (number->padded-string-of-length dummy-g 3)) #f)))
+
+
+;;NEEDS REWRITE TO MATCH ABOVE/BELOW WITH DUMMY-F AND DUMMY-G
+;; (define (get-matlab-data-auto-drive path top-k ssize alpha beta gamma delta)
+;;  (begin
+;;   (write-object-to-file
+;;    (get-matlab-proposals-similarity-full-video
+;;     top-k ssize (format #f "~a" path) alpha beta gamma delta)
+;;    (format #f "~a/frame-data-new.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
+;;   (dtrace (format #f "wrote ~a/frame-data-new.sc" path) #f)))
+
+
 (define (get-matlab-data-training-or-generation
 	 path top-k ssize alpha beta gamma delta dummy-f dummy-g)
  (let* ((log-to-track "/home/sbroniko/vader-rover/position/log-to-track.out"))
@@ -626,16 +656,6 @@
   (dtrace (format #f "wrote ~a/frame-data-~a-~a.sc" path
 		  (number->padded-string-of-length dummy-f 3)
 		  (number->padded-string-of-length dummy-g 3)) #f)))
-
-
-;;NEEDS REWRITE TO MATCH ABOVE WITH DUMMY-F AND DUMMY-G
-;; (define (get-matlab-data-auto-drive path top-k ssize alpha beta gamma delta)
-;;  (begin
-;;   (write-object-to-file
-;;    (get-matlab-proposals-similarity-full-video
-;;     top-k ssize (format #f "~a" path) alpha beta gamma delta)
-;;    (format #f "~a/frame-data-new.sc" path)) ;;NEW HERE TO PREVENT OVERWRITE
-;;   (dtrace (format #f "wrote ~a/frame-data-new.sc" path) #f)))
 
 (define (results-end-to-end data-directory ;; NEED slash on data-dir
 			    top-k
@@ -1085,8 +1105,197 @@
 			(format #f "~axy_with_label.sc" img-dir))
   ))
 
+;;modified version of results-end-to-end --> gets codetection results for every run in a dataset
+(define (get-codetection-results-training-or-generation
+	 data-directory ;; NEED slash on data-dir
+	 top-k
+	 ssize
+	 alpha
+	 beta
+	 gamma
+	 delta
+	 dummy-f
+	 dummy-g
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 data-output-dir ;;this is just a DIR NAME that will be under each run dir
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+ (let* ((servers server-list)
+	(source source-machine)
+	(matlab-cpus-per-job 1);; 7) ;;if using parfor
+	(c-cpus-per-job 1)
+	(output-matlab (format #f "~a-matlab/" output-directory))
+	(output-c (format #f "~a-c/" output-directory))
+	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	(dir-list (join
+		   (map
+		    (lambda (p)
+		     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+			  (system-output
+			   (format #f "ls ~a/~a | grep 201" data-directory p))))
+		    plandirs)))
+	(commands-matlab
+	 (map
+	  (lambda (dir) ;;change get-matlab... command if using auto-drive
+	   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation-improved \"~a\" ~a ~a ~a ~a ~a ~a ~a ~a \"~a\") :n :n :n :n :b" dir top-k ssize alpha beta gamma delta dummy-f dummy-g data-output-dir)) dir-list))
+	(commands-c ;;if something breaks this might be it--not sure I have path changes right
+	 (map
+	  (lambda (dir)
+	   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"
+		   (format #f "~a/~a" dir data-output-dir)
+		   dummy-f
+		   dummy-g)) dir-list))
+	)
+  (dtrace "starting get-codetection-results-training-or-generation" #f)
+  (system "date")
+  ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
+  ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
+  (for-each (lambda (dir)
+  	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  		       servers))
+  	    (list output-matlab output-c))
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab output-c))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
+		       servers))
+	    (list output-matlab output-c))
+  (dtrace "starting matlab processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-matlab
+  						      servers
+  						      matlab-cpus-per-job
+  						      output-matlab
+  						      source
+  						      data-directory)
+  (dtrace "matlab processing complete" #f)
+  (system "date")
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "matlab results rsync'd, starting c processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-c
+  						      servers
+  						      c-cpus-per-job
+  						      output-c
+  						      source
+  						      data-directory)
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "processing complete for get-codetection-results-training-or-generation" #f)
+  (system "date")))
+
+;;this runs object detection on all floorplans
+(define (get-object-detections-all-floorplans
+	 data-directory ;; NEED slash on data-dir
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 results-filename ;;remember to add data-output-dir to this and frame-data...
+	 frame-data-filename
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+ (let* ((servers server-list)
+	(source source-machine)
+	(matlab-cpus-per-job 1);; 7) ;;if using parfor
+	(output-matlab (format #f "~a-detection/" output-directory))
+	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	;; (dir-list (join
+	;; 	   (map
+	;; 	    (lambda (p)
+	;; 	     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+	;; 		  (system-output
+	;; 		   (format #f "ls ~a/~a | grep 201" data-directory p))))
+	;; 	    plandirs)))
+	(commands-matlab
+	 (map
+	  (lambda (dir) 
+	   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (detect-sort-label-objects-single-floorplan ~a ~a ~a) :n :n :n :n :b" dir results-filename frame-data-filename)) dir-list))
+
+	)
+  (dtrace "starting get-object-detections-all-floorplans" #f)
+  (system "date")
+  ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
+  ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
+  (for-each (lambda (dir)
+  	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  		       servers))
+  	    (list output-matlab output-c))
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab output-c))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
+		       servers))
+	    (list output-matlab output-c))
+  (dtrace "starting matlab processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-matlab
+  						      servers
+  						      matlab-cpus-per-job
+  						      output-matlab
+  						      source
+  						      data-directory)
+  (dtrace "matlab processing complete" #f)
+  (system "date")
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+
+  (dtrace "processing complete for get-object-detections-all-floorplans" #f)
+  (system "date")))
 
 
+;;this is the wrapper function that calls codetection, sorts/labels objects in a single floorplan, and then ???
+(define (codetect-sort-templabel-training-or-generation data-output-dirname)
+ (let* ((data-path "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-path "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/resultsFOOBAR")
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list
+	 (list "verstand" "arivu" "perisikan" "aruco" "save" "akili" "aql"))
+	(source-machine "seykhl"))
+  (get-codetection-results-training-or-generation data-directory 
+						  top-k
+						  ssize
+						  alpha
+						  beta
+						  gamma
+						  delta
+						  dummy-f
+						  dummy-g
+						  output-directory 
+						  data-output-dir 
+						  server-list
+						  source-machine) 
+
+
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans data-directory 
+					output-directory 
+					results-filename ;;remember to add data-output-dir to this and frame-data...
+					frame-data-filename
+					server-list
+					source-machine)
+  ))
 
 (define (get-ground-truth-from-dataset-file dataset-file)
  ;;should return list of lists of vectors of ground-truth object locations

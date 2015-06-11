@@ -1379,7 +1379,35 @@ as we run into problems or think of things we hadn't thought of before.
   /aux/sbroniko/backup-MSEE1-dataset-as-of-10-jun-15/ on buddhi, seulki, and
   rongovosai. 
 
-**NEXT clean up dataset to get rid of all old testing results
+----------------git commit e8ce1e7---------------
+
+11 Jun 15
+
+--Finished cleanup of MSEE1-dataset directory.  Moved some stuff (judging
+  worksheets, minimal-pairs, videos, etc.) to MSEE1-dataset-supplemental-stuff.
+  MSEE1-dataset dir is now just auto-drive (comprehension), generation, and
+  testing (acquisition).  Also cleaned out all old testing results from each of
+  the three subdirs.  End result is that dataset is now 8.3GB (down from
+  182GB).  Should significantly speed up the rsync of data for job runs.  Just
+  have to remember to keep stuff cleaned up. *THOUGHT*: Do I want to just delete
+  the frame-data.sc file after I use it, since it seems to eat up a lot of
+  space?
+
+--Started working on new functions to call for doing codetection and
+  sorting/labeling objects in single floorplan.  Main codetection function is
+  (get-codetection-results-training-or-generation), which is a modified version
+  of (results-end-to-end).  Also have (get-object-detections-all-floorplans)
+  which, like (get-codetection-results...), spreads the jobs over multiple
+  machines/cores.  The wrapper for these two is
+  (codetect-sort-templabel-training-or-generation).  I think this is
+  correct--will test tomorrow once servers are back online.
+
+--After this, then need to write code that takes the output from all floorplans
+  and does comparison to put common labels on each, and also produce floorplan
+  file in scheme format.  Probably should make this as parallel as possible
+  (most likely matlab parfor), since it will probably be running only on a
+  single machine--would be smart to run this on one of the servers, since there
+  are more cores there.
 
 **THEN start figuring out the wrapper to do codetection, sort/label objects in
   single floorplan, and then compare and label objects consistently across all
