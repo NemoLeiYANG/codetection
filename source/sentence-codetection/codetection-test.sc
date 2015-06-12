@@ -1151,10 +1151,10 @@
   (system "date")
   ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
   ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
-  (for-each (lambda (dir)
-  	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
-  		       servers))
-  	    (list output-matlab output-c))
+  ;; (for-each (lambda (dir)
+  ;; 	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  ;; 		       servers))
+  ;; 	    (list output-matlab output-c))  ;;NOT NECESSARY
   (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab output-c))
   (for-each (lambda (dir)
 	     (for-each (lambda (server) (run-unix-command-on-server
@@ -1249,7 +1249,8 @@
 
 ;;this is the wrapper function that calls codetection, sorts/labels objects in a single floorplan, and then ???
 (define (codetect-sort-templabel-training-or-generation data-output-dirname)
- (let* ((data-path "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/")
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/")
 	(top-k 10)
 	(ssize 64)
 	(alpha 1)
@@ -1258,7 +1259,9 @@
 	(delta 0)
 	(dummy-f 0.6)
 	(dummy-g 0.6)
-	(output-path "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/resultsFOOBAR")
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
 	(data-output-dir data-output-dirname)
 	(results-filename (format #f
 				  "~a/results-~a-~a.sc"
@@ -1271,7 +1274,7 @@
 				     dummy-f
 				     dummy-g))
 	(server-list
-	 (list "verstand" "arivu" "perisikan" "aruco" "save" "akili" "aql"))
+	 (list "verstand" "arivu" "perisikan")) ;;"aruco" "save" "akili" "aql")) these appear to be down as of 1317 12jun15
 	(source-machine "seykhl"))
   (get-codetection-results-training-or-generation data-directory 
 						  top-k

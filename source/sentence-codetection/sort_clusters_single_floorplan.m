@@ -91,6 +91,8 @@ xy_with_label(:,3) = labels; %done with this
 %now do sorting and saving
 outfilename = strcat(img_dir,'/object_xy_with_label.mat');
 save(outfilename,'xy_with_label'); %object locations/labels saved
+outfilename2 = strcat(img_dir,'/phow_hist_fvcell.mat');
+save(outfilename2,'fvcell'); %phow histograms saved to file
 
 for i = 1:(unique_label - 1)
     new_dir = strcat(img_dir,'fplabel',num2str(i),'/');

@@ -1409,6 +1409,21 @@ as we run into problems or think of things we hadn't thought of before.
   single machine--would be smart to run this on one of the servers, since there
   are more cores there.
 
+----------------git commit eaa3e62---------------
+
+12 Jun 15
+
+--Added saving the phow histograms (fvcell matlab variable) to
+  sort_clusters_single_floorplan.m.  After test run, need to look at the size of
+  this file.  Could save some time when doing the all-floorplans
+  comparison-->can read feature vectors in from file, but will still need to do
+  the each-to-each comparisons (PARALLELIZED????)
+
+--Started test run using 3 3g servers (verstand, arivu, perisikan) at 1428.
+
+
+
+
 **THEN start figuring out the wrapper to do codetection, sort/label objects in
   single floorplan, and then compare and label objects consistently across all
   floorplans. 
@@ -1421,9 +1436,6 @@ as we run into problems or think of things we hadn't thought of before.
    --should also think about reorganizing output data (like in a 'codetection'
      dir under each run)
    --Do I already have code that ensures track.sc is present?? I think so.
-
-
-
 
 
 * remember that (run-codetection-with-proposals-similarity ) is the main
