@@ -1420,8 +1420,31 @@ as we run into problems or think of things we hadn't thought of before.
   the each-to-each comparisons (PARALLELIZED????)
 
 --Started test run using 3 3g servers (verstand, arivu, perisikan) at 1428.
+  Restarted job using only verstand and arivu at 1453.  This left me just shy of
+  enough processors  to finish in one iteration.  Had to do it because because
+  perisikan kept behaving oddly and killing my jobs.
+
+----------------git commit 5305001---------------
+
+15 Jun 15
+
+--Found typo/bug in (codetect-sort-templabel-training-or-generation).  Corrected
+  it and tried re-running on 7 3G/4G servers (all but upplysingaoflun).  Also
+  changed all matlab-cpus-per-job values to 4 to account for under-the-hood
+  matlab parallelism.
+
+--Found another bug in (get-matlab-data-training-or-generation-improved) where I
+  was trying to write the output file to a dir that hadn't yet been created.
+  Corrected this and tried re-running same as above.  Run started at 1524.  
+
+--Have another bug, similar error to before.  Need to get it figured out before
+  running again.
 
 
+
+**STARTING COMMAND**
+(define *data-output-dirname* "test20150615")
+(codetect-sort-templabel-training-or-generation *data-output-dirname*)
 
 
 **THEN start figuring out the wrapper to do codetection, sort/label objects in

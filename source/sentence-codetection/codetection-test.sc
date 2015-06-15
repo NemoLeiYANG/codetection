@@ -616,6 +616,7 @@
   (unless ;;comment out this unless if doing autodrive
     (file-exists? (format #f "~a/imu-log-with-estimates.txt" path))
    (system (format #f "~a none ~a/imu-log.txt ~a/imu-log-with-estimates.txt ~a/imu-log-with-estimates.sc" log-to-track path path path)))
+  (mkdir-p (format #f "~a~a" path data-output-dir))
   (write-object-to-file
    (get-matlab-proposals-similarity-full-video
     top-k ssize (format #f "~a" path) alpha beta gamma delta)
@@ -1123,7 +1124,7 @@
 	 )
  (let* ((servers server-list)
 	(source source-machine)
-	(matlab-cpus-per-job 1);; 7) ;;if using parfor
+	(matlab-cpus-per-job 4);; for under-the-hood matlab parallelism
 	(c-cpus-per-job 1)
 	(output-matlab (format #f "~a-matlab/" output-directory))
 	(output-c (format #f "~a-c/" output-directory))
@@ -1199,7 +1200,7 @@
 	 )
  (let* ((servers server-list)
 	(source source-machine)
-	(matlab-cpus-per-job 1);; 7) ;;if using parfor
+	(matlab-cpus-per-job 4) ;;for under-the-hood matlab parallelism
 	(output-matlab (format #f "~a-detection/" output-directory))
 	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
 	;; (dir-list (join
@@ -1212,7 +1213,7 @@
 	(commands-matlab
 	 (map
 	  (lambda (dir) 
-	   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (detect-sort-label-objects-single-floorplan ~a ~a ~a) :n :n :n :n :b" dir results-filename frame-data-filename)) dir-list))
+	   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (detect-sort-label-objects-single-floorplan ~a ~a ~a) :n :n :n :n :b" dir results-filename frame-data-filename)) plandirs));;dir-list))
 
 	)
   (dtrace "starting get-object-detections-all-floorplans" #f)
@@ -1274,7 +1275,7 @@
 				     dummy-f
 				     dummy-g))
 	(server-list
-	 (list "verstand" "arivu" "perisikan")) ;;"aruco" "save" "akili" "aql")) these appear to be down as of 1317 12jun15
+	 (list "verstand" "arivu" "perisikan" "aruco" "save" "akili" "aql")) 
 	(source-machine "seykhl"))
   (get-codetection-results-training-or-generation data-directory 
 						  top-k
