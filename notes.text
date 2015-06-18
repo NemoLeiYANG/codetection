@@ -1440,11 +1440,83 @@ as we run into problems or think of things we hadn't thought of before.
 --Have another bug, similar error to before.  Need to get it figured out before
   running again.
 
+----------------git commit 8ccb941---------------
+
+16 Jun 15
+
+--Figured out and fixed bugs in (codetect-sort...).  In
+  (get-matlab-data-training-or-generation-improved), was missing / between dir
+  names.  Also had to write (visualize-results-improved) in order to use new
+  directory structure.  Restarting test at 1311.
+
+17 Jun 15
+
+--Job did not complete because the individual jobs that were started on
+  perisikan somehow died without finishing.  Jobs on other servers completed
+  correctly.  Removed perisikan from server pool and restarting job at 0920.
+--Apparently perisikan problem happened because of thrashing causing a reboot.
+  Don't know why that didn't happen on any of the other servers.
+--Starting work on label_objects_all_floorplans.m, which will take the data
+  output from each floorplan and do the following: 1) put common labels on the
+  same object across all floorplans, 2) move all similar objects to a single
+  dir, 3) output a floorplan file in scheme format (probably need to do this in
+  a scheme wrapper).
+
+18 Jun 15
+
+--Job did not complete due to error in (get-object-detections-all-floorplans),
+  'output-c is undefined'.  (get-codetection-results-training-or-generation)
+  portion of job finished at 0118.
+--Fixed code and restarted (get-object-detections-all-floorplans) at 1042.
+--Job errored after rsync'ing files due to 'plan0 undefined'--think I'm missing
+  quotes somewhere.  Also changed matlab-cpus-per-job in
+  get-object-detections... to 12 in order to spread the work out to multiple
+  machines. 
+--Fixed quotes but looks like jobs errored again.  Error appears to come from
+  problem with floorplan-dir-->needs to be appended to full dataset-dir for ls
+  command. Fixed and restarting job at 1137.  Job errored again due to bogus
+  directories in dataset (plan*/2014-*test20150615/) created a few days ago.
+  Removed those dirs and restarted at 1144.
+--Run completed on all floorplans at 1152.
+--Results look reasonable, but not all objects detected in every floorplan--some
+  floorplans had as few as 2 objects detected.  Not really sure why this is,
+  maybe just poor proposal scores from those detections--can see objects like
+  the shopping bag and the cone in the 'no_cluster' image dirs.
+
 
 
 **STARTING COMMAND**
-(define *data-output-dirname* "test20150615")
+(define *data-output-dirname* "test20150617")
 (codetect-sort-templabel-training-or-generation *data-output-dirname*)
+
+
+(define *data-directory*
+"/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/")
+(define *output-directory*
+"/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-test20150617")
+(define *results-filename* "test20150617/results-0.6-0.6.sc")
+(define *frame-data-filename* "test20150617/frame-data-0.6-0.6.sc")
+(define *server-list* '("verstand" "arivu" "aruco" "save" "akili" "aql"))
+(define *source-machine* "seykhl")
+(get-object-detections-all-floorplans
+	 data-directory ;; NEED slash on data-dir
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 results-filename ;;remember to add data-output-dir to this and frame-data...
+	 frame-data-filename
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+
+***Need to start thinking about the function to take the individually labeled
+   floorplans and do comparisons to put common labels on all objects
+   --Have the feature vectors saved in phow_hist_fvcell.mat.  Should use those
+     instead of recomputing feature vectors.
+   --Will need to take individual matrices in fvcell cells and combine the ones
+     that match (look at object_xy_with_label.mat to see fp labels)--also need
+     to read in the mat files and rename individually, since all have same
+     variable names in them--probably use a 2-d cell array to hold matrices
+   --Then do something like the comparison starting at line 45 of
+     sort_clusters_single_floorplan.m 
 
 
 **THEN start figuring out the wrapper to do codetection, sort/label objects in
@@ -1463,7 +1535,7 @@ as we run into problems or think of things we hadn't thought of before.
 
 * remember that (run-codetection-with-proposals-similarity ) is the main
   function to generate the results; currently only called in
-  (visualize-results), which will probably not be useful much longer 
+  (visualize-results), which saves the boxed images as well
 
 --------------------------------------------------------------------------------
 ***TO JEFF: list of 5-10 bullet points of a publishable increment over tacl2015

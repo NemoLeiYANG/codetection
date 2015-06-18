@@ -542,6 +542,55 @@
 	(dtrace "saved image" n)
 	(loop (rest images) (rest boxes) (+ n 1)))))))
 
+(define (visualize-results-improved path dummy-f dummy-g data-output-dir)
+ (let* (;; (data (read-object-from-file (format #f "~a/frame-data-new3.sc" path)))
+	(data (read-object-from-file (format #f "~a/~a/frame-data-~a-~a.sc"
+					     path data-output-dir dummy-f dummy-g)))
+	(img-path (format #f "~a/~a/images-~a-~a" path data-output-dir
+			  (number->padded-string-of-length dummy-f 3)
+			  (number->padded-string-of-length dummy-g 3)))
+	(results (run-codetection-with-proposals-similarity data
+							    dummy-f
+							    dummy-g))
+	(boxes (third results))
+	(video-path (format #f "~a/video_front.avi" path))
+	(frames (video->frames 1 video-path))
+	)
+  (write-object-to-file results (format #f "~a/~a/results-~a-~a.sc"
+					path
+					data-output-dir
+					(number->padded-string-of-length dummy-f 3)
+					(number->padded-string-of-length dummy-g 3)))
+ ;; (dtrace "img-path" img-path)
+  (mkdir-p img-path)
+  (let loop ((images (map (lambda (f) (imlib:clone f)) frames))
+	     (boxes boxes)
+	     (n 0))
+   (if (or (null? images)
+	   (null? boxes))
+       (dtrace (format #f "finished in ~a" path) #f)
+       (let* ((box (first boxes))
+	      (image (first images)))
+	(if (null? box)
+	    (imlib-draw-text-on-image image ;;we have a dummy box
+				      "DUMMY BOX" ;;string
+				      (vector 255 0 0) ;;text color
+				      18 ;;font size?
+				      320 ;; x?
+				      240 ;; y?
+				      (vector 255 255 255) ;;bg color
+				      ) 
+	    (let* ((x1 (first box)) ;;we have a real box
+		   (y1 (second box))
+		   (w (- (third box) (first box)))
+		   (h (- (fourth box) (second box))))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0))))
+	(imlib:save image (format #f "~a/~a.png"
+				  img-path
+				  (number->padded-string-of-length n 5)))
+	(dtrace "saved image" n)
+	(loop (rest images) (rest boxes) (+ n 1)))))))
+
 
 (define (run-full-results dummy-f dummy-g output-directory)
  (let* ((servers (list "jalitusteabe" "cuddwybodaeth" "istihbarat" "wywiad"))
@@ -616,7 +665,7 @@
   (unless ;;comment out this unless if doing autodrive
     (file-exists? (format #f "~a/imu-log-with-estimates.txt" path))
    (system (format #f "~a none ~a/imu-log.txt ~a/imu-log-with-estimates.txt ~a/imu-log-with-estimates.sc" log-to-track path path path)))
-  (mkdir-p (format #f "~a~a" path data-output-dir))
+  (mkdir-p (format #f "~a/~a" path data-output-dir))
   (write-object-to-file
    (get-matlab-proposals-similarity-full-video
     top-k ssize (format #f "~a" path) alpha beta gamma delta)
@@ -885,7 +934,8 @@
 
 
 (define (plot-objects-from-floorplan floorplan-dir filename)
- (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
+ (let* (;;(rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
+	(rundirs (system-output (format #f "ls -d ~a/20*/" floorplan-dir)))
 	(xys (join
 	      (map
 	       (lambda (f)
@@ -1124,7 +1174,7 @@
 	 )
  (let* ((servers server-list)
 	(source source-machine)
-	(matlab-cpus-per-job 4);; for under-the-hood matlab parallelism
+	(matlab-cpus-per-job 8);;4);; for under-the-hood matlab parallelism
 	(c-cpus-per-job 1)
 	(output-matlab (format #f "~a-matlab/" output-directory))
 	(output-c (format #f "~a-c/" output-directory))
@@ -1143,10 +1193,11 @@
 	(commands-c ;;if something breaks this might be it--not sure I have path changes right
 	 (map
 	  (lambda (dir)
-	   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"
-		   (format #f "~a/~a" dir data-output-dir)
+	   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results-improved \"~a\" ~a ~a \"~a\") :n :n :n :n :b"
+		   dir
 		   dummy-f
-		   dummy-g)) dir-list))
+		   dummy-g
+		   data-output-dir)) dir-list))
 	)
   (dtrace "starting get-codetection-results-training-or-generation" #f)
   (system "date")
@@ -1200,7 +1251,7 @@
 	 )
  (let* ((servers server-list)
 	(source source-machine)
-	(matlab-cpus-per-job 4) ;;for under-the-hood matlab parallelism
+	(matlab-cpus-per-job 12);;4) ;;for under-the-hood matlab parallelism and to spread out jobs among servers
 	(output-matlab (format #f "~a-detection/" output-directory))
 	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
 	;; (dir-list (join
@@ -1213,7 +1264,12 @@
 	(commands-matlab
 	 (map
 	  (lambda (dir) 
-	   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (detect-sort-label-objects-single-floorplan ~a ~a ~a) :n :n :n :n :b" dir results-filename frame-data-filename)) plandirs));;dir-list))
+	   (format #f
+		   "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (detect-sort-label-objects-single-floorplan \"~a\" \"~a\" \"~a\") :n :n :n :n :b"
+		   (format #f "~a/~a" data-directory dir)
+		   results-filename
+		   frame-data-filename))
+	  plandirs));;dir-list))
 
 	)
   (dtrace "starting get-object-detections-all-floorplans" #f)
@@ -1223,13 +1279,13 @@
   (for-each (lambda (dir)
   	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
   		       servers))
-  	    (list output-matlab output-c))
-  (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab output-c))
+  	    (list output-matlab));; output-c))
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab));; output-c))
   (for-each (lambda (dir)
 	     (for-each (lambda (server) (run-unix-command-on-server
 					 (format #f "mkdir -p ~a" dir) server))
 		       servers))
-	    (list output-matlab output-c))
+	    (list output-matlab));; output-c))
   (dtrace "starting matlab processing" #f)
   (system "date")
   (synchronous-run-commands-in-parallel-with-queueing commands-matlab
@@ -1275,7 +1331,7 @@
 				     dummy-f
 				     dummy-g))
 	(server-list
-	 (list "verstand" "arivu" "perisikan" "aruco" "save" "akili" "aql")) 
+	 (list "verstand" "arivu" "aruco" "save" "akili" "aql")) ;; "perisikan" acting weird, jobs dying without finishing
 	(source-machine "seykhl"))
   (get-codetection-results-training-or-generation data-directory 
 						  top-k
@@ -1365,3 +1421,5 @@
 
 ;; (define test-frames-large (sublist test-frames-full 16 116))
 
+;;to plot object detections from all floorplans
+;;(map (lambda (num) (matlab "figure") (plot-objects-from-floorplan (format #f "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/plan~a" num) "test20150617/results-0.6-0.6.sc")) (list 0 1 2 3 4 5 6 7 8 9))
