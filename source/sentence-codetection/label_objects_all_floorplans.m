@@ -1,6 +1,28 @@
 function xy_with_label = ... %[xy_with_label,avg_similarity_matrix] = 
     label_objects_all_floorplans(dataset_dir)
 
+%start by getting plan directory names 
+tmp_dir_names = dir(dataset_dir);
+dir_names = [];
+for i = 1:length(tmp_dir_names)
+    if((tmp_dir_names(i).isdir) && ~(strcmp(tmp_dir_names(i).name,'.'))...
+        && ~(strcmp(tmp_dir_names(i).name,'..')))
+        dir_names = [dir_names;tmp_dir_names(i).name];
+    end %if
+end %for i
+[num_floorplans,~] = size(dir_names);
+
+% then loading up fvcell and xy_label
+feature_vectors = cell(num_floorplans,1);
+labeled_xys = cell(num_floorplans,1);
+for i = 1:num_floorplans
+    read_dir = strcat(dataset_dir,dir_names(i,:),'/detections/');
+    tmp_xys = load(strcat(read_dir,'object_xy_with_label.mat'),'xy_with_label');
+    labeled_xys{i} = tmp_xys.xy_with_label;
+end %for i
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%OLD STUFF

@@ -1123,11 +1123,12 @@
 
 (define (detect-sort-label-objects-single-floorplan floorplan-dir
 						    results-filename
-						    frame-data-filename)
+						    frame-data-filename
+						    data-output-dir)
  ;;this is the wrapper function that calls get-detection-data-for-floorplan
  ;;and matlab functions find_objects, cluster_detections_by_object,
  ;;sort_by_cluster, and sort_clusters_single_floorplan
- (let* ((output-dirname "detections") ;;under floorplan-dir
+ (let* ((output-dirname (format #f "detections-~a" data-output-dir)) ;;under floorplan-dir
 	(matlab-output-filename "detection_data.mat")
 	(img-dir (format #f "~a/~a/" floorplan-dir output-dirname)))
   (start-matlab!)
@@ -1246,6 +1247,7 @@
 	 output-directory ;;NO slash on output-dir--this is a full path
 	 results-filename ;;remember to add data-output-dir to this and frame-data...
 	 frame-data-filename
+	 data-output-dir
 	 server-list
 	 source-machine ;;just a string, i.e., "seykhl"
 	 )
@@ -1265,10 +1267,11 @@
 	 (map
 	  (lambda (dir) 
 	   (format #f
-		   "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (detect-sort-label-objects-single-floorplan \"~a\" \"~a\" \"~a\") :n :n :n :n :b"
+		   "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (detect-sort-label-objects-single-floorplan \"~a\" \"~a\" \"~a\" \"~a\") :n :n :n :n :b"
 		   (format #f "~a/~a" data-directory dir)
 		   results-filename
-		   frame-data-filename))
+		   frame-data-filename
+		   data-output-dir))
 	  plandirs));;dir-list))
 
 	)
@@ -1331,7 +1334,7 @@
 				     dummy-f
 				     dummy-g))
 	(server-list
-	 (list "verstand" "arivu" "aruco" "save" "akili" "aql")) ;; "perisikan" acting weird, jobs dying without finishing
+	 (list "aruco" "save" "akili" "aql" "verstand" "arivu")) ;; "perisikan" acting weird, jobs dying without finishing
 	(source-machine "seykhl"))
   (get-codetection-results-training-or-generation data-directory 
 						  top-k
@@ -1353,6 +1356,7 @@
 					output-directory 
 					results-filename ;;remember to add data-output-dir to this and frame-data...
 					frame-data-filename
+					data-output-dir
 					server-list
 					source-machine)
   ))
@@ -1423,3 +1427,4 @@
 
 ;;to plot object detections from all floorplans
 ;;(map (lambda (num) (matlab "figure") (plot-objects-from-floorplan (format #f "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/plan~a" num) "test20150617/results-0.6-0.6.sc")) (list 0 1 2 3 4 5 6 7 8 9))
+

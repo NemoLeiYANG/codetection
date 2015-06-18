@@ -1483,6 +1483,23 @@ as we run into problems or think of things we hadn't thought of before.
   maybe just poor proposal scores from those detections--can see objects like
   the shopping bag and the cone in the 'no_cluster' image dirs.
 
+----------------git commit 1f5b458---------------
+
+18 Jun 15
+
+--Started working on label_objects_all_floorplans.m.  Noticed something strange
+  with image files returned after rsync.  It was just in plan0 due to leftover
+  garbage from testing.  Blew away old stuff on seykhl and copied in new data
+  from verstand.  NEED TO FIX/CHANGE the saving location for
+  detections...currently in 'detections' dir under plan*, probably should put
+  data-output-dir on the end of that to distinguish different runs...then will
+  need to add data-output-dir as an argument to label_objects_all_floorplans.m
+--Retrying new job (up to individual floorplans stage (stage 3)) using new
+  filename convention (above) and more processors per matlab job (8 for stage 1,
+  12 for stage 3).  Should have end-to-end result in the morning.  Started run
+  at 1705.
+--Moved first round of detections into MSEE1-dataset/foo/plan*/detections to
+  make sure a mistake in the above doesn't wipe out my testing data.
 
 
 **STARTING COMMAND**
