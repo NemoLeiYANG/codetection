@@ -1501,6 +1501,22 @@ as we run into problems or think of things we hadn't thought of before.
 --Moved first round of detections into MSEE1-dataset/foo/plan*/detections to
   make sure a mistake in the above doesn't wipe out my testing data.
 
+----------------git commit 3ff44f2---------------
+
+19 Jun 15
+
+--Run completed at 0558 for a total runtime of just under 13 hours.  Preliminary
+  look shows that data looks similar to yesterday's run (which, at least for
+  plan0, was different from the test runs--not sure why).
+--Have label_objects_all_floorplans.m complete to the avg_similarity_matrix.
+  Testing using the 20150618 run.  Running simultaneously on seykhl (6 cores)
+  and save (48 cores).  MATLAB doesn't seem to be taking much advantage of the
+  extra cores on its own--do I need to add explicit parallelism?
+--Added explicit parfor on innermost loop of avg_similarity_matrix computation
+  (the only place MATLAB let me do it).  Also limited by MATLAB to a max of 8
+  cores, even on the 48-core servers.  Restarting simultaneous test at 1620.
+
+
 
 **STARTING COMMAND**
 (define *data-output-dirname* "test20150617")

@@ -1,5 +1,22 @@
-function xy_with_label = ... %[xy_with_label,avg_similarity_matrix] = 
-    label_objects_all_floorplans(dataset_dir)
+function [labeled_xys,feature_vectors,avg_similarity_matrix] = ...
+    label_objects_all_floorplans(dataset_dir,data_output_dirname)
+
+
+
+% enable parfor
+pools = matlabpool('size');
+cpus_available = feature('numCores');
+if cpus_available > 8
+    cpus = 8;
+else
+    cpus = cpus_available - 1;
+end
+if pools ~= cpus
+    if pools > 0
+        matlabpool('close');
+    end
+    matlabpool('open', cpus);
+end
 
 %start by getting plan directory names 
 tmp_dir_names = dir(dataset_dir);
@@ -15,16 +32,91 @@ end %for i
 % then loading up fvcell and xy_label
 feature_vectors = cell(num_floorplans,1);
 labeled_xys = cell(num_floorplans,1);
+temp_labels_by_floorplan = zeros(num_floorplans,1);
 for i = 1:num_floorplans
-    read_dir = strcat(dataset_dir,dir_names(i,:),'/detections/');
-    tmp_xys = load(strcat(read_dir,'object_xy_with_label.mat'),'xy_with_label');
-    labeled_xys{i} = tmp_xys.xy_with_label;
+    read_dir = strcat(dataset_dir,dir_names(i,:),'/',data_output_dirname);
+    tmp_xys = load(strcat(read_dir,'/object_xy_with_label.mat'),...
+                   'xy_with_label');
+    [rows,cols] = size(tmp_xys.xy_with_label);
+    labelmat = zeros(rows,cols+1);
+    labelmat(1:rows,1) = 0; labelmat(:,2:4) = tmp_xys.xy_with_label;
+    labeled_xys{i} = labelmat;
+    %need to use xy_with_label here to combine feature_vectors from the
+    %same object
+    max_tmp_label = max(labelmat(:,4));
+    temp_labels_by_floorplan(i) = max_tmp_label;
+    %display(rows);
+    %display(max_tmp_label);
+    tmp_fvcell = load(strcat(read_dir,'/phow_hist_fvcell.mat'));
+    if (rows == max_tmp_label)
+        %fprintf('no combining needed\n');
+        feature_vectors{i} = tmp_fvcell.fvcell;
+    else
+%         fprintf('need to combine for i = %d: rows=%d, max_tmp_label=%d\n',i,rows,max_tmp_label);
+%         fprintf('before concatenation\n');
+%         display(tmp_fvcell.fvcell);
+        combined_fvcell = cell(max_tmp_label,1);
+        for j = 1:max_tmp_label
+            current_tmp_label = labelmat(j,4);
+            current_fvcell = tmp_fvcell.fvcell{j};
+            for k = j+1:rows
+                next_tmp_label = labelmat(k,4);
+                if (current_tmp_label == next_tmp_label)
+                    %need to concatenate
+                    current_fvcell = [current_fvcell;tmp_fvcell.fvcell{k}];
+                end %if
+            end %for k
+            combined_fvcell{j} = current_fvcell;
+        end %for j
+        feature_vectors{i} = combined_fvcell;
+%         fprintf('after concatenation\n');
+%         display(feature_vectors{i});
+    end %if
+    %clear tmp_xys;
 end %for i
 
+%now do comparisons between image feature vectors across floorplans
+M = sum(temp_labels_by_floorplan);
+avg_similarity_matrix = zeros(M,'single');
+
+for i = 1:M
+    [new_i,new_j] = find_indices(i,temp_labels_by_floorplan);
+    [num_img_i,~] = size(feature_vectors{new_i}{new_j});
+    for j = i:M %trying with self-similarity instead of i+1:M
+        [new_i2,new_j2] = find_indices(j,temp_labels_by_floorplan);
+        [num_img_j,~] = size(feature_vectors{new_i2}{new_j2});
+        simi_matrix = zeros(num_img_i,num_img_j,'single');
+        for k = 1:num_img_i
+            hist1 = feature_vectors{new_i}{new_j}(k,:);
+            parfor l = 1:num_img_j
+                hist2 = feature_vectors{new_i2}{new_j2}(l,:);
+                simi_matrix(k,l)= 1 - pdist2(hist1,hist2,'chisq');
+            end %parfor l
+        end %for k
+        avg_simi = max(mean(simi_matrix,1));
+        avg_simi2 = max(mean(simi_matrix,2));
+        avg_similarity_matrix(i,j) = avg_simi;
+        avg_similarity_matrix(j,i) = avg_simi2; 
+    end %for j
+end %for i
+
+end %function
 
 
+function [i_out,j_out] = find_indices(i_in,M)
+    len = numel(M);
+    for a = 1:len
+        running_total = sum(M(1:a));
+        if (i_in <= running_total)
+            i_out = a;
+            j_out = i_in - sum(M(1:a-1));
+            return;
+        end %if
+    end %for a
+end %function
 
 
+function old_shit
 %%%%%%%%%%%%%%%%%%%%%%%OLD STUFF
 %This function takes the images sorted into clusters (tmpN directories) and
 %finds the like objects, then re-sorts the images into new directories and
