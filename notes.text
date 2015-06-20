@@ -1515,8 +1515,18 @@ as we run into problems or think of things we hadn't thought of before.
 --Added explicit parfor on innermost loop of avg_similarity_matrix computation
   (the only place MATLAB let me do it).  Also limited by MATLAB to a max of 8
   cores, even on the 48-core servers.  Restarting simultaneous test at 1620.
+--Minor cleanup of label_objects_all_floorplans.m
 
+----------------git commit 7a42d94---------------
 
+20 Jun 15
+
+--Wrote (codetect-sort-templabel-auto-drive),
+  (get-codetection-results-auto-drive), (get-matlab-data-auto-drive-improved) to
+  run on the auto-drive dataset (no imu-log-with-estimates.txt file, just
+  imu-log.txt; also directory structure has NOT changed on this dataset
+  (MSEE1)).
+--Started run at 1830.
 
 **STARTING COMMAND**
 (define *data-output-dirname* "test20150617")
