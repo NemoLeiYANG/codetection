@@ -1528,6 +1528,75 @@ as we run into problems or think of things we hadn't thought of before.
   (MSEE1)).
 --Started run at 1830.
 
+----------------git commit 72c45cc---------------
+
+20 Jun 15
+
+--label_objects_all_floorplans.m run finished on seykhl after ~17 hours.  Same
+  job on save still running at 2121 (~29 hours).
+
+21 Jun 15
+
+--Auto-drive jobs started at 1830 on 20 Jun 15 completed at 2314 on 21 Jun 15
+  (~29 hours).
+
+22 Jun 15
+
+--label_objects_all_floorplans.m run on save (step 4) finished after ~54 hours.
+
+---------Email to Jeff sent 1212----------- 
+Just did a manual kill of my matlabpool workers on seykhl and save (and added
+the kill to the end of my code).  I now see 1 matlab process each on seykhl and
+save, which are the two interactive windows I have open now.
+
+The comprehension runs for steps 1-3 finished last night around 11:30pm for a
+total runtime of ~29 hours.  Not sure why it took so much longer than the
+generation runs, but the explanation could be as simple as the comprehension
+videos being longer--I haven't looked that closely at it yet, and I'm don't know
+if the reason is important enough to spend much time figuring out.
+
+I've started looking at the results from steps 1-3 on the codetection runs, and
+they look reasonable.  I did notice a problem on plan0 and plan1 though.  When
+Dan and I originally drove those runs, we did the first two plans and then found
+an error which forced us to restart and do those two plans again.  I thought I
+had gotten rid of the data from those 20 bogus runs, but apparently I hadn't.
+So when I ran the comprehension data this weekend, plan0 and plan1 had 20 runs
+each (instead of the 10 they were supposed to have).  This means that the step 3
+data from those two floorplans is no good (steps 1 and 2 are fine since they
+only deal with individual runs--step 3 aggregates all the runs in a floorplan).
+I'm setting up a job to re-run just step 3 on just those two floorplans and
+should have that started shortly.
+
+The step 4 job on save finished after ~54 hours.  Not entirely sure why it took
+over 3x longer for the same code and data to run on save than it did on seykhl
+(8x 2.5GHz on save->54 hours vs. 5x 3.46 GHz on seykhl->17 hours).  I think the
+next time I run the step 4 code I will ship the job over to one of the
+workstations that's not being used interactively (probably chino, since that's
+the desk where the rover sits) so that I can use all 6 processors without
+bothering anyone.  Once I get the step 3 re-run started I'm going to look at the
+step 4 interim results more closely and then finish off the logic to apply the
+unique labels across all floorplans.
+---------------end email-------------------------
+
+--Re-run of plan0,plan1 on auto-drive started at 1242.  Had to do some
+  debugging.  Working restart at 1406.  Finished at 1412.
+
+--Found I needed to re-run plan5,plan8 as well b/c detections dir was not
+  there.  Not sure why that happened--maybe rsync failed?
+
+--As of 2101, the rerun of plan5/2014-11-21-02:27:38 and
+  plan8/2014-11-21-03:03:46 had completed step 1 and was working on step 2.
+  Looks like the step 1 files for both wrote correctly this time.
+
+--Finished manually labeling generation-avg-similarity-matrix.xlsx.  Results
+  don't look so good when just taking the max in the row (yellow) and column
+  (orange).  Maybe think about something like finding anything within 10% of the
+  diagonal value and doing some sort of voting.  Might want to think about
+  bringing that back to step 3 as well--but need to think about if it would make
+  a difference--observed some within-floorplan groupings that didn't make sense
+  (plan8 had a box and a stool grouped as the same item, even though they were
+  at different locations).
+
 **STARTING COMMAND**
 (define *data-output-dirname* "test20150617")
 (codetect-sort-templabel-training-or-generation *data-output-dirname*)

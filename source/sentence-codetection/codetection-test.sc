@@ -1282,13 +1282,18 @@
 	(output-matlab (format #f "~a-matlab/" output-directory))
 	(output-c (format #f "~a-c/" output-directory))
 	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
-	(dir-list (join
-		   (map
-		    (lambda (p)
-		     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
-			  (system-output
-			   (format #f "ls ~a/~a | grep 201" data-directory p))))
-		    plandirs)))
+	(dir-list (list
+		   "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/auto-drive/plan8/2014-11-21-03:03:46"
+		   "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/auto-drive/plan5/2014-11-21-02:27:38"))
+	;;TEMPORARY for re-run of plan5,plan8
+	
+	;; (dir-list (join
+	;; 	   (map
+	;; 	    (lambda (p)
+	;; 	     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+	;; 		  (system-output
+	;; 		   (format #f "ls ~a/~a | grep 201" data-directory p))))
+	;; 	    plandirs)))
 	(commands-matlab
 	 (map
 	  (lambda (dir) ;;change get-matlab... command if using auto-drive
@@ -1357,7 +1362,10 @@
 	(source source-machine)
 	(matlab-cpus-per-job 12);;4) ;;for under-the-hood matlab parallelism and to spread out jobs among servers
 	(output-matlab (format #f "~a-detection/" output-directory))
-	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	;;(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	;;TEMPORARY for re-run of auto-drive
+	;;(plandirs (list "plan0" "plan1"))
+	(plandirs (list "plan5" "plan8"))
 	;; (dir-list (join
 	;; 	   (map
 	;; 	    (lambda (p)
@@ -1491,19 +1499,21 @@
 	(server-list
 	 (list "aruco" "save" "akili" "aql" "verstand" "arivu")) ;; "perisikan" acting weird, jobs dying without finishing
 	(source-machine "seykhl"))
-  (get-codetection-results-auto-drive data-directory 
-						  top-k
-						  ssize
-						  alpha
-						  beta
-						  gamma
-						  delta
-						  dummy-f
-						  dummy-g
-						  output-directory 
-						  data-output-dir 
-						  server-list
-						  source-machine) 
+  ;;TEMPORARY for re-run of auto-drive
+  ;; (get-codetection-results-auto-drive data-directory 
+  ;; 						  top-k
+  ;; 						  ssize
+  ;; 						  alpha
+  ;; 						  beta
+  ;; 						  gamma
+  ;; 						  delta
+  ;; 						  dummy-f
+  ;; 						  dummy-g
+  ;; 						  output-directory 
+  ;; 						  data-output-dir 
+  ;; 						  server-list
+  ;; 						  source-machine)
+  
 
 
 ;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename

@@ -9,7 +9,7 @@ cpus_available = feature('numCores');
 if cpus_available > 8
     cpus = 8;
 else
-    cpus = cpus_available - 1;
+    cpus = cpus_available;% - 1; %UNCOMMENT IF USING SEYKHL
 end
 if pools ~= cpus
     if pools > 0
@@ -34,7 +34,7 @@ feature_vectors = cell(num_floorplans,1);
 labeled_xys = cell(num_floorplans,1);
 temp_labels_by_floorplan = zeros(num_floorplans,1);
 for i = 1:num_floorplans
-    read_dir = strcat(dataset_dir,dir_names(i,:),'/',data_output_dirname);
+    read_dir = strcat(dataset_dir,dir_names(i,:),'/',data_output_dirname)
     tmp_xys = load(strcat(read_dir,'/object_xy_with_label.mat'),...
                    'xy_with_label');
     [rows,cols] = size(tmp_xys.xy_with_label);
@@ -129,6 +129,10 @@ end %for i
 % xy_with_label(:,3) = labels; %done with this
 % 
 % %now do sorting and saving
+
+%%DON'T FORGET TO SOMEHOW GIVE IMAGES UNIQUE NAMES BY FLOORPLAN (FLOORPLANS
+%%ARE ALREADY UNIQUE)
+
 % outfilename = strcat(img_dir,'/object_xy_with_label.mat');
 % save(outfilename,'xy_with_label'); %object locations/labels saved
 % outfilename2 = strcat(img_dir,'/phow_hist_fvcell.mat');
@@ -155,6 +159,7 @@ end %for i
 %     rmdir(src_dir,'s');
 % end %for i
 
+matlabpool('close'); %kill parallel workers
 end %function (main)
 
 function [i_out,j_out] = find_indices(i_in,M)
