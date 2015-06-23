@@ -1597,6 +1597,38 @@ unique labels across all floorplans.
   (plan8 had a box and a stool grouped as the same item, even though they were
   at different locations).
 
+----------------git commit 83849b1---------------
+
+23 Jun 15
+
+--Steps 1 and 2 on the plan5/ and plan8/ bad runs finished at 0555.  Total
+  runtime of ~14.5 hours.  Ran step 3 on those two floorplans and they finished
+  in ~8 minutes.
+
+--Step 3 seems to be running quickly--is there a need to change that out from
+  Matlab?  Step 3 runs on 2 floorplans in <10 minutes, and on all floorplans in
+  51 minutes (auto-drive) and 34 minutes (generation).  Changed number of matlab
+  cores for step 3 from 12 to 20 to ensure that only 2 jobs get started on each
+  machine at a time--this should bring the runtime down to ~10 minutes.
+
+--Maybe just move step 4 into Scheme.
+
+--Started talking with Dan on how to improve results in step 3
+  (misclassification)--came up with new strategy to try--see board.
+
+--Also worked our way back to the top step 3 and how many clusters are found
+  from the scoring function.  Figured out that there's probably too much noise
+  and things that are only getting seen a few times are getting drowned out in
+  the scoring function.  Came up with idea to keep a count of how many times a
+  particular winning box's position is visible over a whole floorplan and use
+  1/count as a multiplier to the score in the scoring function.  That will
+  (hopefully) ensure that things that are seen only a few times, but are only
+  possible to see a few times, fare better.  Working on implementing this in
+  Scheme and passing the data into Matlab for use in find_objects.  See board.
+
+
+**HORIZON = pixel 205
+
 **STARTING COMMAND**
 (define *data-output-dirname* "test20150617")
 (codetect-sort-templabel-training-or-generation *data-output-dirname*)

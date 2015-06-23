@@ -79,14 +79,14 @@ end %for i
 M = sum(temp_labels_by_floorplan);
 avg_similarity_matrix = zeros(M,'single');
 
-for i = 1:M
+for i = 1:M %map-vector
     [new_i,new_j] = find_indices(i,temp_labels_by_floorplan);
     [num_img_i,~] = size(feature_vectors{new_i}{new_j});
-    for j = i:M %trying with self-similarity instead of i+1:M
+    for j = i:M %trying with self-similarity instead of i+1:M map-vector
         [new_i2,new_j2] = find_indices(j,temp_labels_by_floorplan);
         [num_img_j,~] = size(feature_vectors{new_i2}{new_j2});
         simi_matrix = zeros(num_img_i,num_img_j,'single');
-        for k = 1:num_img_i
+        for k = 1:num_img_i %let with 2 nested map-vectors
             hist1 = feature_vectors{new_i}{new_j}(k,:);
             parfor l = 1:num_img_j
                 hist2 = feature_vectors{new_i2}{new_j2}(l,:);

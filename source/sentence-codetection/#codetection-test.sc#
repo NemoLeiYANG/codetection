@@ -1120,7 +1120,13 @@
 		      (lambda (f)
 		       (get-detection-images f results-filename))
 		      rundirs)))
-	;;put new triangle stuff here
+	;;put new triangle stuff here--want 1/visible to be 4th column of detection_data
+	(all-poses (map second
+			(join
+			 (map (lambda (dir)
+			       (read-robot-estimated-pose-from-log-file
+				(format #f "~a/imu-log-with-estimates.txt" dir)))
+			      rundirs))))
 	)
 	;;)
   (mkdir-p (format #f "~a/~a" floorplan-dir output-dirname))
