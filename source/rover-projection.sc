@@ -76,7 +76,7 @@
 	(pixel-world  (transform-point-3d camera->world (vector px py 1)))
 	(dxyz (v- pixel-world camera-world))
 	(l (/ (- height (z camera-world)) (z dxyz))))
-  (v+ camera-world (v*s dxyz l))))
+  (v+ camera-world (k*v l dxyz))));;(v*s dxyz l))))
 
 (define (read-robot-estimated-pose-from-log-file filename)
  (let* ((lines (read-file filename))
@@ -193,6 +193,19 @@
 				      (* (y robot-pose) 1000)
 				      0
 				      ))))
+
+(define (robot-pose-to-camera->world-txf robot-pose camera-offset-matrix)
+ (invert-tx-matrix
+  (m*
+   camera-offset-matrix
+   (invert-tx-matrix
+    (my-make-transform-3d (- (z robot-pose) half-pi)
+			  0
+			  (- half-pi)
+			  (* (x robot-pose) 1000)
+			  (* (y robot-pose) 1000)
+			  0
+			  )))))
  
 (define (read-camera-timing path)
  (let* ((lines (read-file path))

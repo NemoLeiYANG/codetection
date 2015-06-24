@@ -1626,6 +1626,30 @@ unique labels across all floorplans.
   possible to see a few times, fare better.  Working on implementing this in
   Scheme and passing the data into Matlab for use in find_objects.  See board.
 
+----------------git commit cab6cfa---------------
+
+24 Jun 15
+
+--Wrote (get-poses-that-match-frames) to take robot poses from IMU log and only
+  return the ones that are closest in time to a frame time.
+
+--Have all-poses, left-limits, right-limits and triangles defined in
+  (get-detection-data-for-floorplan).  Next need to figure out the formula to
+  determine whether a point is within a triangle.
+
+--Wrote (point-in-triangle vec-p list-of-3-vecs-t) that returns 0 if point NOT
+  in triangle, 1 if is in.
+
+--Have (get-detection-data-for-floorplan) almost working--having a divide by 0
+  when doing the 1/count computation--not sure how that is happening, since that
+  means that a box's xy location is not ever within the field of view--should
+  probably just handle the error and not worry about it.
+
+--Error in (get-detection-data-for-floorplan) handled and function seems to be
+  working correctly--need to remove dtrace?
+
+--Next need to modify find_objects.m so that it uses the frequency data in the
+  score computation.
 
 **HORIZON = pixel 205
 

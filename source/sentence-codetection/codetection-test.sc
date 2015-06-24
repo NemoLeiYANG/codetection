@@ -16,6 +16,21 @@
 ;;        (at-most-one
 ;; 	("box-size" box-size? (box-size "size" integer-argument 64))))
 
+
+;;CAMERA CALIBRATION INFO
+(define *camera-offset* (vector -0.03 0.16 -0.2))
+(define *camera-offset-matrix*
+ (vector
+  (vector 1. 0. 0. -0.03)
+  (vector 0. 1. 0. 0.16)
+  (vector 0. 0. 1. -0.2)
+  (vector 0. 0. 0. 1.)))
+(define *camera-k-matrix*
+ (vector
+  (vector 724.34508362823397 0. 312.32994017160644)
+  (vector 0. 724.12307134397406 203.10961045807585)
+  (vector 0. 0. 1.)))
+
 (define (select-frames video-path first-frame num-frames)
  (let ((video (video->frames 1 video-path)))
   (if (> (+ first-frame num-frames) (length video))
@@ -139,6 +154,36 @@
 		      (rest poses)
 		      (first poses)
 		      frame-poses))))))))
+
+(define (get-poses-that-match-frames datapath)
+ (let* ((cam-timing (read-camera-timing
+		     (format #f "~a/camera_front.txt" datapath)))
+	(timing-file (if (file-exists? (format #f "~a/imu-log-with-estimates.txt"
+					       datapath))
+			 (format #f "~a/imu-log-with-estimates.txt" datapath)
+			 (format #f "~a/imu-log.txt" datapath)))
+	(poses-with-timing (read-robot-estimated-pose-from-log-file timing-file)))
+  (let loop ((cam-timing cam-timing)
+	     (poses poses-with-timing)
+	     (previous-pose #f)
+	     (frame-poses '()))
+   (if (or (null? poses) (null? cam-timing))
+       (reverse frame-poses) ;; done
+       (if previous-pose
+	   (if (< (abs (- (first previous-pose) (first cam-timing)))
+		  (abs (- (first (first poses)) (first cam-timing))))
+	       (loop (rest cam-timing)
+		     (rest poses)
+		     (first poses)
+		     (cons (second (first poses)) frame-poses))
+	       (loop cam-timing
+		     (rest poses)
+		     (first poses)
+		     frame-poses))
+	   (loop cam-timing
+		 (rest poses)
+		 (first poses)
+		 frame-poses))))))
        
 (define (frame-test)
  (let* ((video-path "/home/sbroniko/codetection/test-run-data/video_front.avi")
@@ -1107,11 +1152,11 @@
 		    (format #f "~a~a" f frame-data-filename)))
 		  rundirs)))
 		;;)
-	(matlab-data ;;(dtrace "matlab-data"
-	 (map (lambda (xy score)
-			   (list->vector (append xy (list score))))
-			  xys
-			  scores))
+	;; (matlab-data ;;(dtrace "matlab-data"
+	;;  (map (lambda (xy score)
+	;; 		   (list->vector (append xy (list score))))
+	;; 		  xys
+	;; 		  scores))
 		    ;; )
 	;;use most of what's above here to pass this data back into matlab
 	(image-list ;;(dtrace "image-list"
@@ -1120,9 +1165,54 @@
 		      (lambda (f)
 		       (get-detection-images f results-filename))
 		      rundirs)))
-	;;put new triangle stuff here
+	;;put new triangle stuff here--want 1/visible to be 4th column of matlab-data
+	(all-poses (join (map (lambda (dir)
+			       (get-poses-that-match-frames dir)) rundirs)))
+	(left-limits
+	 (map
+	  (lambda (p)
+	   (pixel-and-height->world
+	    '#(0 205)
+	    (robot-pose-to-camera->world-txf p
+					     *camera-offset-matrix*)
+	    *camera-k-matrix* 0))
+	  all-poses))
+
+	(right-limits
+	 (map
+	  (lambda (p)
+	   (pixel-and-height->world
+	    '#(639 205)
+	    (robot-pose-to-camera->world-txf p
+					     *camera-offset-matrix*)
+	    *camera-k-matrix* 0))
+	  all-poses))
+
+	(triangles
+	 (map (lambda (c l r) (list
+			       (subvector c 0 2)
+			       (subvector l 0 2)
+			       (subvector r 0 2)))
+	      all-poses left-limits right-limits))
+	(frequencies
+	 (map (lambda (ll)
+	       (if (= ll 0)
+		   (dtrace "Error in get-detection-data-for-floorplan: detected box with count = 0" 0) ;;this shouldn't happen, since it means that a detected box was never counted as being in the field of view
+		   (/ 1 ll)))
+	      (map (lambda (l)
+		    (reduce + l 0))
+		   (map (lambda (p)
+			 (map (lambda (t)
+			       (point-in-triangle (list->vector p) t))
+			      triangles))
+			xys))))
+	(matlab-data ;;(dtrace "matlab-data"
+	 (map (lambda (xy score freq)
+			   (list->vector (append xy (list score freq))))
+			  xys
+			  scores
+			  frequencies))
 	)
-	;;)
   (mkdir-p (format #f "~a/~a" floorplan-dir output-dirname))
   (for-each-indexed
    (lambda (image i)    
@@ -1141,6 +1231,37 @@
 		  floorplan-dir
 		  output-dirname
 		  matlab-output-filename))))
+
+(define (point-in-triangle point triangle)
+ ;;returns 0 if point NOT in triangle, 1 if point IS in triangle
+ ;;point is a single vector of xy
+ ;;triangle is a list of 3 xy vectors
+ ;;This uses the Barycentric weight formula from
+ ;;http://math.stackexchange.com/questions/51326/determining-if-an-arbitrary-point-lies-inside-a-triangle-defined-by-three-points
+ (let* ((A (first triangle))
+	(B (v- (second triangle) A))
+	(C (v- (third triangle) A))
+	(P (v- point A))
+	(x (vector-ref P 0))
+	(y (vector-ref P 1))
+	(xB (vector-ref B 0))
+	(yB (vector-ref B 1))
+	(xC (vector-ref C 0))
+	(yC (vector-ref C 1))
+	(d (- (* xB yC) (* yB xC)))
+	(WA (/ (+ (* x (- yB yC)) (* y (- xC xB)) (* xB yC) (- (* xC yB))) d))
+	(WB (/ (- (* x yC) (* y xC)) d))
+	(WC (/ (- (* y xB) (* x yB)) d)))
+  ;;point is in triangle if WA, WB, WC all 0 <= W <= 1
+  (if (and
+       (and (>= WA 0)
+	    (>= WB 0)
+	    (>= WC 0))
+       (and (<= WA 1)
+	    (<= WB 1)
+	    (<= WC 1)))
+      1
+      0)))
 
 (define (detect-sort-label-objects-single-floorplan floorplan-dir
 						    results-filename
