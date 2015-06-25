@@ -1,9 +1,11 @@
-function [numpeaks, peakxys,scores] = find_objects(detection_data, xmin, xmax,...
-    ymin, ymax, cm_between, gaussian_variance)..., threshold_ratio) HARDCODED
-%% This is a combination of score_detections.m and find_score_peaks.m
+function [numpeaks, peakxys,scores_out] = find_objects(detection_data, xmin,...
+    xmax, ymin, ymax, cm_between, gaussian_variance) 
+%, threshold_ratio) HARDCODED
+    
+% This is a combination of score_detections.m and find_score_peaks.m
 %  Expect it to return the number of peaks found and their xy locations
-
 %inputs: detection_data: matrix of n x 3, each row is [x,y,fscore]
+%               OR n x 4 if new version with frequency in 4th column
 %        xmin, xmax, ymin, ymax: boundaries in m
 %        cm_between: number of cm between points in scoring grid
 %        gaussian_variance: variance parameter for distance measure
@@ -19,7 +21,7 @@ num_xpoints = length(xpoints);
 ypoints = ymax:-(cm_between/100):ymin; %do this in descending order to match raster order
 num_ypoints = length(ypoints);
 scores = zeros(num_ypoints,num_xpoints);
-N = length(detection_data);
+[N,num_elem] = size(detection_data);
 
 %compute score at each point in grid **COULD THIS BE FASTER W/O LOOPS??**
 for i = 1:num_ypoints
@@ -29,33 +31,44 @@ for i = 1:num_ypoints
             datapt = detection_data(n,1:2);
             d = norm(scorept-datapt);
             d_score = gaussmf(d,[gaussian_variance,0]);
-            scores(i,j) = scores(i,j) + d_score * detection_data(n,3);
+            if (num_elem == 4)
+                scores(i,j) = scores(i,j) + ...
+                    d_score * detection_data(n,3) * detection_data(n,4);
+            else
+                scores(i,j) = scores(i,j) + d_score * detection_data(n,3);
+            end %if
         end % for n
     end %for j
 end %for i
+scores_out = scores;
+% numpeaks = 0;
+% peakxys = [];
+%TEMP FOR TESTING
 
 %cast the scores to uint16 (to speed up code)
-scores = uint16(scores);
+%scores = uint16(scores);
 
 %set up threshold value and filter
-threshold_ratio = 0.3; %HARDCODED
+threshold_ratio = 0.3;%0.3; %HARDCODED
 thresh = threshold_ratio*max(scores(:));
 filt = fspecial('gaussian',9,1); %HARDCODED
 
 %do median filtering and apply threshold
 scores = medfilt2(scores,[3,3]);
-scores = scores.*uint16(scores > thresh);
+%scores = scores.*uint16(scores > thresh);
+scores = scores.*(scores > thresh);
 
 if any(scores(:)) %proceed only if thresholded matrix is nonzero
     %smooth the matrix
-    scores = conv2(single(scores),filt,'same');
+    %scores = conv2(single(scores),filt,'same'); %REMOVING CAST TO SINGLE
+    scores = conv2(scores,filt,'same');
     %re-apply threshold
     scores = scores.*(scores > thresh);
     
     %use regionprops to get peak areas and centroids
     s = regionprops(logical(scores),scores,'Area','WeightedCentroid');
     
-    %% Next section copied from FastPeakFind.m
+    % Next section copied from FastPeakFind.m
     % find reliable peaks by considering only peaks with an area
     % below some limit. The weighted centroid method can be not
     % accurate if peaks are very close to one another, i.e., a
@@ -65,13 +78,13 @@ if any(scores(:)) %proceed only if thresholded matrix is nonzero
     % happens often consider a different threshold, or return to
     % the more robust "local maxima" method.
     % To set a proper limit, inspect your data with:
-    % hist([stats.Area],min([stats.Area]):max([stats.Area]));
+  %   hist([s.Area],min([s.Area]):max([s.Area]));
     % to see if the limit I used (mean+2 standard deviations)
     % is an appropriate limit for your data.
     rel_peaks_vec=[s.Area]<=mean([s.Area])+2*std([s.Area]);
     cent=[s(rel_peaks_vec).WeightedCentroid]';
     %end copied section
-    %%
+    %
     %cent = [s.WeightedCentroid]'; %for no limit on peak area
     
     %set up output

@@ -202,8 +202,8 @@
     (my-make-transform-3d (- (z robot-pose) half-pi)
 			  0
 			  (- half-pi)
-			  (* (x robot-pose) 1000)
-			  (* (y robot-pose) 1000)
+			  (x robot-pose);;(* (x robot-pose) 1000)
+			  (y robot-pose);;(* (y robot-pose) 1000)
 			  0
 			  )))))
  

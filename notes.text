@@ -1651,7 +1651,37 @@ unique labels across all floorplans.
 --Next need to modify find_objects.m so that it uses the frequency data in the
   score computation.
 
-**HORIZON = pixel 205
+----------------git commit 07672f3---------------
+
+25 Jun 15
+
+--After talking to Dan about the error in (get-detection-data-for-floorplan), he
+  told me that there was a multiply by 1000 in (robot-pose-to-camera->world-txf)
+  in rover_projection.sc because he took everything from m to mm.  Removed that
+  and error appeared to go away.
+
+--Remember that in (get-detection-data-for-floorplan), we set the **HORIZON** to
+  pixel 205 (y).
+
+--find_objects.m now seems to be working better and finding peaks that were
+  missed before (see plan8).  
+
+--Working with threshold value in that function to adjust when peaks get found
+  (had been set at 0.3*max(scores(:))).  0.2 is too high for plan8. 0.18 works
+  for plan8, but  when tried on plan0 and plan1 it merges multiple peaks into a
+  single peak--no good.  Might just be best to leave the threshold at 0.3 and
+  accept the fact that some peaks will be missed.
+
+--Other ideas: 1) set the threshold as a multiple of the mean value of the
+  scores function--Dan says that might not be a good idea, but I'm not sure
+  why--maybe something with the mean and the std_dev? 2) try starting a
+  threshold at the max value and then bringing it down, stopping when previously
+  separate peaks merge into one.
+
+--Trying stuff, and saw that using mean + 1.5*std_dev gives a pretty good result
+  on plan8--need to look at other plans.
+
+
 
 **STARTING COMMAND**
 (define *data-output-dirname* "test20150617")
