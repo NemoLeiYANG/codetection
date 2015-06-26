@@ -49,8 +49,9 @@ scores_out = scores;
 %scores = uint16(scores);
 
 %set up threshold value and filter
-threshold_ratio = 0.3;%0.3; %HARDCODED
-thresh = threshold_ratio*max(scores(:));
+% threshold_ratio = 0.3;%0.3; %HARDCODED
+% thresh = threshold_ratio*max(scores(:));
+thresh = mean(scores(:)) + 2*std(scores(:));
 filt = fspecial('gaussian',9,1); %HARDCODED
 
 %do median filtering and apply threshold

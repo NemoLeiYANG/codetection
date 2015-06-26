@@ -1281,7 +1281,7 @@
 				    matlab-output-filename)
   ;;don't think I need to load detection_data.mat here b/c matlab already has detection_data
   (matlab (format #f
-		  "[numobj, objxys] = find_objects(detection_data,~a,~a,~a,~a,~a,~a);"
+		  "[numobj, objxys,~] = find_objects(detection_data,~a,~a,~a,~a,~a,~a);"
 		  *xmin* *xmax* *ymin* *ymax*
 		  5 ;; cm_between HARDCODED
 		  0.25));; gaussian_variance HARDCODED

@@ -2,7 +2,7 @@ function [labeled_xys,feature_vectors,avg_similarity_matrix] = ...
     label_objects_all_floorplans(dataset_dir,data_output_dirname)
 
 
-
+% TRY NOT explicitly setting up parfor to use default?
 % enable parfor
 pools = matlabpool('size');
 cpus_available = feature('numCores');

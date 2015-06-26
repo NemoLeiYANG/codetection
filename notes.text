@@ -1681,7 +1681,32 @@ unique labels across all floorplans.
 --Trying stuff, and saw that using mean + 1.5*std_dev gives a pretty good result
   on plan8--need to look at other plans.
 
+----------------git commit eb967f0---------------
 
+26 Jun 15
+
+--After testing some different settings, decided on using mean+2*std_dev for the
+  threshold in find_objects.m.  
+
+--Tried adding some parfors in sort_clusters_single_floorplan.m.
+
+--Parfors seem to speed up sort_clusters_single_floorplan-->running on seykhl,
+  each floorplan takes ~2 minutes on average to run all of Step 3 (minus scheme
+  part).
+
+--Playing with different methods of determining visual similarity.  First tried
+  1a,2a from board, but it gave a self-similarity of 1.  Thought this wouldn't
+  work, so went on to try 1b,2a.  This appeared to work at first, but for
+  objects with low self-similarity (< ~0.3), it gave me problems--things that
+  shouldn't have been merged together were merged.
+
+--Talked to Dan about the above and went back to 1a,2a with self-similarity of
+  1.  Looked at a couple of floorplans and saw that things that should be
+  re-labeled had a similarity in the relabel column of > 0.4, while things that
+  should not have been relabeled did not.  Working on the logic to get the
+  correct label selected.  Having a problem with like objects all starting out
+  with a zero label--need to think of a way to get the first one a unique label
+  without making others bounce--look at column 1 of avg_similarity_matrix0.
 
 **STARTING COMMAND**
 (define *data-output-dirname* "test20150617")
