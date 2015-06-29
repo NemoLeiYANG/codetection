@@ -1,22 +1,22 @@
-function [labeled_xys,feature_vectors,avg_similarity_matrix] = ...
+function [labeled_xys,feature_vectors,avg_similarity_matrix,labels] = ...
     label_objects_all_floorplans(dataset_dir,data_output_dirname)
 
 
-% TRY NOT explicitly setting up parfor to use default?
-% enable parfor
-pools = matlabpool('size');
-cpus_available = feature('numCores');
-if cpus_available > 8
-    cpus = 8;
-else
-    cpus = cpus_available;% - 1; %UNCOMMENT IF USING SEYKHL
-end
-if pools ~= cpus
-    if pools > 0
-        matlabpool('close');
-    end
-    matlabpool('open', cpus);
-end
+% % TRY NOT explicitly setting up parfor to use default?
+% % enable parfor
+% pools = matlabpool('size');
+% cpus_available = feature('numCores');
+% if cpus_available > 8
+%     cpus = 8;
+% else
+%     cpus = cpus_available;% - 1; %UNCOMMENT IF USING SEYKHL
+% end
+% if pools ~= cpus
+%     if pools > 0
+%         matlabpool('close');
+%     end
+%     matlabpool('open', cpus);
+% end
 
 %start by getting plan directory names 
 tmp_dir_names = dir(dataset_dir);
@@ -86,15 +86,41 @@ for i = 1:M %map-vector
         [new_i2,new_j2] = find_indices(j,temp_labels_by_floorplan);
         [num_img_j,~] = size(feature_vectors{new_i2}{new_j2});
         simi_matrix = zeros(num_img_i,num_img_j,'single');
-        for k = 1:num_img_i %let with 2 nested map-vectors
-            hist1 = feature_vectors{new_i}{new_j}(k,:);
-            parfor l = 1:num_img_j
-                hist2 = feature_vectors{new_i2}{new_j2}(l,:);
-                simi_matrix(k,l)= 1 - pdist2(hist1,hist2,'chisq');
-            end %parfor l
+        temp_hists1 = feature_vectors{new_i}{new_j};
+        temp_hists2 = feature_vectors{new_i2}{new_j2};
+        parfor k = 1:num_img_i %let with 2 nested map-vectors
+            %hist1 = feature_vectors{new_i}{new_j}(k,:);
+            hist1 = temp_hists1(k,:);
+            temp_mat = zeros(1,num_img_j);
+            for l = 1:num_img_j
+                %hist2 = feature_vectors{new_i2}{new_j2}(l,:);
+                hist2 = temp_hists2(l,:);
+                temp_mat(l) = 1 - pdist2(hist1,hist2,'chisq');
+            end %for l
+            simi_matrix(k,:) = temp_mat;
         end %for k
-        avg_simi = max(mean(simi_matrix,1));
-        avg_simi2 = max(mean(simi_matrix,2));
+        %         %atempt 2: 1b, 2a
+%         [num_col_elements,num_row_elements] = size(simi_matrix);
+%         simi_sorted_cols = sort(simi_matrix,'descend');
+%         simi_sorted_rows = sort(simi_matrix,2,'descend');
+%         n_rows = round(n_factor*num_row_elements);
+%         n_cols = round(n_factor*num_col_elements);
+%         row_means = mean(simi_sorted_rows(:,1:n_rows),2);
+%         col_means = mean(simi_sorted_cols(1:n_cols,:),1);
+%         avg_simi = mean(row_means);
+%         avg_simi2 = mean(col_means);
+        
+        %attempt 1: 1a, 2a
+        row_maxes = max(simi_matrix,[],2);
+        col_maxes = max(simi_matrix,[],1);
+        avg_simi = mean(row_maxes);
+        avg_simi2 = mean(col_maxes);
+        
+        %MAYBE try something with 1a, 2b here.
+        
+        %old way
+        %avg_simi = max(mean(simi_matrix,1));
+        %avg_simi2 = max(mean(simi_matrix,2));
         avg_similarity_matrix(i,j) = avg_simi;
         avg_similarity_matrix(j,i) = avg_simi2; 
     end %for j
@@ -105,28 +131,11 @@ end %for i
 %any other values are higher
 
 %%START HERE%%
- 
-% unique_label = 1; %first unique label value
-% labels = zeros(M,1);
-% while (min(labels) == 0) %keep going until all labels set
-%     for i = 1:M
-%         if (labels(i) == 0)  %only do stuff if label not already set
-%             [~,rowidx] = max(avg_similarity_matrix(i,:));
-%             [~,colidx] = max(avg_similarity_matrix(:,i));
-%             if ((rowidx == i) && (colidx == i)) %we have a new unique label
-%                 labels(i) = unique_label;
-%                 unique_label = unique_label + 1;
-%             elseif (colidx ~= i) %copy label from colidx
-%                 labels(i) = labels(colidx);
-%             elseif (rowidx ~= i) %copy label from rowidx
-%                 labels(i) = labels(rowidx);
-%             else
-%                 fprintf('THIS SHOULDN''T HAPPEN');
-%             end % if row && col
-%         end %if        
-%     end %for i
-% end %while
-% xy_with_label(:,3) = labels; %done with this
+
+labels = labels_from_avg_similarity_matrix(avg_similarity_matrix);
+
+%need to do something different with this
+%xy_with_label(:,3) = labels; %done with this
 % 
 % %now do sorting and saving
 

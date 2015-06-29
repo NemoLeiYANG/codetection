@@ -1708,6 +1708,37 @@ unique labels across all floorplans.
   with a zero label--need to think of a way to get the first one a unique label
   without making others bounce--look at column 1 of avg_similarity_matrix0.
 
+----------------git commit 1bad56a---------------
+
+29 Jun 15
+
+--Have Step 3 mostly fixed.  Wrote labels_from_avg_similarity_matrix.m to do
+  labeling.  Labels correctly for all but the following: plan5--tmp1 and tmp2
+  are boxes, but tmp3 (bag) has a high row score for tmp1, and the tmp2/tmp1
+  similarity scores are poor; plan6--similar problem with tmp1(bag),
+  tmp3(table), tmp4(cone) all being put together b/c of high column scores for
+  tmp3&4 to 1--all should be separate; plan7--tmp1 and tmp4 are both chairs, but
+  get labeled separately.
+
+--Not sure how to fix the boxes being labeled separately in plan5, but maybe fix
+  bad bag labeling by looking at both (average?) of row and col scores.  Same fix
+  might help plan6 also.
+
+--Tried average row/col scores fix, but didn't quite work on all problem
+  spots--maybe check the ratio between the numbers.
+
+--Ratio comparison in labels_from_avg_similarity_matrix.m seems to work well.
+  No longer getting dissimilar objects with the same label.  Still have similar
+  objects getting different labels, but not sure yet how to fix that.  Perhaps
+  try something with 2b (from board) in sort_clusters_single_floorplan.m.
+
+--Going to try re-running modified label_objects_all_floorplans.m on both chino
+  and save with the generation-testing dataset just to see if the changes to the
+  way the parfor is working improves the runtime.
+
+
+**LOOK AT 4th bullet from 29 Jun 15**
+
 **STARTING COMMAND**
 (define *data-output-dirname* "test20150617")
 (codetect-sort-templabel-training-or-generation *data-output-dirname*)

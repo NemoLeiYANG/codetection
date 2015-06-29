@@ -45,8 +45,8 @@ end %for i
 
 fprintf('fvcell built\n');
 
-n_factor = 0.5; %used in condensing simi_matrix
-m_factor = 0.2; 
+% n_factor = 0.5; %used in condensing simi_matrix
+% m_factor = 0.2; 
 
 %now do comparison of feature vectors between each pair of temp labels
 avg_similarity_matrix = zeros(M,'single');
@@ -80,11 +80,14 @@ for i = 1:M
 %         avg_simi = mean(row_means);
 %         avg_simi2 = mean(col_means);
         
-        %attempt 1: 1a, 2a -- doesn't work -- self similarity = 1
+        %attempt 1: 1a, 2a
         row_maxes = max(simi_matrix,[],2);
         col_maxes = max(simi_matrix,[],1);
         avg_simi = mean(row_maxes);
         avg_simi2 = mean(col_maxes);
+        
+        %MAYBE try something with 1a, 2b here.
+        
         %old way
         %avg_simi = max(mean(simi_matrix,1));
         %avg_simi2 = max(mean(simi_matrix,2));
@@ -95,105 +98,7 @@ end %for i
 
 fprintf('avg_similarity_matrix computed\n');
 
-%now look at avg_similarity values to determine which are alike
-%diagonal elements are self-similarity--look in row and column to see if
-%any other values are higher
-
-similarity_ratio_factor = 0.4;
-
-unique_label = 1; %first unique label value
-labels = zeros(M,1);
-while (min(labels) == 0) %keep going until all labels set
-    fprintf('at top of labeling loop\n');
-    display(labels);
-    for i = 1:M
-        if (labels(i) == 0)  %only do stuff if label not already set
-            display(i);
-            diagonal_value = avg_similarity_matrix(i,i);
-            row_vals = avg_similarity_matrix(i,:);
-            col_vals = avg_similarity_matrix(:,i);
-            row_wo_diag = row_vals(row_vals ~= diagonal_value);
-            col_wo_diag = col_vals(col_vals ~= diagonal_value);
-            
-            big_col_vals = col_wo_diag(col_wo_diag > ...
-                (similarity_ratio_factor * diagonal_value));
-            big_row_vals = row_wo_diag(row_wo_diag > ...
-                (similarity_ratio_factor * diagonal_value));
-            
-            [~,cidx] = ismember(big_col_vals,col_vals);
-            [~,ridx] = ismember(big_row_vals,row_vals);
-            
-            idx = unique([cidx',ridx]);
-            other_labels = labels(idx);
-            
-            %START HERE
-            if (isempty(other_labels) || (max(other_labels) == 0)) 
-                 %we have a new unique label
-                labels(i) = unique_label;
-                unique_label = unique_label + 1;
-            elseif (length(unique(other_labels)) == 1)
-                %use this label
-                labels(i) = other_labels(1);
-            else
-                fprintf('BAD JUJU HERE\n');
-            end %if length
-            %end new logic
-            
-%             max_row_val = max(row_wo_diag);
-%             max_col_val = max(col_wo_diag);
-%             row_idx = find(row_vals == max_row_val);
-%             col_idx = find(col_vals == max_col_val);
-%             test1 = ((similarity_ratio_factor*diagonal_value) > max_row_val)
-%             test2 = ((similarity_ratio_factor*diagonal_value) > max_col_val)
-%             if (test1 && test2)
-%                 %we have a new unique label
-%                 labels(i) = unique_label;
-%                 unique_label = unique_label+1;
-%             elseif (test1)
-%                 %take label from column if already set, else unique
-%                 if (labels(col_idx) ~= 0)
-%                     labels(i) = labels(col_idx);
-%                 else
-%                     labels(i) = unique_label;
-%                     unique_label = unique_label + 1;
-%                 end %if
-%             elseif (test2)
-%                 %take label from row if already set, else unique
-%                 if (labels(row_idx) ~= 0)
-%                     labels(i) = labels(row_idx);
-%                 else
-%                     labels(i) = unique_label;
-%                     unique_label = unique_label + 1;
-%                 end %if
-%             else
-%                 %fprintf('THIS SHOULDN''T HAPPEN');
-%                 if (row_idx == col_idx) %same label
-%                     labels(i) = labels(row_idx);
-%                 else %pick the bigger one
-%                     if (max_row_val > max_col_val)
-%                         labels(i) = labels(row_idx);
-%                     else
-%                         labels(i) = labels(col_idx);
-%                     end
-%                 end
-%             end %if
-         
-            % OLD METHOD
-%             [~,rowidx] = max(avg_similarity_matrix(i,:));
-%             [~,colidx] = max(avg_similarity_matrix(:,i));
-%             if ((rowidx == i) && (colidx == i)) %we have a new unique label
-%                 labels(i) = unique_label;
-%                 unique_label = unique_label + 1;
-%             elseif (colidx ~= i) %copy label from colidx
-%                 labels(i) = labels(colidx);
-%             elseif (rowidx ~= i) %copy label from rowidx
-%                 labels(i) = labels(rowidx);
-%             else
-%                 fprintf('THIS SHOULDN''T HAPPEN');
-%             end % if row && col
-        end %if        
-    end %for i
-end %while
+labels = labels_from_avg_similarity_matrix(avg_similarity_matrix);
 
 fprintf('done with labeling\n');
 xy_with_label(:,3) = labels; %done with this
@@ -204,7 +109,7 @@ save(outfilename,'xy_with_label'); %object locations/labels saved
 outfilename2 = strcat(img_dir,'/phow_hist_fvcell.mat');
 save(outfilename2,'fvcell'); %phow histograms saved to file
 
-for i = 1:(unique_label - 1)
+for i = 1:max(labels)%(unique_label - 1)
     new_dir = strcat(img_dir,'fplabel',num2str(i),'/');
     if (exist(new_dir,'dir'))
         rmdir(new_dir,'s'); %get rid of old data

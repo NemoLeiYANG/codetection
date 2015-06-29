@@ -1,0 +1,10 @@
+labels0old = labels_from_avg_similarity_matrix(avg_similarity_matrix0);
+labels1old = labels_from_avg_similarity_matrix(avg_similarity_matrix1);
+labels2old = labels_from_avg_similarity_matrix(avg_similarity_matrix2);
+labels3old = labels_from_avg_similarity_matrix(avg_similarity_matrix3);
+labels4old = labels_from_avg_similarity_matrix(avg_similarity_matrix4);
+labels5old = labels_from_avg_similarity_matrix(avg_similarity_matrix5);
+labels6old = labels_from_avg_similarity_matrix(avg_similarity_matrix6);
+labels7old = labels_from_avg_similarity_matrix(avg_similarity_matrix7);
+labels8old = labels_from_avg_similarity_matrix(avg_similarity_matrix8);
+labels9old = labels_from_avg_similarity_matrix(avg_similarity_matrix9);
