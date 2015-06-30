@@ -2,23 +2,26 @@ function [labeled_xys,feature_vectors,avg_similarity_matrix,labels] = ...
     label_objects_all_floorplans(dataset_dir,data_output_dirname)
 
 
-% % TRY NOT explicitly setting up parfor to use default?
-% % enable parfor
-% pools = matlabpool('size');
-% cpus_available = feature('numCores');
-% if cpus_available > 8
-%     cpus = 8;
-% else
-%     cpus = cpus_available;% - 1; %UNCOMMENT IF USING SEYKHL
-% end
-% if pools ~= cpus
-%     if pools > 0
-%         matlabpool('close');
-%     end
-%     matlabpool('open', cpus);
-% end
+% TRY NOT explicitly setting up parfor to use default?
+% enable parfor
+pools = matlabpool('size');
+cpus_available = feature('numCores');
+if cpus_available > 8
+    cpus = 8;
+else
+    cpus = cpus_available;% - 1; %UNCOMMENT IF USING SEYKHL
+end
+if pools ~= cpus
+    if pools > 0
+        matlabpool('close');
+    end
+    matlabpool('open', cpus);
+end
 
 %start by getting plan directory names 
+fprintf('Starting label_objects_all_floorplans\n');
+system('date');
+
 tmp_dir_names = dir(dataset_dir);
 dir_names = [];
 for i = 1:length(tmp_dir_names)
@@ -34,7 +37,7 @@ feature_vectors = cell(num_floorplans,1);
 labeled_xys = cell(num_floorplans,1);
 temp_labels_by_floorplan = zeros(num_floorplans,1);
 for i = 1:num_floorplans
-    read_dir = strcat(dataset_dir,dir_names(i,:),'/',data_output_dirname)
+    read_dir = strcat(dataset_dir,dir_names(i,:),'/',data_output_dirname);
     tmp_xys = load(strcat(read_dir,'/object_xy_with_label.mat'),...
                    'xy_with_label');
     [rows,cols] = size(tmp_xys.xy_with_label);
@@ -57,15 +60,25 @@ for i = 1:num_floorplans
 %         display(tmp_fvcell.fvcell);
         combined_fvcell = cell(max_tmp_label,1);
         for j = 1:max_tmp_label
-            current_tmp_label = labelmat(j,4);
-            current_fvcell = tmp_fvcell.fvcell{j};
-            for k = j+1:rows
-                next_tmp_label = labelmat(k,4);
-                if (current_tmp_label == next_tmp_label)
-                    %need to concatenate
-                    current_fvcell = [current_fvcell;tmp_fvcell.fvcell{k}];
-                end %if
-            end %for k
+            same_labels = find(labelmat(:,4) == j);
+            current_fvcell = tmp_fvcell.fvcell{same_labels(1)};
+            if (length(same_labels) > 1)
+                %need to concatenate
+                for k = 2:length(same_labels)
+                    current_fvcell = ...
+                        [current_fvcell;tmp_fvcell.fvcell{same_labels(k)}];
+                end %for k
+            end %if
+                
+%             current_tmp_label = labelmat(j,4);
+%             current_fvcell = tmp_fvcell.fvcell{j};
+%             for k = j+1:rows
+%                 next_tmp_label = labelmat(k,4);
+%                 if (current_tmp_label == next_tmp_label)
+%                     %need to concatenate
+%                     current_fvcell = [current_fvcell;tmp_fvcell.fvcell{k}];
+%                 end %if
+%             end %for k
             combined_fvcell{j} = current_fvcell;
         end %for j
         feature_vectors{i} = combined_fvcell;
@@ -74,6 +87,9 @@ for i = 1:num_floorplans
     end %if
     %clear tmp_xys;
 end %for i
+
+fprintf('feature_vectors built\n');
+system('date');
 
 %now do comparisons between image feature vectors across floorplans
 M = sum(temp_labels_by_floorplan);
@@ -125,14 +141,17 @@ for i = 1:M %map-vector
         avg_similarity_matrix(j,i) = avg_simi2; 
     end %for j
 end %for i
-
+fprintf('avg_similarity_matrix computed\n');
+system('date');
 %now look at avg_similarity values to determine which are alike
 %diagonal elements are self-similarity--look in row and column to see if
 %any other values are higher
 
 %%START HERE%%
 
-labels = labels_from_avg_similarity_matrix(avg_similarity_matrix);
+labels = zeros(M,1);
+%NEEDSWORK--hittint bad juju
+%labels = labels_from_avg_similarity_matrix(avg_similarity_matrix);
 
 %need to do something different with this
 %xy_with_label(:,3) = labels; %done with this

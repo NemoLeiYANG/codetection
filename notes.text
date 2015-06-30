@@ -1736,6 +1736,39 @@ unique labels across all floorplans.
   and save with the generation-testing dataset just to see if the changes to the
   way the parfor is working improves the runtime.
 
+----------------git commit 0642a59---------------
+
+30 Jun 15
+
+--Rerun of step 4 code completed on chino in 502s (~8.37 min) and on save in
+  1179s (19.65 min).  Vast improvement over previous runtimes.  Now need to
+  check and make sure the avg_similarity_matrix from each is the same, and then
+  figure out how to derive labels from that.
+
+--Discovered some sort of error in how feature_vectors is concatenated in
+  label_objects_all_floorplans.m--current avg_similarity_matrix values computed
+  from this are invalid.  Need to relook at how I'm combining these--maybe move
+  the combination of the fvcell data back into step 3.
+
+--Believe I have the feature vector combining bug fixed--re-running on chino to
+  test.
+
+--Looks like I need to fix the 'BAD JUJU' part of
+  labels_from_avg_similarity_matrix.m 
+
+--Looking at new avg_similarity_matrix in spreadsheet.  First 3 plans are good.
+  Errors:
+     plan3: fplabel3 is cone, but gets new label instead of previous. Need to
+               relook val_ratio_threshold value. 
+	    fplabel4 is book bag, but gets new label not previous.  Matching
+               columns/rows seem to be stuck in noise, possibly because ~20-30%
+               of images are distant shots with stuff in background--maybe look
+               at doing some of the 2b stuff???
+     plan4: fplabel3 is chair, but row/col ratio might be off, or noise?
+            fplabel4 is book bag--row/col ratio change will fix this one
+	    ...
+
+
 
 **LOOK AT 4th bullet from 29 Jun 15**
 
