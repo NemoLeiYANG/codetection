@@ -1768,9 +1768,61 @@ unique labels across all floorplans.
             fplabel4 is book bag--row/col ratio change will fix this one
 	    ...
 
+----------------git commit 888978e---------------
+
+1 Jul 15
+
+--Continued errors from above:
+     plan5: fplabel1 and 2 are both box, but both get different labels (also
+               different from true box label)
+	    fplabel5 is cone, but gets no label (fixing BAD JUJU should fix
+               this)
+     plan6: fplabel1 is book bag, but gets no label--this one might be tricky
+               b/c of many row elements above threshold.
+	    fplabel2 is chair, but gets new label--this one should have matched
+               on plan7, fplabel4, but that one didn't get a valid label 
+	    fplabel4 is cone, but gets no label (fixing BAD JUJU should fix
+               this)
+     plan7: fplabel2 is box but gets unique label--this one might not be fixable
+               w/o change to how avg_similarity_matrix is computed
+	    fplabel4 is chair but gets no label (fixing BAD JUJU should fix
+               this)
+     plan8: fplabel2 is box but gets different label--this label looks like it
+     	       comes from plan5, fplabel2, so fixing that one should fix this
+	    fplabel3 is book bag, but gets new label--this could be fixed by
+               changing val_ratio_threshold, although this one gets some crappy
+               similarity scores vs. things it should do well against--maybe
+               changes to asm computation needed here
+     plan9: fplabel1 is box but gets different label--looks like it's tied to
+               plan8, fplabel2
+	    fplabel2 is table, but gets no label (fixing BAD JUJU should fix
+               this)
+	    fplabel3 is book bag, but gets new label--fixing the 0 label at
+               plan6, fplabel1 should fix this 
+
+--From looking at errors, seems like the best first step is to fix the BAD JUJU
+  part of the code and see what that fixes.
+
+--Need to think of a way to fix plan3, fplabel3 (i=13)...previous matches do not
+  meet threshold, but later matches do...maybe something along the lines of a
+  variable to track if everything has had one pass first?...but will that stop
+  everything from getting a unique label?...maybe automatically give first
+  floorplan unique labels
+
+--Fixed BAD JUJU portion of labels_from_avg_similarity_matrix.m.  Now everything
+  gets a label (no more 0s).  Next problem is the labels that are higher than
+  the true labels--maybe a pass backwards through the label numbers, looking for
+  matches that have a lower label number?
+
+--Working on backwards pass--seems workable.  Gets 38/43 labels correct.
+
+--Modified sort_clusters_single_floorplan.m to implement 1a,2b for individual
+  similarity matrices.  Going to test and see what the avg_similarity_matrix
+  looks like for each plan, using test_step3new.m
 
 
-**LOOK AT 4th bullet from 29 Jun 15**
+
+
 
 **STARTING COMMAND**
 (define *data-output-dirname* "test20150617")

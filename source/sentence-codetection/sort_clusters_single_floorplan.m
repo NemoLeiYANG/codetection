@@ -46,7 +46,7 @@ end %for i
 fprintf('fvcell built\n');
 
 % n_factor = 0.5; %used in condensing simi_matrix
-% m_factor = 0.2; 
+m_factor = 0.5; 
 
 %now do comparison of feature vectors between each pair of temp labels
 avg_similarity_matrix = zeros(M,'single');
@@ -80,17 +80,26 @@ for i = 1:M
 %         avg_simi = mean(row_means);
 %         avg_simi2 = mean(col_means);
         
-        %attempt 1: 1a, 2a
-        row_maxes = max(simi_matrix,[],2);
-        col_maxes = max(simi_matrix,[],1);
-        avg_simi = mean(row_maxes);
-        avg_simi2 = mean(col_maxes);
+%         %attempt 1: 1a, 2a WORKING AS OF 1 JUL 15
+%         row_maxes = max(simi_matrix,[],2);
+%         col_maxes = max(simi_matrix,[],1);
+%         avg_simi = mean(row_maxes);
+%         avg_simi2 = mean(col_maxes);
         
         %MAYBE try something with 1a, 2b here.
+        row_maxes = max(simi_matrix,[],2);
+        col_maxes = max(simi_matrix,[],1);
+        sorted_row_maxes = sort(row_maxes,'descend');
+        sorted_col_maxes = sort(col_maxes,'descend');
+        n_r_elem = round(m_factor*length(row_maxes));
+        n_c_elem = round(m_factor*length(col_maxes));
+        avg_simi = mean(sorted_row_maxes(1:n_r_elem));
+        avg_simi2 = mean(sorted_col_maxes(1:n_c_elem));
         
         %old way
         %avg_simi = max(mean(simi_matrix,1));
         %avg_simi2 = max(mean(simi_matrix,2));
+        
         avg_similarity_matrix(i,j) = avg_simi;
         avg_similarity_matrix(j,i) = avg_simi2; 
     end %for j
