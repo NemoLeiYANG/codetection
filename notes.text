@@ -1820,8 +1820,29 @@ unique labels across all floorplans.
   similarity matrices.  Going to test and see what the avg_similarity_matrix
   looks like for each plan, using test_step3new.m
 
+----------------git commit c24cf90---------------
 
+2 Jul 15
 
+--Results of re-run of Step 3 on generation-testing are bad--dissimilar objects
+  are getting the same label.  Thinking about changing Step 3 back to the way it
+  was and just using the 1a,2b stuff on Step 4.  This will require splitting
+  labels_from_avg_similarity_matrix.m into different versions for each step.
+
+--Changed sort_clusters_single_floorplan.m back to using the 1a,2a method of
+  finding avg_similarity_matrix elements.  Put 1a,2b into
+  label_objects_all_floorplans.m.  Re-running this on chino (also accessing
+  files through /net/seykhl instead of rsync--no slowdown observed).
+
+--Hit interesting case in labels_from...step4.m.  Got to other_labels = 2 case
+  and had the actual best ratio val come from a label that had already been
+  eliminated because it was still 0.  Not sure how to deal with this.
+
+--Got past previous error by just checking a condition and skipping to the next
+  pass.  Now have disabled the backwards pass (after playing with the relaxation
+  number) and still getting bad labelings.  Need to look at how I'm dealing with
+  the multiple labels condition--maybe not doing the right thing in the initial
+  loop. 
 
 
 **STARTING COMMAND**

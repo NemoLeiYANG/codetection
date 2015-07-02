@@ -1657,6 +1657,13 @@
 	(labeled-floorplans (map (lambda (f) (first (first f))) raw-data))
 	(ground-truth-lists (map (lambda (f) (map second f)) labeled-floorplans)))
   ground-truth-lists))
+
+(define (get-labeled-ground-truth-from-dataset-file dataset-file)
+ ;;should return list of lists of vectors of ground-truth object locations
+ ;;for entire dataset
+ (let* ((raw-data (read-object-from-file dataset-file))
+	(labeled-floorplans (map (lambda (f) (first (first f))) raw-data)))
+  labeled-floorplans))
 	
 (define (make-scheme-file-of-xys floorplan-dir results-file output-file)
  (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))

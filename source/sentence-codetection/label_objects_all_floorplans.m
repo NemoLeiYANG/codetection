@@ -95,6 +95,9 @@ system('date');
 M = sum(temp_labels_by_floorplan);
 avg_similarity_matrix = zeros(M,'single');
 
+% n_factor = 0.5; %used in condensing simi_matrix
+m_factor = 0.5; 
+
 for i = 1:M %map-vector
     [new_i,new_j] = find_indices(i,temp_labels_by_floorplan);
     [num_img_i,~] = size(feature_vectors{new_i}{new_j});
@@ -126,13 +129,21 @@ for i = 1:M %map-vector
 %         avg_simi = mean(row_means);
 %         avg_simi2 = mean(col_means);
         
-        %attempt 1: 1a, 2a
-        row_maxes = max(simi_matrix,[],2);
-        col_maxes = max(simi_matrix,[],1);
-        avg_simi = mean(row_maxes);
-        avg_simi2 = mean(col_maxes);
+%         %attempt 1: 1a, 2a %LAST WORKING CONFIGURATION A/O 1JUL15
+%         row_maxes = max(simi_matrix,[],2);
+%         col_maxes = max(simi_matrix,[],1);
+%         avg_simi = mean(row_maxes);
+%         avg_simi2 = mean(col_maxes);
         
         %MAYBE try something with 1a, 2b here.
+        row_maxes = max(simi_matrix,[],2);
+        col_maxes = max(simi_matrix,[],1);
+        sorted_row_maxes = sort(row_maxes,'descend');
+        sorted_col_maxes = sort(col_maxes,'descend');
+        n_r_elem = round(m_factor*length(row_maxes));
+        n_c_elem = round(m_factor*length(col_maxes));
+        avg_simi = mean(sorted_row_maxes(1:n_r_elem));
+        avg_simi2 = mean(sorted_col_maxes(1:n_c_elem));
         
         %old way
         %avg_simi = max(mean(simi_matrix,1));
@@ -158,7 +169,7 @@ labels = zeros(M,1);
 % 
 % %now do sorting and saving
 
-%%DON'T FORGET TO SOMEHOW GIVE IMAGES UNIQUE NAMES BY FLOORPLAN (FLOORPLANS
+%%DON'T FORGET TO SOMEHOW GIVE IMAGES UNIQUE FILE NAMES BY FLOORPLAN (FLOORPLANS
 %%ARE ALREADY UNIQUE)
 
 % outfilename = strcat(img_dir,'/object_xy_with_label.mat');
