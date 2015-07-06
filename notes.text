@@ -1844,6 +1844,33 @@ unique labels across all floorplans.
   the multiple labels condition--maybe not doing the right thing in the initial
   loop. 
 
+----------------git commit 896945d---------------
+
+6 Jul 15
+
+--Looking at new version of asm and how things are getting mislabeled.  Maybe
+  ratio stuff is screwing it up.  Look at counting matches in BOTH row and
+  column, and also maybe changing voting to use asm value for that box as a
+  voting value.  Need to think about what to do when matches are to columns/rows
+  further on in the matrix that don't have labels yet--maybe some way of keeping
+  track of who matches to whom??
+
+--SCRATCH ALL OF THE ABOVE REGARDING LABELING STEP 4 OUTPUT IN MATLAB.  Instead
+  formulate the step 4 labeling problem as a graphical model where each detected
+  peak is a variable that is given one of k labels (k is an input).  Unary
+  scores for each label will be uniform since we don't care which particular
+  label a peak gets, just that the peaks corresponding to the same objects get
+  the same label.  Then the binary scores between labels will be one of two
+  values: the first (a) will come from the average of the two computed scores
+  for each pair of peaks in avg_similarity_matrix and will represent the score
+  between two peaks when their labels are the same; the second (b) will be a
+  constant value (actual number probably doesn't matter much) that will
+  represent when two peaks have different labels.  Also need to think about
+  implementing an "other" label (similar to dummy proposals) for the weird
+  objects that shouldn't have a label.
+
+--Look back at notes starting 11 Mar and code in inference.cpp for how to build
+  graphical model solver.
 
 **STARTING COMMAND**
 (define *data-output-dirname* "test20150617")

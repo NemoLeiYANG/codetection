@@ -58,19 +58,18 @@ while (min(labels) == 0) %keep going until all labels set
             idx(to_remove) = [];
             
             other_labels = labels(idx);
-                             display(i); display(other_labels);
-            other_labels_nonzero = other_labels(other_labels > 0);
+            other_labels = other_labels(other_labels > 0);
             
-            if (isempty(other_labels_nonzero))% redundant || (max(other_labels) == 0))
+            if (isempty(other_labels) || (max(other_labels) == 0))
                 %we have a new unique label
                 labels(i) = unique_label;
                 unique_label = unique_label + 1;
-            elseif (length(unique(other_labels_nonzero)) == 1)
+            elseif (length(unique(other_labels)) == 1)
                 %use this label
-                labels(i) = other_labels_nonzero(1);
+                labels(i) = other_labels(1);
             elseif (iter_count > 1)
                 %still need some work here--how to choose between 2 or more labels?
-                                fprintf('BAD JUJU HERE\n');
+                %                 fprintf('BAD JUJU HERE\n');
                 %display(i);
                 %                 fprintf('i = %d\n',i);
                 %                 display(labels');
@@ -84,20 +83,18 @@ while (min(labels) == 0) %keep going until all labels set
                     for k = 1:length(possible_labels)
                         vote_count(k) = sum(other_labels == possible_labels(k));
                     end %for k
-                                display(possible_labels); display(vote_count);
                     label_idx = find(vote_count == max(vote_count));
                     if (length(label_idx) == 1)
                         %                         fprintf('SUCCESS!!!!!!!\n');
                         labels(i) = possible_labels(label_idx);
                     else
-                                                 fprintf('ERROR--tied vote\n')
+                        %                         fprintf('ERROR--tied vote\n')
                         %                         display(possible_labels);
                         %                         display(vote_count);
-                                                 display(idx);
-                                                 display(possible_labels(label_idx));
+                        %                         display(idx);
                         %                         display(ridx);
                         %                         display(cidx);
-                                                 display(ratio_vals);
+                        %                         display(ratio_vals);
                         label_idx = find(ratio_vals == max(ratio_vals));
                         if (length(label_idx) == 1)
                             %                             fprintf('Success 2\n');
