@@ -1872,6 +1872,25 @@ unique labels across all floorplans.
 --Look back at notes starting 11 Mar and code in inference.cpp for how to build
   graphical model solver.
 
+----------------git commit b7f327c---------------
+
+7 Jul 15
+
+--Starting work on bp_label_inference in inference.cpp to do GM solving for peak
+  labels.  Should be a (simpler) clone of bp_object_inference already there.
+  Main input will be in **g, which will be avg_similarity_matrix from matlab.
+  Can manipulate it with (matlab-get-variable ...), (matrix->list-of-lists ...),
+  and (easy-ffi:double-to-c 2 ...).  All other input will be constant
+  ints/doubles.  Output will be on *labels, similar to *boxes in
+  bp_object_inference.  Look at (run-codetection-with-proposals-similarity) in
+  codetection-test.sc to see how to manipulate input and output variables.
+
+--Have f score part of bp_label_inference done.  Working on g score part.  Need
+  to make sure I'm thinking it through correctly (see comments in code).  Should
+  be able to do a single pass through all peaks, adding matrices between that
+  peak and all future peaks--correct??
+
+
 **STARTING COMMAND**
 (define *data-output-dirname* "test20150617")
 (codetect-sort-templabel-training-or-generation *data-output-dirname*)

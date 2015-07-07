@@ -32,7 +32,7 @@ extern "C" double bp_object_inference(double **f, double **g,
   size_t numVariables = size_t(T);
   size_t numLabels = size_t(top_k) + 1;  //extra label for dummy state
   size_t *vars = new size_t[numVariables];
-  for (unsigned int t = 0; t < numVariables; t ++)
+  for (unsigned int t = 0; t < numVariables; t++)
     vars[t] = numLabels;
   Space space(vars, vars + numVariables);
   GraphModel gm(space);
@@ -50,7 +50,7 @@ extern "C" double bp_object_inference(double **f, double **g,
   // printf("dummy_f = %f, dummy_g = %f\n",dummy_f,dummy_g);
 
   // add unary score functions
-  for (unsigned int t = 0; t < numVariables; t ++){
+  for (unsigned int t = 0; t < numVariables; t++){
     FID fid;
     size_t fshape[] = {numLabels}; 
     Function ff(fshape, fshape+1, default_f_score); 
@@ -207,4 +207,68 @@ extern "C" double bp_object_inference(double **f, double **g,
     boxes[i] = int(labeling[i]);
   delete [] vars;
   return bp.value();
+}
+
+extern "C" double bp_label_inference(int num_peaks, int num_labels,
+				     double f_value, double default_g_value, 
+				     double **g, double dummy_g, int *labels){
+				     /*double **f, double **g, 
+				      int T, int top_k, 
+				      double dummy_f, double dummy_g, 
+				      int num_gscores, int *boxes) {*/
+  printf("in bp_label_inference\n");
+  printf("num_peaks = %d, num_labels = %d\n",num_peaks,num_labels);
+
+  //each peak is a variable that takes on one of num_labels + 1 possible labels 
+  //(+1 is for dummy state)
+  size_t numVariables = size_t(num_peaks);
+  size_t numLabels = size_t(num_labels) + 1; //+1 for dummy state
+  size_t *vars = new size_t[numVariables];
+  for (unsigned int t = 0; t < numVariables; t++)
+    vars[t] = numLabels;
+  Space space(vars, vars + numVariables);
+  GraphModel gm(space);
+
+  //add f (unary) scores
+  double some_small_number = 1e-10;
+  double f_score;
+  if (f_value == 0.0)
+    f_score = -log(some_small_number);
+  else
+    f_score = -log(f_value);
+
+  for (unsigned int t = 0; t < numVariables; t++){
+    FID fid;
+    size_t fshape[] = {numLabels};
+    Function ff(fshape, fshape+1, f_score);
+    //no need to add other scores here, since all f scores are uniform
+    fid = gm.addFunction(ff); //add function
+    //add factors
+    size_t fv[] = {size_t(t)};
+    gm.addFactor(fid, fv, fv+1);    
+  }
+  printf("Unary functions added\n");
+
+  //add g (binary) scores
+  size_t gshape[] = {numLabels, numLabels};
+  double default_g_score;
+  if (default_g_value == 0.0)
+    default_g_score = -log(some_small_number);
+  else
+    default_g_score = -log(default_g_value);
+  double dummy_g_score;
+  if (dummy_g == 0.0)
+    dummy_g_score = -log(some_small_number);
+  else
+    dummy_g_score = -log(dummy_g);
+
+  //For every peak, declare new gg for every other peak, fill matrix with 
+  //default_g_score and then make diagonal elements (???) the average of the two
+  //values in avg_similarity_matrix (**g)
+
+
+
+
+  return 1.0;
+
 }

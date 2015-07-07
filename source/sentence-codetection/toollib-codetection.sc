@@ -171,6 +171,11 @@
 		     double double int pointer)))
 
 
+(define bp-label-inference
+ (c-function double ("bp_label_inference" int int
+		     double double pointer double pointer)))
+
+
 ;;;;;NEED TO REBUILD THIS AS A STAND-ALONE PROCEDURE
 ;; (define-command
 ;;  (main (at-most-one
