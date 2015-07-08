@@ -1890,6 +1890,26 @@ unique labels across all floorplans.
   be able to do a single pass through all peaks, adding matrices between that
   peak and all future peaks--correct??
 
+----------------git commit af4e6cd---------------
+
+8 Jul 15
+
+--Finished bp_label_inference and it compiles into dsci.  Working on testing.
+
+--(bp-label-inference) runs, but gives results that are meaningless (usually all
+  the same label).  Building a testing function (test-labeling) in
+  label-test-setup.sc in order to test quickly.  Need to figure out if the bad
+  results are because of the input parameters or because of an error in the GM
+  solver code.
+
+--Initial testing shows the GM solver is quite sensitive to the value chosen for
+  default-g-value, which I guess makes sense.  Probably need to add some
+  debugging statements to inference.cpp to take a look at what the gg matrices
+  look like.
+
+
+**getting -0 when f or default-g are 1...is that causing a problem?  Maybe try
+  -1.0*log instead of -log
 
 **STARTING COMMAND**
 (define *data-output-dirname* "test20150617")

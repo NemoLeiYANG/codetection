@@ -266,9 +266,57 @@ extern "C" double bp_label_inference(int num_peaks, int num_labels,
   //default_g_score and then make diagonal elements (???) the average of the two
   //values in avg_similarity_matrix (**g)
 
+  for (unsigned int i = 0; i < (numVariables - 1); i++){
+    for (unsigned int j = (i + 1); j < numVariables; j++){
+      //new gg function
+      Function gg(gshape, gshape+2, default_g_score);
+      //score value is average of 2 i,j values in g
+      double score = (g[i][j] + g[j][i]) / 2.0;
+      //set score and dummy values in gg
+      for (unsigned int k = 0; k < numLabels; k++){
+	gg(k,k) = -log(score);
+	gg(numLabels-1,k) = dummy_g_score;
+	gg(k,numLabels-1) = dummy_g_score;
+      }
+      //might want to print gg for debugging here
+      printf("gg for i=%u,j=%u\n",i,j);
+      for (unsigned int l = 0; l < numLabels; l++){
+    	for (unsigned int k = 0; k < numLabels; k++){
+    	  printf("%.4f ",gg(l,k));
+    	}
+    	printf("\n");
+      }
 
+      //add function
+      FID gid = gm.addFunction(gg);
+      //add factors
+      size_t gv[] = {size_t(i),size_t(j)};
+      gm.addFactor(gid,gv,gv+2);
+    }
+  }
+  printf("Binary functions added\n");
 
-
-  return 1.0;
-
+  //  inference
+  const size_t maxIterations=100;
+  const double damping=0.0;
+  const double convergenceBound = 1e-7;
+  BP::Parameter parameter(maxIterations,convergenceBound,damping);
+  printf("before bp call\n");
+  BP bp(gm, parameter);
+  printf("after bp call\n");
+  // optimize (approximately)
+  clock_t t1, t2;
+  printf("before bp.infer\n");
+  t1 = clock();
+  bp.infer( );
+  t2 = clock();
+  printf("after bp.infer\n");
+  std::cout << (double(t2) - double(t1))/CLOCKS_PER_SEC*1000 << " ms" << std::endl;
+  std::cout << "OpenGM Belief Propagation " << bp.value() << std::endl;
+  std::vector<size_t> labeling(num_peaks); 
+  bp.arg(labeling);
+  for (unsigned int i = 0; i < labeling.size(); i ++)
+    labels[i] = int(labeling[i]);
+  delete [] vars;
+  return bp.value();
 }
