@@ -98,22 +98,33 @@ while (min(labels) == 0) %keep going until all labels set
                         %                         display(ridx);
                         %                         display(cidx);
                                                  display(ratio_vals);
-                        label_idx = find(ratio_vals == max(ratio_vals));
-                        if (length(label_idx) == 1)
-                            %                             fprintf('Success 2\n');
-                            if (label_idx > length(other_labels))
-                                fprintf('Waiting for next iteration line 102\n');
-                                display(other_labels)
-                                display(label_idx)
-                                display(ratio_vals)
-                                display(i)
-                                display(idx)
-                            else
-                                labels(i) = other_labels(label_idx);
-                            end
-                        else
-                            fprintf('THIS SHOULDN''T HAPPEN!!\n');
-                        end %if
+                                                 
+%                         %NEW STUFF 6JUL15
+%                         %first separate out the tied values
+%                         new_idx = [];
+%                         for k = 1:length(label_idx)
+%                             new_idx = 
+%                             
+%                         end %for k
+                                                 
+                        
+                        %OLD and hackish
+%                         label_idx = find(ratio_vals == max(ratio_vals));
+%                         if (length(label_idx) == 1)
+%                             %                             fprintf('Success 2\n');
+%                             if (label_idx > length(other_labels))
+%                                 fprintf('Waiting for next iteration line 102\n');
+%                                 display(other_labels)
+%                                 display(label_idx)
+%                                 display(ratio_vals)
+%                                 display(i)
+%                                 display(idx)
+%                             else
+%                                 labels(i) = other_labels(label_idx);
+%                             end
+%                         else
+%                             fprintf('THIS SHOULDN''T HAPPEN!!\n');
+%                         end %if
                     end %if length(label_idx)
                 else
                     %use label with larger ratio

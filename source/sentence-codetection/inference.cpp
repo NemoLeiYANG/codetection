@@ -209,9 +209,109 @@ extern "C" double bp_object_inference(double **f, double **g,
   return bp.value();
 }
 
-extern "C" double bp_label_inference(int num_peaks, int num_labels,
-				     double f_value, double default_g_value, 
-				     double **g, double dummy_g, int *labels){
+// extern "C" double bp_label_inference(int num_peaks, int num_labels,
+// 				     double f_value, double **g, int *labels){
+//   printf("in bp_label_inference\n");
+//   printf("num_peaks = %d, num_labels = %d\n",num_peaks,num_labels);
+
+//   //each peak is a variable that takes on one of num_labels + 1 possible labels 
+//   //(+1 is for dummy state)
+//   size_t numVariables = size_t(num_peaks);
+//   size_t numLabels = size_t(num_labels) + 1; //+1 for dummy state
+//   size_t *vars = new size_t[numVariables];
+//   for (unsigned int t = 0; t < numVariables; t++)
+//     vars[t] = numLabels;
+//   Space space(vars, vars + numVariables);
+//   GraphModel gm(space);
+
+//   //add f (unary) scores
+//   double some_small_number = 1e-10;
+//   double f_score;
+//   if (f_value == 0.0)
+//     f_score = -log(some_small_number);
+//   else
+//     f_score = -log(f_value);
+
+//   for (unsigned int t = 0; t < numVariables; t++){
+//     FID fid;
+//     size_t fshape[] = {numLabels};
+//     Function ff(fshape, fshape+1, f_score);
+//     //no need to add other scores here, since all f scores are uniform
+//     fid = gm.addFunction(ff); //add function
+//     //add factors
+//     size_t fv[] = {size_t(t)};
+//     gm.addFactor(fid, fv, fv+1);    
+//   }
+//   printf("Unary functions added\n");
+
+//   //add g (binary) scores
+//   size_t gshape[] = {numLabels, numLabels};
+//   double default_g_score;
+//   if (default_g_value == 0.0)
+//     default_g_score = -log(some_small_number);
+//   else
+//     default_g_score = -log(default_g_value);
+
+//   //For every peak, declare new gg for every other peak, fill matrix with 
+//   //default_g_score and then make diagonal elements (???) the average of the two
+//   //values in avg_similarity_matrix (**g)
+
+//   for (unsigned int i = 0; i < (numVariables - 1); i++){
+//     for (unsigned int j = (i + 1); j < numVariables; j++){
+//       //new gg function
+//       Function gg(gshape, gshape+2, default_g_score);
+//       //score value is average of 2 i,j values in g
+//       double score = (g[i][j] + g[j][i]) / 2.0;
+//       //set score and dummy values in gg
+//       for (unsigned int k = 0; k < numLabels; k++){
+// 	gg(k,k) = -log(score);
+//       }
+//       //might want to print gg for debugging here
+//       printf("gg for i=%u,j=%u\n",i,j);
+//       for (unsigned int l = 0; l < numLabels; l++){
+//     	for (unsigned int k = 0; k < numLabels; k++){
+//     	  printf("%.4f ",gg(l,k));
+//     	}
+//     	printf("\n");
+//       }
+
+//       //add function
+//       FID gid = gm.addFunction(gg);
+//       //add factors
+//       size_t gv[] = {size_t(i),size_t(j)};
+//       gm.addFactor(gid,gv,gv+2);
+//     }
+//   }
+//   printf("Binary functions added\n");
+
+//   //  inference
+//   const size_t maxIterations=100;
+//   const double damping=0.0;
+//   const double convergenceBound = 1e-7;
+//   BP::Parameter parameter(maxIterations,convergenceBound,damping);
+//   printf("before bp call\n");
+//   BP bp(gm, parameter);
+//   printf("after bp call\n");
+//   // optimize (approximately)
+//   clock_t t1, t2;
+//   printf("before bp.infer\n");
+//   t1 = clock();
+//   bp.infer( );
+//   t2 = clock();
+//   printf("after bp.infer\n");
+//   std::cout << (double(t2) - double(t1))/CLOCKS_PER_SEC*1000 << " ms" << std::endl;
+//   std::cout << "OpenGM Belief Propagation " << bp.value() << std::endl;
+//   std::vector<size_t> labeling(num_peaks); 
+//   bp.arg(labeling);
+//   for (unsigned int i = 0; i < labeling.size(); i ++)
+//     labels[i] = int(labeling[i]);
+//   delete [] vars;
+//   return bp.value();
+// }
+
+extern "C" double bp_label_inference_original(int num_peaks, int num_labels,
+					      double f_value, double default_g_value, 
+					      double **g, double dummy_g, int *labels){
 				     /*double **f, double **g, 
 				      int T, int top_k, 
 				      double dummy_f, double dummy_g, 
@@ -297,7 +397,7 @@ extern "C" double bp_label_inference(int num_peaks, int num_labels,
   printf("Binary functions added\n");
 
   //  inference
-  const size_t maxIterations=100;
+  const size_t maxIterations=10000;
   const double damping=0.0;
   const double convergenceBound = 1e-7;
   BP::Parameter parameter(maxIterations,convergenceBound,damping);
@@ -320,3 +420,4 @@ extern "C" double bp_label_inference(int num_peaks, int num_labels,
   delete [] vars;
   return bp.value();
 }
+

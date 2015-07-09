@@ -171,9 +171,14 @@
 		     double double int pointer)))
 
 
-(define bp-label-inference
- (c-function double ("bp_label_inference" int int
+;; (define bp-label-inference
+;;  (c-function double ("bp_label_inference" int int
+;; 		     double pointer pointer)))
+
+(define bp-label-inference-original
+ (c-function double ("bp_label_inference_original" int int
 		     double double pointer double pointer)))
+
 
 
 ;;;;;NEED TO REBUILD THIS AS A STAND-ALONE PROCEDURE

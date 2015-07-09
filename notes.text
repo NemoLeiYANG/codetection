@@ -1907,6 +1907,119 @@ unique labels across all floorplans.
   debugging statements to inference.cpp to take a look at what the gg matrices
   look like.
 
+----------------git commit e292daa---------------
+
+9 Jul 15
+
+Email from Jeff and my reply:
+--------------------------------------------------------------------------------
+On Wed, Jul 8, 2015 at 7:28 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
+Scott - Several debugging suggestions:
+
+ 1. Print the values of some of the vertex and edge weights to make sure that
+    the values are qualitatively what you expect them to be. Numbers that you
+    expect to be big should be big and those you expect to be small should be
+    small.
+
+​I did this yesterday​ ​and things looked as I expected them to look.  So I don't
+think the problem is a simple error in the code.​
+ 
+ 2. Make sure that you have the polarity of the cost function correct.
+    You want disssimilarity of proposals associated with peaks should penalize
+    them from having the same label. This is different than having similarity
+    of proposals associated with peaks reward them when having the same label.
+    The latter can be trivially satisfied when all peaks have the same label.
+
+
+​I'm beginning to think that this is exactly where my problem is.  Right now I
+have all my vertex weights (unary scores) set uniformly, which I think is
+reasonable because the particular label value that a set of similar peaks gets
+does not matter.  For my edge weights (binary scores), I am using a similarity
+score between peaks.​ It is computed as follows:
+
+1.  For a pair of peaks (X & Y), I take the image descriptors of all images
+associated with each and compute the chi-squared distance between every pair of
+images (actually 1-chisq distance so that higher=better).  This gives a numX by
+numY matrix of similarity scores between individual images.  
+
+2.  I then take the row and column maxes of this matrix, which represent the
+best matches for each image.
+
+3.  I then take these row and column max vectors and take the mean of the top N
+percent (currently set at 50%, but that was arbitrary) of each vector.  This
+gives me 2 numbers that represent how well X matches to Y and how well Y matches
+to X.  ​
+
+4.  For the final similarity score between X and Y, I average the two numbers in
+3.
+
+For the matrix of edge weights between X and Y, I put the similarity score
+described above on the diagonal, so that it represents the score for X and Y
+having the same label.  For the off-diagonal elements, I just use a default
+score (representing dissimilarity), which should in theory be a worse score.
+
+I've found in testing that using a default dissimilarity score is probably not
+good enough.  No matter what value I set for the default score, the trivial
+solution (all labels the same) keeps popping up.  So I'm thinking that I
+probably need to figure out and compute some sort of dissimilarity measure.  It
+could be as simple as replicating the above steps with no change in 1 or 4, then
+changing 2 to a min (vice max) and 3 to a mean of the bottom N percent.  I need
+to think this through a bit more, but I think this is probably a good place to
+start.
+-----------------end email------------------------------------------------------
+Jeff's reply and my reply to it:
+
+On Thu, Jul 9, 2015 at 10:52 AM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
+  The similarity/dissimilarity score should be symetric. I.e. sim(X,Y)=sim(Y,X)
+  and dissim(X,Y)=dissim(Y,X). If not, you are doing something wrong.
+
+​Understood.​ I'm working on rethinking how to find a uniform measurement for
+similarity between groups of images--i.e., how to reduce the numX by numY matrix
+in 1 to a single value.  Determinants won't work because the matrices aren't
+square.  The idea I'm playing with now is to take the SVD of the numX by numY
+matrix of individual image comparisons, and then take the mean of the singular
+values.  Looking at the results of this, it seems reasonable.  I still get
+self-similarity of 1, and the highest values in a row/column usually match to a
+similar object.
+
+  And you definitely want a dissimilarity penalty, not a similarity reward.
+  Using a similarity reward will *necessarily* assign all peaks to the same
+  class.  It can't possibly do anything else. Think of it this way. If you have
+  an attractive force between N particles, they will all be drawn together, no
+  matter how weak the forces are and no matter how different the forces are. If
+  you have a repulsive force between N particles, and a limit on the size of the
+  bounding sphere they will cluster into points on the surface of the sphere
+  where the clusters minimize the repulsive force within a cluster (and the
+  cluster positions are maximally spaced).
+
+​Agreed.  I'm trying to think of a way to measure dissimilarity.  Could it be as simple as 1/sim(X,Y) or (1-sim(X,Y))?​
+--------------------------------------------------------------------------------
+
+--Based on the above reply, thinking about how to do both a symmetric similarity
+  measure, and some sort of dissimilarity measure.  Thought about determinants
+  for the X to Y matrix, but since matrices are not square, det is not defined.
+  Then looked at SVD for the X to Y matrices.  Currently taking mean of singular
+  values and using that in avg_similarity_matrix.  Seems to be a decent
+  measure--self-similarity is 1, and things that should match often have a value
+  > 0.75, but not always.  But the largest value in the columns usually matches
+  to a correct object.
+
+--Could do a dissimilarity measure as simple as 1/sim or 1-sim...
+
+--After talking with Dan, not sure what the mean of singular values means.  Also
+  looked at only taking the mean of nonzero (or > eps?) singular values (tested
+  this in label_objects_test.m and found that no singular value was < 1e-10).
+  Also remembered that singular value is square root of eigenvalue, so thought
+  about squaring mean singular value...
+
+--Going to try to do a rewrite of bp_label_inference to use either 1/sim or
+  1-sim as dissimilarity measure.  Also going to get rid of dummy_g to make
+  things simpler.  Jeff seems to believe that using this would result in a
+  no-op, but Dan and I aren't so sure about that.
+
+--looked at maxIterations and convergenceBound--maybe those are set wrong.  Need
+  to finish working on inference.cpp.
+
 
 **getting -0 when f or default-g are 1...is that causing a problem?  Maybe try
   -1.0*log instead of -log
