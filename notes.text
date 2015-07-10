@@ -2020,6 +2020,76 @@ similar object.
 --looked at maxIterations and convergenceBound--maybe those are set wrong.  Need
   to finish working on inference.cpp.
 
+----------------git commit d3eddea---------------
+
+10 Jul 15
+
+--Looked at interim optimizer output with visitor function and saw that
+  regardless of the number of iterations set, the optimizer was exiting after 1
+  step because convergence bound was at -infinity.  Tried setting convergence
+  bound to -infinity and saw that through thousands of iterations, the function
+  value and bound never changed, so it looks like it can't find a way out of the
+  initial guess.  Going to try building a smaller subset of the data (probably
+  first 2 floorplans, 8 peaks with 6 unique labels) to see what happens then.
+  Probably need to try to solve the smaller model by hand to see if the output
+  is what I expect.  Might also think about moving from log space to linear
+  space to make things simpler to see.  What to set for dissimilarity?
+
+--Playing around and with tiny (4 peaks) subset and noticed that the values set
+  for the first peak seem to overwhelm all the others.  This might be because of
+  the way I set up the graph, since the first peak is connected to all
+  subsequent peaks explicitly.  I assumed that the links were bidirectional, but
+  maybe they're not.  Going to try explicitly connecting all peaks.
+
+--Tried the above and got 'OpenGM Error: variable indices of a factor must be
+  sorted' so apparently doing that won't work.  Does my graph have loops?  That
+  could cause a problem with standard BP--actually it looks like standard BP is
+  ok with loops.
+
+--Tried using Bruteforce algorithm and got correct solutions for tiny (4x4) and
+  small (8x6) sets.  This tells me that the cost function is set up correctly,
+  and the problem is with BP.  Need to look at OpenGM docs and figure out what
+  I'm doing wrong (or a better algorithm to use).
+
+----------email traffic with Jeff this afternoon--------------------------------
+
+​On Fri, Jul 10, 2015 at 3:52 PM, Jeffrey Mark Siskind <jeffrey.mark.siskind@gmail.com> wrote:
+Did you check the cost function? Did you find why you don't get a good solution?
+
+    Jeff (http://engineering.purdue.edu/~qobi)
+
+As far as Dan and I can tell, the cost function is set up correctly and the
+problem is somewhere with the Belief Propagation (BP) inference algorithm.
+
+I was trying smaller subsets using BP, first a tiny subset with 4 peaks that
+were all different and then a small subset with 8 peaks that had 2 pairs of
+matching peaks (6 unique labels).  With BP, it would always label the first peak
+0 and the rest of the peaks 1, and its objective function value was worse than
+what I computed by hand.  From looking at the interim output via the visitor
+function, I could see that it was starting with that suboptimal value and never
+changing it.
+
+Dan suggested that I try the Brute Force algorithm on these smaller sets, and
+that worked.  The 4 peak 4 label tiny set (16 possible combinations) returned in
+< 1 ms, and the 8 peak 6 label small set (6^8 or ~1.7M possible combinations)
+returned in ~11.5s.  Unfortunately I don't think I can run brute force on the
+full set of 43 peaks with 8 possible labels (8^43 or 6.8e38 possible
+combinations).  But the fact that brute force did work tells me that I have the
+problem set up correctly, and that the errors I'm getting stem from how I'm
+trying to use the BP algorithm.
+
+For the problem setup, I used the similarity score I described in my first email
+to you yesterday morning (averaged best matches, for lack of a better name), and
+for the dissimilarity I used 1-sim.  I realize that this sets a threshold at
+0.5, but it seems to work for now.  I moved all the values back into linear
+space, and I'm doing a maximization of a summation of the scores.
+
+I think I need to spend some time with the OpenGM documentation to read up on
+the different algorithms they have implemented--either I'll find that there's an
+algorithm other than BP that's better suited to this problem, or I'll figure out
+what I'm doing wrong when I set up BP.
+
+-----------------------------end email------------------------------------------
 
 **getting -0 when f or default-g are 1...is that causing a problem?  Maybe try
   -1.0*log instead of -log

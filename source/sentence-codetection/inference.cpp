@@ -11,21 +11,32 @@
 #include "opengm/functions/explicit_function.hxx"
 #include "opengm/operations/adder.hxx"
 #include "opengm/operations/minimizer.hxx"
+#include "opengm/operations/maximizer.hxx"
 #include "opengm/inference/messagepassing/messagepassing.hxx"
 #include "opengm/inference/external/libdai/bp.hxx"
+#include "opengm/inference/bruteforce.hxx"
 
-typedef opengm::DiscreteSpace<> Space;
-typedef opengm::ExplicitFunction<double> Function;
-typedef opengm::GraphicalModel<double, opengm::Adder, Function, Space> GraphModel;
-typedef GraphModel::FunctionIdentifier FID;
-typedef opengm::BeliefPropagationUpdateRules<GraphModel, opengm::Minimizer> UpdateRules;
-typedef opengm::MessagePassing<GraphModel, opengm::Minimizer, UpdateRules, opengm::MaxDistance> BP;
-//typedef opengm::external::libdai::Bp<GraphModel, opengm::Minimizer> libdaiBP;
+// typedef opengm::DiscreteSpace<> Space;
+// typedef opengm::ExplicitFunction<double> Function;
+// typedef opengm::GraphicalModel<double, opengm::Adder, Function, Space> GraphModel;
+// typedef GraphModel::FunctionIdentifier FID;
+// typedef opengm::BeliefPropagationUpdateRules<GraphModel, opengm::Minimizer> UpdateRules;
+// typedef opengm::MessagePassing<GraphModel, opengm::Minimizer, UpdateRules, opengm::MaxDistance> BP;
+// //typedef opengm::external::libdai::Bp<GraphModel, opengm::Minimizer> libdaiBP;
 
 extern "C" double bp_object_inference(double **f, double **g, 
 				      int T, int top_k, 
 				      double dummy_f, double dummy_g, 
 				      int num_gscores, int *boxes) {
+
+  typedef opengm::DiscreteSpace<> Space;
+  typedef opengm::ExplicitFunction<double> Function;
+  typedef opengm::GraphicalModel<double, opengm::Adder, Function, Space> GraphModel;
+  typedef GraphModel::FunctionIdentifier FID;
+  typedef opengm::BeliefPropagationUpdateRules<GraphModel, opengm::Minimizer> UpdateRules;
+  typedef opengm::MessagePassing<GraphModel, opengm::Minimizer, UpdateRules, opengm::MaxDistance> BP;
+
+  //typedef opengm::external::libdai::Bp<GraphModel, opengm::Minimizer> libdaiBP;
 
   // each frame has a variable with top_k possible labels
   // ACTUALLY USING TOP_K+1 LABELS NOW WITH THE DUMMY STATE
@@ -209,105 +220,128 @@ extern "C" double bp_object_inference(double **f, double **g,
   return bp.value();
 }
 
-// extern "C" double bp_label_inference(int num_peaks, int num_labels,
-// 				     double f_value, double **g, int *labels){
-//   printf("in bp_label_inference\n");
-//   printf("num_peaks = %d, num_labels = %d\n",num_peaks,num_labels);
+extern "C" double bp_label_inference(int num_peaks, int num_labels,
+				     double f_value, double **g, int *labels){
 
-//   //each peak is a variable that takes on one of num_labels + 1 possible labels 
-//   //(+1 is for dummy state)
-//   size_t numVariables = size_t(num_peaks);
-//   size_t numLabels = size_t(num_labels) + 1; //+1 for dummy state
-//   size_t *vars = new size_t[numVariables];
-//   for (unsigned int t = 0; t < numVariables; t++)
-//     vars[t] = numLabels;
-//   Space space(vars, vars + numVariables);
-//   GraphModel gm(space);
+  typedef opengm::DiscreteSpace<> Space;
+  typedef opengm::ExplicitFunction<double> Function;
+  typedef opengm::GraphicalModel<double, opengm::Adder, Function, Space> GraphModel;
+  typedef GraphModel::FunctionIdentifier FID;
+  //try getting rid of log space and using maximizer
+  typedef opengm::BeliefPropagationUpdateRules<GraphModel, opengm::Maximizer> UpdateRules;
+  typedef opengm::MessagePassing<GraphModel, opengm::Maximizer, UpdateRules, opengm::MaxDistance> BP;
 
-//   //add f (unary) scores
-//   double some_small_number = 1e-10;
-//   double f_score;
-//   if (f_value == 0.0)
-//     f_score = -log(some_small_number);
-//   else
-//     f_score = -log(f_value);
+  typedef opengm::Bruteforce<GraphModel, opengm::Maximizer> Bruteforce;
 
-//   for (unsigned int t = 0; t < numVariables; t++){
-//     FID fid;
-//     size_t fshape[] = {numLabels};
-//     Function ff(fshape, fshape+1, f_score);
-//     //no need to add other scores here, since all f scores are uniform
-//     fid = gm.addFunction(ff); //add function
-//     //add factors
-//     size_t fv[] = {size_t(t)};
-//     gm.addFactor(fid, fv, fv+1);    
-//   }
-//   printf("Unary functions added\n");
+  printf("in bp_label_inference\n");
+  printf("num_peaks = %d, num_labels = %d\n",num_peaks,num_labels);
 
-//   //add g (binary) scores
-//   size_t gshape[] = {numLabels, numLabels};
-//   double default_g_score;
-//   if (default_g_value == 0.0)
-//     default_g_score = -log(some_small_number);
-//   else
-//     default_g_score = -log(default_g_value);
+  //each peak is a variable that takes on one of num_labels + 1 possible labels 
+  //(+1 is for dummy state)
+  size_t numVariables = size_t(num_peaks);
+  size_t numLabels = size_t(num_labels);//no dummy state for now + 1; //+1 for dummy state
+  size_t *vars = new size_t[numVariables];
+  printf("vars = %zu\n", *vars);
+  for (unsigned int t = 0; t < numVariables; t++)
+    vars[t] = numLabels;
+  Space space(vars, vars + numVariables);
+  GraphModel gm(space);
 
-//   //For every peak, declare new gg for every other peak, fill matrix with 
-//   //default_g_score and then make diagonal elements (???) the average of the two
-//   //values in avg_similarity_matrix (**g)
+  //add f (unary) scores
+  //  double some_small_number = 1e-100;
+  double f_score = f_value;
+  // if (f_value == 0.0)
+  //   f_score = -1 * log(some_small_number);
+  // else if (f_value == 1.0)
+  //   f_score = 0.0;
+  // else
+  //   f_score = -1 * log(f_value);
 
-//   for (unsigned int i = 0; i < (numVariables - 1); i++){
-//     for (unsigned int j = (i + 1); j < numVariables; j++){
-//       //new gg function
-//       Function gg(gshape, gshape+2, default_g_score);
-//       //score value is average of 2 i,j values in g
-//       double score = (g[i][j] + g[j][i]) / 2.0;
-//       //set score and dummy values in gg
-//       for (unsigned int k = 0; k < numLabels; k++){
-// 	gg(k,k) = -log(score);
-//       }
-//       //might want to print gg for debugging here
-//       printf("gg for i=%u,j=%u\n",i,j);
-//       for (unsigned int l = 0; l < numLabels; l++){
-//     	for (unsigned int k = 0; k < numLabels; k++){
-//     	  printf("%.4f ",gg(l,k));
-//     	}
-//     	printf("\n");
-//       }
+  for (unsigned int t = 0; t < numVariables; t++){
+    FID fid;
+    size_t fshape[] = {numLabels};
+    Function ff(fshape, fshape+1, f_score);
+    //no need to add other scores here, since all f scores are uniform
+    fid = gm.addFunction(ff); //add function
+    //add factors
+    size_t fv[] = {size_t(t)};
+    gm.addFactor(fid, fv, fv+1);    
+  }
+  printf("Unary functions added\n");
 
-//       //add function
-//       FID gid = gm.addFunction(gg);
-//       //add factors
-//       size_t gv[] = {size_t(i),size_t(j)};
-//       gm.addFactor(gid,gv,gv+2);
-//     }
-//   }
-//   printf("Binary functions added\n");
+  //add g (binary) scores
+  size_t gshape[] = {numLabels, numLabels};
+  //  double default_g_score = 0.0;
 
-//   //  inference
-//   const size_t maxIterations=100;
-//   const double damping=0.0;
-//   const double convergenceBound = 1e-7;
-//   BP::Parameter parameter(maxIterations,convergenceBound,damping);
-//   printf("before bp call\n");
-//   BP bp(gm, parameter);
-//   printf("after bp call\n");
-//   // optimize (approximately)
-//   clock_t t1, t2;
-//   printf("before bp.infer\n");
-//   t1 = clock();
-//   bp.infer( );
-//   t2 = clock();
-//   printf("after bp.infer\n");
-//   std::cout << (double(t2) - double(t1))/CLOCKS_PER_SEC*1000 << " ms" << std::endl;
-//   std::cout << "OpenGM Belief Propagation " << bp.value() << std::endl;
-//   std::vector<size_t> labeling(num_peaks); 
-//   bp.arg(labeling);
-//   for (unsigned int i = 0; i < labeling.size(); i ++)
-//     labels[i] = int(labeling[i]);
-//   delete [] vars;
-//   return bp.value();
-// }
+  //For every peak, declare new gg for every other peak, fill matrix with 
+  //default_g_score and then make diagonal elements (???) the average of the two
+  //values in avg_similarity_matrix (**g)
+
+  for (unsigned int i = 0; i < (numVariables - 1); i++){
+    for (unsigned int j = (i + 1); j < numVariables; j++){
+      //doesn't work b/c OpenGM Error: variable indices of a factor must be sorted
+    // for (unsigned int j = 0; j < numVariables; j++){
+    //   //do I need to skip if j == i?
+      //similarity score value is average of 2 i,j values in g
+      double similarity_score = (g[i][j] + g[j][i]) / 2.0;
+      //trying 1-sim for dissim
+      double dissimilarity_score = 1 - similarity_score;//1/similarity_score;
+      //new gg function
+      Function gg(gshape, gshape+2, dissimilarity_score);
+      //set similarity score in gg
+      for (unsigned int k = 0; k < numLabels; k++){
+      	gg(k,k) = similarity_score;
+      }
+      //might want to print gg for debugging here
+      printf("gg for i=%u,j=%u\n",i,j);
+      for (unsigned int l = 0; l < numLabels; l++){
+    	for (unsigned int k = 0; k < numLabels; k++){
+    	  printf("%.4f ",gg(l,k));
+    	}
+    	printf("\n");
+      }
+
+      //add function
+      FID gid = gm.addFunction(gg);
+      //add factors
+      size_t gv[] = {size_t(i),size_t(j)};
+      gm.addFactor(gid,gv,gv+2);
+    }
+  }
+  printf("Binary functions added\n");
+
+  //  inference
+  const size_t maxIterations=100;
+  const double damping=0.0;
+  const double convergenceBound = -std::numeric_limits<double>::infinity();//1e-7;
+  // BP::Parameter parameter(maxIterations,convergenceBound,damping);
+  // printf("before bp call\n");
+  // BP bp(gm, parameter);
+  // printf("after bp call\n");
+  Bruteforce bf(gm);
+
+  // optimize (approximately)
+  clock_t t1, t2;
+  // printf("before bp.infer\n");	
+  // BP::VerboseVisitorType visitor;
+  Bruteforce::VerboseVisitorType visitor;
+  t1 = clock();
+  //  bp.infer(visitor);
+  bf.infer();//visitor);
+  t2 = clock();
+  //  printf("after bp.infer\n");
+  std::cout << (double(t2) - double(t1))/CLOCKS_PER_SEC*1000 << " ms" << std::endl;
+  // std::cout << "OpenGM Belief Propagation " << bp.value() << std::endl;
+  std::cout << "OpenGM Brute Force " << bf.value() << std::endl;
+  std::vector<size_t> labeling(num_peaks); 
+  //bp.arg(labeling);
+  bf.arg(labeling);
+  for (unsigned int i = 0; i < labeling.size(); i ++)
+    labels[i] = int(labeling[i]);
+  delete [] vars;
+  //return bp.value();
+  return bf.value();
+}
 
 extern "C" double bp_label_inference_original(int num_peaks, int num_labels,
 					      double f_value, double default_g_value, 
@@ -316,7 +350,15 @@ extern "C" double bp_label_inference_original(int num_peaks, int num_labels,
 				      int T, int top_k, 
 				      double dummy_f, double dummy_g, 
 				      int num_gscores, int *boxes) {*/
-  printf("in bp_label_inference\n");
+
+  typedef opengm::DiscreteSpace<> Space;
+  typedef opengm::ExplicitFunction<double> Function;
+  typedef opengm::GraphicalModel<double, opengm::Adder, Function, Space> GraphModel;
+  typedef GraphModel::FunctionIdentifier FID;
+  typedef opengm::BeliefPropagationUpdateRules<GraphModel, opengm::Minimizer> UpdateRules;
+  typedef opengm::MessagePassing<GraphModel, opengm::Minimizer, UpdateRules, opengm::MaxDistance> BP;
+
+  printf("in bp_label_inference_original\n");
   printf("num_peaks = %d, num_labels = %d\n",num_peaks,num_labels);
 
   //each peak is a variable that takes on one of num_labels + 1 possible labels 
@@ -333,9 +375,9 @@ extern "C" double bp_label_inference_original(int num_peaks, int num_labels,
   double some_small_number = 1e-10;
   double f_score;
   if (f_value == 0.0)
-    f_score = -log(some_small_number);
+    f_score = -1 * log(some_small_number);
   else
-    f_score = -log(f_value);
+    f_score = -1 * log(f_value);
 
   for (unsigned int t = 0; t < numVariables; t++){
     FID fid;
@@ -353,14 +395,14 @@ extern "C" double bp_label_inference_original(int num_peaks, int num_labels,
   size_t gshape[] = {numLabels, numLabels};
   double default_g_score;
   if (default_g_value == 0.0)
-    default_g_score = -log(some_small_number);
+    default_g_score = -1 * log(some_small_number);
   else
-    default_g_score = -log(default_g_value);
+    default_g_score = -1 * log(default_g_value);
   double dummy_g_score;
   if (dummy_g == 0.0)
-    dummy_g_score = -log(some_small_number);
+    dummy_g_score = -1 * log(some_small_number);
   else
-    dummy_g_score = -log(dummy_g);
+    dummy_g_score = -1 * log(dummy_g);
 
   //For every peak, declare new gg for every other peak, fill matrix with 
   //default_g_score and then make diagonal elements (???) the average of the two
@@ -374,7 +416,7 @@ extern "C" double bp_label_inference_original(int num_peaks, int num_labels,
       double score = (g[i][j] + g[j][i]) / 2.0;
       //set score and dummy values in gg
       for (unsigned int k = 0; k < numLabels; k++){
-	gg(k,k) = -log(score);
+	gg(k,k) = -1 * log(score);
 	gg(numLabels-1,k) = dummy_g_score;
 	gg(k,numLabels-1) = dummy_g_score;
       }
@@ -399,16 +441,17 @@ extern "C" double bp_label_inference_original(int num_peaks, int num_labels,
   //  inference
   const size_t maxIterations=10000;
   const double damping=0.0;
-  const double convergenceBound = 1e-7;
+  const double convergenceBound = 1e-100;//-std::numeric_limits<double>::infinity();//1e-7;
   BP::Parameter parameter(maxIterations,convergenceBound,damping);
   printf("before bp call\n");
   BP bp(gm, parameter);
   printf("after bp call\n");
   // optimize (approximately)
+  BP::VerboseVisitorType visitor;
   clock_t t1, t2;
   printf("before bp.infer\n");
   t1 = clock();
-  bp.infer( );
+  bp.infer(visitor);
   t2 = clock();
   printf("after bp.infer\n");
   std::cout << (double(t2) - double(t1))/CLOCKS_PER_SEC*1000 << " ms" << std::endl;
@@ -418,6 +461,7 @@ extern "C" double bp_label_inference_original(int num_peaks, int num_labels,
   for (unsigned int i = 0; i < labeling.size(); i ++)
     labels[i] = int(labeling[i]);
   delete [] vars;
+  printf("log(1) = %f, -1*log(1) = %f\n",log(1),-1*log(1));
   return bp.value();
 }
 
