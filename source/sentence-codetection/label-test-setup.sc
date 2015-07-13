@@ -70,6 +70,33 @@
   labels))
 
 
+(define (test-labeling-small-brute num-labels f-value)
+ (let* ((labels-c
+	 (list->c-exact-array (malloc (* c-sizeof-int (length asm-g-small)))
+			      (map-n (lambda _ 0) (length asm-g-small)) c-sizeof-int #t))
+	(test-score (bruteforce-label-inference (length asm-g-small)
+						num-labels
+						f-value
+						g-c-small
+						labels-c))
+	(labels (c-exact-array->list labels-c c-sizeof-int (length asm-g-small) #t)))
+  (free labels-c)
+  labels))
+
+(define (test-labeling-tiny-brute num-labels f-value)
+ (let* ((labels-c
+	 (list->c-exact-array (malloc (* c-sizeof-int (length asm-g-tiny)))
+			      (map-n (lambda _ 0) (length asm-g-tiny)) c-sizeof-int #t))
+	(test-score (bruteforce-label-inference (length asm-g-tiny)
+						num-labels
+						f-value
+						g-c-tiny
+						labels-c))
+	(labels (c-exact-array->list labels-c c-sizeof-int (length asm-g-tiny) #t)))
+  (free labels-c)
+  labels))
+
+
 
 (define (test-labeling2 num-labels f-value)
  (let* ((labels-c

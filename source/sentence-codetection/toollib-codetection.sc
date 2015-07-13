@@ -175,6 +175,11 @@
  (c-function double ("bp_label_inference" int int
 		     double pointer pointer)))
 
+(define bruteforce-label-inference
+ (c-function double ("bruteforce_label_inference" int int
+		     double pointer pointer)))
+
+
 (define bp-label-inference-original
  (c-function double ("bp_label_inference_original" int int
 		     double double pointer double pointer)))

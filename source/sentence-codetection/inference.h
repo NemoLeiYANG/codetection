@@ -8,3 +8,6 @@ double bp_label_inference(int num_peaks, int num_labels,
 double bp_label_inference_original(int num_peaks, int num_labels,
 				   double f_value, double default_g_value, 
 				   double **g, double dummy_g, int *labels);
+double bruteforce_label_inference(int num_peaks, int num_labels,
+				  double f_value, double **g, int *labels);
+

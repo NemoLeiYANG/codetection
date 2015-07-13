@@ -2091,6 +2091,37 @@ what I'm doing wrong when I set up BP.
 
 -----------------------------end email------------------------------------------
 
+----------------git commit c06a0b4---------------
+
+13 Jul 15
+
+--Changed inference.cpp main function for label inference (bp_label_inference)
+  to use libDAI BP instead of OpenGM BP/Bruteforce.  Kept working Bruteforce
+  version in bruteforce_label_inference.  Not working quite right yet--getting
+  (0 1 0 1) or (1 0 0 1) for tiny.
+
+--Trying to change everything back to log space with minimizer, since the
+  default inference type with libDAI is maxprod, and it should be sumprod, but I
+  can't figure out how to change that parameter.  Got Bruteforce version changed
+  and the answers look correct.
+
+--Change back to log space in bp_label_inference looks like it yields the same
+  results.  Not sure what other parameters to change.  Tried changing updateRule
+  from PARALL to SEQFIX; no change.  
+
+Output of (test-labeling-tiny 4 0) 
+
+Starting BP[tol=-inf,maxiter=10000,maxtime=inf,verbose=2,logdomain=0,updates=SEQFIX,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 10000 passes (0.182613 seconds)...final maxdiff:0
+180 ms
+LibDAI Belief Propagation 924.702
+(0 1 0 1)
+
+Correct: OpenGM Brute Force 186.587 (3 2 1 0)
+
+Not sure where the problem is.  Thinking that logdomain=0, inference=MAXPROD are
+problems, but not sure how to change those parameters.  Is the interface in the
+libDAI library or in OpenGM??
+
 **getting -0 when f or default-g are 1...is that causing a problem?  Maybe try
   -1.0*log instead of -log
 
