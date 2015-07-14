@@ -15,6 +15,8 @@
 #include "opengm/inference/messagepassing/messagepassing.hxx"
 #include "opengm/inference/external/libdai/bp.hxx"
 #include "opengm/inference/bruteforce.hxx"
+#include "opengm/graphicalmodel/space/simplediscretespace.hxx"
+
 
 // typedef opengm::DiscreteSpace<> Space;
 // typedef opengm::ExplicitFunction<double> Function;
@@ -24,6 +26,7 @@
 // typedef opengm::MessagePassing<GraphModel, opengm::Minimizer, UpdateRules, opengm::MaxDistance> BP;
 // //typedef opengm::external::libdai::Bp<GraphModel, opengm::Minimizer> libdaiBP;
 
+//--------------------------DON'T CHANGE THIS----------------------------------
 extern "C" double bp_object_inference(double **f, double **g, 
 				      int T, int top_k, 
 				      double dummy_f, double dummy_g, 
@@ -220,10 +223,14 @@ extern "C" double bp_object_inference(double **f, double **g,
   return bp.value();
 }
 
+//----------------------END DON'T CHANGE THIS----------------------------------
+
+
 extern "C" double bp_label_inference(int num_peaks, int num_labels,
 				     double f_value, double **g, int *labels){
 
   typedef opengm::DiscreteSpace<> Space;
+  //typedef opengm::SimpleDiscreteSpace<> Space; //no change from this
   typedef opengm::ExplicitFunction<double> Function;
   typedef opengm::GraphicalModel<double, opengm::Adder, Function, Space> GraphModel;
   typedef GraphModel::FunctionIdentifier FID;
@@ -249,6 +256,7 @@ extern "C" double bp_label_inference(int num_peaks, int num_labels,
     printf("vars[%d] = %zu\n",t,vars[t]);
   }
   Space space(vars, vars + numVariables);
+  //Space space(numVariables,numLabels); //no change from this
   GraphModel gm(space);
 
   //add f (unary) scores
@@ -333,7 +341,7 @@ extern "C" double bp_label_inference(int num_peaks, int num_labels,
   const double damping=0.0;
   const double tolerance = -std::numeric_limits<double>::infinity();//1e-7;
   // libdaiBp::UpdateRule = PARALL | SEQFIX | SEQRND | SEQMAX
-  libdaiBP::UpdateRule updateRule = libdaiBP::SEQFIX;
+  libdaiBP::UpdateRule updateRule = libdaiBP::SEQMAX;
   //libdaiBP::InfType infType = libdaiBP::SUMPROD;
   size_t verboseLevel=2;//0;
   libdaiBP::Parameter parameter(maxIterations, damping, tolerance, updateRule, verboseLevel);
@@ -376,6 +384,7 @@ extern "C" double bruteforce_label_inference(int num_peaks, int num_labels,
 				     double f_value, double **g, int *labels){
   //THIS WORKS!
   typedef opengm::DiscreteSpace<> Space;
+  //typedef opengm::SimpleDiscreteSpace<> Space; //no change from this
   typedef opengm::ExplicitFunction<double> Function;
   typedef opengm::GraphicalModel<double, opengm::Adder, Function, Space> GraphModel;
   typedef GraphModel::FunctionIdentifier FID;
@@ -397,6 +406,7 @@ extern "C" double bruteforce_label_inference(int num_peaks, int num_labels,
     printf("vars[%d] = %zu\n",t,vars[t]);
   }
   Space space(vars, vars + numVariables);
+  //Space space(numVariables,numLabels); //no change from this
   GraphModel gm(space);
 
   //add f (unary) scores

@@ -2122,8 +2122,49 @@ Not sure where the problem is.  Thinking that logdomain=0, inference=MAXPROD are
 problems, but not sure how to change those parameters.  Is the interface in the
 libDAI library or in OpenGM??
 
-**getting -0 when f or default-g are 1...is that causing a problem?  Maybe try
-  -1.0*log instead of -log
+----------------git commit 9d78659 ---------------
+
+14 Jul 15
+
+--Remembered that I should have been calling the (test-labeling-*) functions
+  with a f-value of 1 (vice 0) after changing to log space.  New output is:
+Incorrect: (test-labeling-tiny 4 1)
+	   Starting BP[tol=-inf,maxiter=10000,maxtime=inf,verbose=2,logdomain=0,updates=SEQMAX,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 10000 passes (0.350979 seconds)...final maxdiff:0
+	   350 ms
+	   LibDAI Belief Propagation 3.66832
+	   (0 1 0 1)
+Correct: (test-labeling-tiny-brute 4 1) 
+	 0 ms 
+	 OpenGM Brute Force 2.38058 
+	 (1 0 3 2)
+
+--Also tried running libdai with all 4 possibilities for UpdateRule, same
+  results on all.
+
+--Tried changing DiscreteSpace to SimpleDiscreteSpace, but no change; brute is
+  still correct, libdai is still wrong.
+
+
+
+----OPEN FILES 20150714-----
+.   scheme-buffer-2015: 113763  Inferior Scheme:  ~/codetection/source/sentence-codetection/scheme-buffer-20150714.txt
+    notes.text          120366  Text		  ~/codetection/notes.text
+    inference.cpp        22240  C++/l		  ~/codetection/source/sentence-codetection/inference.cpp
+    label-test-setup.sc   5896  Scheme		  ~/codetection/source/sentence-codetection/label-test-setup.sc
+    inference.h            528  C++/l		  ~/codetection/source/sentence-codetection/inference.h
+    codetection-test.sc  65019  Scheme		  ~/codetection/source/sentence-codetection/codetection-test.sc
+    toollib-codetection.: 7373  Scheme		  ~/codetection/source/sentence-codetection/toollib-codetection.sc
+  * *shell*              86781  Shell:run	  ~/codetection/
+  * *shell*<2>             990  Shell:run	  /aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/plan0/detections-test20150618/
+  * *shell*<3>          302382  Shell:run	  ~/darpa-collaboration/ideas/x86_64-Linux-3.2.0-4-amd64/
+    rover-projection.sc   9409  Scheme		  ~/codetection/source/rover-projection.sc
+    toollib-matlab.sc    12100  Scheme		  ~/darpa-collaboration/ideas/toollib-matlab.sc
+    QobiScheme-AD.sc    295402  Scheme		  ~/QobiScheme/source/QobiScheme-AD.sc
+    toollib-multi-proce: 11819  Scheme		  ~/darpa-collaboration/ideas/toollib-multi-process.sc
+----------
+
+
+
 
 **STARTING COMMAND**
 (define *data-output-dirname* "test20150617")
