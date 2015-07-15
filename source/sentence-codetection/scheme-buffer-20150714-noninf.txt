@@ -1,0 +1,150 @@
+***** INITIALIZEVAR Duplicately defined symbol +
+***** INITIALIZEVAR Duplicately defined symbol -
+***** INITIALIZEVAR Duplicately defined symbol *
+***** INITIALIZEVAR Duplicately defined symbol /
+***** INITIALIZEVAR Duplicately defined symbol SQRT
+***** INITIALIZEVAR Duplicately defined symbol EXP
+***** INITIALIZEVAR Duplicately defined symbol LOG
+***** INITIALIZEVAR Duplicately defined symbol EXPT
+***** INITIALIZEVAR Duplicately defined symbol SIN
+***** INITIALIZEVAR Duplicately defined symbol COS
+***** INITIALIZEVAR Duplicately defined symbol ATAN
+***** INITIALIZEVAR Duplicately defined symbol =
+***** INITIALIZEVAR Duplicately defined symbol <
+***** INITIALIZEVAR Duplicately defined symbol >
+***** INITIALIZEVAR Duplicately defined symbol <=
+***** INITIALIZEVAR Duplicately defined symbol >=
+***** INITIALIZEVAR Duplicately defined symbol ZERO?
+***** INITIALIZEVAR Duplicately defined symbol POSITIVE?
+***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
+***** INITIALIZEVAR Duplicately defined symbol REAL?
+Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
+> (load "label-test-setup.sc")
+/usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
+40287968
+""
+ASM
+ASM-G
+G-C
+""
+ASM-SMALL
+ASM-G-SMALL
+G-C-SMALL
+""
+ASM-TINY
+ASM-G-TINY
+G-C-TINY
+""
+ASM2
+ASM-G2
+G-C2
+""
+ASM2-SMALL
+ASM-G2-SMALL
+G-C2-SMALL
+""
+ASM2-TINY
+ASM-G2-TINY
+G-C2-TINY
+TEST-LABELING
+TEST-LABELING-SMALL
+TEST-LABELING-TINY
+TEST-LABELING-SMALL-BRUTE
+TEST-LABELING-TINY-BRUTE
+TEST-LABELING2
+TEST-LABELING2-SMALL
+TEST-LABELING2-TINY
+POSITIONS
+TEST-LABELING-ORIGINAL
+TEST-LABELING2-ORIGINAL
+"label-test-setup.sc"
+> (test-labeling-tiny 4 1)
+in bp_label_inference
+num_peaks = 4, num_labels = 4
+vars[0] = 4
+vars[1] = 4
+vars[2] = 4
+vars[3] = 4
+Unary functions added
+gg for i=0,j=1
+1.0103 0.4527 0.4527 0.4527 
+0.4527 1.0103 0.4527 0.4527 
+0.4527 0.4527 1.0103 0.4527 
+0.4527 0.4527 0.4527 1.0103 
+gg for i=0,j=2
+0.9363 0.4977 0.4977 0.4977 
+0.4977 0.9363 0.4977 0.4977 
+0.4977 0.4977 0.9363 0.4977 
+0.4977 0.4977 0.4977 0.9363 
+gg for i=0,j=3
+1.1266 0.3918 0.3918 0.3918 
+0.3918 1.1266 0.3918 0.3918 
+0.3918 0.3918 1.1266 0.3918 
+0.3918 0.3918 0.3918 1.1266 
+gg for i=1,j=2
+1.1822 0.3661 0.3661 0.3661 
+0.3661 1.1822 0.3661 0.3661 
+0.3661 0.3661 1.1822 0.3661 
+0.3661 0.3661 0.3661 1.1822 
+gg for i=1,j=3
+1.2052 0.3561 0.3561 0.3561 
+0.3561 1.2052 0.3561 0.3561 
+0.3561 0.3561 1.2052 0.3561 
+0.3561 0.3561 0.3561 1.2052 
+gg for i=2,j=3
+1.3055 0.3161 0.3161 0.3161 
+0.3161 1.3055 0.3161 0.3161 
+0.3161 0.3161 1.3055 0.3161 
+0.3161 0.3161 0.3161 1.3055 
+Binary functions added
+before bp call
+after bp call
+Starting BP[tol=1e-07,maxiter=10000,maxtime=inf,verbose=2,logdomain=0,updates=SEQMAX,damping=0,inference=MAXPROD]...converged in 2 passes (9.10759e-05 seconds).
+0 ms
+LibDAI Belief Propagation 3.66832
+(0 1 0 1)
+> (test-labeling-tiny-brute 4 1)
+in bruteforce_label_inference
+num_peaks = 4, num_labels = 4
+vars[0] = 4
+vars[1] = 4
+vars[2] = 4
+vars[3] = 4
+Unary functions added
+gg for i=0,j=1
+1.0103 0.4527 0.4527 0.4527 
+0.4527 1.0103 0.4527 0.4527 
+0.4527 0.4527 1.0103 0.4527 
+0.4527 0.4527 0.4527 1.0103 
+gg for i=0,j=2
+0.9363 0.4977 0.4977 0.4977 
+0.4977 0.9363 0.4977 0.4977 
+0.4977 0.4977 0.9363 0.4977 
+0.4977 0.4977 0.4977 0.9363 
+gg for i=0,j=3
+1.1266 0.3918 0.3918 0.3918 
+0.3918 1.1266 0.3918 0.3918 
+0.3918 0.3918 1.1266 0.3918 
+0.3918 0.3918 0.3918 1.1266 
+gg for i=1,j=2
+1.1822 0.3661 0.3661 0.3661 
+0.3661 1.1822 0.3661 0.3661 
+0.3661 0.3661 1.1822 0.3661 
+0.3661 0.3661 0.3661 1.1822 
+gg for i=1,j=3
+1.2052 0.3561 0.3561 0.3561 
+0.3561 1.2052 0.3561 0.3561 
+0.3561 0.3561 1.2052 0.3561 
+0.3561 0.3561 0.3561 1.2052 
+gg for i=2,j=3
+1.3055 0.3161 0.3161 0.3161 
+0.3161 1.3055 0.3161 0.3161 
+0.3161 0.3161 1.3055 0.3161 
+0.3161 0.3161 0.3161 1.3055 
+Binary functions added
+0 ms
+OpenGM Brute Force 2.38058
+(1 0 3 2)
+> (exit)
+
+Process scheme finished

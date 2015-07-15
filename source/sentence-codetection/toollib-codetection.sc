@@ -185,6 +185,15 @@
 		     double double pointer double pointer)))
 
 
+(define label-inference-test-with-noise
+ (c-function double ("label_inference_test_with_noise" int int
+		     double pointer pointer int float)))
+
+
+(define label-inference-with-noise
+ (c-function double ("label_inference_with_noise" int int
+		     double pointer pointer int float)))
+
 
 ;;;;;NEED TO REBUILD THIS AS A STAND-ALONE PROCEDURE
 ;; (define-command

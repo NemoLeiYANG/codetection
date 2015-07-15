@@ -11,3 +11,13 @@ double bp_label_inference_original(int num_peaks, int num_labels,
 double bruteforce_label_inference(int num_peaks, int num_labels,
 				  double f_value, double **g, int *labels);
 
+double label_inference_test_with_noise(int num_peaks, int num_labels,
+				       double f_value, double **g, int *labels, 
+				       int numIterations, float noiseLimit);
+
+double label_inference_with_noise(int num_peaks, int num_labels,
+				  double f_value, double **g, 
+				  int *labels, int numIterations, 
+				  float noiseLimit);
+
+

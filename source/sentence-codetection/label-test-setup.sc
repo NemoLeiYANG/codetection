@@ -70,6 +70,54 @@
   labels))
 
 
+(define (test-labeling-noise num-labels f-value num-iterations noise-limit)
+ (let* ((labels-c
+	 (list->c-exact-array (malloc (* c-sizeof-int (length asm-g)))
+			      (map-n (lambda _ 0) (length asm-g)) c-sizeof-int #t))
+	(test-score (label-inference-with-noise (length asm-g)
+						num-labels
+						f-value
+						g-c
+						labels-c
+						num-iterations
+						noise-limit))
+	(labels (c-exact-array->list labels-c c-sizeof-int (length asm-g) #t)))
+  (free labels-c)
+  labels))
+
+
+(define (test-labeling-small-noise num-labels f-value num-iterations noise-limit)
+ (let* ((labels-c
+	 (list->c-exact-array (malloc (* c-sizeof-int (length asm-g-small)))
+			      (map-n (lambda _ 0) (length asm-g-small)) c-sizeof-int #t))
+	(test-score (label-inference-test-with-noise (length asm-g-small)
+						     num-labels
+						     f-value
+						     g-c-small
+						     labels-c
+						     num-iterations
+						     noise-limit))
+	(labels (c-exact-array->list labels-c c-sizeof-int (length asm-g-small) #t)))
+  (free labels-c)
+  labels))
+
+(define (test-labeling-tiny-noise num-labels f-value num-iterations noise-limit)
+ (let* ((labels-c
+	 (list->c-exact-array (malloc (* c-sizeof-int (length asm-g-tiny)))
+			      (map-n (lambda _ 0) (length asm-g-tiny)) c-sizeof-int #t))
+	(test-score (label-inference-test-with-noise (length asm-g-tiny)
+						num-labels
+						f-value
+						g-c-tiny
+						labels-c
+						num-iterations
+						noise-limit))
+	(labels (c-exact-array->list labels-c c-sizeof-int (length asm-g-tiny) #t)))
+  (free labels-c)
+  labels))
+
+
+
 (define (test-labeling-small-brute num-labels f-value)
  (let* ((labels-c
 	 (list->c-exact-array (malloc (* c-sizeof-int (length asm-g-small)))
