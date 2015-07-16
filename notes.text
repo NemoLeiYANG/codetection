@@ -2367,7 +2367,6 @@ total possible permutations.
 
 -------------------End email traffic--------------------------------------------
 
-
 --Getting good results with tolerance in the range of 1e-4 to 1e-5 and
   iterations over 100000.  Sometimes still doesn't converge, and some of these
   non-convergences are valid permutations of the brute force optimum.  Going to
@@ -2379,7 +2378,171 @@ total possible permutations.
   label-test-setup.sc in order to run the whole dataset.  Left that running as
   of 1805.
 
+----------------git commit a3ddbce---------------
 
+16 Jul 15
+
+----------Email to group ----------
+From: Scott Bronikowski <sbroniko@purdue.edu>
+Date: Thu, Jul 16, 2015 at 9:52 AM
+Subject: Re: did you try adding noise?
+To: Scott Bronikowski <sbroniko@purdue.edu>
+Cc: haonan <haonan@haonanyu.com>, Jeffrey Mark Siskind <qobi@purdue.edu>, Dan
+Barrett <dpbarret@purdue.edu> 
+
+
+I let the labeling function run on the entire 43-peak, 8-label
+generation dataset last night, and I saw the following results this
+morning
+--------------------------------------------------
+> (test-labeling-noise 8 1 1e5 0.1)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 429.207 bound -inf
+Starting BP[tol=0.0001,maxiter=100000,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:
+ WARNING: not converged after 100000 passes (529.215 seconds)...final
+maxdiff:0.737506
+value 507.664 bound -inf
+after bp.infer
+LibDAI Belief Propagation 528550 ms
+LibDAI Belief Propagation 507.664
+(0 5 4 7 4 1 5 7 0 7 4 5 7 1 1 5 1 5 1 5 1 5 1 5 5 7 6 5 4 7 5 1 1 5 1
+1 1 5 1 5 4 1 5)
+-------------------------------------------------------
+
+The good news is that for 100000 iterations, it runs in < 9 minutes.
+The bad news is that the results are pretty crappy.  See the labels
+paired with the ground truth objects below.  And I also see that the
+final value of the objective function (507.664) is worse than the
+beginning value (429.207).  That tells me that when the solver hits
+max iterations it just spits out whatever solution it has at that
+iteration and doesn't keep any memory of the best solution it's seen
+so far, as Dan and I were discussing yesterday.
+
+I think I've got tolerance set to a pretty reasonable value (1e-4).
+I'm going to try playing with the max iterations and the noise value.
+I'll try the noise value first, since I know 100k iterations will only
+take about 10 minutes to run.  I think I may have set the noise value
+too high on this one--looking back on what I ran yesterday, the small
+and tiny sets had good results with the noise set at the 0.01 to 0.05
+range.
+
+---------labels with ground truth-------
+0 chair
+5 bag-book
+4 table
+7 cone
+4 table
+1 stool
+5 box
+7 cone
+0 box
+7 cone
+4 table
+5 bag-shop
+7 cone
+1 bag-book
+1 chair
+5 unknown
+1 unknown
+5 chair (?)
+1 bag-book
+5 cone
+1 unknown
+5 box
+1 box
+5 bag-book
+5 table
+7 cone
+6 bag-book
+5 chair
+4 table
+7 cone
+5 chair
+1 box
+1 bag-book
+5 chair
+1 stool
+1 stool
+1 box
+5 bag-book
+1 chair
+5 box
+4 table
+1 bag-book
+5 stool
+-------End email to group----------------
+
+--Trying with different values for noise limit.  Still seeing that final value
+  is worse than starting value for NL=0.01,...  Maybe need to increase
+  iterations?
+
+--Also had the thought that it might be worthwhile to have a function that runs
+  the data multiple times (for different random noise each time) and then finds
+  the run with the best score.  But how can I programmatically find the begin
+  value to determine if the end value is less (better), or to see if the run
+  converged or not?
+
+--Do I want to write a script/function that does an exploration of the parameter
+  space? Make tolerance a parameter and include that.  Fix f_value since it will
+  always be 1.
+
+----------------------------Emails from Haonan----------------------------------
+From: haonan <haonan@haonanyu.com>
+Date: Thu, Jul 16, 2015 at 2:07 PM
+Subject: Re: did you try adding noise?
+To: Scott Bronikowski <sbroniko@purdue.edu>
+Cc: Jeffrey Mark Siskind <qobi@purdue.edu>, Dan Barrett <dpbarret@purdue.edu>
+
+
+Did you try fixing the the first peak as 0? It looks like you did from the
+result shown here, but I just want to make sure. 
+
+100000 iterations are TOO many. In my case of 60 variables with each variable
+having 250 labels, it only takes about less than 30 seconds to
+converge. Whenever the iteration number is too large, it is a sign that the
+framework has some problem. With 10 minutes, I believe a good search strategy
+with pruning or a greedy algorithm can find good solution, then BP does not have
+any advantage. 
+
+I don't think directly adding noise is a principled solution. It can only be
+used as a way to validate the assumption that BP doesn't perform well when the
+costs are symmetric. If there is no way to specify binary costs that are
+discriminative for your problem, then maybe this problem is not well suited for
+BP. I would try other algorithms like A* search or linear programming (after
+conversion). 
+
+Haonan
+
+From: haonan <haonan@haonanyu.com>
+Date: Thu, Jul 16, 2015 at 2:19 PM
+Subject: Re: did you try adding noise?
+To: Scott Bronikowski <sbroniko@purdue.edu>
+Cc: Jeffrey Mark Siskind <qobi@purdue.edu>, Dan Barrett <dpbarret@purdue.edu>
+
+
+For linear programming, with each pair of peaks, you have 8*8 variables a(i,j)
+that are in [0,1]. When a(i,j) = 1, it means that you pick label i for one peak
+and j for another. Also you have a constraint so that \sum a(i,j) = 1. In total
+there will be 43*42/2*8*8 = 57792 variables, which is pretty common for linear
+programming problems and I am pretty sure it can find *global* optimum in less
+than 10 minutes. 
+
+Haonan
+--------------------------------end emails-------------------------------------
+
+--Based on the above and conversation with Jeff and Dan in group meeting, going
+  to put graphical model approach on hold for now and try a branch-and-bound
+  algorithm.  Will probably end up coding the final version up in C++, but have
+  a rudimentary scheme version worked out with Dan on the whiteboard--will
+  implement and test on tiny and small sets to ensure that it works.  That will
+  give me something to compare my C code against.  Also need to read up on
+  branch and bound and other possible algorithms.
 
 
 ----OPEN FILES 20150714-----

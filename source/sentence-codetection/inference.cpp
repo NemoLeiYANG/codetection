@@ -826,7 +826,7 @@ extern "C" double label_inference_test_with_noise(int num_peaks, int num_labels,
 extern "C" double label_inference_with_noise(int num_peaks, int num_labels,
 					     double f_value, double **g, 
 					     int *labels, int numIterations, 
-					     float noiseLimit){
+					     double noiseLimit, double tol){
 
   //seed RNG
   srand(static_cast <unsigned> (time(0)));
@@ -835,14 +835,13 @@ extern "C" double label_inference_with_noise(int num_peaks, int num_labels,
   typedef opengm::ExplicitFunction<double> Function;
   typedef opengm::GraphicalModel<double, opengm::Adder, Function, Space> GraphModel;
   typedef GraphModel::FunctionIdentifier FID;
-  // //try getting rid of log space and using maximizer
-  // typedef opengm::Bruteforce<GraphModel, opengm::Maximizer> Bruteforce;
   //try using log space with minimizer
-  // typedef opengm::Bruteforce<GraphModel, opengm::Minimizer> Bruteforce;
   typedef opengm::external::libdai::Bp<GraphModel, opengm::Minimizer> libdaiBP;
 
-  printf("in label_inference_with_noise\n");
+  printf("Starting label_inference_with_noise\n");
   printf("num_peaks = %d, num_labels = %d\n",num_peaks,num_labels);
+  printf("numIterations = %d, noiseLimit = %f, tolerance = %f\n",
+	 numIterations,noiseLimit,tol);
 
   //each peak is a variable that takes on one of num_labels + 1 possible labels 
   //(+1 is for dummy state)
@@ -955,28 +954,10 @@ extern "C" double label_inference_with_noise(int num_peaks, int num_labels,
   }
   printf("Binary functions added\n");
 
-  // //  inference with bruteforce first
-  // Bruteforce bf(gm);
-  // // optimize (approximately)
-  // clock_t t1, t2;
-  // Bruteforce::VerboseVisitorType visitor;
-  // t1 = clock();
-  // bf.infer();//visitor);
-  // t2 = clock();
-  // std::cout << "OpenGM Brute Force " << (double(t2) - double(t1))/CLOCKS_PER_SEC*1000 << " ms" << std::endl;
-  // std::cout << "OpenGM Brute Force " << bf.value() << std::endl;
-  // std::vector<size_t> labeling(num_peaks); 
-  // bf.arg(labeling);
-  // printf("(");
-  // for (unsigned int i = 0; i < labeling.size(); i ++)
-  //   //labels[i] = int(labeling[i]);
-  //   printf("%d ", int(labeling[i]));
-  // printf(")\n");
-
   //  inference with libdaiBP 
   const size_t maxIterations=numIterations;
   const double damping=0.0;
-  const double tolerance = 1e-4;//5;//-std::numeric_limits<double>::infinity();//1e-7;
+  const double tolerance = tol;//1e-4;//5;//-std::numeric_limits<double>::infinity();//1e-7;
   // libdaiBp::UpdateRule = PARALL | SEQFIX | SEQRND | SEQMAX
   libdaiBP::UpdateRule updateRule = libdaiBP::PARALL;
   libdaiBP::VerboseVisitorType visitor2;

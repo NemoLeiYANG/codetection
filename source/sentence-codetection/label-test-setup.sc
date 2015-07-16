@@ -70,8 +70,9 @@
   labels))
 
 
-(define (test-labeling-noise num-labels f-value num-iterations noise-limit)
- (let* ((labels-c
+(define (test-labeling-noise num-labels num-iterations noise-limit tolerance)
+ (let* ((f-value 1) ;;fixing this value for now
+	(labels-c
 	 (list->c-exact-array (malloc (* c-sizeof-int (length asm-g)))
 			      (map-n (lambda _ 0) (length asm-g)) c-sizeof-int #t))
 	(test-score (label-inference-with-noise (length asm-g)
@@ -80,10 +81,11 @@
 						g-c
 						labels-c
 						num-iterations
-						noise-limit))
+						noise-limit
+						tolerance))
 	(labels (c-exact-array->list labels-c c-sizeof-int (length asm-g) #t)))
   (free labels-c)
-  labels))
+  (list test-score num-iterations noise-limit tolerance labels)))
 
 
 (define (test-labeling-small-noise num-labels f-value num-iterations noise-limit)

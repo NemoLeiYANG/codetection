@@ -1,0 +1,474 @@
+***** INITIALIZEVAR Duplicately defined symbol +
+***** INITIALIZEVAR Duplicately defined symbol -
+***** INITIALIZEVAR Duplicately defined symbol *
+***** INITIALIZEVAR Duplicately defined symbol /
+***** INITIALIZEVAR Duplicately defined symbol SQRT
+***** INITIALIZEVAR Duplicately defined symbol EXP
+***** INITIALIZEVAR Duplicately defined symbol LOG
+***** INITIALIZEVAR Duplicately defined symbol EXPT
+***** INITIALIZEVAR Duplicately defined symbol SIN
+***** INITIALIZEVAR Duplicately defined symbol COS
+***** INITIALIZEVAR Duplicately defined symbol ATAN
+***** INITIALIZEVAR Duplicately defined symbol =
+***** INITIALIZEVAR Duplicately defined symbol <
+***** INITIALIZEVAR Duplicately defined symbol >
+***** INITIALIZEVAR Duplicately defined symbol <=
+***** INITIALIZEVAR Duplicately defined symbol >=
+***** INITIALIZEVAR Duplicately defined symbol ZERO?
+***** INITIALIZEVAR Duplicately defined symbol POSITIVE?
+***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
+***** INITIALIZEVAR Duplicately defined symbol REAL?
+Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
+> (system "pwd")
+/home/sbroniko/codetection/source/sentence-codetection
+0
+> (load "label-test-setup.sc")
+/usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
+27713248
+""
+ASM
+ASM-G
+G-C
+""
+ASM-SMALL
+ASM-G-SMALL
+G-C-SMALL
+""
+ASM-TINY
+ASM-G-TINY
+G-C-TINY
+""
+ASM2
+ASM-G2
+G-C2
+""
+ASM2-SMALL
+ASM-G2-SMALL
+G-C2-SMALL
+""
+ASM2-TINY
+ASM-G2-TINY
+G-C2-TINY
+TEST-LABELING
+TEST-LABELING-SMALL
+TEST-LABELING-TINY
+TEST-LABELING-NOISE
+TEST-LABELING-SMALL-NOISE
+TEST-LABELING-TINY-NOISE
+TEST-LABELING-SMALL-BRUTE
+TEST-LABELING-TINY-BRUTE
+TEST-LABELING2
+TEST-LABELING2-SMALL
+TEST-LABELING2-TINY
+POSITIONS
+TEST-LABELING-ORIGINAL
+TEST-LABELING2-ORIGINAL
+"label-test-setup.sc"
+> (test-labeling-noise 8 1 100 0.02)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 439.047 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.54869 seconds)...final maxdiff:0.499658
+value 482.337 bound -inf
+after bp.infer
+LibDAI Belief Propagation 560 ms
+LibDAI Belief Propagation 482.337
+(0 5 4 3 5 2 1 3 1 3 4 2 3 5 2 5 2 0 2 5 2 5 2 5 2 3 6 2 4 3 2 5 2 0 2 5 2 5 2 5 4 2 5)
+> (test-labeling-noise 8 1 100 0.03)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 442.193 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.554329 seconds)...final maxdiff:0.522195
+value 438.48 bound -inf
+after bp.infer
+LibDAI Belief Propagation 570 ms
+LibDAI Belief Propagation 438.48
+(0 2 7 5 7 3 6 5 3 5 7 1 5 2 1 6 1 0 1 2 1 0 1 2 7 5 2 1 7 5 1 6 1 0 1 2 1 2 1 2 7 1 1)
+> (test-labeling-noise 8 1 100 0.03)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 445.98 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.534021 seconds)...final maxdiff:0.532004
+value 444.113 bound -inf
+after bp.infer
+LibDAI Belief Propagation 550 ms
+LibDAI Belief Propagation 444.113
+(0 3 4 1 4 6 5 1 5 1 4 6 1 6 0 7 6 7 6 7 6 7 6 3 4 1 3 7 4 1 6 7 6 7 6 7 6 3 7 6 4 6 7)
+> (test-labeling-noise 8 1 1000 0.03)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 432.422 bound -inf
+Starting BP[tol=0.0001,maxiter=1000,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 1000 passes (5.26863 seconds)...final maxdiff:0.602053
+value 445.931 bound -inf
+after bp.infer
+LibDAI Belief Propagation 5280 ms
+LibDAI Belief Propagation 445.931
+(0 7 3 2 6 1 5 2 5 2 3 6 2 1 0 6 1 6 1 6 1 6 1 7 3 2 7 6 3 2 6 1 6 0 6 1 6 7 1 6 3 6 1)
+> (test-labeling-noise 8 1 10000 0.03)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 432.476 bound -inf
+Starting BP[tol=0.0001,maxiter=10000,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 10000 passes (53.295 seconds)...final maxdiff:0.494963
+value 457.957 bound -inf
+after bp.infer
+LibDAI Belief Propagation 53280 ms
+LibDAI Belief Propagation 457.957
+(0 5 1 4 1 3 2 4 2 4 1 5 4 3 0 5 3 0 3 5 3 5 3 5 3 4 6 3 1 4 3 5 3 0 3 3 5 5 3 5 1 5 3)
+> (test-labeling-noise 8 1 100 0.03)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 435.455 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.534126 seconds)...final maxdiff:0.539162
+value 460.48 bound -inf
+after bp.infer
+LibDAI Belief Propagation 550 ms
+LibDAI Belief Propagation 460.48
+(0 7 3 5 7 4 2 5 2 5 3 4 5 7 0 7 4 0 4 7 4 7 4 7 3 5 1 4 3 5 4 7 4 0 4 7 4 7 4 7 3 7 4)
+> (test-labeling-noise 8 1 100 0.03)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 433.12 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.542516 seconds)...final maxdiff:0.532512
+value 463.484 bound -inf
+after bp.infer
+LibDAI Belief Propagation 560 ms
+LibDAI Belief Propagation 463.484
+(0 4 1 3 1 6 7 3 7 3 1 6 3 4 6 4 6 0 6 4 6 4 6 4 1 3 2 6 1 3 6 4 6 0 6 4 6 4 6 4 1 6 4)
+> (test-labeling-noise 8 1 100 0.03)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 433.902 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.537696 seconds)...final maxdiff:0.520345
+value 467.817 bound -inf
+after bp.infer
+LibDAI Belief Propagation 550 ms
+LibDAI Belief Propagation 467.817
+(0 6 3 5 3 2 4 5 4 5 3 2 5 6 2 6 2 6 2 6 2 6 2 6 3 5 7 2 3 5 6 2 6 0 2 2 6 6 2 6 3 6 2)
+> (test-labeling-noise 8 1 100 0.03)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 451.264 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.540556 seconds)...final maxdiff:0.449342
+value 456.336 bound -inf
+after bp.infer
+LibDAI Belief Propagation 550 ms
+LibDAI Belief Propagation 456.336
+(0 2 4 5 4 6 7 5 7 5 4 6 5 6 0 2 6 0 6 2 6 2 6 2 4 5 1 6 4 5 6 2 6 0 6 2 6 2 6 2 4 2 6)
+> (test-labeling-noise 8 1 100 0.03)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 430.61 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.529175 seconds)...final maxdiff:0.607908
+value 457.116 bound -inf
+after bp.infer
+LibDAI Belief Propagation 550 ms
+LibDAI Belief Propagation 457.116
+(0 4 3 1 3 6 2 1 2 1 3 6 1 6 0 4 6 0 6 4 6 4 6 4 3 1 5 6 3 1 6 4 6 0 6 4 6 4 6 4 3 6 4)
+> (test-labeling-noise 8 1 100 0.03)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 441.318 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.533706 seconds)...final maxdiff:0.594514
+value 509.696 bound -inf
+after bp.infer
+LibDAI Belief Propagation 540 ms
+LibDAI Belief Propagation 509.696
+(0 7 1 5 1 7 4 5 4 5 1 7 5 7 0 7 7 7 0 7 0 7 7 0 1 5 6 7 1 5 0 7 7 0 7 7 0 7 0 7 1 7 7)
+> (test-labeling-noise 8 1 100 0.04)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 437.569 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.53131 seconds)...final maxdiff:0.568575
+value 473.302 bound -inf
+after bp.infer
+LibDAI Belief Propagation 540 ms
+LibDAI Belief Propagation 473.302
+(0 4 7 5 7 3 1 5 1 5 7 3 5 4 3 4 3 4 3 4 3 4 3 4 7 5 2 3 7 5 3 4 3 0 3 4 3 4 3 4 7 4 3)
+> (test-labeling-noise 8 1 100 0.04)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 440.101 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.538772 seconds)...final maxdiff:0.520876
+value 439.578 bound -inf
+after bp.infer
+LibDAI Belief Propagation 550 ms
+LibDAI Belief Propagation 439.578
+(0 4 3 6 3 7 2 6 5 6 3 5 6 4 5 7 5 7 4 7 5 7 5 4 3 6 4 5 3 6 5 7 5 0 7 5 7 4 7 4 3 5 7)
+> (test-labeling-noise 8 1 100 0.1)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 437.621 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.537477 seconds)...final maxdiff:0.738612
+value 487.809 bound -inf
+after bp.infer
+LibDAI Belief Propagation 550 ms
+LibDAI Belief Propagation 487.809
+(0 6 7 1 5 6 2 1 2 1 7 5 1 6 5 6 5 6 5 6 5 6 5 6 5 1 0 5 7 1 5 5 6 6 5 5 6 0 5 6 7 5 6)
+> (test-labeling-noise 8 1 100 0.1)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 443.019 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.542483 seconds)...final maxdiff:0.760733
+value 439.221 bound -inf
+after bp.infer
+LibDAI Belief Propagation 550 ms
+LibDAI Belief Propagation 439.221
+(0 2 3 5 3 2 4 5 4 5 3 2 5 2 7 0 7 2 7 2 2 7 2 1 3 5 1 7 3 5 7 2 7 0 7 2 0 2 0 2 3 7 2)
+> (test-labeling-noise 8 1 100 0.1)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 434.605 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.537952 seconds)...final maxdiff:0.616568
+value 465.942 bound -inf
+after bp.infer
+LibDAI Belief Propagation 550 ms
+LibDAI Belief Propagation 465.942
+(0 3 4 1 3 7 5 1 5 1 4 3 1 0 7 3 7 3 7 3 7 3 7 3 4 1 6 7 4 1 7 3 7 0 7 3 7 3 7 3 4 3 7)
+> (test-labeling-noise 8 1 100 0.1)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 438.293 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.549103 seconds)...final maxdiff:0.620531
+value 451.888 bound -inf
+after bp.infer
+LibDAI Belief Propagation 560 ms
+LibDAI Belief Propagation 451.888
+(0 2 7 4 7 5 1 4 1 4 7 5 4 5 0 5 2 5 2 5 2 5 2 0 7 4 0 5 7 4 5 2 5 0 5 2 5 0 2 5 7 2 5)
+> (test-labeling-noise 8 1 100 0.1)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 440.797 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.544298 seconds)...final maxdiff:0.55364
+value 434.079 bound -inf
+after bp.infer
+LibDAI Belief Propagation 550 ms
+LibDAI Belief Propagation 434.079
+(0 3 4 2 4 7 6 2 6 2 4 7 2 3 7 3 7 0 3 0 0 7 0 3 4 2 3 7 4 2 3 7 0 0 7 0 7 3 7 3 4 0 7)
+> (test-labeling-noise 8 1 1000 0.1)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 445.551 bound -inf
+Starting BP[tol=0.0001,maxiter=1000,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 1000 passes (5.38068 seconds)...final maxdiff:0.722252
+value 469.819 bound -inf
+after bp.infer
+LibDAI Belief Propagation 5370 ms
+LibDAI Belief Propagation 469.819
+(0 2 1 3 1 7 4 3 4 3 1 7 3 2 2 7 2 7 2 7 2 7 2 0 2 3 0 2 1 3 2 7 2 7 7 2 2 0 7 2 1 2 7)
+> (test-labeling-noise 8 1 1000 0.1)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 439.836 bound -inf
+Starting BP[tol=0.0001,maxiter=1000,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 1000 passes (5.40659 seconds)...final maxdiff:0.688001
+value 450.887 bound -inf
+after bp.infer
+LibDAI Belief Propagation 5380 ms
+LibDAI Belief Propagation 450.887
+(0 4 2 3 0 4 1 3 1 3 4 7 3 7 0 7 4 0 4 7 4 7 4 4 2 3 4 7 2 3 0 7 0 7 4 0 4 7 4 7 2 7 4)
+> (test-labeling-noise 8 1 1000 0.1)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 432.221 bound -inf
+Starting BP[tol=0.0001,maxiter=1000,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 1000 passes (5.39927 seconds)...final maxdiff:0.729192
+value 469.98 bound -inf
+after bp.infer
+LibDAI Belief Propagation 5380 ms
+LibDAI Belief Propagation 469.98
+(0 4 3 6 3 7 5 6 5 6 3 4 6 7 7 4 7 4 4 4 7 4 7 0 4 6 0 4 3 6 4 7 4 4 7 4 7 0 7 7 3 4 7)
+> (test-labeling-noise 8 1 1000 0.1)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 465.4 bound -inf
+Starting BP[tol=0.0001,maxiter=1000,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 1000 passes (5.37284 seconds)...final maxdiff:0.764759
+value 470.453 bound -inf
+after bp.infer
+LibDAI Belief Propagation 5390 ms
+LibDAI Belief Propagation 470.453
+(0 7 5 3 5 4 1 3 1 3 5 4 3 4 7 4 7 7 4 7 4 7 4 0 4 3 0 7 5 3 4 7 7 7 4 7 7 0 4 7 5 7 4)
+> (test-labeling-noise 8 1 1000 0.1)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 434.777 bound -inf
+Starting BP[tol=0.0001,maxiter=1000,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 1000 passes (5.33077 seconds)...final maxdiff:0.692006
+value 454.388 bound -inf
+after bp.infer
+LibDAI Belief Propagation 5340 ms
+LibDAI Belief Propagation 454.388
+(0 4 3 1 3 2 7 1 7 1 3 2 1 4 0 2 4 2 4 2 4 2 4 0 3 1 4 2 3 1 2 4 2 0 2 4 2 4 2 4 3 4 2)
+> (test-labeling-noise 8 1 1000 0.04)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 430.54 bound -inf
+Starting BP[tol=0.0001,maxiter=1000,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 1000 passes (5.33514 seconds)...final maxdiff:0.485148
+value 460.539 bound -inf
+after bp.infer
+LibDAI Belief Propagation 5350 ms
+LibDAI Belief Propagation 460.539
+(0 2 6 4 6 1 7 4 7 4 6 2 4 2 1 2 1 2 1 2 1 2 1 0 6 4 5 2 6 4 2 1 2 0 2 1 2 0 1 2 6 1 2)
+> (test-labeling-noise 8 1 1000 0.04)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 438.775 bound -inf
+Starting BP[tol=0.0001,maxiter=1000,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 1000 passes (5.35374 seconds)...final maxdiff:0.556374
+value 473.639 bound -inf
+after bp.infer
+LibDAI Belief Propagation 5370 ms
+LibDAI Belief Propagation 473.639
+(0 1 2 7 1 6 5 7 5 7 2 6 7 6 0 1 6 1 6 1 6 1 6 1 2 7 4 6 2 7 6 1 6 0 6 1 6 1 6 1 2 1 6)
+> (test-labeling-noise 8 1 1000 0.04)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 448.824 bound -inf
+Starting BP[tol=0.0001,maxiter=1000,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 1000 passes (5.33851 seconds)...final maxdiff:0.541535
+value 448.461 bound -inf
+after bp.infer
+LibDAI Belief Propagation 5360 ms
+LibDAI Belief Propagation 448.461
+(0 2 3 1 3 5 7 1 7 1 3 2 1 2 5 2 5 0 5 2 5 2 5 2 3 1 4 5 3 1 0 5 2 0 5 5 2 2 5 2 3 5 2)
+> (test-labeling-noise 8 1 100 0.04)
+in label_inference_with_noise
+num_peaks = 43, num_labels = 8
+Unary functions added
+Binary functions added
+before bp call
+after bp call
+before bp.infer
+begin: value 429.207 bound -inf
+Starting BP[tol=0.0001,maxiter=100,maxtime=inf,verbose=2,logdomain=0,updates=PARALL,damping=0,inference=MAXPROD]...BP::run:  WARNING: not converged after 100 passes (0.549046 seconds)...final maxdiff:0.463129
+value 458.278 bound -inf
+after bp.infer
+LibDAI Belief Propagation 560 ms
+LibDAI Belief Propagation 458.278
+(0 3 5 6 5 2 1 6 1 6 5 2 6 2 3 2 3 2 7 3 2 3 2 3 5 6 7 3 5 6 3 2 3 0 3 3 2 3 2 3 5 2 3)
+> (exit)
+
+Process scheme finished

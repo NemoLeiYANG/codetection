@@ -192,7 +192,7 @@
 
 (define label-inference-with-noise
  (c-function double ("label_inference_with_noise" int int
-		     double pointer pointer int float)))
+		     double pointer pointer int double double)))
 
 
 ;;;;;NEED TO REBUILD THIS AS A STAND-ALONE PROCEDURE
