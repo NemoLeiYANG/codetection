@@ -2544,6 +2544,26 @@ Haonan
   give me something to compare my C code against.  Also need to read up on
   branch and bound and other possible algorithms.
 
+----------------git commit 4aac693---------------
+
+17 Jul 15
+
+--Starting work on labeling.sc, where I will put the new stuff Dan and I talked
+  about yesterday.
+
+--Have (find-labels) working, I think.  Not sure if the algorithm is
+  correct--don't see it abandoning any bad baths on the tiny or small datasets.
+  It does find correct answers though.  Going to try running on the full dataset
+  over the weekend to see what it comes up with and how long it takes.  Might
+  need to rethink how we're estimating best possible and deciding--might have a
+  bug in the code.
+
+--Also might want to think about moving the labeling.sc stuff into a file that
+  compiles into dsci in order to speed things up.
+
+
+
+
 
 ----OPEN FILES 20150714-----
 .   scheme-buffer-2015: 113763  Inferior Scheme:  ~/codetection/source/sentence-codetection/scheme-buffer-20150714.txt
