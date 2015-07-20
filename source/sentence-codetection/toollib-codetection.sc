@@ -64,7 +64,7 @@
 ;; ;;;;;;;;; timing
 
 ;; (define (time-thunk format-string thunk)
-;;  (let* ((start (current-time))
+;;  (let* ((start (current-time)
 ;; 	(result (thunk))
 ;; 	(end (current-time))
 ;; 	(precision 2)
@@ -166,11 +166,11 @@
 ;;  (c-function double ("bp_object_inference" pointer pointer int int pointer)))
 
 
-(define bp-object-inference
+(define bp-object-inference ;;DON'T FUCK THIS ONE UP
  (c-function double ("bp_object_inference" pointer pointer int int
 		     double double int pointer)))
 
-
+;;------these don't work
 (define bp-label-inference
  (c-function double ("bp_label_inference" int int
 		     double pointer pointer)))
@@ -193,6 +193,153 @@
 (define label-inference-with-noise
  (c-function double ("label_inference_with_noise" int int
 		     double pointer pointer int double double)))
+;;-----------
+
+;;Compiling labeling.sc stuff into dsci
+
+;;functions for branch and bound
+
+(define (build-table sim num-labels)
+ (map-n-vector
+  (lambda (i)
+   (map-n-vector
+    (lambda (j)
+     (if (= i j)
+	 (* -1 (log sim))
+	 (* -1 (log (- 1 sim)))))
+    num-labels))
+   num-labels))
+
+(define (build-table-matrix sim-matrix num-labels)
+ (let ((r (matrix-rows sim-matrix))
+       (c (matrix-columns sim-matrix)))
+  (map-n-vector
+   (lambda (i)
+    (map-n-vector
+     (lambda (j)
+      (let* ((sim1 (matrix-ref sim-matrix i j))
+	     (sim2 (matrix-ref sim-matrix j i))
+	     (sim-value (/ (+ sim1 sim2) 2.0)))
+       (list (min (-(log sim-value)) (-(log (- 1 sim-value))))
+	     0
+	     (build-table sim-value num-labels))))
+     c))
+   r)))
+
+
+(define (minimum-vector v)
+ (let ((m infinity)
+       (len (vector-length v)))
+  (let loop
+    ((i 0)
+     (m m))
+   (if (>= i len)
+       m
+       (loop (+ i 1)
+	     (min m (vector-ref v i)))))))
+
+(define (maximum-vector v)
+ (let ((m minus-infinity)
+       (len (vector-length v)))
+  (let loop
+    ((i 0)
+     (m m))
+   (if (>= i len)
+       m
+       (loop (+ i 1)
+	     (max m (vector-ref v i)))))))
+
+
+(define (best-possible labels table-matrix num-peaks)
+ (let ((labels (append labels
+		       (map-n (lambda (i) #f) (- num-peaks (length labels))))))
+  (reduce +
+	 (join 
+	  (map-indexed
+	   (lambda (label1 i)
+	    (map-indexed
+	     (lambda (label2 j)
+		    (if (< i j) ;;so we're not adding everything twice
+			(cond ((and label1 label2)
+			       (matrix-ref 
+				(third (matrix-ref table-matrix i j))
+				label1 label2))
+			      ((and (not label1) (not label2))
+			       (first (matrix-ref table-matrix i j))
+			       ;; (minimum-vector
+			       ;; 	(map-vector
+			       ;; 	 (lambda (x)
+			       ;; 	  (minimum-vector x))
+			       ;; 	 (third (matrix-ref table-matrix i j))))
+			       )
+			      (else
+			       (first (matrix-ref table-matrix i j))
+			       ;; (minimum-vector
+			       ;; 	(vector-ref
+			       ;; 	 (third (matrix-ref table-matrix i j))
+			       ;; 	 label1))
+			       ))
+			      0)) labels)) labels))
+	 0)))
+
+(define (score labels table-matrix)
+ (reduce +
+	 (join 
+	  (map-indexed
+	   (lambda (label1 i)
+	    (map-indexed
+	     (lambda (label2 j)
+		    (if (< i j) ;;so we're not adding everything twice
+			(matrix-ref 
+			 (third (matrix-ref table-matrix i j))
+			 label1 label2)
+			0)) labels)) labels))
+	 0))
+
+(define (find-labels best labels table-matrix num-peaks)
+ (let* ((v (length labels))
+	(num-labels (vector-length (third (matrix-ref table-matrix 0 0))))
+	(max-label-to-consider
+	 (if (null? labels)
+	     0
+	     (min (+ 1 (maximum labels)) (- num-labels 1))))
+	)
+  (if (= v num-peaks)
+      (list (score labels table-matrix) labels) ;;done
+      (let ((bars
+      	     (removeq
+      	      #f
+	      (let loop ((i 0)
+			 (best best))
+	       (if (<= i max-label-to-consider)
+		   (let* ((new-labels (append labels (list i)))
+			  (new-best
+			   (best-possible new-labels table-matrix num-peaks)))
+		    (if (< new-best best)
+			(let* ((answer
+				(find-labels best
+					     new-labels
+					     table-matrix
+					     num-peaks))
+			       (new-best
+				(if (< (first answer) best)
+				    (first answer)
+				    best)))
+			 (cons answer
+			       (loop (+ i 1) new-best)))
+			(begin
+			 ;;(dtrace "path abandoned" #f)
+			 (loop (+ i 1) best))))
+		   '()
+		   )))))
+       (if (null? bars)
+	   (list infinity '())
+	   (first (sort bars < first)))))))
+	
+
+
+
+
 
 
 ;;;;;NEED TO REBUILD THIS AS A STAND-ALONE PROCEDURE
