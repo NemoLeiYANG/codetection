@@ -2652,8 +2652,7 @@ Haonan
 
 --Tried some more seeded runs (see results in generation-working-list.ods).  Got
   faster results on bigger data, but had the problem that errors made in earlier
-  iterations (i.e., what is used to seed future runs) never get fixed.  Think
-  this might be a dead end.
+  iterations (i.e., what is 
 
 --Then tried -a runs that have twice the number of possible labels--those run
   MUCH faster (still haven't gotten 35a and 43a to return yet).  NO ERRORS, but
@@ -2675,7 +2674,7 @@ Haonan
 97.83s (158.038122553138 (0 1 2 3 2 4 5 3 5 3 2 6 3 7 0 8 9 10 1 11 12 13 14 1 2 3 1 15 2 3))
 
 --Running a test on the chino emacs window with the tables redefined so that
-  dissim is now -log((1-sim)/2).  Seems to be running faster.
+  dissim is now -log((1-sim)/2).  Seems to be running faster
 
 
 **Also need to look at implementing A* search.

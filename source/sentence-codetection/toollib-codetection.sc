@@ -261,10 +261,12 @@
 	     (lambda (label2 j)
 		    (if (< i j) ;;so we're not adding everything twice
 			(cond ((and label1 label2)
+			       ;;both labels set, so score it
 			       (matrix-ref 
 				(third (matrix-ref table-matrix i j))
 				label1 label2))
 			      ((and (not label1) (not label2))
+			       ;;neither label set, so get best possible for that pair
 			       (first (matrix-ref table-matrix i j))
 			       ;; (minimum-vector
 			       ;; 	(map-vector
@@ -273,6 +275,7 @@
 			       ;; 	 (third (matrix-ref table-matrix i j))))
 			       )
 			      (else
+			       ;;label1 set but label2 not, so get best possible
 			       (first (matrix-ref table-matrix i j))
 			       ;; (minimum-vector
 			       ;; 	(vector-ref
@@ -306,36 +309,43 @@
 	)
   (if (= v num-peaks)
       (list (score labels table-matrix) labels) ;;done
-      (let ((bars
-      	     (removeq
-      	      #f
-	      (let loop ((i 0)
+      (let* ((scores (map-n (lambda (i)
+			     (list i (best-possible
+				      (append labels (list i))
+				      table-matrix
+				      num-peaks)))
+			    (+ max-label-to-consider 1)))
+	     (sorted-scores (sort scores < second))
+	     (bars
+	      (let loop ((scored-labels sorted-scores)
 			 (best best))
-	       (if (<= i max-label-to-consider)
-		   (let* ((new-labels (append labels (list i)))
-			  (new-best
-			   (best-possible new-labels table-matrix num-peaks)))
-		    (if (< new-best best)
-			(let* ((answer
-				(find-labels best
-					     new-labels
-					     table-matrix
-					     num-peaks))
-			       (new-best
-				(if (< (first answer) best)
-				    (first answer)
-				    best)))
-			 (cons answer
-			       (loop (+ i 1) new-best)))
-			(begin
-			 ;;(dtrace "path abandoned" #f)
-			 (loop (+ i 1) best))))
+	       (if (null? scored-labels)
 		   '()
-		   )))))
+		   (if (< (second (first scored-labels)) best)
+		       (let* ((answer
+			       (find-labels best
+					    (append labels
+						    (list
+						     (first (first scored-labels))))
+					    table-matrix
+					    num-peaks))
+			      (new-best
+			       (if (< (first answer) best)
+	       			   (first answer)
+	       			   best)))
+			(cons answer
+			      (loop (rest scored-labels) new-best)))
+		       (begin
+			;; (dtrace "PRUNED"
+			;; 	(format #f "score ~a best ~a num-labels ~a"
+			;; 		(second (first scored-labels))
+			;; 		best v))
+			(loop (rest scored-labels) best))))
+	       )))
        (if (null? bars)
 	   (list infinity '())
 	   (first (sort bars < first)))))))
-	
+
 
 
 
