@@ -2672,16 +2672,92 @@ Haonan
 > (run-25a)
 0.91s (103.3741797061463 (0 1 2 3 2 4 5 3 5 3 2 6 3 7 0 8 9 10 11 12 13 14 15 1 2))
 > (run-30a)
-97.83s (158.038122553138 (0 1 2 3 2 4 5 3 5 3 2 6 3 7 0 8 9 10 1 11 12 13 14 1 2 3 1 15 2 3))
-
---Running a test on the chino emacs window with the tables redefined so that
+97.83s (158.038122553138 (0 1 2 3 2 4 5 3 5 3 2 6 3 7 0 8 9 10 1 11 12 13 14 1 2
+  3 1 15 2 3))           
+ 
+--Running a test on the far-right emacs window with the tables redefined so that
   dissim is now -log((1-sim)/2).  Seems to be running faster.
+
+----------------git commit 68097e0--------------- 
+
+22 Jul 15
+
+--Far-right test with dissim=-log((1-sim)/2) runs faster, but gets pretty crappy
+  results (bad labeling).  Think this might be a dead end, unless we can come up
+  with a better way to change the dissim score.
+
+--(run-35a) completed--results look good, except for that both box and chair
+each get label 13 once, all other labels unique to an object
+> (run-35a)
+4751.28s (218.0955581668972 (0 1 2 3 2 4 5 3 5 3 2 6 3 7 0 8 9 10 1 11 12 13 14
+1 2 3 1 15 2 3 13 14 7 0 4))
+
+--Going to try doing a run-30a and run-30b where b starts at 12 and ends at 42
+  so that a and b cover all of the dataset.  Then will try to sync the label
+  sets to each other and find a common labeling--wondering if this might help
+  with multiple labels.
+
+--Trying run-30b with the back 30 elements of the matrix and it's been running 
+  all day, while run-30a finished in < 2 minutes.  Not sure what's going
+  on here, and not sure what I need to look at to try to fix it.  Is there
+  something bogus going on in the data somewhere between 31 and 43?  How would I
+  find that?  Left this running overnight to see if it eventually comes back.
+
+--Need to think about how to restructure best-possible to run faster...
+
+--Trying a seeded run of 43 (seeded from run-30a).  Got an answer after ~3.3
+  hours.  Results saved in spreadsheet--still a few errors.
+
+--Rewrote find-labels, score, new-score, new-best-possible,
+  compute-max-score-vec, best-possible-i to speed up the computation.  Now
+  getting the following results:
+> (run-4)
+0.03s (2.380576052665758 (0 1 2 3))
+> (run-8)
+0.03s (9.924843526466908 (0 1 2 3 2 4 5 3))
+> (run-12)
+0.03s (21.47483629609758 (0 1 2 3 2 4 5 3 5 3 2 6))
+> (run-16)
+0.03s (39.83369894630844 (0 1 2 3 2 4 5 3 5 3 2 6 3 1 0 7))
+> (run-21)
+2.81s (74.84826991034232 (0 1 2 3 2 4 5 3 5 3 2 6 3 6 0 4 7 0 1 1 7))
+
+> (run-4a)
+0.03s (2.380576052665758 (0 1 2 3))
+> (run-8a)
+0.03s (9.924843526466908 (0 1 2 3 2 4 5 3))
+> (run-12a)
+0.03s (21.47483629609758 (0 1 2 3 2 4 5 3 5 3 2 6))
+> (run-16a)
+0.05s (39.22651273787594 (0 1 2 3 2 4 5 3 5 3 2 6 3 7 0 8))
+> (run-21a)
+0.04s (70.23061173453178 (0 1 2 3 2 4 5 3 5 3 2 6 3 7 0 8 9 10 11 12 13))
+> (run-25a)
+0.04s (103.3741797061461 (0 1 2 3 2 4 5 3 5 3 2 6 3 7 0 8 9 10 11 12 13 14 15 1
+2)) 
+> (run-30a)
+0.63s (158.0381225531381 (0 1 2 3 2 4 5 3 5 3 2 6 3 7 0 8 9 10 1 11 12 13 14 1 2
+3 1 15 2 3)) 
+> (run-35a)
+19.32s (218.0955581668972 (0 1 2 3 2 4 5 3 5 3 2 6 3 7 0 8 9 10 1 11 12 13 14 1
+2 3 1 15 2 3 13 14 7 0 4))
+
+The above represents a ~100x increase in speed for both regular -a runs. Left
+(run-25) and (run-43a) going overnight. 
+
+
 
 
 **Also need to look at implementing A* search.
 
 **Also thinking about how to eliminate equivalent permutations...how to say that
   two permutations are equivalent without evaluating them?
+
+**OVERLAPPING SUBSETS--can run a bunch of smaller subsets to get independent
+  labelings and then use the overlap to remap labels to first labeling.
+
+**can we make best-possible run faster? Do we evaluate the score of the already
+  set labels every time?  If so, can we pass that as a parameter and just add to it?
 
 
 
