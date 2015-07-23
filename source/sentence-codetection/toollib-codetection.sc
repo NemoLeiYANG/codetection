@@ -397,27 +397,9 @@
 						   table-matrix)
 					(append labels (list i))
 					max-score-vec)
-				       ;; (let* ((fooA (new-best-possible
-				       ;; 		     (new-score subscore
-				       ;; 				(append labels
-				       ;; 					(list i))
-				       ;; 				table-matrix)
-				       ;; 		     (append labels (list i))
-				       ;; 		     max-score-vec))
-				       ;; 	      (fooB (best-possible
-				       ;; 		     (append labels (list i))
-				       ;; 		     table-matrix
-				       ;; 		     num-peaks)))
-				       ;; 	(if (> (dtrace "abs" (abs (- fooA fooB))) 0.001)
-				       ;; 	    (begin
-				       ;; 	     (dtrace "fooA" fooA)
-				       ;; 	     (dtrace "fooB" fooB)
-				       ;; 	     (dtrace "subscore" subscore)
-				       ;; 	     (dtrace "labels" labels)
-				       ;; 	     (dtrace "i" i)
-				       ;; 	     (fuck-up))
-				       ;; 	    fooA))
-				       )))
+				       )
+				   )
+			     )
 			    (+ max-label-to-consider 1)))
 	     (sorted-scores (sort scores < second))
 	     (bars
@@ -452,6 +434,99 @@
        (if (null? bars)
 	   (list infinity '())
 	   (first (sort bars < first)))))))
+
+
+
+;;This change actually slowed things down, no clue why--should have sped things up 23Jul15.
+
+;; (define (find-labels best labels table-matrix num-peaks prev-score max-score-vec)
+;;  (let* ((v (length labels))
+;; 	(num-labels (vector-length (third (matrix-ref table-matrix 0 0))))
+;; 	(max-label-to-consider
+;; 	 (if (null? labels)
+;; 	     0
+;; 	     (min (+ 1 (maximum labels)) (- num-labels 1))))
+;; 	(subscore prev-score);;(new-score prev-score labels table-matrix))
+;; 	)
+;;   (if (= v num-peaks)
+;;       (list subscore labels) ;;done
+;;       (let* ((scores (map-n (lambda (i)
+;; 			     ;;(list i
+;; 			     (let* ((new-score-val
+;; 				     (new-score subscore
+;; 						(append labels (list i))
+;; 						table-matrix)))
+;; 			      (vector i
+;; 				      (if (= v (- num-peaks 1))
+;; 					  new-score-val
+;; 					  ;; (new-score subscore
+;; 					  ;; 	   (append labels (list i))
+;; 					  ;; 	   table-matrix)
+;; 					  (new-best-possible
+;; 					   new-score-val
+;; 					   ;; (new-score subscore
+;; 					   ;; 	    (append labels
+;; 					   ;; 		    (list i))
+;; 					   ;; 	    table-matrix)
+;; 					   (append labels (list i))
+;; 					 max-score-vec)
+;; 					  ;; (let* ((fooA (new-best-possible
+;; 					  ;; 		     (new-score subscore
+;; 				       ;; 				(append labels
+;; 					  ;; 					(list i))
+;; 					  ;; 				table-matrix)
+;; 					  ;; 		     (append labels (list i))
+;; 					  ;; 		     max-score-vec))
+;; 					  ;; 	      (fooB (best-possible
+;; 					  ;; 		     (append labels (list i))
+;; 					  ;; 		     table-matrix
+;; 					  ;; 		     num-peaks)))
+;; 					  ;; 	(if (> (dtrace "abs" (abs (- fooA fooB))) 0.001)
+;; 					  ;; 	    (begin
+;; 					  ;; 	     (dtrace "fooA" fooA)
+;; 					  ;; 	     (dtrace "fooB" fooB)
+;; 					  ;; 	     (dtrace "subscore" subscore)
+;; 					  ;; 	     (dtrace "labels" labels)
+;; 					  ;; 	     (dtrace "i" i)
+;; 					  ;; 	     (fuck-up))
+;; 					  ;; 	    fooA))
+;; 					  )
+;; 				      new-score-val)
+;; 			      ))
+;; 			    (+ max-label-to-consider 1)))
+;; 	     (sorted-scores (sort scores < y));;second))
+;; 	     (bars
+;; 	      (let loop ((scored-labels sorted-scores)
+;; 			 (best best))
+;; 	       (if (null? scored-labels)
+;; 		   '()
+;; 		   (if (< (y (first scored-labels)) best)
+;; 		       (let* ((answer
+;; 			       (find-labels best
+;; 					    (append labels
+;; 						    (list
+;; 						     (x (first scored-labels))))
+;; 					    table-matrix
+;; 					    num-peaks
+;; 					    (z (first scored-labels));;subscore
+;; 					    max-score-vec))
+;; 			      (new-best
+;; 			       (if (< (first answer) best)
+;; 	       			   (first answer)
+;; 	       			   best)))
+;; 			(cons answer
+;; 			      (loop (rest scored-labels) new-best)))
+;; 		       (begin
+;; 			;; (dtrace "PRUNED"
+;; 			;; 	(format #f "score ~a best ~a num-labels ~a"
+;; 			;; 		(second (first scored-labels))
+;; 			;; 		best v))
+;; 			;; (dtrace "labels" (append labels (list (first (first scored-labels)))))
+;; 			(loop (rest scored-labels) best))))
+;; 	       )))
+;;        (if (null? bars)
+;; 	   (list infinity '())
+;; 	   (first (sort bars < first)))))))
 
 
 

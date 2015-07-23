@@ -8,8 +8,21 @@
 (define asm-16 (submatrix asm-full 0 0 16 16))
 (define asm-25 (submatrix asm-full 0 0 25 25))
 (define asm-30 (submatrix asm-full 0 0 30 30))
+(define asm-30-1 (submatrix asm-full 1 1 30 30))
+(define asm-30-2 (submatrix asm-full 2 2 30 30))
+(define asm-30-3 (submatrix asm-full 3 3 30 30))
+(define asm-30-4 (submatrix asm-full 4 4 30 30))
+(define asm-30-5 (submatrix asm-full 5 5 30 30))
+(define asm-30-6 (submatrix asm-full 6 6 30 30))
+(define asm-30-7 (submatrix asm-full 7 7 30 30))
+(define asm-30-8 (submatrix asm-full 8 8 30 30))
+(define asm-30-9 (submatrix asm-full 9 9 30 30))
+(define asm-30-10 (submatrix asm-full 10 10 30 30))
+(define asm-30-11 (submatrix asm-full 11 11 30 30))
+(define asm-30-12 (submatrix asm-full 12 12 30 30))
 (define asm-30b (submatrix asm-full 13 13 30 30))
 (define asm-35 (submatrix asm-full 0 0 35 35))
+(define asm-35b (submatrix asm-full 8 8 35 35))
 
 (define tables-tiny (build-table-matrix asm-tiny 4))
 (define tables-small (build-table-matrix asm-small 6))
@@ -29,8 +42,21 @@
 (define tables-16-a (build-table-matrix asm-16 16))
 (define tables-25-a (build-table-matrix asm-25 16))
 (define tables-30-a (build-table-matrix asm-30 16))
+(define tables-30-a-1 (build-table-matrix asm-30-1 16))
+(define tables-30-a-2 (build-table-matrix asm-30-2 16))
+(define tables-30-a-3 (build-table-matrix asm-30-3 16))
+(define tables-30-a-4 (build-table-matrix asm-30-4 16))
+(define tables-30-a-5 (build-table-matrix asm-30-5 16))
+(define tables-30-a-6 (build-table-matrix asm-30-6 16))
+(define tables-30-a-7 (build-table-matrix asm-30-7 16))
+(define tables-30-a-8 (build-table-matrix asm-30-8 16))
+(define tables-30-a-9 (build-table-matrix asm-30-9 16))
+(define tables-30-a-10 (build-table-matrix asm-30-10 16))
+(define tables-30-a-11 (build-table-matrix asm-30-11 16))
+(define tables-30-a-12 (build-table-matrix asm-30-12 16))
 (define tables-30-b (build-table-matrix asm-30b 16))
 (define tables-35-a (build-table-matrix asm-35 16))
+(define tables-35-b (build-table-matrix asm-35b 16))
 
 (define msv-tiny (compute-max-score-vec tables-tiny 4))
 (define msv-tiny-a (compute-max-score-vec tables-tiny-a 4))
@@ -48,11 +74,22 @@
 (define msv-25-a (compute-max-score-vec tables-25-a 25))
 (define msv-30 (compute-max-score-vec tables-30 30))
 (define msv-30-a (compute-max-score-vec tables-30-a 30))
+(define msv-30-a-1 (compute-max-score-vec tables-30-a-1 30))
+(define msv-30-a-2 (compute-max-score-vec tables-30-a-2 30))
+(define msv-30-a-3 (compute-max-score-vec tables-30-a-3 30))
+(define msv-30-a-4 (compute-max-score-vec tables-30-a-4 30))
+(define msv-30-a-5 (compute-max-score-vec tables-30-a-5 30))
+(define msv-30-a-6 (compute-max-score-vec tables-30-a-6 30))
+(define msv-30-a-7 (compute-max-score-vec tables-30-a-7 30))
+(define msv-30-a-8 (compute-max-score-vec tables-30-a-8 30))
+(define msv-30-a-9 (compute-max-score-vec tables-30-a-9 30))
+(define msv-30-a-10 (compute-max-score-vec tables-30-a-10 30))
+(define msv-30-a-11 (compute-max-score-vec tables-30-a-11 30))
+(define msv-30-a-12 (compute-max-score-vec tables-30-a-12 30))
+(define msv-30-b (compute-max-score-vec tables-30-b 30))
 (define msv-35 (compute-max-score-vec tables-35 35))
 (define msv-35-a (compute-max-score-vec tables-35-a 35))
-
-
-
+(define msv-35-b (compute-max-score-vec tables-35-b 35))
 
 (define (run-4)
  (time-thunk "~as " (lambda ()
@@ -111,20 +148,151 @@
 (define (run-30a)
  (time-thunk "~as " (lambda ()
 		     (find-labels infinity '(0 ) tables-30-a 30 0 msv-30-a))))
-;; (define (run-30b)
-;;  (time-thunk "~as " (lambda ()
-;; 		     (find-labels infinity '(0 ) tables-30-b 30))))
+
+(define (run-30a-1)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity
+				  '(0 )
+				  tables-30-a-1
+				  30
+				  0
+				  msv-30-a-1))))
+(define (run-30a-2)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity
+				  '(0 )
+				  tables-30-a-2
+				  30
+				  0
+				  msv-30-a-2))))
+
+(define (run-30a-3)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity
+				  '(0 )
+				  tables-30-a-3
+				  30
+				  0
+				  msv-30-a-3))))
+
+(define (run-30a-4)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity
+				  '(0 )
+				  tables-30-a-4
+				  30
+				  0
+				  msv-30-a-4))))
+
+(define (run-30a-5)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity
+				  '(0 )
+				  tables-30-a-5
+				  30
+				  0
+				  msv-30-a-5))))
+
+(define (run-30a-6)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity
+				  '(0 )
+				  tables-30-a-6
+				  30
+				  0
+				  msv-30-a-6))))
+
+(define (run-30a-7)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity
+				  '(0 )
+				  tables-30-a-7
+				  30
+				  0
+				  msv-30-a-7))))
+
+(define (run-30a-8)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity
+				  '(0 )
+				  tables-30-a-8
+				  30
+				  0
+				  msv-30-a-8))))
+
+(define (run-30a-9)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity
+				  '(0 )
+				  tables-30-a-9
+				  30
+				  0
+				  msv-30-a-9))))
+
+(define (run-30a-10)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity
+				  '(0 )
+				  tables-30-a-10
+				  30
+				  0
+				  msv-30-a-10))))
+
+(define (run-30a-11)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity
+				  '(0 )
+				  tables-30-a-11
+				  30
+				  0
+				  msv-30-a-11))))
+
+(define (run-30a-12)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity
+				  '(0 )
+				  tables-30-a-12
+				  30
+				  0
+				  msv-30-a-12))))
+
+(define (run-30b)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity '(0 ) tables-30-b 30 0 msv-30-b))))
 
 (define (run-35a)
  (time-thunk "~as " (lambda ()
 		     (find-labels infinity '(0 ) tables-35-a 35 0 msv-35-a))))
+
+(define (run-35b)
+ (time-thunk "~as " (lambda ()
+		     (find-labels infinity '(0 ) tables-35-b 35 0 msv-35-b))))
+
 
 (define (run-43a)
  (time-thunk "~as " (lambda ()
 		     (find-labels infinity '(0 ) tables-full-a 43 0 msv-full-a))))
 
 
-
+(define (rolling-overlap-30)
+ (time-thunk "entire run: ~as "
+	     (lambda ()
+	      (list
+	       (dtrace "run-30a" (run-30a))
+	       (dtrace "run-30a-1" (run-30a-1))
+	       (dtrace "run-30a-2" (run-30a-2))
+	       (dtrace "run-30a-3" (run-30a-3))
+	       (dtrace "run-30a-4" (run-30a-4))
+	       (dtrace "run-30a-5" (run-30a-5))
+	       (dtrace "run-30a-6" (run-30a-6))
+	       (dtrace "run-30a-7" (run-30a-7))
+	       (dtrace "run-30a-8" (run-30a-8))
+	       (dtrace "run-30a-9" (run-30a-9))
+	       (dtrace "run-30a-10" (run-30a-10))
+	       (dtrace "run-30a-11" (run-30a-11))
+	       (dtrace "run-30a-12" (run-30a-12))
+	       (dtrace "run-30b" (run-30b))
+	       ))))
 ;; ;;functions for branch and bound
 
 ;; (define (build-table sim num-labels)

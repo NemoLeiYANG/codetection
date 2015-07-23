@@ -2745,7 +2745,48 @@ each get label 13 once, all other labels unique to an object
 The above represents a ~100x increase in speed for both regular -a runs. Left
 (run-25) and (run-43a) going overnight. 
 
+----------------git commit dd9e025--------------- 
 
+23 Jul 15
+
+--(run-25) from last night finished
+> (run-25)
+1300.34s (111.6538437921642 (0 1 2 3 2 4 5 3 5 3 2 6 3 1 4 7 0 4 1 3 0 6 7 1 2))
+
+--(run-30b) from yesterday finished (this was started before the revamp of the
+  code yesterday).
+> (run-30b)
+70828.21s (176.8273516672281 (0 1 2 3 4 5 6 7 8 9 5 10 6 5 11 10 6 12 9 0 1 13
+  13 14 5 12 14 10 15 13))
+
+--(run-43a) still running as of 1615.  Guess the estimate was a bit off.
+
+--Re-ran (run-30b) with updated code and got the same results MUCH faster
+> (run-30b)
+395.57s (176.8273516672281 (0 1 2 3 4 5 6 7 8 9 5 10 6 5 11 10 6 12 9 0 1 13 13 14 5 12 14 10 15 13))
+
+--Looked at (run-30a) and (run-30b) and saw that there was no overlap on stool.
+  Trying 35a&b--is there a way to ensure overlap?  Maybe shift by one and have
+  many overlapping answers.  (run-35a) returns after ~20 seconds, but (run-35b)
+  still running after multiple hours.  Can only guess that the reason that runs
+  so much longer is because the data in that part of the matrix doesn't allow it
+  to prune as effectively as the earlier data.
+
+--Made the changes that Dan and I talked about yesterday in find-labels where we
+  are running new-score twice--changes didn't have much of an effect (actually
+  slowed down by a small amount).  Changing back, but left changes in the file,
+  commented out. Actually figured out that it was something weird going on with
+  seykhl; both ways of the code ran at roughly the same speed, but 25% slower
+  than yesterday.  Ran the same code on chino and got yesterday's speeds.
+
+--Trying a rolling overlap with the 30-peak sets (since that is the largest I've
+  gotten the -b version to return with so far).  Called it rolling-overlap-30.
+  When it finishes, need to look at the output and figure out how to sync the
+  results back together.
+
+
+***Try doing something with the output lists by adding #f where missing values
+   are so that all are 43 elements long?
 
 
 **Also need to look at implementing A* search.
