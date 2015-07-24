@@ -2784,10 +2784,42 @@ The above represents a ~100x increase in speed for both regular -a runs. Left
   When it finishes, need to look at the output and figure out how to sync the
   results back together.
 
+----------------git commit b7a277f--------------- 
+
+24 Jul 15
+
+--(run-35b) returned overnight after ~15 hours of running.
+> (run-35b)
+53285.22s (231.0130697714877 (0 1 2 3 1 4 5 6 7 5 8 9 10 11 12 8 2 1 8 9 2 1 13
+12 7 5 14 14 15 8 13 15 2 4 14))
+
+--Talked with Dan about doing seeded full runs (probably seeded from 30 or 35)
+  with wraparound overlap, then resorting results to original order and doing a
+  binary decision on each pair in each run to determine if two peaks are of the
+  same label or not.  Can then use these decisions as votes to determine an
+  overall labeling (must have an odd number of runs)
+
+--Re-ran a run to 43 seeded from 30-a and it returned in 42s.  I think the above
+  idea might be feasible.3
+
+--After talking with Jeff in meeting, decided to abandon the idea of multiple
+  overlapping seeded runs.  Instead going to look at using color histograms as
+  an additional measure of similarity in order to enhance similarity measure.
+
+--Started work on step_4_build_similarity_matrix.m to output similarity matrix
+  based on dense SIFT and color histograms.  Downloaded some color histogram
+  code from
+  http://www.mathworks.com/matlabcentral/fileexchange/43630-color-histogram-of-an-rgb-image
+  to try out.
+
+--Have first draft of step_4_build_similarity_matrix running--need to check/debug.
+
 
 ***Try doing something with the output lists by adding #f where missing values
    are so that all are 43 elements long?
+***Adjust all later overlaps to first set of labels, then do voting...
 
+**think about doing a seeded run to 43 with the 30-a run
 
 **Also need to look at implementing A* search.
 
