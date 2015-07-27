@@ -1,6 +1,7 @@
 
 ;;This is the test data
-(define asm-full (read-object-from-file "asm_20150702.sc"))
+;;(define asm-full (read-object-from-file "asm_20150702.sc"))
+(define asm-full (read-object-from-file "asm_20150727a.sc"))
 (define asm-tiny (submatrix asm-full 0 0 4 4))
 (define asm-small (submatrix asm-full 0 0 8 8))
 (define asm-half (submatrix asm-full 0 0 21 21))

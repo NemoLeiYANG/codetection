@@ -2814,6 +2814,86 @@ The above represents a ~100x increase in speed for both regular -a runs. Left
 
 --Have first draft of step_4_build_similarity_matrix running--need to check/debug.
 
+----------------git commit d373c5f--------------- 
+
+27 Jul 15
+
+--(run-43a) returned after ~89 hours
+> (run-43a)
+320073.34s (347.2546002514632 (0 1 2 3 2 4 5 3 5 3 2 6 3 7 0 8 9 10 1 11 12 13 14 1 2 3 1 11 2 3 13 14 9 0 4 4 15 1 10 15 2 7 4))
+
+--Looking into using earth mover distance (emd option to phist2) instead of
+  chi-squared distance on advice of Jeff.  Could probably use this directly as a
+  dissimilarity measure, since it is bigger the greater the difference, and it
+  is NOT limited to [0,1] range.  But then what to use for similarity measure?
+  Maybe keep similarity as same chisq based dsift measure as before, and use emd
+  with color histograms for dissimilarity...
+
+--Run started on Friday errored because of typo in code.  Fixed and reran.
+  After ~3 hours, still running--think it might be because of new color
+  histograms.  Used 64 for nBins parameter, which gives 64^3-long histogram.
+  Perhaps need to try with nBins at 16 (or 8).
+
+--Got new similarity matrix to return after putting color histogram nBins to
+  16.  Running find-labels on this gives bad (but FAST!) results on both regular
+  and a runs. 
+> (run-4)
+0.03s (3.588659437122793 (0 0 0 1))
+> (run-8)
+0.04s (15.70878123818661 (0 0 0 1 0 0 2 1))
+> (run-16)
+0.03s (66.67347196219464 (0 0 0 1 0 0 2 1 2 1 0 0 1 0 0 3))
+> (run-25)
+0.13s (174.1102771188035 (0 0 0 1 0 0 2 1 2 1 0 0 1 0 0 3 0 0 0 1 4 0 0 0 0))
+> (run-30)
+0.42s (249.9530239584043 (0 0 0 1 0 0 2 1 2 1 0 0 1 0 0 3 0 0 0 1 4 0 0 0 0 1 0
+  0 0 1)) 
+> (run-35)
+5.55s (344.0566675056085 (0 0 0 1 0 0 2 1 2 1 0 0 1 0 0 3 0 0 0 1 4 0 0 0 0 1 0
+  0 0 1 0 0 0 0 0))
+> (run-43)
+2953.34s (521.6963659512988 (0 0 0 1 0 0 2 1 2 1 0 0 1 0 0 3 0 0 0 1 4 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0))
+> (run-4a)
+0.04s (3.588659437122793 (0 0 0 1))
+> (run-8a)
+0.04s (15.70878123818661 (0 0 0 1 0 0 2 1))
+> (run-12a)
+0.04s (35.44489266279697 (0 0 0 1 0 0 2 1 2 1 0 0))
+> (run-16a)
+0.04s (66.67347196219464 (0 0 0 1 0 0 2 1 2 1 0 0 1 0 0 3))
+> (run-21a)
+0.04s (120.3894684983797 (0 0 0 1 0 0 2 1 2 1 0 0 1 0 0 3 0 0 0 1 4))
+> (run-25a)
+0.06s (174.1102771188035 (0 0 0 1 0 0 2 1 2 1 0 0 1 0 0 3 0 0 0 1 4 0 0 0 0))
+> (run-30a)
+0.43s (249.9530239584043 (0 0 0 1 0 0 2 1 2 1 0 0 1 0 0 3 0 0 0 1 4 0 0 0 0 1 0
+  0 0 1)) 
+> (run-35a)
+5.46s (344.0566675056085 (0 0 0 1 0 0 2 1 2 1 0 0 1 0 0 3 0 0 0 1 4 0 0 0 0 1 0
+  0 0 1 0 0 0 0 0))
+> (run-43a)
+2873.03s (521.6963659512988 (0 0 0 1 0 0 2 1 2 1 0 0 1 0 0 3 0 0 0 1 4 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0) )
+
+--Need to think about better/other ways to determine sim/dissim.  Looking at new
+  asm in spreadsheet (asm_20150727a.mat), can see that the column max is almost
+  always the right answer.  Dan suggested using a sigmoid function with a
+  threshold, but must find threshold by plotting likes and unlikes to find if
+  there is a gap.
+
+--Trying sigmoid threshold (playing with values around 0.58, 0.65, 0.8) in
+  build-tables, but getting really odd results--things that should be different
+  are getting the same label.  As far as Dan and I can tell, we've got the right
+  data in the tables.  But we still get the same answers as before implementing
+  the sigmoid.  Tried new sigmoid functions with original similarity data and
+  got the same results as before--don't think the sigmoid function is having the
+  effect we think it is.
+
+--Going to try a re-run of step_4_build_similarity_matrix that outputs the color
+  histogram and dsift matrices individually and computed with both chi-squared
+  and emd metrics.
+
+--Think we have sigmoid issue figured out--now need to adjust the threshold.
+
 
 ***Try doing something with the output lists by adding #f where missing values
    are so that all are 43 elements long?
