@@ -2894,12 +2894,32 @@ The above represents a ~100x increase in speed for both regular -a runs. Left
 
 --Think we have sigmoid issue figured out--now need to adjust the threshold.
 
+----------------git commit 2c37dcd--------------- 
 
-***Try doing something with the output lists by adding #f where missing values
-   are so that all are 43 elements long?
-***Adjust all later overlaps to first set of labels, then do voting...
+28 Jul 15
 
-**think about doing a seeded run to 43 with the 30-a run
+--Re-run of step_4_... finished after ~17 minutes.  Fixed a problem that the emd
+  computations should have been using mins and ascending scores but were still
+  using the maxes and descending scores that chisq computations used.  Matrix
+  outputs make more sense now.
+
+--Going to try to play with the m_factor parameter in step_4_...  This controls
+  what percentage of the matches are used in the averaging.  asm_20150728a.mat
+  has the output when m_factor is 0.5.  Going to try runs that vary that
+  parameter both higher and lower to see the effect.  Have m_factor of 1, 0.75,
+  0.5, 0.25 saved in asm_20150728b.mat.  Have m_factor of 0.2, 0.15, 0.1, 0.05
+  saved in asm_20150728c.mat.  Need to look at these and see if there is a
+  threshold between good and bad.
+
+
+
+***Thinking about changing plot_simi_values so that the plots are separated by
+   ground-truth label and the good and bad of each are plotted on the same x
+   value--this might show us if there's a different threshold for different
+   labels.
+
+
+
 
 **Also need to look at implementing A* search.
 

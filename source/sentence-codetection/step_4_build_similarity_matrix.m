@@ -1,6 +1,6 @@
 function ... %[fv_dsift, fv_color_hist, similarity_matrix] = ...
     [sim_dsift_chisq, sim_dsift_emd, sim_chist_chisq, sim_chist_emd] = ...
-    step_4_build_similarity_matrix(dataset_dir,data_output_dirname)
+    step_4_build_similarity_matrix(dataset_dir,data_output_dirname,m_factor)
 
 
 
@@ -114,7 +114,7 @@ sim_chist_chisq = zeros(M,'single');
 sim_chist_emd = zeros(M,'single');
 
 % n_factor = 0.5; %used in condensing simi_matrix
-m_factor = 0.5; 
+%m_factor = 0.5; %USED AS INPUT PARAMETER NOW
 
 for i = 1:M %map-vector
     [new_i,new_j] = find_indices(i,temp_labels_by_floorplan);
@@ -171,6 +171,9 @@ for i = 1:M %map-vector
         
         %MAYBE try something with 1a, 2b here.
         
+%         simi_matrix(1:7,1:7)
+%         simi_matrix3(1:7,1:7)
+        
         %dsift chisq
         row_maxes = max(simi_matrix,[],2);
         col_maxes = max(simi_matrix,[],1);
@@ -192,25 +195,24 @@ for i = 1:M %map-vector
         avg_simi4 = mean(sorted_col_maxes2(1:n_c_elem2));
         
         %dsift emd
-        row_maxes3 = max(simi_matrix3,[],2);
-        col_maxes3 = max(simi_matrix3,[],1);
-        sorted_row_maxes3 = sort(row_maxes3,'descend');
-        sorted_col_maxes3 = sort(col_maxes3,'descend');
-        n_r_elem3 = round(m_factor*length(row_maxes3));
-        n_c_elem3 = round(m_factor*length(col_maxes3));
-        avg_simi5 = mean(sorted_row_maxes3(1:n_r_elem3));
-        avg_simi6 = mean(sorted_col_maxes3(1:n_c_elem3));
-        
+        row_mins = min(simi_matrix3,[],2);
+        col_mins = min(simi_matrix3,[],1);
+        sorted_row_mins = sort(row_mins,'ascend');
+        sorted_col_mins = sort(col_mins,'ascend');
+        n_r_elem3 = round(m_factor*length(row_mins));
+        n_c_elem3 = round(m_factor*length(col_mins));
+        avg_simi5 = mean(sorted_row_mins(1:n_r_elem3));
+        avg_simi6 = mean(sorted_col_mins(1:n_c_elem3));
         
         %chist emd
-        row_maxes4 = max(simi_matrix4,[],2);
-        col_maxes4 = max(simi_matrix4,[],1);
-        sorted_row_maxes4 = sort(row_maxes4,'descend');
-        sorted_col_maxes4 = sort(col_maxes4,'descend');
-        n_r_elem4 = round(m_factor*length(row_maxes4));
-        n_c_elem4 = round(m_factor*length(col_maxes4));
-        avg_simi7 = mean(sorted_row_maxes4(1:n_r_elem4));
-        avg_simi8 = mean(sorted_col_maxes4(1:n_c_elem4));
+        row_mins2 = min(simi_matrix4,[],2);
+        col_mins2 = min(simi_matrix4,[],1);
+        sorted_row_mins2 = sort(row_mins2,'ascend');
+        sorted_col_mins2 = sort(col_mins2,'ascend');
+        n_r_elem4 = round(m_factor*length(row_mins2));
+        n_c_elem4 = round(m_factor*length(col_mins2));
+        avg_simi7 = mean(sorted_row_mins2(1:n_r_elem4));
+        avg_simi8 = mean(sorted_col_mins2(1:n_c_elem4));
         %old way
         %avg_simi = max(mean(simi_matrix,1));
         %avg_simi2 = max(mean(simi_matrix,2));

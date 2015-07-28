@@ -4,7 +4,8 @@ function [matched, all_values] = plot_simi_values(simi)
 
 all_values = [];
 matched = [];
-
+varname = inputname(1);
+display(varname);
 matching = {{1,15,18,28,31,34,39} %chairs
         {2,14,19,24,27,33,38,42} %bag-book
         {3,5,11,25,29,41} %table
@@ -41,6 +42,9 @@ figure;
 scatter(zeros(length(all_values),1),all_values,'r');
 hold on;
 scatter(ones(length(matched),1),matched,'g');
-axis([-1,2,0,1]);
+%axis([-1,2,0,1]);
+xlim([-1,2]);
+t=title(varname);
+set(t,'Interpreter','none');
 
 end %function
