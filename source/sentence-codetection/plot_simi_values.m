@@ -5,7 +5,7 @@ function [matched, all_values] = plot_simi_values(simi)
 all_values = [];
 matched = [];
 varname = inputname(1);
-display(varname);
+%display(varname);
 matching = {{1,15,18,28,31,34,39} %chairs
         {2,14,19,24,27,33,38,42} %bag-book
         {3,5,11,25,29,41} %table
@@ -38,12 +38,23 @@ for i = 1:rows
 end %for i
 
 
+% figure;
+% scatter(zeros(length(all_values),1),all_values,'r');
+% hold on;
+% scatter(ones(length(matched),1),matched,'g');
+% %axis([-1,2,0,1]);
+% xlim([-1,2]);
+% t=title(varname);
+
+
 figure;
-scatter(zeros(length(all_values),1),all_values,'r');
+hist(matched,20)
+h = findobj(gca,'Type','patch');
+set(h,'FaceColor','g','EdgeColor','w','facealpha',0.75)
 hold on;
-scatter(ones(length(matched),1),matched,'g');
-%axis([-1,2,0,1]);
-xlim([-1,2]);
+hist(all_values,20)
+h1 = findobj(gca,'Type','patch');
+set(h1,'facealpha',0.75);
 t=title(varname);
 set(t,'Interpreter','none');
 

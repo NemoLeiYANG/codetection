@@ -2911,6 +2911,52 @@ The above represents a ~100x increase in speed for both regular -a runs. Left
   saved in asm_20150728c.mat.  Need to look at these and see if there is a
   threshold between good and bad.
 
+----------------git commit 608d1f5--------------- 
+
+31 Jul 15
+
+--Looked at histograms of good and bad matches with various descriptors and
+  various measures.  Images stored in good-bad-comparison/.  Email traffic,
+  notes: 
+  Me to Jeff:
+The images are in upplysingaoflun:/tmp/good-bad-comparison
+
+Files are named in x-y-z.png format, where x is {chist, dsift} for the
+type of descriptor (color histogram or dense SIFT), y is {chisq,emd}
+for the distance metric (chi squared distance (truly it is 1-chisq, so
+higher is better there) or earth mover distance (lower is better)),
+and z is {100percent, top75percent, top50percent, top25percent,
+top20percent, top15percent, top10percent, top05percent}, which
+represents what percentage of the sorted image-to-image comparison
+scores were used to compute the average group-to-group score.
+
+Correct matches are plotted in green, bad matches are in blue, and the
+overlap is shown in the white outline.  I just used equal number of
+bins between both histograms (rather than equally-sized bins), but I
+think these are still adequate to show the general idea.
+
+  Jeff reply:
+On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
+> dsift-chisq-15  0.52
+> dsift-chisq-20  0.55
+> dsift-chisq-25  0.48
+> dsift-chisq-50  0.4
+> dsift-chisq-75  0.36
+> dsift-chisq-100 0.35
+
+  Notes:
+  --Look at color histogram finding tool--might be bogus
+  --Visualize the color histograms of standard images (i.e., orange cone
+    vs. black backpack) and should be able to see a difference 
+
+--Get some help from Haonan with dsift/chisq since my code is based on his.
+  Send him a simple data set and the code that does dsift and have him look to
+  see if something looks bogus.
+
+
+
+**simple dataset to Haonan with my code on dsift--look to see if it makes sense
+  compared to his stuff.
 
 
 ***Thinking about changing plot_simi_values so that the plots are separated by
