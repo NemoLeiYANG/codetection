@@ -68,7 +68,7 @@ end %for i
 ssize = 64; %HARDCODED ssize: the size to which each proposal is rescaled 
 %               to (for phow_hist); ssize should be 2^i; increase i to 
 %               trade efficiency for accuracy
-ch_num_bins = 16; %HARDCODED for now
+ch_num_bins = 4;%16; %HARDCODED for now
 ch_numel = ch_num_bins^3;
 
 % dsift_weight = 1; %HARDCODED for now

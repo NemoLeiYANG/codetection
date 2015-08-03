@@ -2953,6 +2953,27 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
   Send him a simple data set and the code that does dsift and have him look to
   see if something looks bogus.
 
+----------------git commit f222a46--------------- 
+
+3 Aug 15
+
+--Tried running color histograms with smaller numbers of bins (4^3 = 64), but
+  results from both chist and emd metrics were bad.  Thinking that it might be
+  because the histograms are cubic (bins on each axis of rgb 3-space) and then
+  are vectorized before doing the metric--moves that should be high-cost are
+  actually low-cost because of vectorization.
+--Thinking that it might be better to write my own color histogram code that
+  keeps each color channel (whether rgb, hsv, or Lab) separate, compares like
+  channels, and then takes that vector of 3 differences as a point in 3-space.
+  Points closer to the origin are evidence of more similar images.  Started
+  work on Lab_histogram.m to implement this--looks like it works correctly.
+  Compared 4 cone images (orange) to 4 bag images (black) and got histograms
+  that looked like each other for each group and had significant differences
+  between the groups.
+--Also downloaded RGB2Lab and Lab2RGB from
+  http://www.mathworks.com/matlabcentral/fileexchange/24009-rgb2lab.  Seems
+  legit, author is from Berkeley--need it because our version of Matlab does not
+  have it built in like newer versions.
 
 
 **simple dataset to Haonan with my code on dsift--look to see if it makes sense
