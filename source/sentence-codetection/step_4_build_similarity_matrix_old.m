@@ -1,6 +1,5 @@
 function ... %[fv_dsift, fv_color_hist, similarity_matrix] = ...
-    [sim_dsift_chisq, sim_dsift_emd, sim_chist_chisq3d, sim_chist_emd3d...
-    sim_chist_chisq2d,sim_chist_emd2d] = ...
+    [sim_dsift_chisq, sim_dsift_emd, sim_chist_chisq, sim_chist_emd] = ...
     step_4_build_similarity_matrix(dataset_dir,data_output_dirname,m_factor)
 
 
@@ -69,11 +68,8 @@ end %for i
 ssize = 64; %HARDCODED ssize: the size to which each proposal is rescaled 
 %               to (for phow_hist); ssize should be 2^i; increase i to 
 %               trade efficiency for accuracy
-
-ch_num_bins = 16; %HARDCODED for now
-ch_cxform = makecform('srgb2lab');
-% ch_num_bins = 4;%16; %HARDCODED for now
-% ch_numel = ch_num_bins^3;
+ch_num_bins = 4;%16; %HARDCODED for now
+ch_numel = ch_num_bins^3;
 
 % dsift_weight = 1; %HARDCODED for now
 % chist_weight = 1;
@@ -91,15 +87,13 @@ for i = 1:num_floorplans
         tmp_file_list = dir(img_dir);
         num_files = numel(tmp_file_list) - 2; % -2 is because of . and ..
         tmp_phists = zeros(num_files, 12000,'single'); %HARDCODED for phist size
-        %tmp_ch = zeros(num_files, ch_numel,'single');
-        tmp_ch = zeros(3,ch_num_bins,num_files);
+        tmp_ch = zeros(num_files, ch_numel,'single');
         for k = 1:num_files %for each image in fplabel dir
             img = imread(strcat(img_dir,tmp_file_list(k+2).name));
             hist_out = phow_hist(img,ssize);
-            %ch_out = rgbhist_fast(img,ch_num_bins,1);
-            [ch_out,~] = Lab_histogram(img,ch_num_bins,ch_cxform);
+            ch_out = rgbhist_fast(img,ch_num_bins,1);
             tmp_phists(k,:) = hist_out';
-            tmp_ch(:,:,k) = ch_out;
+            tmp_ch(k,:) = ch_out';
         end %for k
      tmp_fv_dsift{j} = tmp_phists;
      tmp_fv_ch{j} = tmp_ch;
@@ -116,13 +110,9 @@ M = sum(temp_labels_by_floorplan);
 %similarity_matrix = zeros(M,'single');
 sim_dsift_chisq = zeros(M,'single');
 sim_dsift_emd = zeros(M,'single');
-% sim_chist_chisq = zeros(M,'single');
-% sim_chist_emd = zeros(M,'single');
+sim_chist_chisq = zeros(M,'single');
+sim_chist_emd = zeros(M,'single');
 
-sim_chist_chisq3d = zeros(M);
-sim_chist_emd3d = zeros(M);
-sim_chist_chisq2d = zeros(M);
-sim_chist_emd2d = zeros(M);
 % n_factor = 0.5; %used in condensing simi_matrix
 %m_factor = 0.5; %USED AS INPUT PARAMETER NOW
 
@@ -133,11 +123,9 @@ for i = 1:M %map-vector
         [new_i2,new_j2] = find_indices(j,temp_labels_by_floorplan);
         [num_img_j,~] = size(fv_dsift{new_i2}{new_j2});
         simi_matrix = zeros(num_img_i,num_img_j,'single'); %dsift chisq
-        simi_matrix2 = zeros(num_img_i,num_img_j); %chist chisq 3d
+        simi_matrix2 = zeros(num_img_i,num_img_j,'single'); %chist chisq
         simi_matrix3 = zeros(num_img_i,num_img_j,'single'); %dsift emd
-        simi_matrix4 = zeros(num_img_i,num_img_j); %chisq emd 3d
-        simi_matrix5 = zeros(num_img_i,num_img_j); %chisq chisq 2d
-        simi_matrix6 = zeros(num_img_i,num_img_j); %chisq emd 2d
+        simi_matrix4 = zeros(num_img_i,num_img_j,'single'); %chisq emd
         temp_hists1 = fv_dsift{new_i}{new_j};
         temp_hists2 = fv_dsift{new_i2}{new_j2};
         temp_hists3 = fv_color_hist{new_i}{new_j};
@@ -145,32 +133,24 @@ for i = 1:M %map-vector
         parfor k = 1:num_img_i %let with 2 nested map-vectors
             %hist1 = feature_vectors{new_i}{new_j}(k,:);
             hist1 = temp_hists1(k,:);
-            hist3 = temp_hists3(:,:,k);
+            hist3 = temp_hists3(k,:);
             temp_mat = zeros(1,num_img_j);
             temp_mat2 = zeros(1,num_img_j);
             temp_mat3 = zeros(1,num_img_j);
             temp_mat4 = zeros(1,num_img_j);
-            temp_mat5 = zeros(1,num_img_j);
-            temp_mat6 = zeros(1,num_img_j);
             for l = 1:num_img_j
                 %hist2 = feature_vectors{new_i2}{new_j2}(l,:);
                 hist2 = temp_hists2(l,:);
                 temp_mat(l) = 1 - pdist2(hist1,hist2,'chisq');
                 temp_mat3(l) = pdist2(hist1,hist2,'emd');
-                hist4 = temp_hists4(:,:,l);
-%                 temp_mat2(l) = 1 - pdist2(hist3,hist4,'chisq');
-%                 temp_mat4(l) = pdist2(hist3,hist4,'emd');
-                temp_mat2(l) = histogram_distance(hist3,hist4,'chisq',3);
-                temp_mat4(l) = histogram_distance(hist3,hist4,'emd',3);
-                temp_mat5(l) = histogram_distance(hist3,hist4,'chisq',2);
-                temp_mat6(l) = histogram_distance(hist3,hist4,'emd',2);
+                hist4 = temp_hists4(l,:);
+                temp_mat2(l) = 1 - pdist2(hist3,hist4,'chisq');
+                temp_mat4(l) = pdist2(hist3,hist4,'emd');
             end %for l
             simi_matrix(k,:) = temp_mat; %d-c
-            simi_matrix2(k,:) = temp_mat2; %c-c3
+            simi_matrix2(k,:) = temp_mat2; %c-c
             simi_matrix3(k,:) = temp_mat3; %d-e
-            simi_matrix4(k,:) = temp_mat4; %c-e3
-            simi_matrix5(k,:) = temp_mat5; %c-c2
-            simi_matrix6(k,:) = temp_mat6; %c-e2
+            simi_matrix4(k,:) = temp_mat4; %c-e
         end %for k
         %         %atempt 2: 1b, 2a
 %         [num_col_elements,num_row_elements] = size(simi_matrix);
@@ -204,23 +184,15 @@ for i = 1:M %map-vector
         avg_simi = mean(sorted_row_maxes(1:n_r_elem));
         avg_simi2 = mean(sorted_col_maxes(1:n_c_elem));
         
-        %chist chisq 3d
-%         row_maxes2 = max(simi_matrix2,[],2);
-%         col_maxes2 = max(simi_matrix2,[],1);
-%         sorted_row_maxes2 = sort(row_maxes2,'descend');
-%         sorted_col_maxes2 = sort(col_maxes2,'descend');
-%         n_r_elem2 = round(m_factor*length(row_maxes2));
-%         n_c_elem2 = round(m_factor*length(col_maxes2));
-%         avg_simi3 = mean(sorted_row_maxes2(1:n_r_elem2));
-%         avg_simi4 = mean(sorted_col_maxes2(1:n_c_elem2));
-        row_m = min(simi_matrix2,[],2);
-        col_m = min(simi_matrix2,[],1);
-        sorted_row_m = sort(row_m,'ascend');
-        sorted_col_m = sort(col_m,'ascend');
-        n_r_elem2 = round(m_factor*length(row_m));
-        n_c_elem2 = round(m_factor*length(col_m));
-        avg_simi3 = mean(sorted_row_m(1:n_r_elem2));
-        avg_simi4 = mean(sorted_col_m(1:n_c_elem2));      
+        %chist chisq
+        row_maxes2 = max(simi_matrix2,[],2);
+        col_maxes2 = max(simi_matrix2,[],1);
+        sorted_row_maxes2 = sort(row_maxes2,'descend');
+        sorted_col_maxes2 = sort(col_maxes2,'descend');
+        n_r_elem2 = round(m_factor*length(row_maxes2));
+        n_c_elem2 = round(m_factor*length(col_maxes2));
+        avg_simi3 = mean(sorted_row_maxes2(1:n_r_elem2));
+        avg_simi4 = mean(sorted_col_maxes2(1:n_c_elem2));
         
         %dsift emd
         row_mins = min(simi_matrix3,[],2);
@@ -232,7 +204,7 @@ for i = 1:M %map-vector
         avg_simi5 = mean(sorted_row_mins(1:n_r_elem3));
         avg_simi6 = mean(sorted_col_mins(1:n_c_elem3));
         
-        %chist emd 3d
+        %chist emd
         row_mins2 = min(simi_matrix4,[],2);
         col_mins2 = min(simi_matrix4,[],1);
         sorted_row_mins2 = sort(row_mins2,'ascend');
@@ -241,28 +213,6 @@ for i = 1:M %map-vector
         n_c_elem4 = round(m_factor*length(col_mins2));
         avg_simi7 = mean(sorted_row_mins2(1:n_r_elem4));
         avg_simi8 = mean(sorted_col_mins2(1:n_c_elem4));
-        
-        %chist chisq 2d
-        row_m2 = min(simi_matrix5,[],2);
-        col_m2 = min(simi_matrix5,[],1);
-        sorted_row_m2 = sort(row_m2,'ascend');
-        sorted_col_m2 = sort(col_m2,'ascend');
-        n_r_elem5 = round(m_factor*length(row_m2));
-        n_c_elem5 = round(m_factor*length(col_m2));
-        avg_simi9 = mean(sorted_row_m2(1:n_r_elem5));
-        avg_simi10 = mean(sorted_col_m2(1:n_c_elem5));        
-        
-        %chist emd 2d
-        row_m3 = min(simi_matrix6,[],2);
-        col_m3 = min(simi_matrix6,[],1);
-        sorted_row_m3 = sort(row_m3,'ascend');
-        sorted_col_m3 = sort(col_m3,'ascend');
-        n_r_elem6 = round(m_factor*length(row_m3));
-        n_c_elem6 = round(m_factor*length(col_m3));
-        avg_simi11 = mean(sorted_row_m3(1:n_r_elem6));
-        avg_simi12 = mean(sorted_col_m3(1:n_c_elem6));          
-        
-        
         %old way
         %avg_simi = max(mean(simi_matrix,1));
         %avg_simi2 = max(mean(simi_matrix,2));
@@ -275,24 +225,18 @@ for i = 1:M %map-vector
 %         similarity_matrix(j,i) = simi_val; 
 
         dsift_chisq = (avg_simi + avg_simi2)/2.0;
-        chist_chisq3d = (avg_simi3 + avg_simi4)/2.0;
+        chist_chisq = (avg_simi3 + avg_simi4)/2.0;
         dsift_emd = (avg_simi5 + avg_simi6)/2.0;
-        chist_emd3d = (avg_simi7 + avg_simi8)/2.0;
-        chist_chisq2d = (avg_simi9 + avg_simi10)/2.0;
-        chist_emd2d = (avg_simi11 + avg_simi12)/2.0;
+        chist_emd = (avg_simi7 + avg_simi8)/2.0;
         
         sim_dsift_chisq(i,j) = dsift_chisq;
         sim_dsift_chisq(j,i) = dsift_chisq;
         sim_dsift_emd(i,j) = dsift_emd;
         sim_dsift_emd(j,i) = dsift_emd;
-        sim_chist_chisq3d(i,j) = chist_chisq3d;
-        sim_chist_chisq3d(j,i) = chist_chisq3d;
-        sim_chist_emd3d(i,j) = chist_emd3d;
-        sim_chist_emd3d(j,i) = chist_emd3d;
-        sim_chist_chisq2d(i,j) = chist_chisq2d;
-        sim_chist_chisq2d(j,i) = chist_chisq2d;
-        sim_chist_emd2d(i,j) = chist_emd2d;
-        sim_chist_emd2d(j,i) = chist_emd2d;
+        sim_chist_chisq(i,j) = chist_chisq;
+        sim_chist_chisq(j,i) = chist_chisq;
+        sim_chist_emd(i,j) = chist_emd;
+        sim_chist_emd(j,i) = chist_emd;
         
     end %for j
 end %for i

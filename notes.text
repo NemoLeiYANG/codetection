@@ -2975,6 +2975,29 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
   legit, author is from Berkeley--need it because our version of Matlab does not
   have it built in like newer versions.
 
+----------------git commit aa2f7e5--------------- 
+
+4 Aug 15
+
+--Looked at colorAutoCorrelogram.m downloaded from
+  http://www.mathworks.com/matlabcentral/fileexchange/42008-content-based-image-retrieval/content/ImageRetrieval/colorAutoCorrelogram.m.
+  Not sure it will work--the output it gives for similar images is very
+  different.
+
+--Looking at Lab_histogram.m that I wrote yesterday and I think there might be
+  something funky with it--all x values (bin centers) are between 0 and 1, while
+  in Lab space, L is in [0,100] and a&b are in [-128,127] (??).  Also found
+  makecform('srgb2lab') in matlab, which appears to do the same thing as
+  RGB2Lab, but gives slightly different numbers on the same image (????) and
+  runs 4x slower.  But might be more correct.
+
+--Thinking that I need to write my own histogramming code--imhist appears to
+  mess things up, but I think I can use hist and just specify my bin centers.
+
+--Have own histogram code in Lab_histogram.m (fixed from yesterday) and
+  histogram_distance.m.  Seems to be working correctly--running a new
+  test_step_4 on chino, will have results in asm_20150804.mat by morning.
+
 
 **simple dataset to Haonan with my code on dsift--look to see if it makes sense
   compared to his stuff.
