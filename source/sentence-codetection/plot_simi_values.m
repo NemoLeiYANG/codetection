@@ -47,15 +47,26 @@ end %for i
 % t=title(varname);
 
 
+minm = min(matched); maxm = max(matched);
+mina = min(all_values); maxa = max(all_values);
+startval = min(minm,mina);endval = max(maxm,maxa);
+range = endval - startval;
+bins = [startval:(range/100):endval];
+%bins = [0.005:0.01:1];
+
 figure;
-hist(matched,20)
+
+hist(matched,bins)%20)
 h = findobj(gca,'Type','patch');
 set(h,'FaceColor','g','EdgeColor','w','facealpha',0.75)
 hold on;
-hist(all_values,20)
+hist(all_values,bins)%20)
 h1 = findobj(gca,'Type','patch');
 set(h1,'facealpha',0.75);
 t=title(varname);
 set(t,'Interpreter','none');
+xlim([0,(endval + (range/100))]);
+savestr = strcat('./good-bad-comparison/',varname,'.png');
+saveas(gcf,savestr);
 
 end %function

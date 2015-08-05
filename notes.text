@@ -2998,6 +2998,18 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
   histogram_distance.m.  Seems to be working correctly--running a new
   test_step_4 on chino, will have results in asm_20150804.mat by morning.
 
+----------------git commit eb7190d--------------- 
+
+5 Aug 15
+
+--Plotted new good-bad output and saved files in
+  good-bad-output/20150805-2nd-attempt.  Some look like crap, some look OK.  I
+  think I'll be able to take some of this output from color histograms and
+  sigmoid it to establish a threshold, then possibly log and apply branch and
+  bound.  Could also do a separate sigmoid on the dense SIFT output (with
+  separate threshold) and then do a weighted average of the sigmoid outputs from
+  each to get the score that goes to B&B.
+
 
 **simple dataset to Haonan with my code on dsift--look to see if it makes sense
   compared to his stuff.
