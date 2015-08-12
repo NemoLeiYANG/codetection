@@ -70,7 +70,7 @@ ssize = 64; %HARDCODED ssize: the size to which each proposal is rescaled
 %               to (for phow_hist); ssize should be 2^i; increase i to 
 %               trade efficiency for accuracy
 
-ch_num_bins = 16; %HARDCODED for now
+ch_num_bins = 8;%16; %HARDCODED for now
 ch_cxform = makecform('srgb2lab');
 % ch_num_bins = 4;%16; %HARDCODED for now
 % ch_numel = ch_num_bins^3;
@@ -97,7 +97,19 @@ for i = 1:num_floorplans
             img = imread(strcat(img_dir,tmp_file_list(k+2).name));
             hist_out = phow_hist(img,ssize);
             %ch_out = rgbhist_fast(img,ch_num_bins,1);
-            [ch_out,~] = Lab_histogram(img,ch_num_bins,ch_cxform);
+            
+            %old way--histogram of full image
+            %[ch_out,~] = Lab_histogram(img,ch_num_bins,ch_cxform);
+            
+            %new way--histogram of small area at center of image
+            numPix = 3; %number of patch pixels on either side of center (i.e, 3 means a 7x7 patch)
+            [img_h,img_w,~] = size(img);
+            img_h_center = round(img_h/2);
+            img_w_center = round(img_w/2);
+            img_patch = img(img_h_center-numPix:img_h_center+numPix,...
+                            img_w_center-numPix:img_w_center+numPix,:);
+            [ch_out,~] = Lab_histogram(img_patch,ch_num_bins,ch_cxform);
+            
             tmp_phists(k,:) = hist_out';
             tmp_ch(:,:,k) = ch_out;
         end %for k

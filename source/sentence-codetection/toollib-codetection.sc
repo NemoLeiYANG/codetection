@@ -205,11 +205,12 @@
    (map-n-vector
     (lambda (j)
      (if (= i j)
-	 (- (sigmoid sim 0.8 10))
-	 (+ -1 (sigmoid sim 0.8 10))
+	 ;;sigmoid experimenting
+	 ;; (- (sigmoid sim 0.8 10))
+	 ;; (+ -1 (sigmoid sim 0.8 10))
 	 ;;old way
-	 ;; (* -1 (log sim))
-	 ;; (* -1 (log (- 1 sim)))
+	 (* -1 (log sim))
+	 (* -1 (log (- 1 sim)))
 	 ))
     num-labels))
    num-labels))
@@ -224,9 +225,11 @@
       (let* ((sim1 (matrix-ref sim-matrix i j))
 	     (sim2 (matrix-ref sim-matrix j i))
 	     (sim-value (/ (+ sim1 sim2) 2.0)))
-       (list (min (- (sigmoid sim-value 0.8 10))
-		  (+ -1 (sigmoid sim-value 0.8 10)))
-;; (min (-(log sim-value)) (-(log (- 1 sim-value))))
+       (list
+	;; (min (- (sigmoid sim-value 0.8 10))
+	;; 	  (+ -1 (sigmoid sim-value 0.8 10)))
+	(min (-(log sim-value))
+	     (-(log (- 1 sim-value))))
 	     0
 	     (build-table sim-value num-labels))))
      c))

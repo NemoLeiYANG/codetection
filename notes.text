@@ -3010,6 +3010,117 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
   separate threshold) and then do a weighted average of the sigmoid outputs from
   each to get the score that goes to B&B.
 
+----------------git commit 91948d1--------------- 
+
+11 Aug 15
+
+--Retesting test_step_4 using 8 (vice 16) bins on color histogram to see if
+  that's better than what I have.
+
+--Need to play with sigmoid/thresholding to see if chist sim matrix will work.
+
+12 Aug 15
+
+--Have yesterday's test saved in asm_20150811.mat. Currently playing with
+  sim_chist_chisq_3d_100_20150804.sc (from a week ago--yesterday's test didn't
+  look much better).
+
+--Looking at sigmoid function...need to use 1-sig (or negative slope parameter)
+  to get values below threshold to have high score.
+
+--Running another test_step_4 using 7x7 patches at the center of the images for
+  the color histogram, instead of the full image.
+
+--Found old sigmoids in toollib-codetection.sc and had to change them back to
+  the old way since I'm now doing the sigmoid directly in labeling.sc.
+
+--Tried runs using chist_chisq_3d_100 with *sigmoid-threshold* at 0.115 and
+  *sigmoid-slope* at -10.  Got the following results:
+> (run-4)
+0.03s (2.056020340795548 (0 1 2 3))
+> (run-8)
+0.03s (6.821283434053237 (0 1 2 3 2 1 4 3))
+(run-16)
+0.04s (33.62578965133648 (0 1 2 3 4 1 5 6 5 6 2 7 6 1 0 7))
+> (run-21)
+0.40s (60.16798524830126 (0 1 2 3 2 1 4 5 4 5 2 4 5 1 0 4 6 0 1 3 7))
+> (run-25)
+40.07s (91.07636035728069 (0 0 1 2 1 3 4 5 4 5 1 4 5 0 6 4 6 3 0 2 7 4 4 0 3))
+> (run-30)
+265.85s (127.1473575161836 (0 0 1 2 1 3 4 5 4 5 1 4 5 0 6 4 6 3 0 2 7 4 4 0 3 5
+0 3 1 2))
+> (run-35)
+4716.41s (190.7967865639224 (0 0 1 2 1 3 4 5 4 5 1 4 5 0 6 4 7 3 0 2 7 4 4 0 3 5
+0 6 1 2 6 4 0 6 3)) 
+> (run-4a)
+0.04s (2.056020340795548 (0 1 2 3))
+> (run-8a)
+0.04s (6.821283434053237 (0 1 2 3 2 1 4 3))
+> (run-12a)
+0.04s (16.95972445924803 (0 1 2 3 4 1 5 6 5 6 2 5))
+> (run-16a)
+0.04s (33.62578965133648 (0 1 2 3 4 1 5 6 5 6 2 7 6 1 0 7))
+> (run-21a)
+0.19s (59.41375367317812 (0 1 2 3 4 1 5 6 5 6 2 7 6 1 8 7 9 0 1 10 11))
+> (run-25a)
+66.24s (89.6074815445682 (0 0 1 2 3 4 5 6 5 6 1 7 6 0 8 7 9 4 0 10 11 5 7 0 4))
+> (run-30a)
+837.72s (125.1368213834221 (0 0 1 2 3 4 5 6 5 6 1 7 6 0 8 7 9 10 0 11 12 5 7 0
+10 6 0 10 1 2)) 
+  Thinking about changing the threshold and/or the
+  slope to see if that makes things run faster and/or more accurately.
+
+--After talking with Dan, I think the slope might be OK.  After looking at
+  good-bad plot for chist_chisq_3d_100, saw that threshold might be way too
+  high. Trying with threshold set at 0.07; seems to be slowing things down quite
+  a bit on regular runs but speeding them up on -a runs, and results don't look
+  any better 
+> (run-4)
+0.04s (1.430428594060378 (0 1 2 3))
+> (run-8)
+0.04s (5.541400846345208 (0 1 2 3 2 1 4 5))
+> (run-12)
+0.04s (13.6042161870225 (0 1 2 3 4 1 5 6 5 6 2 0))
+> (run-16)
+0.06s (26.93780537792364 (0 1 2 3 4 1 5 6 5 6 2 7 6 1 0 7))
+> (run-21)
+44.17s (49.61792579036732 (0 1 2 3 2 1 4 5 4 5 2 6 5 1 0 6 7 0 1 3 7))
+> (run-25)
+2165.51s (76.08336475145053 (0 0 1 2 1 3 4 5 4 5 1 6 5 0 1 6 7 3 0 2 7 4 6 0 3))
+> (run-4a)
+0.07s (1.430428594060378 (0 1 2 3))
+> (run-8a)
+0.04s (4.969154522102971 (0 1 2 3 4 5 6 7))
+> (run-12a)
+0.04s (12.62891599410311 (0 1 2 3 4 5 6 7 6 7 8 9))
+> (run-16a)
+0.05s (25.14751140899375 (0 1 2 3 4 5 6 7 6 7 8 9 10 1 11 9))
+> (run-21a)
+0.05s (43.429241725945 (0 1 2 3 4 5 6 7 6 7 8 9 10 1 11 9 12 13 0 14 15))
+> (run-25a)
+0.48s (67.00190790901938 (0 1 2 3 4 5 6 7 6 7 8 9 10 1 11 9 12 5 0 13 14 6 15 1
+  2)) 
+> (run-30a)
+87.47s (94.66108008825046 (0 1 2 3 4 1 5 6 5 6 7 8 9 1 0 8 10 11 12 13 14 5 8 15
+  11 6 15 12 2 3)) 
+
+--Things to try:
+	 1. Histograms of center patch of images (asm's computing on chino now)
+	 2. Some sort of linear combination between chist and dsift data (should
+	 be relatively straightforward to do)
+	 3. Image segmentation (ala 637 Lab 3).  
+	    -Need to do some thinking and coding on this--637 lab used grayscale
+     	     images, so these are different--maybe segment them in grayscale and
+	     then use those pixel locations for a color histogram??  
+	    -637 code is in C, not sure how to call it from MATLAB, or if I
+ 	     should  have some separate C code that does segmentation and then
+ 	     outputs a masked color image
+	    -Background subtraction?  Would that work?  Not in the traditional
+	 sense b/c I'm not working with a stream of images with a fixed
+	 background.  But could do some sort of segmentation and then look for
+	 the largest area...
+
+
 
 **simple dataset to Haonan with my code on dsift--look to see if it makes sense
   compared to his stuff.
