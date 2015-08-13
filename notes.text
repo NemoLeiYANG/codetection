@@ -3120,6 +3120,35 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
 	 background.  But could do some sort of segmentation and then look for
 	 the largest area...
 
+----------------git commit dcbf763--------------- 
+
+13 Aug 15
+
+--First look at new plots from chino is BAD.  Not sure if I did them right or
+  not.
+
+--Working on a filtering of the images at the end of step 3.  Main file is
+  filter_image_test.m.  Basic idea is to take all images that were clustered
+  together at the end of step 3, find the histograms (either dsift or chist) of
+  each, find the mean histogram, find the distance (either chisq or emd) between
+  each image histogram and the mean histogram, and then reject images which are
+  above a certain threshold (currently using the mean+0.5*std of the
+  DISTANCES).  Looks like it might do some good.  Rough script to run it is
+  run_filter_post_step_3.m.  Think it is working now.
+
+
+
+***IDEA: Do a filtering on the images from each floorplan (fplabel)
+   individually.  Get descriptors for each image and find mean and stddev.  Then
+   reject images that are below a threshold (mean-2*stddev?)
+
+
+***IDEA: Look at different percentages of the similarity scores.  For a bad
+   match, the similarity score with 100% of images should be very close to the
+   score for 50% (or other %) best images, since they are all crap matches.  But
+   for a good match, eliminating a % of bad matches should make the similarity
+   score better...how to use this?
+-->Doesn't seem to work.
 
 
 **simple dataset to Haonan with my code on dsift--look to see if it makes sense
