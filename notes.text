@@ -3136,6 +3136,46 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
   DISTANCES).  Looks like it might do some good.  Rough script to run it is
   run_filter_post_step_3.m.  Think it is working now.
 
+----------------git commit 3bc6f96--------------- 
+
+14 Aug 15
+
+--Did good/bad plots of old test_step_4 run on the newly filtered images.  Saved
+  it in good-bad-comparison/20150814-8bin_chist-center_patch-self_filtering.
+  Nothing looks any better than previous stuff.  Need to try something
+  different.
+
+--Talking with Jeff--after testing the color histogram on sets of randomly
+  chosen images from each class, look at how the groups are compared. 
+  Currently making matrix of image-to-image comparisons between each class and
+  then doing things with row/column means/maxes/mins/etc.  Instead, forget the
+  matrix and just rank order all the image-to-image distance scores and take
+  the top X percent, and average that as the similarity between the two groups.
+
+--Ran 15 iterations of the test of color histogram distance (measured both with
+  chi squared and earth mover distance, and both using the full image and a 7x7
+  patch in the center) for 3 random images from each of the 8 classes. (file is
+  histogram_testing.m) 
+
+--Results are in source/sentence-codetection/color-histogram-test-results.  The
+  leading number of the filename is the iteration number, and the rest of it
+  should be self-explanatory.  I also saved the random images themselves: by
+  row, they are: chair, bag-book, table, cone, stool, box, bag-shop, junk. 
+
+--I think what the results show is that the quality of the match within or the
+  difference between classes is highly dependent upon which images are randomly
+  chosen.  What I'm not entirely sure of is how this will affect the new method
+  of finding similarity between groups of images that may or may not be of the
+  same class (mentioned above).
+
+--It also looks like using the small patch in the center leads to higher
+  variance among the scores--which makes sense since a small patch is more
+  likely to contain fewer colors.  But what I see looking at the images is that
+  the primary object isn't always centered in the proposal image, so sometimes
+  we end up getting a background color instead.  I've thought about sampling the
+  image from more than just the center, for example taking a small set of
+  patches (perhaps 5 in a 'x' or '+' shaped pattern), but I'm not sure if that
+  will cause more harm than good.  
 
 
 ***IDEA: Do a filtering on the images from each floorplan (fplabel)

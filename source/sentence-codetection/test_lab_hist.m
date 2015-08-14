@@ -1,4 +1,4 @@
-function sim_mat = test_lab_hist(imgs,nBins,metric)
+function sim_mat = test_lab_hist(imgs,nBins,metric,nDim)
 
 %compute histograms for each image
 numImg = length(imgs);
@@ -13,7 +13,7 @@ sim_mat = zeros(numImg);
 for i = 1:numImg
     for j = 1:numImg
         sim_mat(i,j) = histogram_distance(hists(:,:,i),...
-            hists(:,:,j),metric,2);
+            hists(:,:,j),metric,nDim);
     end %for j
 end %for i
     
