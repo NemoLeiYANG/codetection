@@ -3177,6 +3177,58 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
   patches (perhaps 5 in a 'x' or '+' shaped pattern), but I'm not sure if that
   will cause more harm than good.  
 
+----------------git commit 9b97adb--------------- 
+
+16 Aug 15
+
+--Implemented idea of using top N percent (currently 30) of color histogram
+  distance matches between groups as similarity measure in
+  step_4_chist_similarity_matrix.m.  Runs fast, ~2 min.  Did good-bad plots and
+  they don't look particularly good.  But looking at the matrices for
+  chisq3d_patch and chisq3d_full in sim_chisq3d_patch_20150816.ods and
+  sim_chisq3d_full_20150816.ods, it looks like the lowest score in the col/row
+  is usually the right one--thinking about taking the lowest score
+  (non-diagonal) in each row/col and using the mean+1stddev to set the
+  threshold.  Could I put the diagonal element as inf in matlab?
+
+--Ran labeling on sim_chisq3d_patch_20150816.sc and got results rather quickly,
+  although they weren't very accurate:
+> (run-4)
+0.04s (0.03859569172637077 (0 0 1 2))
+> (run-8)
+0.04s (2.767485488513134 (0 0 1 2 3 0 4 5))
+> (run-16)
+0.16s (22.08477957617687 (0 0 1 2 3 4 5 2 5 6 7 4 7 5 5 5))
+> (run-21)
+0.28s (30.46407991549173 (0 0 1 2 3 4 5 2 5 6 1 4 7 5 5 5 5 7 0 2 5))
+> (run-25)
+2.04s (40.58235334697235 (0 0 1 2 3 0 4 2 4 5 1 6 7 6 4 4 4 7 0 2 4 4 0 6 6))
+> (run-4a)
+0.04s (0.03859569172637077 (0 0 1 2))
+> (run-8a)
+0.05s (0.6644189522770908 (0 0 1 2 3 4 5 6))
+> (run-12a)
+0.05s (2.653916115874833 (0 0 1 2 3 4 5 6 5 7 8 4))
+> (run-16a)
+0.05s (8.543723506302884 (0 0 1 2 3 4 5 6 5 7 8 4 9 5 5 5))
+> (run-21a)
+0.05s (18.61595573604413 (0 0 1 2 3 4 5 6 5 7 8 4 9 5 5 5 5 9 0 6 5))
+> (run-25a)
+0.21s (27.34618418803512 (0 0 1 2 3 4 5 6 5 7 8 9 10 9 5 5 5 10 0 6 5 5 0 9 9))
+> (run-30a)
+0.95s (38.81863686360955 (0 0 1 2 3 4 5 6 5 7 8 9 10 9 5 5 5 10 0 2 5 5 0 9 9 6
+  0 4 11 2)) 
+> (run-35a)
+154.31s (65.52725106135911 (0 0 1 2 3 4 5 6 5 7 8 9 10 9 5 5 5 10 0 2 5 5 0 9 9
+  6 0 4 11 2 0 0 10 10 0))
+
+--Above labels a lot of stuff as 0, probably because the things getting labeled
+  zero often have similar/same color (i.e., floor) at center.  Maybe try
+  something different with patches-->do a sampling of patches (maybe a 3x3 box
+  of patches) and consolidate that into a sampled image--might have better luck
+  at finding things that are similarly shaped by that method.
+
+--Also, still need to try labeling against the sim_chisq3d_full_20150816.sc data.
 
 ***IDEA: Do a filtering on the images from each floorplan (fplabel)
    individually.  Get descriptors for each image and find mean and stddev.  Then
