@@ -1,22 +1,22 @@
 
 ;;This is the test data
-;;(define asm-full (read-object-from-file "asm_20150702.sc"))
+(define asm-full (read-object-from-file "asm_20150702.sc"))
 ;;(define asm-full (read-object-from-file "asm_20150727a.sc")) ;;old dsift_chisq_50
 
-;;(define raw-asm (read-object-from-file "sim_chist_chisq_3d_100_20150804.sc"))
-(define raw-asm (read-object-from-file "sim_chisq3d_patch_20150816.sc"))
-(define *sigmoid-threshold* 0.3236);;0.07);;0.115)
-(define *sigmoid-slope* -10)
-(define sig-asm
- (map-vector
-  (lambda (v1)
-   (map-vector
-    (lambda (v2) (sigmoid v2
-			  *sigmoid-threshold*
-			  *sigmoid-slope*))
-    v1))
-  raw-asm))
-(define asm-full sig-asm)
+;; ;;(define raw-asm (read-object-from-file "sim_chist_chisq_3d_100_20150804.sc"))
+;; (define raw-asm (read-object-from-file "sim_chisq3d_patch_20150816.sc"))
+;; (define *sigmoid-threshold* 0.3236);;0.07);;0.115)
+;; (define *sigmoid-slope* -10)
+;; (define sig-asm
+;;  (map-vector
+;;   (lambda (v1)
+;;    (map-vector
+;;     (lambda (v2) (sigmoid v2
+;; 			  *sigmoid-threshold*
+;; 			  *sigmoid-slope*))
+;;     v1))
+;;   raw-asm))
+;; (define asm-full sig-asm)
 
 (define asm-tiny (submatrix asm-full 0 0 4 4))
 (define asm-small (submatrix asm-full 0 0 8 8))

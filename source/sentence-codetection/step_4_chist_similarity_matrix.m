@@ -3,17 +3,23 @@ function [sim_chisq3d_full, sim_chisq2d_full, ...
           sim_chisq3d_patch, sim_chisq2d_patch, ...
           sim_emd3d_patch, sim_emd2d_patch] = ...
     step_4_chist_similarity_matrix(dataset_dir, data_output_dirname, ...
-                                   patch_size)
+                                   patch_size, num_patches)
 
 %error check input
-if (mod(patch_size,2) ~= 1)
-    sim_chisq3d_full = []; sim_chisq2d_full = []; sim_emd3d_full = [];
-    sim_emd2d_full = []; sim_chisq3d_patch = []; sim_chisq2d_patch = [];
-    sim_emd3d_patch = []; sim_emd2d_patch = [];
+sim_chisq3d_full = []; sim_chisq2d_full = []; sim_emd3d_full = [];
+sim_emd2d_full = []; sim_chisq3d_patch = []; sim_chisq2d_patch = [];
+sim_emd3d_patch = []; sim_emd2d_patch = [];
+if (mod(patch_size,2) ~= 1)    
     fprintf('ERROR: patch_size must be odd integer\n');
     return;
 else
     p_pix = (patch_size - 1) / 2;
+end %if
+if(mod(sqrt(num_patches),1) ~= 0)
+    fprintf('ERROR: num_patches must be square\n');
+    return;
+else
+    p_num = sqrt(num_patches);
 end %if
                                
 %add paths for phow stuff (not sure this is necessary)
@@ -77,7 +83,7 @@ end %for i
 % fv_color_hist_patch
 % fv_color_hist
 
-% then load up fv_dsift and fv_color_hist from images
+% then load up fv_color_hist_patch and fv_color_hist from images
 ch_num_bins = 8;%16; %HARDCODED for now
 ch_cxform = makecform('srgb2lab');
 
@@ -102,12 +108,36 @@ for i = 1:num_floorplans
             %histogram of full image
             [ch_out,~] = Lab_histogram(img,ch_num_bins,ch_cxform);
             
-            %histogram of patch at center of image
-            [img_h,img_w,~] = size(img);
-            img_h_center = round(img_h/2);
-            img_w_center = round(img_w/2);
-            img_patch = img(img_h_center-p_pix:img_h_center+p_pix,...
-                            img_w_center-p_pix:img_w_center+p_pix,:);
+%             %histogram of patch at center of image
+%             [img_h,img_w,~] = size(img);
+%             img_h_center = round(img_h/2);
+%             img_w_center = round(img_w/2);
+%             img_patch = img(img_h_center-p_pix:img_h_center+p_pix,...
+%                             img_w_center-p_pix:img_w_center+p_pix,:);
+%             [ch_out_patch,~] = Lab_histogram(img_patch,ch_num_bins,ch_cxform);
+            %make image of patches and take histogram of that
+            [img_h, img_w,~] = size(img);
+            %fprintf('img_h = %d, img_w = %d\n',img_h,img_w);
+            img_h_seg = floor(img_h/(p_num+1));
+            img_w_seg = floor(img_w/(p_num+1));
+            %COULD have problems here with patch that exceeds image
+            %size--check p_pix against h_seg and w_seg--how to fix???
+            img_patch = zeros(p_num*patch_size,p_num*patch_size,3);
+            for l = 1:p_num
+                p_t = (l-1)*patch_size + 1; p_b = l*patch_size;
+                img_t = l*img_h_seg - p_pix; img_b = l*img_h_seg + p_pix;
+%                 fprintf('p_t = %d, p_b = %d, img_t = %d, img_b = %d ',...
+%                     p_t, p_b, img_t, img_b);
+                for m = 1:p_num
+                    p_l = (m-1)*patch_size + 1; p_r = m*patch_size;
+                    img_l = m*img_w_seg - p_pix; img_r = m*img_w_seg + p_pix;
+%                     fprintf('p_l = %d, p_r = %d, img_l = %d, img_r = %d\n',...
+%                         p_l, p_r, img_l, img_r);
+                    img_patch(p_t:p_b,p_l:p_r,:) = ...
+                        img(img_t:img_b,img_l:img_r,:);
+                end %for m
+            end %for l
+                
             [ch_out_patch,~] = Lab_histogram(img_patch,ch_num_bins,ch_cxform);
 
             tmp_ch(:,:,k) = ch_out;

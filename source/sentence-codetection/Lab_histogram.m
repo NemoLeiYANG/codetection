@@ -8,7 +8,7 @@ function [Labhist,bincenters] = Lab_histogram(img_rgb,nBins,cxform)
 
 %set up output variables
 Labhist = zeros(3,nBins);
-%bincenters = zeros(3,nBins);
+bincenters = zeros(3,nBins);
 
 %convert to Lab space and get info
 %img_Lab = RGB2Lab(img_rgb);
@@ -36,8 +36,8 @@ img_b = img_Lab(:,:,3);
 Labhist(1,:) = yL' ./ numPix;
 Labhist(2,:) = ya' ./ numPix;
 Labhist(3,:) = yb' ./ numPix;
-% bincenters(1,:) = xL';
-% bincenters(2,:) = xa';
-% bincenters(3,:) = xb';
-bincenters = xL';
+bincenters(1,:) = xL';
+bincenters(2,:) = xa';
+bincenters(3,:) = xb';
+%bincenters = xL';
 end %function

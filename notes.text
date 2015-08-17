@@ -3228,7 +3228,34 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
   of patches) and consolidate that into a sampled image--might have better luck
   at finding things that are similarly shaped by that method.
 
---Also, still need to try labeling against the sim_chisq3d_full_20150816.sc data.
+--Also, still need to try labeling against the sim_chisq3d_full_20150816.sc
+  data.
+
+----------------git commit 6c941a4--------------- '
+
+17 Aug 15
+
+--Implemented grid of patches in step_4_chist_similarity_matrix.m.  Results
+  don't look very good--everything has low distance when it shouldn't.
+
+--Also thinking about trying some color-based segmentation (see
+  http://www.mathworks.com/help/images/examples/color-based-segmentation-using-k-means-clustering.html
+  and http://www.vlfeat.org/matlab/vl_kmeans.html), but haven't been able to try
+  this yet.
+
+--Jeff suggests redoing the dataset with a better color balance on the camera,
+  in an environment where we can control lighting conditions, and using objects
+  (like blue trashcan and yellow Lego bag) that have more color variation.  Need
+  to investigate this further after RAL/ICRA paper done.
+
+--LOOK at Learning OpenCV, Chapter 7, Histograms and Matching.
+
+--Stopping new experimentation to write up current progress as a partial result
+  for RAL/ICRA.
+
+--Changed labeling.sc back to using asm_20150702.sc for data and trying (run-25)
+  to see if results are same as in notes above.
+
 
 ***IDEA: Do a filtering on the images from each floorplan (fplabel)
    individually.  Get descriptors for each image and find mean and stddev.  Then
