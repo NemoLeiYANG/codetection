@@ -3231,7 +3231,7 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
 --Also, still need to try labeling against the sim_chisq3d_full_20150816.sc
   data.
 
-----------------git commit 6c941a4--------------- '
+----------------git commit 6c941a4---------------
 
 17 Aug 15
 
@@ -3256,6 +3256,21 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
 --Changed labeling.sc back to using asm_20150702.sc for data and trying (run-25)
   to see if results are same as in notes above.
 
+----------------git commit d79d91e---------------
+
+21 Aug 15
+
+--For ralicra2016, created new dataset in
+  /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016 with 6 floorplans (30
+  objects, should be 25 unique instances if step 3 is perfect)
+
+--Made a few mods in the source code and re-ran step 3; got 27/30 objects detected.
+
+
+****FOR CURRENT PAPER*****
+Try selectively editing the 25 samples in asm_whatever so that the junk ones (as
+well as bad matches like weird tables) are gone--should run better/faster
+**********************
 
 ***IDEA: Do a filtering on the images from each floorplan (fplabel)
    individually.  Get descriptors for each image and find mean and stddev.  Then
