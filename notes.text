@@ -3266,6 +3266,35 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
 
 --Made a few mods in the source code and re-ran step 3; got 27/30 objects detected.
 
+----------------git commit 8a33324---------------
+
+22 Aug 15
+
+--For ralicra2016, ran new step 4 and labeling.  Got decent results from
+  (run-26a), still waiting for (run-26) to finish.
+> (run-4a)
+0.03s (2.348462312758173 (0 1 2 3))
+> (run-9a)
+0.03s (14.18919756335641 (0 1 2 3 4 5 1 2 6))
+> (run-12a)
+0.03s (27.59512694270645 (0 1 2 3 4 5 1 2 6 1 7 2))
+> (run-16a)
+0.03s (48.331306478022 (0 1 2 3 4 5 1 2 3 1 6 2 3 7 8 9))
+> (run-20a)
+0.11s (78.34933026745459 (0 1 2 3 4 5 1 2 3 1 6 2 3 7 8 9 0 10 11 5))
+> (run-26a)
+1.06s (139.541932634983 (0 1 2 3 4 5 1 2 3 1 6 2 3 7 5 8 0 9 9 10 1 11 10 2 8 9))
+> (run-4)
+0.05s (2.348462312758173 (0 1 2 3))
+> (run-9)
+0.05s (12.66365265366496 (0 1 2 3 4 2 1 2))
+> (run-12)
+0.05s (29.09886766872226 (0 1 2 3 4 4 1 2 3 1 0 2))
+> (run-16)
+0.50s (52.88228269272211 (0 0 1 2 3 4 0 1 2 0 3 1 2 3 4 1))
+> (run-20)
+8.32s (83.7273487405632 (0 1 2 3 4 5 1 2 3 1 0 2 3 4 5 4 0 5 1 1))
+
 
 ****FOR CURRENT PAPER*****
 Try selectively editing the 25 samples in asm_whatever so that the junk ones (as

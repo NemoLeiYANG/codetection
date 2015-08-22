@@ -88,9 +88,9 @@ for i = 1:num_floorplans
     tmp_fv_ch = cell(temp_labels_by_floorplan(i),1);
     parfor j = 1:temp_labels_by_floorplan(i)
         %Old way before filtering
-        %img_dir = strcat(read_dir,'/',fplabel_names(j,:),'/'); 
-        %new way
-        img_dir = strcat(read_dir,'/',fplabel_names(j,:),'/accepted/');
+        img_dir = strcat(read_dir,'/',fplabel_names(j,:),'/'); 
+%         %new way COMMENTED OUT for ralicra2016 run
+%         img_dir = strcat(read_dir,'/',fplabel_names(j,:),'/accepted/');
         tmp_file_list = dir(img_dir);
         num_files = numel(tmp_file_list) - 2; % -2 is because of . and ..
         tmp_phists = zeros(num_files, 12000,'single'); %HARDCODED for phist size
