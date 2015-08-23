@@ -3306,6 +3306,15 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
 
 --Also adding all .mat files that are small enough to github.
 
+----------------git commit 507451f---------------
+
+23 Aug 15 (2)
+
+--Found error I made in the collection of the ground truth data yesterday, so
+  had to redo all localization error calculations--much better now.  Resaved
+  data in .sc and .mat files.  Also put data from /aux/.../ralicra2016 into
+  source/sentence-codetection/ralicra2016-data 
+
 ****FOR CURRENT PAPER*****
 Try selectively editing the 25 samples in asm_whatever so that the junk ones (as
 well as bad matches like weird tables) are gone--should run better/faster
