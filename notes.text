@@ -3295,6 +3295,16 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
 > (run-20)
 8.32s (83.7273487405632 (0 1 2 3 4 5 1 2 3 1 0 2 3 4 5 4 0 5 1 1))
 
+----------------git commit 3fb62a8---------------
+
+23 Aug 15
+
+--(run-26) finished with relatively good results after ~2 hours
+> (run-26)
+7486.17s (149.3931060362158 (0 1 2 3 4 5 1 2 3 1 0 2 3 4 5 4 0 5 5 1 1 0 1 2 2
+5)) 
+
+--Also adding all .mat files that are small enough to github.
 
 ****FOR CURRENT PAPER*****
 Try selectively editing the 25 samples in asm_whatever so that the junk ones (as
