@@ -3315,7 +3315,13 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
   data in .sc and .mat files.  Also put data from /aux/.../ralicra2016 into
   source/sentence-codetection/ralicra2016-data 
 
-****FOR CURRENT PAPER*****
+----------------git commit 02a2d17---------------
+
+24 Aug 15
+
+--Commit to catch any last changes on the ralicra2016 stuff.
+
+****FOR CURRENT PAPER*****DONE
 Try selectively editing the 25 samples in asm_whatever so that the junk ones (as
 well as bad matches like weird tables) are gone--should run better/faster
 **********************
