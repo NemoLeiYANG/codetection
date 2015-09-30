@@ -3321,15 +3321,45 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
 
 --Commit to catch any last changes on the ralicra2016 stuff.
 
-****FOR CURRENT PAPER*****DONE
-Try selectively editing the 25 samples in asm_whatever so that the junk ones (as
-well as bad matches like weird tables) are gone--should run better/faster
-**********************
+----------------git commit d285512---------------
+
+14 Sep 15
+
+--Restarting work because ralicra2016 and tro2015 are submitted.
+
+--Brainstorming ideas for how to collect a better dataset to try using color
+  histograms on.
+
+--Biggest problem seemed to be variability of lighting--need a location that has
+  consistent lighting--thinking about using the gym at Burnett Creek (no
+  windows, basketball/volleball/etc courts laid out on floor to use as markers,
+  probably has some decent props available to us--cones, balls, etc.)
+
+--Dan and I previously had an idea to program the robot to do an autonomous
+  search for objects--probably only have to input the robot's starting location
+  and the boundaries, then can drive a search grid computed from that.  Could we
+  incorporate this into the new dataset eventually?
+
+--First will need to do some small trial runs at BCE to see if the video comes
+  out OK there--also might need to recheck the white balance of the camera
+  (believe that is adjusted in the FlyCap API, so will need to get into that)
+
+--To use the rover off campus, will need to change the network infrastructure
+  since PAL3.0 does not exist off campus.  Should be able to use a cheap 802.11n
+  router (open encryption?) to get the data from the rover back to the laptop.
+  Can probably plug the laptop into the router wired so that the rover is the
+  only thing using wifi.  Do we have a router available here?
+
+30 Sep 15
+
+--Catching changes made after 24 Aug 15...not sure all of what they are
+
+
+
 
 ***IDEA: Do a filtering on the images from each floorplan (fplabel)
    individually.  Get descriptors for each image and find mean and stddev.  Then
    reject images that are below a threshold (mean-2*stddev?)
-
 
 ***IDEA: Look at different percentages of the similarity scores.  For a bad
    match, the similarity score with 100% of images should be very close to the
@@ -3337,11 +3367,6 @@ well as bad matches like weird tables) are gone--should run better/faster
    for a good match, eliminating a % of bad matches should make the similarity
    score better...how to use this?
 -->Doesn't seem to work.
-
-
-**simple dataset to Haonan with my code on dsift--look to see if it makes sense
-  compared to his stuff.
-
 
 ***Thinking about changing plot_simi_values so that the plots are separated by
    ground-truth label and the good and bad of each are plotted on the same x

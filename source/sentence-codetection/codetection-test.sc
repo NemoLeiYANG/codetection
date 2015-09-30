@@ -1675,7 +1675,7 @@
 	       rundirs))))
   (write-object-to-file xys output-file)))
 	     
- (define (make-scheme-file-of-xys-separated floorplan-dir results-file output-file)
+(define (make-scheme-file-of-xys-separated floorplan-dir results-file output-file)
  (let* ((rundirs (system-output (format #f "ls -d ~a/*/" floorplan-dir)))
 	(xys (map
 	      (lambda (f)
@@ -1683,6 +1683,39 @@
 		(format #f "~a~a" f results-file)))
 	      rundirs)))
   (write-object-to-file xys output-file)))
+
+(define (scott-proposals-only top-k data-path)
+ (let* ((video-path (format #f "~a/video_front.avi" data-path))
+	(frames (video->frames 1 video-path))
+	(tt (length frames))
+	(poses (align-frames-with-poses data-path tt))
+	(one-frame (first frames))
+	(height (imlib:height one-frame))
+	(width (imlib:width one-frame)))
+  (start-matlab!)
+  (scheme->matlab! "poses" poses)
+  (matlab (format #f "frames=zeros(~a,~a,~a,~a,'uint8');" height width 3 tt))
+  (for-each-indexed
+   (lambda (frame i)
+    ;;(format #t "converting imlib ~a/~a to matlab matrix...~%" i tt)
+    (with-temporary-file
+     "/tmp/imlib-frame.ppm"
+     (lambda (tmp-frame)
+      ;; write scheme frame to file
+      (imlib:save-image frame tmp-frame)
+      ;; read file as matlab frame
+      (matlab (format #f "frame=imread('~a');" tmp-frame))
+      (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
+    (imlib:free-image-and-decache frame) ;;might want to comment this out
+              ;;but could cause a memory leak if I don't free image elsewhere
+    )    
+   frames)
+  (matlab (format #f "bboxes=scott_proposals_only(~a,frames,poses);" top-k))
+  (map-n (lambda (t)
+	  (matlab (format #f "tmp=bboxes(:,:,~a);" (+ t 1)))
+	  (matlab-get-variable "tmp"))
+	 tt)))
+	
 
 ;;;;----temporary testing-data stuff-------
 ;;;COMMENT OUT THE FOUR LINES BELOW UNLESS TRYING TO RE-ADD THE DATA
