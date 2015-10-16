@@ -3354,8 +3354,80 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
 
 --Catching changes made after 24 Aug 15...not sure all of what they are
 
+----------------git commit 39dddc6---------------
+
+16 Oct 15
+
+--Starting back on next increment for research.  Need to think of something that
+  either unifies tro2015 and ralicra2016 or goes beyond them.
+
+--3 off-the-cuff ideas
+    1. Automatically train class-specific object detectors using images
+       collected from drives (original idea from prelim)
+  	    -Create a corpus of labeled images from the automatically labeled
+             images from the previous section. 
+	    -Use this corpus to train a pre-existing object detector without
+             human intervention. 
+	    -Then use this purpose-trained object detector as a replacement for
+             the generic object detector (MCG). 
+    2. Can we use color histograms to learn color words?  Conceptually, pretty
+       much the same as how we learned nouns and prepositions for tro2015.
+    3. Can the robot automatically discover its environment?
+       	    -Easy to program the robot to drive a discovery pattern in an
+             unknown environment. 
+	    -Hard part is doing obstacle avoidance in an on-line manner.
+
+--Have test video in BCE gym with different-colored objects (i.e., red cone,
+  blue cone, etc.).  Data is in
+  /aux/sbroniko/vader-rover/logs/BCE-test-run-30sep15.  Has controlled lighting,
+  which is good.  Run is >9min long, so need to look at how much the
+  localization drifts over such a long run.
+
+--Dan had idea of using the regular pattern on the ceiling to help with
+  localization--probably would just be another input to the Kalman Filter.
+  Would probably need to calibrate the pano cam in order to try this.  Is it
+  worth the effort?
+
+--A little more fleshing out of idea 1 above:
+    a. Start with randomly generated floor plans (on new basketball court?) and
+    either randomly or AMT generated sentences describing paths on those floor
+    plans.
+    b. Manually drive those paths to collect data.
+    c. Run data through ralicra2016 system to get automatically-detected floor
+    plans. Also use this system to get cropped images of detected objects.
+    	   -*THOUGHT* Should we add color histograms to this system b/c of new
+	   objects? 
+    d. Use auto-floorplans along with sentences and traces as input to acquisition
+    system from tro2015.  This gives us object names to go with images.
+    	   -*THOUGHT* Could we combine ideas 1 and 2 above by using color
+	   histograms here to learn color words?  Would that be interesting?
+    e. Could also do generation and comprehension from the new models learned in
+    acquisition...not entirely sure what we would gain by doing this.
+    f. At this point, branch off into something new-->use object images from c
+    and object names from d to train some off-the-shelf object detector (which
+    one??).  This is all automatic from b onward.
+    g. This is pretty much as far as I've thought it through.  Some problems I
+    see right now:
+    	-What would we do with this automatically trained object detector?  
+	-How could we test its performance?  
+	-If we used color histograms to integrate color, would we be able to
+         deal with colors in a reasonable way (i.e., would blue cone and red
+         cone be 2 completely different object models, or would we have
+         independent structure and color models?)  A lot will depend on the
+         off-the-shelf object detector we choose.
+
+--Some fleshing out of idea 3 above:
+    a. Could we get around the obstacle avoidance problem by letting the rover
+    just bump into objects and then react to the bump switches differently?
+    That's pretty much what a Roomba does.  One problem I see is that most of
+    the objects are light enough that they would move when bumped by the rover.
+    Some (buckets, boxes) would be easy to weight down, but others (balls,
+    cones, stools) wouldn't.
 
 
+
+
+**RANDOM NOTES BELOW**
 
 ***IDEA: Do a filtering on the images from each floorplan (fplabel)
    individually.  Get descriptors for each image and find mean and stddev.  Then
@@ -3682,10 +3754,4 @@ unary score.--Current similarity measure seems to do a good job selecting
 consistent boxes, but which track wins depends on unary proposal score, which
 doesn't seem very good.
 
-First want to do distance/location measure on each box to reject boxes outside
-of boundaries (before sending to similarity measure).  Then can also use
-dist/loc as a factor for similarity.
 
-Seem to be getting different boxes when I pull image off of avi file vs. loading
-png of frame--not sure why that is.  Make sure the frame is actually the same
-one.  Have checked, and isequal(im1,im2) returns 0.  Is this even important?????
