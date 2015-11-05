@@ -3424,8 +3424,82 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
     Some (buckets, boxes) would be easy to weight down, but others (balls,
     cones, stools) wouldn't.
 
+----------------git commit ab6af0b---------------
 
+26 Oct 15
 
+--Have rejection of ralicra2016 paper from RAL.  ICRA decision still pending.
+  Need to go through RAL reviews carefully and figure out what needs to be done
+  to address the issues.  Then we can estimate whether or not we can fit the
+  changes into the page limit for RSS (28 Jan, 8 pages + refs) or IROS (1 Mar,
+  length limit not yet announced).  If not, target to journal.
+
+--Need to fix sync of cameras to sensors on robot using pthread barriers.  I
+  think the infrastructure is already there, just need to put a time limit on
+  the camera thread so that we get images at EXACTLY 10 fps/camera.  Then the
+  sensor data coming in at 50 Hz should be an exact factor of 5 more frequent,
+  so downsampling will be simple.  Need to get this working before any other
+  potential experiments.  
+
+--LIDAR idea (email to Jeff, 22 Oct) on hold for now until we figure out what
+  needs to be done to fix the ralicra paper.  
+  ---------------text of email to Jeff, 22 Oct--------------------------
+  Dan and I were talking before he left about the best way to do range finding,
+  and we agree that trying to mount the range finder on top of the camera is
+  probably a bad idea, since the scanning we'd have to do with the range finder
+  would lead to motion blur on the images.
+
+  What we came up with instead is mounting the range finder on its own servo on
+  a probe that would stick out from the front of the rover, probably bolted to
+  the undercarriage.  We should be able to get everything we need for this
+  off-the-shelf, with the exception of the metal probe which will mount the
+  range finder to the rover.  But this will be simple enough (probably a 1/4"
+  thick aluminum bar with holes for the servo and bolts drilled/cut) that I
+  think the machine shop downstairs can make it easily.  And until we have the
+  servo and sensor mated, it will be hard to judge how far out from the front of
+  the rover it needs to be.
+
+  As I was researching the ultrasonic sensors, I found out that most of them in
+  the $20-50 price range (including the one we have in the lab) use an RS485
+  data bus for communication.  The reviews and tutorials I've read say that
+  RS485 can be a pain to work with.  That, combined with the fact that most
+  ultrasonics have a beam width of around 60 degrees, led me to start looking at
+  laser range finders instead.
+
+  I found a laser range finder on Robot Shop that was only $115 and had good
+  reviews.  It can interface digitally to a Teensy and they already have some
+  sample code to do this, so getting it up and running should be
+  straightforward.  I have extra Teensy boards on hand, so my thought was to add
+  a second Teensy to the rover to control the range finder and its servo, and
+  then the Teensy will report the data back to the Gumstix via USB.  The
+  attached spreadsheet has the items I'd like to order, along with the links.
+  The grand total is $370.40, but that includes spares.  If we need to trim the
+  price, we can ditch the spares.
+
+  Please let me know what you think.
+  ---------------end text of email to Jeff, 22 Oct--------------------------
+
+27 Oct 15
+
+--Starting work on putting barriers around camera task on rover.  Have found
+  where to change code in the_force and that should be easy.  However, must also
+  put barriers into manual mode (emperor) which will be harder since there is no
+  existing barrier code there.
+
+--Talking to Dan about automatic search mode (new mode--name idea: Padawan) and
+  he came up with a good idea.  I had thought that the mode would get a single
+  point from the laptop and then drive that point until the laptop sent another
+  point (or the rover got to the first point).  However, Dan pointed out that
+  that could be bad, since a disconnection will keep the rover going even if
+  stuff is in the way.  So Dan's idea is to have the laptop keep sending points
+  to the rover at regular intervals and have the rover stop if it stops getting
+  points. 
+
+5 Nov 15
+
+--**THOUGHT** if we use different scenes, I will need to go back into the
+    codetection code (proposals_and_similarity?) to remove the hard-coding of
+    the boundaries--probably should do this as an input to the function
 
 **RANDOM NOTES BELOW**
 
@@ -3659,7 +3733,7 @@ L,R,front, behind.
    different between 1st and 2nd 10***
 
 
-***BASH SCRIPTS TO LOOK FOR MISSING FOOTER LINES IN CAMERA_FRONT.TXT****
+***BASH SCRIPTS TO LOOK FOR MISSING FOOTER LINES IN CAMERAFRONT.TXT****
 **to list filenames with grep output below 
 for i in `ls | grep plan`;
  do 
