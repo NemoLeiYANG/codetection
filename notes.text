@@ -3501,6 +3501,108 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
     codetection code (proposals_and_similarity?) to remove the hard-coding of
     the boundaries--probably should do this as an input to the function
 
+----------------git commit 816d0ec---------------
+
+6 Nov 15
+
+--***LOOK FOR odometry calibration procedure.  Need to calibrate for
+  carpet.-->FOUND by talking to Dan: Odometry calibration procedure is to
+  manually drive to known measured points on floor, marking them in the log file
+  (should be a button in driver-gui, if not look at old versions in git).  Then
+  Dan has code that optimizes the parameters (rover width, R and L ticks/cm) so
+  that estimated locations match measured locations.  Should be able to do this
+  on each floor surface we use.
+
+10 Nov 15
+
+--Thinking about what changes will need to be made to codetection code to remove
+  hacks/penalties.  
+    -Should be able to remove all modifications to the unary score and then just
+     use the proposal score (maybe keep the on-the-ground assumption, and
+     explain better in paper).   
+    -Want to KEEP the size/location criteria for the binary scores, since those
+     seem well-principled.  
+    -**INTEGRATE Jeff's idea of using the location match as a multiplier to the
+     SIFT and size matches
+
+--Could we make it run faster by limiting the connectivity of the first
+  GM...maybe only have a frame have connections to the 5-10 frames on either
+  side of it?   Or is the slowdown in the proposal generation?  Need to look at
+  this. 
+
+--Need to get a better measurement of localization drift and report it.  Dan may
+  have data from previous measurement somewhere, but might be easier/better to
+  do new measurement.
+
+--Some ideas Dan and I had while brainstorming ~5 Nov for ralicra revision:
+  --Find a different image feature detector that outputs a
+    fixed-length vector which we can use to replace or compare against the
+    SIFT features that we currently use
+  --Find some new objects that are both NOT rotationally symmetric and
+    NOT toys.  Some ideas we have:
+     --Dummy tank round I have at home (not rotationally symmetric if
+       we lay it on its side)
+     --Black trash bag with box inside (this and the tank round are
+       very good simulators for IEDs)
+     --Large trash can (I have one at home that is semicircular and
+       thus not rotationally symmetric)
+     --Cars
+  --Different scenes:
+     --school gym
+     --parking garage or lot (this is where we would have cars as
+       objects)--Dan and I had talked about using the parking garage here on 
+       campus, but I also just realized that the parking lot at Kara's school 
+       would be pretty deserted on a weekend, which would give us more
+       control over where objects are located
+     --MSEE (??--not sure if we want to use this one again or not)
+     --others
+  --Collect ~2 different floor plans (~5 objects and ~25 runs on each)
+    in each of ~3 different scenes.  This will give us ~30 object
+    instances (peaks), which we already know is near the limit of what we
+    can label in a reasonable amount of time using branch and bound.
+    Could possibly extend this number by having more instances of an
+    object class within a floor plan, but would have to make sure that the
+    codetection step that finds the like objects within a single floor
+    plan can catch these in order to keep the number of objects to label
+    across floor plans down.
+  --Collect training and testing data sets on each scene.  This would
+    be useful if we were to take the collected images to train an object
+    detector, and then test that object detector against unseen data from
+    the different scenes.
+  --(not necessarily for this ralicra revision, but could be if we go
+    to a longer format) Collect a data set with both differently colored
+    objects (i.e., blue cone and green cone) as well as different objects
+    of same color (i.e., blue cone and blue ball).  This data would let us
+    try to learn adjectives (colors) along with prepositions and nouns.
+
+--Put in a citation to Gaussian Membership Functions in ralicra--popular in
+  fuzzy logic literature. (Neuro-Fuzzy and Soft Computing book or Semantic
+  constraints for membership function optimization paper)
+
+--**THOUGHTS** on changes for ralicra
+  --Try doing binary scores with NO feature detector (just location + width) as
+    a comparison of PHOW SIFT stuff.
+  --For judging correctness: put all cropped images that the system groups
+    together on AMT; have users select which images are different from the
+    others (all at once or in smaller groups?); take error as #/% of images
+    selected. 
+
+--Created ~/codetection/source/new-sentence-codetection as workspace for changes
+  to codetection code.  Deleted a lot of old data (which is still saved in
+  ../sentence-codetection) and generally cleaned up.  Will start modifying this
+  for new ideas so that an old working version still exists.
+
+--More discussion with Dan on new experiments.  Came up with the following:
+  -Quantitative comparisons
+   -train object detector (Felzenswalb or Dalal & Triggs, have code for both)
+    with automatic output; compare against detector trained with hand boxes
+    (Haonan has AMT code for this) and/or detector trained with hand
+    categorization to compare automatic to human performance
+   -Get AMT judgments on proposal labeling (second bullet of **THOUGHTS** above) 
+  -Could also try using color histograms in place of SIFT for subsystem
+   breakdown (1st bullet of **THOUGHTS**)
+
+
 **RANDOM NOTES BELOW**
 
 ***IDEA: Do a filtering on the images from each floorplan (fplabel)

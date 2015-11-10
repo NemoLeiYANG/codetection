@@ -1,0 +1,11 @@
+.   codetection-test.sc  43746  Scheme		  ~/codetection/source/sentence-codetection/codetection-test.sc
+    toollib-multi-proce: 11819  Scheme		  ~/darpa-collaboration/ideas/toollib-multi-process.sc
+  * *scheme*             62846  Inferior Scheme:
+    notes.text           80836  Text		  ~/codetection/notes.text
+  * *shell*               2862  Shell:run	  ~/codetection/
+  * *shell*<2>             577  Shell:run	  ~/QobiScheme/source/
+    QobiScheme-AD.sc    295402  Scheme		  ~/QobiScheme/source/QobiScheme-AD.sc
+    toollib-matlab.sc    12100  Scheme		  ~/darpa-collaboration/ideas/toollib-matlab.sc
+    rover-projection.sc   9062  Scheme		  ~/codetection/source/rover-projection.sc
+    *scratch*              191  Lisp Interaction
+  * *Messages*            2859  Fundamental

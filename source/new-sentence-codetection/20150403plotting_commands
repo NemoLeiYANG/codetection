@@ -1,0 +1,132 @@
+tic;scores = score_detections(detection_data,xmin,xmax,ymin,ymax,1,0.25);toc;
+Elapsed time is 3533.721382 seconds.
+surf(X,Y,scores)
+surf(X,Y,scores)
+surf(X,Y,scores,'EdgeColor','none')
+hold on
+xlabel('world X')
+ylabel('world Y')
+[X,Y] = meshgrid(xpoints,ypoints);
+surf(X,Y,scores,'EdgeColor','none')
+ylabel('world Y')
+xlabel('world X')
+colorbar
+figure()
+surfc(X,Y,scores)
+surfc(X,Y,scores,'EdgeColor','none')
+hold on;
+ylimit([-20,60])
+??? Undefined function or method 'ylimit' for input arguments of type 'double'.
+ 
+lim
+??? Undefined function or variable 'lim'.
+ 
+axis([-4 4 -4 4 -20 60])
+figure
+contour(X,Y,scores)
+hold on;
+plot([xmin xmin xmax xmax xmax],[ymin ymax ymax ymin ymin],'k-')
+figure
+plot([xmin xmin xmax xmax xmax],[ymin ymax ymax ymin ymin],'k-')
+plot([xmin xmin xmax xmax xmin],[ymin ymax ymax ymin ymin],'k-')
+axis([-3.5 3.5 -3 4])
+plot([xmin xmax],[-1.31 -1.31],'k--')
+plot([xmin xmin xmax xmax xmin],[ymin ymax ymax ymin ymin],'k-')
+hold on;
+axis([-3.5 3.5 -3 4])
+plot([xmin xmax],[-1.31 -1.31],'k--')
+plot([xmin xmax],[1.31 1.31],'k--')
+axis([-3.5 3.5 -3 4.5])
+plot([xmin xmax],[1.31 1.31],'k--')
+plot([xmin xmax],[2.62 2.62],'k--')
+plot([xmin xmax],[0 0],'k-')
+plot([0 0],[ymin ymax],'k-')
+plot([-1.37 -1.37],[ymin ymax],'k--')
+plot([1.37 1.37],[ymin ymax],'k--')
+contour(X,Y,scores)
+colorbar
+colormap jet
+colorbar
+contour(X,Y,scores)
+colormap warm
+??? Error using ==> feval
+Undefined function or variable 'warm'.
+
+Error in ==> colormap at 84
+        arg = feval(arg);
+ 
+colormap cool
+colormap jet
+plot(1.37,0,'o','MarkerEdgeColor','k','MarkerFaceColor','k')
+text(1.37,0.10,'THE-CONE')
+plot(-1.37,0,'o','MarkerEdgeColor','k','MarkerFaceColor','k')
+text(-1.37,0.10,'THE-BAG')
+plot(-1.37,-1.304,'o','MarkerEdgeColor','k','MarkerFaceColor','k')
+text(-1.37,-1.204,'THE-CHAIR')
+text(1.37,-1.204,'THE-CHAIR')
+plot(1.37,-1.304,'o','MarkerEdgeColor','k','MarkerFaceColor','k')
+plot(0,-1.304,'o','MarkerEdgeColor','k','MarkerFaceColor','k')
+text(0,-1.204,'THE-TABLE')
+colormap cool
+help colormap
+ COLORMAP Color look-up table.
+    COLORMAP(MAP) sets the current figure's colormap to MAP.
+    COLORMAP('default') sets the current figure's colormap to
+    the root's default, whose setting is JET.
+    MAP = COLORMAP retrieves the current colormap. The values
+    are in the range from 0 to 1.
+    COLORMAP(AX,...) uses the figure corresponding to axes AX
+    instead of the current figure.
+ 
+    A color map matrix may have any number of rows, but it must have
+    exactly 3 columns.  Each row is interpreted as a color, with the
+    first element specifying the intensity of red light, the second
+    green, and the third blue.  Color intensity can be specified on the
+    interval 0.0 to 1.0.
+    For example, [0 0 0] is black, [1 1 1] is white,
+    [1 0 0] is pure red, [.5 .5 .5] is gray, and
+    [127/255 1 212/255] is aquamarine.
+ 
+    Graphics objects that use pseudocolor  -- SURFACE and PATCH objects,
+    which are created by the functions MESH, SURF, and PCOLOR -- map
+    a color matrix, C, whose values are in the range [Cmin, Cmax],
+    to an array of indices, k, in the range [1, m].
+    The values of Cmin and Cmax are either min(min(C)) and max(max(C)),
+    or are specified by CAXIS.  The mapping is linear, with Cmin
+    mapping to index 1 and Cmax mapping to index m.  The indices are
+    then used with the colormap to determine the color associated
+    with each matrix element.  See CAXIS for details.
+ 
+    Type HELP GRAPH3D to see a number of useful colormaps.
+ 
+    COLORMAP is an M-file that sets the Colormap property of a figure.
+ 
+    See also hsv, caxis, spinmap, brighten, rgbplot, figure, colormapeditor.
+
+colormap winter
+colormap summer
+colormap parula
+??? Error using ==> feval
+Undefined function or variable 'parula'.
+
+Error in ==> colormap at 84
+        arg = feval(arg);
+ 
+colormap spring
+colormap hot
+colormap hsv
+colormap autumn
+colormap gray
+colormap bone
+colormap copper
+colormap pink
+colormap lines
+colormap colorcube
+colormap prism
+colormap flag
+colormap white
+colormap hsv
+colormap jet
+colormap copper
+xlabel ('world X (in m)')
+ylabel('world Y (in m)')
