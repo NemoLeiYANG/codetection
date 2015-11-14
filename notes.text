@@ -3602,6 +3602,192 @@ On Fri, Jul 31, 2015 at 5:07 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
   -Could also try using color histograms in place of SIFT for subsystem
    breakdown (1st bullet of **THOUGHTS**)
 
+----------------git commit 8dcfaf6---------------
+
+11 Nov 15
+
+--Email traffic w/Jeff and group about new experiments:
+On Wed, Nov 11, 2015 at 8:50 AM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
+> This is just a thought. I'm trying to think of what would make our experiments
+> for robotic codetection come across as more realistic. Our current framework
+> of placing arbitrary objects in an open area is inherently unrealistic. And I
+> think it might subconsciously bother the reviewers even if they don't
+> explicitly mention it. It would be more natural, if our robot drove around
+> some non-open area and encountered the objects that naturally occurred, or at
+> least could naturally occur, in that setting.
+>
+> For example, we could drive around the living room/dining room area of several
+> different homes. Or the bedroom/bathroom area of several different homes. That
+> would be compelling because it would imply a story, even if we didn't mention
+> it explicitly, that our method could eventually be useful for home robotics.
+>
+> For another example, we could drive around several different office
+> environments. Beside EE and MSEE, we might be able to get access to other
+> buildings and offices at Purdue. We might ask if we could gather data while
+> driving around elementary school hallways and classrooms after hours, in
+> return for offering to give a guest science-class demo during school hours.
+>
+> There are office parks where people can rent office space on a short-term
+> basis. There used to be such a small office building in West Lafayette across
+> the street from Einstein's Bagels, next to the West Lafayette Library. the
+> building is now frontier.com so I don't know if there still is rentable office
+> space there. But I am sure that there is such in Indy or Chicago. And we could
+> probably cut a deal to rent several adjacent offices for one day for perhaps a
+> few hundred or maybe a thousand dollars. There are probably many such in Indy
+> or Chicago so we could get a variety. Just driving around different desks,
+> chairs, file cabinets, conference tables, and the like, in different offices
+> with different doors and different hallways.
+>
+> Generally, this would be far more compelling. Even if there were only a small
+> number of object classes, like chairs, desks, tables, file cabinets, lamps,
+> kitchen cabinets, garbage pails, doors, radiators, and electrical outlets, we
+> could get a wide variety of instances that exhibit natural variation.
+>
+> We would have to make sure that our method worked before we expended the
+> effort of gathering the data. So we would do a small pilot first, maybe even a
+> succession of incrementally larger pilots.
+>
+> I think that if we had a dozen different such environments (say six home and
+> six office), where there was just a single 'floorplan' in each such
+> environment, that is the natural arrangement of objects in that environment,
+> and we drove a few dozen paths in each such environment, we would have a far
+> more compelling experiment.
+>
+>     Jeff (http://engineering.purdue.edu/~qobi)
+
+On Wed, Nov 11, 2015 at 9:01 AM, Jeffrey Mark Siskind
+<jeffrey.mark.siskind@gmail.com> wrote:
+> One thing that is easy to do is rent a night at a dozen different hotels. We
+> could drive around the hotel room. We might, if we were suitably politic, be
+> able to drive around the lobby, hallways, gym, pool, breakfast area, etc.
+>
+> I write this as I am sitting in a hotel room and realize that it would be
+> ideal. A dozen hotel rooms at about $100/night each.
+>
+>     Jeff (http://engineering.purdue.edu/~qobi)
+
+On Wed, Nov 11, 2015 at 9:47 AM, Jeffrey Mark Siskind
+<jeffrey.mark.siskind@gmail.com> wrote:
+> Also, it may be possible to rent 'function rooms' at hotels, conference
+> centers, community centers, churches, libraries, etc.
+>
+>     Jeff (http://engineering.purdue.edu/~qobi)
+
+Yes to all of this!  I think the hotel rooms are probably our best
+bet.  There we will get a variety of instances of household objects
+that are of the same class but have different appearance.  I think the
+only prior knowledge we would need would be the total number of object
+classes (which we already need as input) to have similar objects
+grouped together for labeling on the basis of size and shape rather
+than exact appearance.  It might require some changes to the second
+GM, but it might not.
+
+One thought that comes to mind is that we should probably try to use
+suites or handicapped-accessible rooms (or even better,
+handicapped-accessible suites) to give the rover more room to maneuver
+and get decent looks at the objects.  Some regular rooms could be so
+tightly packed that the rover wouldn't have room to drive or see much
+at all.  The ADA-compliant rooms should even have a bathroom big
+enough for us to drive into.
+
+On Wed, Nov 11, 2015 at 10:55 AM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
+> For a sample, I took a video at the Hilton Garden Inn room I was staying in in
+> Boston on my cell phone. I'll forward it later. I think it was
+> handicapped accessible, but not a suite. It was definitely big enough to drive
+> around in, even in the bathroom.
+>
+> There are lots of hotel chains that specialize in suites. Homewood Suites,
+> Marriott Courtyard, Fairfield Inn & Suites, Residence Inn, Extended Stay
+> America, ... Some have multiple bedrooms in addition to a living room.
+>
+>     Jeff (http://engineering.purdue.edu/~qobi)
+
+Yeah, a room that size should work.  Looks like there's enough room to
+get the rover around and get good looks at the furniture.  The desk
+and wheeled chair might cause problems because there's not a lot of
+substance to them at ground level, but we already knew about that
+issue.  All of the other furniture looks like good candidates to be
+picked up by the proposal generator.
+
+One thought--would we want to have a few objects that we bring
+ourselves so that they are identical in each room?  Two obvious
+candidates that pop to mind are a trashcan and a suitcase.  I'm not
+sure if doing this would help, hurt, or not make a difference.
+
+On Wed, Nov 11, 2015 at 1:35 PM, Daniel Barrett <dpbarret@purdue.edu> wrote:
+> I've been checking tcsvt daily or more. It still says
+>
+> I got ratslam to run on our video and odometry from Scott's school gym test
+> and got complete garbage. I'm checking to make sure I didn't screw up the
+> input format somehow, but it doesn't look promising. 
+>
+> Before I switched to ratslam I was looking into how I would insert our
+> odometry into lsdslam, and since it works by adding a bunch of pairwise
+> constraints between camera poses to a graphical model solver, I should be able 
+> to add my own constraints according to the odometry, or if we decided to go
+> that way, according to language somehow. Another thing about lsdslam is that
+> the version they released is from 2014, and uses a pinhole camera model along
+> with radial distortion correction to try to handle fisheye cameras, but that
+> isn't good enough to handle a 180 degree FOV. They have a more recent paper
+> from 2015 which addresses this with a different camera model. The videos
+> showing results from the newer paper are even more impressive. I was thinking
+> of either asking them if they could give me the new code or possibly trying to
+> make the camera model change in the released code. Or I could just crop our
+> pano cam images so that they only include the middle portion which can be
+> reasonably corrected, since it sort of works as is from the pano cam, minus
+> the occasional loss of tracking, which the odometry should account for. 
+>
+> If we decide to use hotel rooms, this is probably all unnecessary, although if
+> we want to navigate multiple rooms or hallways it might still be.
+
+
+Open files in Emacs 11Nov15
+. * *shell*<3>          483161  Shell:run	  ~/codetection/
+    notes.text          193092  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+    codetection-test.sc  66263  Scheme		  ~/codetection/source/sentence-codetection/codetection-test.sc
+  * *shell*<2>          463653  Shell:run	  ~/Dropbox/grad school stuff/Purdue/research/1_SLAM/
+    today.text          120740  Text		  ~/vader-rover/today.text
+  * *shell*             424584  Shell:run	  /etc/
+    output.text          11074  Text		  /tmp/output.text
+    scott_proposals_onl: 16552  MATLAB		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/scott_proposals_only.m
+    proposals_and_simila: 3956  MATLAB		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/proposals_and_similarity.m
+    out_camera_data_25p: 44039  nXML Valid	  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/camera_calibration/out_camera_data_25ppms.xml
+    toollib-codetection: 18999  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/toollib-codetection.sc
+    ralicra2016-labeling: 7261  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/ralicra2016-labeling.sc
+    toollib-misc.sc      44479  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/ideas/toollib-misc.sc
+    table-test.sc          898  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/table-test.sc
+    toollib-matlab.sc    12100  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/ideas/toollib-matlab.sc
+    QobiScheme-AD.sc    295402  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/QobiScheme/source/QobiScheme-AD.sc
+
+***REMEMBER to change symlink for toollib-codetection.sc in
+   ~/darpa-collaboration/ideas-->change to new toollib-codetection.sc
+
+13 Nov 15
+
+--Collected 34 runs in 4 different rooms (dining, kitchen, living, master bed)
+  in my house yesterday.  Saved on seykhl in
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15. 
+
+--Next step is to see if runs are accurate enough to use.
+  -Reconstruct trace from odometry and look at it to see if it makes sense
+  -Do this for all runs, and then stitch front, pano, and trace together into
+   single video
+  -Watch these to see if the traces make sense with the videos
+
+--Only after this shows good results is it worthwhile to start trying the (1st
+  round) graphical model on the videos.
+
+
+14 Nov 15
+
+--Continuing to work on automatic stitching together of videos with traces.
+
+--Automatic stitching code completed in rendering-code.sc.  Have written
+  partial-wrapper to run the joining of images and then the making of images
+  into videos.  Seems to be taking a while--probably something screwy with my
+  code, but seems to be running correctly.  Need to check videos once
+  partial-wrapper completes.
+
 
 **RANDOM NOTES BELOW**
 
