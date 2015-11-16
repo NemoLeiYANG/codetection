@@ -541,6 +541,24 @@
       imgs)))
     framedirs camdirs)))
 
+(define (move-traces basedir)
+ (let* ((tempdir (format #f "~a/../tmp" basedir))
+	(camdirs (system-output (format #f "ls -d ~a/*/" tempdir)))
+	(framedirs (system-output (format #f "ls -d /tmp/animation/*/")))
+	)
+  (for-each
+   (lambda (framedir camdir)
+    (dtrace "moving from: " framedir)
+    (dtrace "to: " camdir)
+    (let* ((imgs (system-output (format #f "ls ~a" framedir))))
+     (for-each
+      (lambda (img)
+       (system (format #f "cp ~a/~a ~a/~a"
+		       framedir img camdir img)))
+      imgs)))
+    framedirs camdirs)))
+
+
 (define (join-3-images img1 img2 img3 num outdir)
  (system (format #f "montage -tile 3x1 -geometry +0+0 ~a ~a ~a ~a/joined-~a.png"
 		 img1 img2 img3 outdir (number->padded-string-of-length num 6))))
@@ -649,9 +667,13 @@
 	    (loop (rest rundirs) (rest camdirs))))))))
 
 (define (partial-wrapper basedir fps)
- (split-videos-to-frames basedir fps)
+ ;;(split-videos-to-frames basedir fps)
+ ;;(move-traces basedir)
  (make-3-panel-frames basedir)
- (make-frames-into-video basedir fps))
+ (make-frames-into-video basedir fps)
+ (rm "/tmp/animation/*/")
+ (rm (format #f "~a/../tmp" basedir))
+ )
 
 ;;FIXME--***THINK ABOUT restructuring the above stuff so that it instead does all
 ;; steps on a single video in one shot, then doing a wrapper that sends it multiple

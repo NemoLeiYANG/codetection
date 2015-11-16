@@ -3804,6 +3804,9 @@ Open files in Emacs 11Nov15
    does all steps on a single video in one shot, then doing a wrapper that sends
    it multiple videos to do sequentially.  Don't forget to clean up as well.
 
+16 Nov 15 (2)
+
+--Found bug in partial-wrapper, should be fixed.
 
 
 
