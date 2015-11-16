@@ -3788,6 +3788,42 @@ Open files in Emacs 11Nov15
   code, but seems to be running correctly.  Need to check videos once
   partial-wrapper completes.
 
+----------------git commit aa233b7---------------
+
+16 Nov 15
+
+--Looking at plots, it seems to be that the x and y axes are not scaled
+  equally.  X axis appears to have a wider range than the y axis.  Need to fix
+  this in future plotting runs--both axes should be scaled to the larger of the
+  two ranges. **Think this is fixed in animate-house-tracks**
+
+--Finished fixes in rendering-code.sc for plotting.  Appears to work now.
+  Redoing the run of stitching videos together to get a better look.
+
+***STILL NEED TO THINK ABOUT restructuring the above stuff so that it instead
+   does all steps on a single video in one shot, then doing a wrapper that sends
+   it multiple videos to do sequentially.  Don't forget to clean up as well.
+
+
+
+
+--Notes on stitched files (floorplan-x-sentence-y):
+  0-0: OK, y distance seems to long
+  0-1: might be bad, seems like some slippage on right turns on carpet
+  0-2: OK
+  0-3: very good
+  0-4: good
+  0-5: good
+  0-6: good
+  0-7: BAD--looks like data link broke and lost some frames/sensor readings
+  1-0: OK, but trace goes out of image (fixed in new animate-house-tracks)
+  1-1: OK, trace goes out of image, maybe drift issues at the end (longer path)
+  1-2: OK, trace goes out of image
+
+
+
+
+
 
 **RANDOM NOTES BELOW**
 

@@ -1,0 +1,876 @@
+***** INITIALIZEVAR Duplicately defined symbol +
+***** INITIALIZEVAR Duplicately defined symbol -
+***** INITIALIZEVAR Duplicately defined symbol *
+***** INITIALIZEVAR Duplicately defined symbol /
+***** INITIALIZEVAR Duplicately defined symbol SQRT
+***** INITIALIZEVAR Duplicately defined symbol EXP
+***** INITIALIZEVAR Duplicately defined symbol LOG
+***** INITIALIZEVAR Duplicately defined symbol EXPT
+***** INITIALIZEVAR Duplicately defined symbol SIN
+***** INITIALIZEVAR Duplicately defined symbol COS
+***** INITIALIZEVAR Duplicately defined symbol ATAN
+***** INITIALIZEVAR Duplicately defined symbol =
+***** INITIALIZEVAR Duplicately defined symbol <
+***** INITIALIZEVAR Duplicately defined symbol >
+***** INITIALIZEVAR Duplicately defined symbol <=
+***** INITIALIZEVAR Duplicately defined symbol >=
+***** INITIALIZEVAR Duplicately defined symbol ZERO?
+***** INITIALIZEVAR Duplicately defined symbol POSITIVE?
+***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
+***** INITIALIZEVAR Duplicately defined symbol REAL?
+Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
+> (load "rendering-code.sc")
+VISUALIZE-PROPOSALS
+VISUALIZE-RESULTS-IMPROVED
+***** VIDEO->FRAMES is redefined
+VIDEO->FRAMES
+WORLD->PIXEL
+DRAW-WORLD-LINE
+DRAW-OBJECT-ON-FLOORPLAN
+DRAW-TRACE
+DRAW-TRACE2
+DRAW-FLOORPLAN-AND-SENTENCE
+DRAW-ROBOT
+DRAW-WORLD-ROBOT
+***** DRAW-WORLD-LINE is redefined
+DRAW-WORLD-LINE
+REMOVE-THE
+ANIMATE-TRACK
+ANIMATE-TRACK-WITH-BOXES
+DOWNSAMPLE-TO-LENGTH
+GET-X-Y-MAX-MIN
+ANIMATE-HOUSE-TRACKS
+SPLIT-VIDEOS-TO-FRAMES
+RESIZE-AND-MOVE
+JOIN-3-IMAGES
+MAKE-3-PANEL-FRAMES
+MAKE-FRAMES-INTO-VIDEO
+PARTIAL-WRAPPER
+"rendering-code.sc"
+> (define basedir "/aux/sbroniko/vader-rover/logs/house-test-12nov15")
+BASEDIR
+> (partial-wrapper basedir 10)
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/00/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/01/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/02/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/03/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/04/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/05/"
+"complete in cond #2" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/06/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/07/"
+"complete in cond #2" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/08/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/09/"
+"complete in cond #2" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/10/"
+"complete in cond #2" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/11/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/12/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/13/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/14/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/15/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/16/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/17/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/18/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/19/"
+"complete in cond #2" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/20/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/21/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/22/"
+"complete in cond #2" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/23/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/24/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/25/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/26/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/27/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/28/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/29/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/30/"
+"complete in cond #1" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/31/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/32/"
+"complete in else" #F
+"camdir: " "/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/33/"
+"complete in cond #1" #F
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/00//joined-0%05d.png':
+  Duration: 00:00:43.70, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+File '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0//merged.avi' already exists. Overwrite ? [y/N] y
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0xbff060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0xbff2c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0xbff9a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  437 fps= 38 q=2.6 Lsize=   10916kB time=43.70 bitrate=2046.3kbits/s    
+video:10900kB audio:0kB global headers:0kB muxing overhead 0.146905%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/01//joined-0%05d.png':
+  Duration: 00:01:27.30, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+File '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-1//merged.avi' already exists. Overwrite ? [y/N] y
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x114c060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x114c2c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x114c9a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-1//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  873 fps= 38 q=2.7 Lsize=   21852kB time=87.30 bitrate=2050.5kbits/s    
+video:21825kB audio:0kB global headers:0kB muxing overhead 0.121021%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/02//joined-0%05d.png':
+  Duration: 00:01:22.70, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+File '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-2//merged.avi' already exists. Overwrite ? [y/N] y
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x20ab060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x20ab2c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x20ab9a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-2//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  827 fps= 38 q=3.9 Lsize=   20763kB time=82.70 bitrate=2056.7kbits/s    
+video:20737kB audio:0kB global headers:0kB muxing overhead 0.122147%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/03//joined-0%05d.png':
+  Duration: 00:01:04.40, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0xc4e060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0xc4e2c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0xc4e9a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-3//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  644 fps= 38 q=2.4 Lsize=   16085kB time=64.40 bitrate=2046.1kbits/s    
+video:16064kB audio:0kB global headers:0kB muxing overhead 0.130486%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/04//joined-0%05d.png':
+  Duration: 00:01:23.70, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x730060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x7302c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x7309a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-4//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  837 fps= 37 q=3.1 Lsize=   20966kB time=83.70 bitrate=2052.1kbits/s    
+video:20941kB audio:0kB global headers:0kB muxing overhead 0.122149%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/05//joined-0%05d.png':
+  Duration: 00:00:18.30, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x112d820] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x1128c60] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x1129340] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-5//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  183 fps= 37 q=4.3 Lsize=    4727kB time=18.30 bitrate=2115.8kbits/s    
+video:4717kB audio:0kB global headers:0kB muxing overhead 0.210299%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/06//joined-0%05d.png':
+  Duration: 00:00:34.00, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x1b0a820] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x1b05c60] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x1b06340] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-6//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  340 fps= 38 q=3.0 Lsize=    8530kB time=34.00 bitrate=2055.1kbits/s    
+video:8516kB audio:0kB global headers:0kB muxing overhead 0.160739%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/07//joined-0%05d.png':
+  Duration: 00:00:51.70, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0xa2d060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0xa2d2c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0xa2d9a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-7//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  517 fps= 38 q=4.5 Lsize=   13109kB time=51.70 bitrate=2077.2kbits/s    
+video:13091kB audio:0kB global headers:0kB muxing overhead 0.136816%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/08//joined-0%05d.png':
+  Duration: 00:01:35.90, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x16d4180] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x16d43e0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x16d4ac0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-1-sentence-0//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  959 fps= 38 q=2.6 Lsize=   24026kB time=95.90 bitrate=2052.3kbits/s    
+video:23997kB audio:0kB global headers:0kB muxing overhead 0.118756%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/09//joined-0%05d.png':
+  Duration: 00:01:56.90, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x8d5180] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x8d53e0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x8d5ac0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-1-sentence-1//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame= 1169 fps= 37 q=3.6 Lsize=   29333kB time=116.90 bitrate=2055.6kbits/s    
+video:29300kB audio:0kB global headers:0kB muxing overhead 0.114365%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/10//joined-0%05d.png':
+  Duration: 00:01:47.50, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x2558180] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x25583e0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x2558ac0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-1-sentence-2//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame= 1075 fps= 37 q=3.6 Lsize=   26987kB time=107.50 bitrate=2056.5kbits/s    
+video:26955kB audio:0kB global headers:0kB muxing overhead 0.116038%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/11//joined-0%05d.png':
+  Duration: 00:00:43.20, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x1677160] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x16773c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x1677aa0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-1-sentence-3//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  432 fps= 38 q=2.6 Lsize=   10830kB time=43.20 bitrate=2053.7kbits/s    
+video:10814kB audio:0kB global headers:0kB muxing overhead 0.146991%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/12//joined-0%05d.png':
+  Duration: 00:00:45.80, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x14dfd20] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x14dff40] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x14e05a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-1-sentence-4//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  458 fps= 37 q=2.6 Lsize=   11515kB time=45.80 bitrate=2059.7kbits/s    
+video:11499kB audio:0kB global headers:0kB muxing overhead 0.143674%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/13//joined-0%05d.png':
+  Duration: 00:00:59.70, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0xd37820] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0xd32d20] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0xd33400] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-1-sentence-5//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  597 fps= 38 q=2.4 Lsize=   14989kB time=59.70 bitrate=2056.7kbits/s    
+video:14969kB audio:0kB global headers:0kB muxing overhead 0.132417%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/14//joined-0%05d.png':
+  Duration: 00:01:07.90, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x217c400] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x2176ea0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x2177580] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-2-sentence-0//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  679 fps= 35 q=2.5 Lsize=   17038kB time=67.90 bitrate=2055.6kbits/s    
+video:17016kB audio:0kB global headers:0kB muxing overhead 0.128187%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/15//joined-0%05d.png':
+  Duration: 00:00:51.60, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x17683e0] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x1776360] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x1776a40] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-2-sentence-1//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  516 fps= 37 q=2.3 Lsize=   12951kB time=51.60 bitrate=2056.0kbits/s    
+video:12933kB audio:0kB global headers:0kB muxing overhead 0.138193%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/16//joined-0%05d.png':
+  Duration: 00:00:59.10, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0xd898e0] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0xd84ea0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0xd85580] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-2-sentence-2//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  591 fps= 36 q=2.5 Lsize=   14865kB time=59.10 bitrate=2060.5kbits/s    
+video:14846kB audio:0kB global headers:0kB muxing overhead 0.132633%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/17//joined-0%05d.png':
+  Duration: 00:00:42.50, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x9e88e0] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x9e3ea0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x9e4580] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-2-sentence-3//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  425 fps= 36 q=2.9 Lsize=   10738kB time=42.50 bitrate=2069.8kbits/s    
+video:10723kB audio:0kB global headers:0kB muxing overhead 0.146605%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/18//joined-0%05d.png':
+  Duration: 00:01:01.90, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x1bcd400] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x1bc7ea0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x1bc8580] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-2-sentence-4//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  619 fps= 37 q=2.4 Lsize=   15549kB time=61.90 bitrate=2057.8kbits/s    
+video:15529kB audio:0kB global headers:0kB muxing overhead 0.130994%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/19//joined-0%05d.png':
+  Duration: 00:01:33.20, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x23cb060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x23cb2c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x23cb9a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-3-sentence-0//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  932 fps= 35 q=4.5 Lsize=   23411kB time=93.20 bitrate=2057.8kbits/s    
+video:23384kB audio:0kB global headers:0kB muxing overhead 0.119133%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/20//joined-0%05d.png':
+  Duration: 00:01:30.20, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x1eb3060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x1eb32c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x1eb39a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-3-sentence-1//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  902 fps= 34 q=3.4 Lsize=   22662kB time=90.20 bitrate=2058.2kbits/s    
+video:22635kB audio:0kB global headers:0kB muxing overhead 0.119719%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/21//joined-0%05d.png':
+  Duration: 00:01:24.20, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x206c060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x206c2c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x206c9a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-3-sentence-2//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  842 fps= 36 q=4.6 Lsize=   21186kB time=84.20 bitrate=2061.2kbits/s    
+video:21160kB audio:0kB global headers:0kB muxing overhead 0.121414%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/22//joined-0%05d.png':
+  Duration: 00:00:30.90, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x1ca6060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x1ca62c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x1ca69a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-3-sentence-3//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  309 fps= 37 q=3.2 Lsize=    7789kB time=30.90 bitrate=2064.9kbits/s    
+video:7776kB audio:0kB global headers:0kB muxing overhead 0.166496%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/23//joined-0%05d.png':
+  Duration: 00:01:27.20, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0xcac060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0xcac2c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0xcac9a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-3-sentence-4//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  872 fps= 37 q=3.3 Lsize=   21905kB time=87.20 bitrate=2057.8kbits/s    
+video:21878kB audio:0kB global headers:0kB muxing overhead 0.120643%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/24//joined-0%05d.png':
+  Duration: 00:00:59.40, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x12a8060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x12a82c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x12a89a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-4-sentence-0//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  594 fps= 35 q=3.6 Lsize=   14936kB time=59.40 bitrate=2059.8kbits/s    
+video:14916kB audio:0kB global headers:0kB muxing overhead 0.132454%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/25//joined-0%05d.png':
+  Duration: 00:00:07.30, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x9d0060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x9d02c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x9d09a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-4-sentence-1//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=   73 fps= 41 q=5.6 Lsize=    2013kB time=7.30 bitrate=2259.1kbits/s    
+video:2006kB audio:0kB global headers:0kB muxing overhead 0.363979%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/26//joined-0%05d.png':
+  Duration: 00:01:10.90, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x22149a0] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x220fc60] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x2210340] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-4-sentence-3//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  709 fps= 38 q=2.5 Lsize=   17789kB time=70.90 bitrate=2055.4kbits/s    
+video:17766kB audio:0kB global headers:0kB muxing overhead 0.126754%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/27//joined-0%05d.png':
+  Duration: 00:00:53.80, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x1221060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x12212c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x12219a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-4-sentence-4//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  538 fps= 37 q=3.7 Lsize=   13556kB time=53.80 bitrate=2064.1kbits/s    
+video:13537kB audio:0kB global headers:0kB muxing overhead 0.136191%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/28//joined-0%05d.png':
+  Duration: 00:01:31.00, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x1f60060] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x1f602c0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x1f609a0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-4-sentence-5//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  910 fps= 37 q=2.6 Lsize=   22767kB time=91.00 bitrate=2049.5kbits/s    
+video:22740kB audio:0kB global headers:0kB muxing overhead 0.120126%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/29//joined-0%05d.png':
+  Duration: 00:02:11.90, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x16c1380] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x16cf160] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x16cf840] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-5-sentence-0//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame= 1319 fps= 38 q=3.2 Lsize=   33061kB time=131.90 bitrate=2053.4kbits/s    
+video:33024kB audio:0kB global headers:0kB muxing overhead 0.112284%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/30//joined-0%05d.png':
+  Duration: 00:01:04.80, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x15f4820] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x15efbe0] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x15f02c0] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-5-sentence-1//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  648 fps= 38 q=3.1 Lsize=   16239kB time=64.80 bitrate=2053.0kbits/s    
+video:16218kB audio:0kB global headers:0kB muxing overhead 0.129900%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/31//joined-0%05d.png':
+  Duration: 00:01:39.80, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0xdca380] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0xdd8160] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0xdd8840] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-5-sentence-2//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  998 fps= 38 q=3.9 Lsize=   25079kB time=99.80 bitrate=2058.6kbits/s    
+video:25050kB audio:0kB global headers:0kB muxing overhead 0.117511%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/32//joined-0%05d.png':
+  Duration: 00:00:54.70, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0xb35380] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0xb43160] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0xb43840] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-5-sentence-3//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  547 fps= 39 q=3.6 Lsize=   13768kB time=54.70 bitrate=2061.9kbits/s    
+video:13749kB audio:0kB global headers:0kB muxing overhead 0.135491%
+ffmpeg version 0.8.16-6:0.8.16-1, Copyright (c) 2000-2014 the Libav developers
+  built on Sep 16 2014 23:10:48 with gcc 4.7.2
+The ffmpeg program is only provided for script compatibility and will be removed
+in a future release. It has been deprecated in the Libav project to allow for
+incompatible command line syntax improvements in its replacement called avconv
+(see Changelog for details). Please use avconv instead.
+Input #0, image2, from '/aux/sbroniko/vader-rover/logs/house-test-12nov15/../tmp/33//joined-0%05d.png':
+  Duration: 00:00:57.70, start: 0.000000, bitrate: N/A
+    Stream #0.0: Video: png, rgb24, 1760x480, 10 fps, 10 tbr, 10 tbn, 10 tbc
+Incompatible pixel format 'rgb24' for codec 'mpeg4', auto-selecting format 'yuv420p'
+[buffer @ 0x1b99380] w:1760 h:480 pixfmt:rgb24
+[avsink @ 0x1ba7160] auto-inserting filter 'auto-inserted scaler 0' between the filter 'src' and the filter 'out'
+[scale @ 0x1ba7840] w:1760 h:480 fmt:rgb24 -> w:1760 h:480 fmt:yuv420p flags:0x4
+Output #0, avi, to '/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-5-sentence-4//merged.avi':
+  Metadata:
+    ISFT            : Lavf53.21.1
+    Stream #0.0: Video: mpeg4, yuv420p, 1760x480, q=2-31, 2048 kb/s, 10 tbn, 10 tbc
+Stream mapping:
+  Stream #0.0 -> #0.0
+Press ctrl-c to stop encoding
+frame=  577 fps= 38 q=3.2 Lsize=   14573kB time=57.70 bitrate=2069.0kbits/s    
+video:14553kB audio:0kB global headers:0kB muxing overhead 0.133057%
+"make-frames-into-video complete" #F
+#F
+> (exit)
+
+Process scheme finished

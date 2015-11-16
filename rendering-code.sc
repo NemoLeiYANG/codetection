@@ -117,9 +117,9 @@
 
 (define (world->pixel world-xy width height minx maxx miny maxy)
   (vector (+ (* width (/ (x world-xy) (- maxx minx)))
-			    (/ width 2))
-			 (+ (- (* height (/ (y world-xy) (- maxy miny))))
-			    (/ height 2))))
+	     (* width (/ (abs minx) (- maxx minx))));;(/ width 2))
+	  (+ (- (* height (/ (y world-xy) (- maxy miny))))
+	     (* height (/ (abs maxy) (- maxy miny))))));;(/ height 2))))
 
 (define (draw-world-line line image width height minx maxx miny maxy color)
 (imlib:draw-line image color 
@@ -130,10 +130,12 @@
 
 (define (draw-object-on-floorplan obj image width height minx maxx miny maxy)
   (let* ((world-xy (second obj))
-	 (pix-xy (vector (+ (* width (/ (x world-xy) (- maxx minx)))
-			    (/ width 2))
-			 (+ (- (* height (/ (y world-xy) (- maxy miny))))
-			    (/ height 2)))))
+	 (pix-xy (world->pixel world-xy width height minx maxx miny maxy)
+	  ;; (vector (+ (* width (/ (x world-xy) (- maxx minx)))
+	  ;; 	    (/ width 2))
+	  ;; 	 (+ (- (* height (/ (y world-xy) (- maxy miny))))
+	  ;; 	    (/ height 2)))
+		 ))
     (imlib-draw-text-on-image image 
 			      (symbol->string (remove-the (first obj)))
 			      `#(0 0 0) 12 (x pix-xy) (y pix-xy) `#(255 255 255))
@@ -435,10 +437,40 @@
 (define (animate-house-tracks tracks width height)
  (rm "/tmp/animation/*/")
  (let* ((x-y-max-min (get-x-y-max-min tracks))
-	(max-x (* 1.1 (first (first x-y-max-min))))
-	(min-x (* 1.1 (second (first x-y-max-min))))
-	(max-y (* 1.1 (first (second x-y-max-min))))
-	(min-y (* 1.1 (second (second x-y-max-min)))))
+	(the-max (* 1.1 (max (first (first x-y-max-min))
+			     (first (second x-y-max-min)))))
+	(the-min (* 1.1 (min (second (first x-y-max-min))
+			     (second (second x-y-max-min)))))
+	(max-x the-max)
+	(max-y the-max)
+	(min-x the-min)
+	(min-y the-min)
+	;;second try
+	;; (x-y-max-min (get-x-y-max-min tracks))
+	;; (x-range (- (first (first x-y-max-min))
+	;; 	    (second (first x-y-max-min))))
+	;; (y-range (- (first (second x-y-max-min))
+	;; 	    (second (second x-y-max-min))))
+	;; (range-factor (/ x-range y-range))
+	;; (max-x (if (< 1 range-factor)
+	;; 	   (* 1.1 (first (first x-y-max-min))) ;;x-range > y-range
+	;; 	   (* (/ 1 range-factor) 1.1 (first (first x-y-max-min)))))
+	;; (min-x (if (< 1 range-factor)
+	;; 	   (* 1.1 (second (first x-y-max-min)))
+	;; 	   (* (/ 1 range-factor) 1.1 (second (first x-y-max-min)))))
+	;; (max-y (if (< 1 range-factor)
+	;; 	   (* range-factor 1.1 (first (second x-y-max-min)))
+	;; 	   (* 1.1 (first (second x-y-max-min)))))
+	;; (min-y (if (< 1 range-factor)
+	;; 	   (* range-factor 1.1 (second (second x-y-max-min)))
+	;; 	   (* 1.1 (second (second x-y-max-min)))))
+	;;first try
+	;; (x-y-max-min (get-x-y-max-min tracks))
+	;; (max-x (* 1.1 (first (first x-y-max-min))))
+	;; (min-x (* 1.1 (second (first x-y-max-min))))
+	;; (max-y (* 1.1 (first (second x-y-max-min))))
+	;; (min-y (* 1.1 (second (second x-y-max-min))))
+	)
   (let outer-loop ((tracks tracks)
 		   (i 0))
    (if (null? tracks)
@@ -523,59 +555,78 @@
     (let* ((fronts (system-output (format #f "ls ~a/cam_front*" camdir)))
 	   (panos (system-output (format #f "ls ~a/cam_pano*" camdir)))
 	   (traces (system-output (format #f "ls ~a/frame*" camdir)))
-	   (numfronts (length fronts))
-	   (numtraces (length traces)))
-     (cond ((< numfronts numtraces)
-	    (let loop1 ((fronts fronts)
-			(panos panos)
-			(traces (sublist traces 0 numfronts))
-			(i 0))
-	     (if (or (null? fronts) (null? panos))
-		 (dtrace "complete in cond #1" #f)
-		 (begin
-		  (join-3-images (first fronts)
-				 (first panos)
-				 (first traces)
-				 i
-				 camdir)
-		  (loop1 (rest fronts)
-			 (rest panos)
-			 (rest traces)
-			 (+ i 1))))))
-	   ((< numtraces numfronts)
-	    (let loop2 ((fronts (sublist fronts 0 numtraces))
-			(panos panos)
-			(traces traces)
-			(i 0))
-	     (if (or (null? fronts) (null? panos))
-		 (dtrace "complete in cond #2" #f)
-		 (begin
-		  (join-3-images (first fronts)
-				 (first panos)
-				 (first traces)
-				 i
-				 camdir)
-		  (loop2 (rest fronts)
-			 (rest panos)
-			 (rest traces)
-			 (+ i 1))))))
-	   (else ;;if we get here, numfronts = numtraces
-	    (let loop3 ((fronts fronts)
-			(panos panos)
-			(traces traces)
-			(i 0))
-	     (if (or (null? fronts) (null? panos))
-		 (dtrace "complete in else" #f)
-		 (begin
-		  (join-3-images (first fronts)
-				 (first panos)
-				 (first traces)
-				 i
-				 camdir)
-		  (loop3 (rest fronts)
-			 (rest panos)
-			 (rest traces)
-			 (+ i 1)))))))))
+	   ;; (numfronts (length fronts))
+	   ;; (numtraces (length traces))
+	   )
+     (let loop ((fronts fronts)
+		 (panos panos)
+		 (traces traces)
+		 (i 0))
+     	     (if (or (null? fronts) (null? panos) (null? traces))
+     		 (dtrace "complete" #f)
+     		 (begin
+     		  (join-3-images (first fronts)
+     				 (first panos)
+     				 (first traces)
+     				 i
+     				 camdir)
+     		  (loop (rest fronts)
+			(rest panos)
+			(rest traces)
+			(+ i 1)))))
+     
+     ;; (cond ((< numfronts numtraces)
+     ;; 	    (let loop1 ((fronts fronts)
+     ;; 			(panos panos)
+     ;; 			(traces (sublist traces 0 numfronts))
+     ;; 			(i 0))
+     ;; 	     (if (or (null? fronts) (null? panos))
+     ;; 		 (dtrace "complete in cond #1" #f)
+     ;; 		 (begin
+     ;; 		  (join-3-images (first fronts)
+     ;; 				 (first panos)
+     ;; 				 (first traces)
+     ;; 				 i
+     ;; 				 camdir)
+     ;; 		  (loop1 (rest fronts)
+     ;; 			 (rest panos)
+     ;; 			 (rest traces)
+     ;; 			 (+ i 1))))))
+     ;; 	   ((< numtraces numfronts)
+     ;; 	    (let loop2 ((fronts (sublist fronts 0 numtraces))
+     ;; 			(panos panos)
+     ;; 			(traces traces)
+     ;; 			(i 0))
+     ;; 	     (if (or (null? fronts) (null? panos))
+     ;; 		 (dtrace "complete in cond #2" #f)
+     ;; 		 (begin
+     ;; 		  (join-3-images (first fronts)
+     ;; 				 (first panos)
+     ;; 				 (first traces)
+     ;; 				 i
+     ;; 				 camdir)
+     ;; 		  (loop2 (rest fronts)
+     ;; 			 (rest panos)
+     ;; 			 (rest traces)
+     ;; 			 (+ i 1))))))
+     ;; 	   (else ;;if we get here, numfronts = numtraces
+     ;; 	    (let loop3 ((fronts fronts)
+     ;; 			(panos panos)
+     ;; 			(traces traces)
+     ;; 			(i 0))
+     ;; 	     (if (or (null? fronts) (null? panos))
+     ;; 		 (dtrace "complete in else" #f)
+     ;; 		 (begin
+     ;; 		  (join-3-images (first fronts)
+     ;; 				 (first panos)
+     ;; 				 (first traces)
+     ;; 				 i
+     ;; 				 camdir)
+     ;; 		  (loop3 (rest fronts)
+     ;; 			 (rest panos)
+     ;; 			 (rest traces)
+     ;; 			 (+ i 1)))))))
+     ))
    camdirs)))
 
 ;;this takes frames and makes video
@@ -598,5 +649,101 @@
 	    (loop (rest rundirs) (rest camdirs))))))))
 
 (define (partial-wrapper basedir fps)
+ (split-videos-to-frames basedir fps)
  (make-3-panel-frames basedir)
  (make-frames-into-video basedir fps))
+
+;;FIXME--***THINK ABOUT restructuring the above stuff so that it instead does all
+;; steps on a single video in one shot, then doing a wrapper that sends it multiple
+;; videos to do sequentially.  Don't forget to clean up as well.  Probably also
+;; need to read all tracks to determine max and min x and y (LOOK AT THIS--might
+;; be doing it wrong).
+
+
+;;functions copied from generate-msee1-dataset.sc (renamed to avoid conflicts)
+;;for reading tracks
+
+(define (downsample-list-by-factor l f)
+ (removeq #f
+	  (map-indexed
+	   (lambda (e i)
+	    (if (= (modulo i f) 0)
+		e
+		#f))
+	   l)))
+
+;;FIXME--NEED TO RENAME THESE
+
+(define (read-robot-estimated-track-from-log-file filename)
+ (let* ((lines (read-file filename))
+	(valid (remove-if-not (lambda (line)
+				      (let*
+					((split-line (pregexp-split ":" line)))
+				       (and (> (length split-line) 6)
+					    (equal? (first split-line) "ESTIMATE"))))
+				     lines))
+	(pose (map (lambda (line)
+		    (let*
+		      ((split-line (pregexp-split ":" line)))
+		     (vector (string->number (third split-line))
+			     (string->number (fifth split-line)))))
+		   valid)))
+pose))
+
+
+(define (read-robot-estimated-track-from-log-file-lists filename)
+ (let* ((lines (read-file filename))
+	(valid (remove-if-not (lambda (line)
+				      (let*
+					((split-line (pregexp-split ":" line)))
+				       (and (> (length split-line) 6)
+					    (equal? (first split-line) "ESTIMATE"))))
+				     lines))
+	(pose (map (lambda (line)
+		    (let*
+		      ((split-line (pregexp-split ":" line)))
+		     (list (string->number (third split-line))
+			   (string->number (fifth split-line))
+			   (string->number (seventh split-line)))))
+		   valid)))
+pose))
+
+(define (read-house-tracks) ;;rewrite to do just 1 at a time??
+ (map
+  (lambda (run-dir)
+   (let* ((logfile
+	   (format #f
+		   "/aux/sbroniko/vader-rover/logs/house-test-12nov15/~a/imu-log.txt"
+		     run-dir))
+	    (trackfile
+	     ;;(dtrace "trackfile"
+		     (format #f
+			     "/aux/sbroniko/vader-rover/logs/house-test-12nov15/~a/track.sc"
+			     run-dir)))
+      (dtrace "floorplan:" (list run-dir))
+      (if (file-exists? logfile)
+	  (write-object-to-file
+	   (read-robot-estimated-track-from-log-file-lists logfile)
+	   trackfile)
+	  (dtrace "no valid trace found"
+		  (write-object-to-file
+		   (map-n (lambda (i) (list 0.000000 0.000000 1.570796)) 100)
+		   trackfile))
+	  )
+	  ))
+    (system-output
+     (format #f "ls /aux/sbroniko/vader-rover/logs/house-test-12nov15"))))
+
+(define (dataset-read-house-tracks) 
+ (let* ((directory"/aux/sbroniko/vader-rover/logs/house-test-12nov15")
+	 ;;"/home/sbroniko/vader-rover/logs/house-test-12nov15")
+	(run-dirs (system-output (format #f "ls -d ~a/*/" directory ))))
+  (map
+   (lambda (run-dir)
+    (dtrace "run-dir:" run-dir)
+      (when (file-exists? (dtrace ""(format #f "~a/track.sc" run-dir)))
+       (let* ((track (list->vector (map list->vector (read-object-from-file (format #f "~a/track.sc" run-dir))))))
+	track)))
+     run-dirs)))
+;;end functions to rename/rewrite from generate-msee1-dataset.sc
+
