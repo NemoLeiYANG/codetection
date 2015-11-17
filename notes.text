@@ -3804,11 +3804,41 @@ Open files in Emacs 11Nov15
    does all steps on a single video in one shot, then doing a wrapper that sends
    it multiple videos to do sequentially.  Don't forget to clean up as well.
 
+----------------git commit 6456a07---------------
+
 16 Nov 15 (2)
 
 --Found bug in partial-wrapper, should be fixed.
 
+----------------git commit 1c09c9c---------------
 
+17 Nov 15
+
+--Copied house-test-12nov15/ to all workstations (minus mohio) and servers in
+  preparation for running stage 1 of the codetection.
+
+--Finished re-run of stitched files.  Need to do a more thorough look, but it
+  appears that traces are good as long as the path stays short.  Longer paths
+  have drift issues (which we already knew), but slipping when trying to turn on
+  carpet does not appear to be an issue-->the plot turns in sync with the video.
+
+--Starting work on changing code in new-sentence-codetection to run new house
+  runs.  Have all new functions below a dated comment line in
+  codetection-test.sc. Also commented out all f-score penalties (except for
+  behind camera/not on floor penalty) in scott_propsals_similarity2.m.
+
+--Running test of single video on aruco to make sure it works, then will run all
+  videos in parallel on multiple servers.
+
+--Found bug in MATLAB startup.m (~/Documents/MATLAB) and fixed it so that old
+  sentence-codetection was not added to matlab path at startup.
+
+----------------git commit ---------------
+
+
+
+
+**RANDOM NOTES BELOW**
 
 --Notes on stitched files (floorplan-x-sentence-y):
   0-0: OK, y distance seems to long
@@ -3822,13 +3852,6 @@ Open files in Emacs 11Nov15
   1-0: OK, but trace goes out of image (fixed in new animate-house-tracks)
   1-1: OK, trace goes out of image, maybe drift issues at the end (longer path)
   1-2: OK, trace goes out of image
-
-
-
-
-
-
-**RANDOM NOTES BELOW**
 
 ***IDEA: Do a filtering on the images from each floorplan (fplabel)
    individually.  Get descriptors for each image and find mean and stddev.  Then

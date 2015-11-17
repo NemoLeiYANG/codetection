@@ -23,6 +23,7 @@ function [boxes_w_fscore,gscore,num_gscore]= ... %d_score,w_score,s_score,G,dist
 %         num_gscore: number of rows in gscore
 
 % add paths
+run('/home/sbroniko/codetection/source/sentence-codetection/MCG-PreTrained/install.m');
 addpath(pwd);
 addpath(genpath('piotr-toolbox'));
 addpath(genpath('vlfeat/toolbox'));
