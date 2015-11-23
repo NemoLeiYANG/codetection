@@ -3833,7 +3833,52 @@ Open files in Emacs 11Nov15
 --Found bug in MATLAB startup.m (~/Documents/MATLAB) and fixed it so that old
   sentence-codetection was not added to matlab path at startup.
 
-----------------git commit ---------------
+----------------git commit 798af84---------------
+
+21 Nov 15
+
+--have visualize-proposals working to draw all proposals on frames.
+
+--working on new-animate-tracks-with-boxes to draw trace with proposal/result
+  boxes
+
+--main wrapper to do all such for a single path/run is make-4-by-video-house-one-run
+
+23 Nov 15
+
+--Fixed visualize-proposals so that the colors of the boxes are scaled to the
+  range of the run's mean score +/- 1 std-dev.  Looks better now
+
+--Need to think more about how to encode the different data we have as part of
+  the binary score between two proposals--see email from Jeff, 22 Nov.
+
+--Working on new-animate-tracks-with-boxes to make images of traces with all and
+  selected proposals at the same time
+
+
+**SCREEN: screen -ls to list open screens
+          screen -r foo to reconnect to screen foo
+	  ^A d to detach screen
+	  ^A k to kill session
+
+  rlwrap run-dsci to have history in dsci
+
+**need to make plots of scatter, surface, contour from each run (look in
+  new-sentence-codetection to find matlab commands and then make them into a
+  script/automate) 
+**need to make 4-by plot of trace and images with all proposals and selected
+  proposals (should all be in rendering-code.sc)
+  --look at animate-track-with-boxes to see how to do it; detections-movie is a
+    list of lists of boxes-->if only 1 box, will do just selected proposals
+  --look at visualize-proposals for rendering all proposals-->will probably need
+    some work to get functional again
+**LOOK AT rendering-code.sc in
+  ~dpbarret/darpa-collaboration/documentation/ralicra2016/supplementary-material 
+
+
+
+***THOUGHT: could we use the Viterbi algorithm instead of branch and bound for
+   labeling? 
 
 
 

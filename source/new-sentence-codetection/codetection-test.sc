@@ -1764,6 +1764,49 @@
 						  server-list
 						  source-machine)   
   ))
+(define (run-codetection-only-house-test-2 data-output-dirname)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/results-house-test-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list
+	 (list "aruco" "save" "akili" "verstand" "arivu" "perisikan" "cuddwybodaeth" "istihbarat" "wywiad" "jalitusteabe"))
+	  ;;all servers except upplysingaoflun, aql
+	(source-machine "seykhl"))
+  (get-codetection-results-house-test-2 data-directory 
+					top-k
+					ssize
+					alpha
+					beta
+					gamma
+					delta
+					dummy-f
+					dummy-g
+					output-directory 
+					data-output-dir 
+					server-list
+					source-machine)   
+  ))
 
 ;; gets codetection results for every run in a dataset
 (define (get-codetection-results-house-test
@@ -1834,6 +1877,92 @@
   						      source
   						      data-directory)
   (dtrace "matlab processing complete" #f)
+  (system "date")
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "matlab results rsync'd, starting c processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-c
+  						      servers
+  						      c-cpus-per-job
+  						      output-c
+  						      source
+  						      data-directory)
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "processing complete for get-codetection-results-house-test" #f)
+  (system "date")))
+
+(define (get-codetection-results-house-test-2 ;;new version that only runs c stuff, and spreads the load out more
+	 data-directory ;; NEED slash on data-dir
+	 top-k
+	 ssize
+	 alpha
+	 beta
+	 gamma
+	 delta
+	 dummy-f
+	 dummy-g
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 data-output-dir ;;this is just a DIR NAME that will be under each run dir
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+ (let* ((servers server-list)
+	(source source-machine)
+	(matlab-cpus-per-job 8);;4);; for under-the-hood matlab parallelism
+	(c-cpus-per-job 40) ;;1)
+	(output-matlab (format #f "~a-matlab/" output-directory))
+	(output-c (format #f "~a-c/" output-directory))
+	;;(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	;; (dir-list (join
+	;; 	   (map
+	;; 	    (lambda (p)
+	;; 	     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+	;; 		  (system-output
+	;; 		   (format #f "ls ~a/~a | grep 201" data-directory p))))
+	;; 	    plandirs)))
+	(dir-list (map
+		   (lambda (d) (format #f "~a/~a" data-directory d))
+		   (system-output (format #f "ls ~a | grep floor" data-directory))))
+	(commands-matlab
+	 (map
+	  (lambda (dir) 
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (get-matlab-data-house-test \"~a\" ~a ~a ~a ~a ~a ~a ~a ~a \"~a\") :n :n :n :n :b" dir top-k ssize alpha beta gamma delta dummy-f dummy-g data-output-dir)) dir-list))
+	(commands-c ;;if something breaks this might be it--not sure I have path changes right
+	 (map
+	  (lambda (dir)
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (visualize-results-improved \"~a\" ~a ~a \"~a\") :n :n :n :n :b"
+		   dir
+		   dummy-f
+		   dummy-g
+		   data-output-dir)) dir-list))
+	)
+  (dtrace "starting get-codetection-results-house-test-2" #f)
+  (system "date")
+  ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
+  ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
+  ;; (for-each (lambda (dir)
+  ;; 	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  ;; 		       servers))
+  ;; 	    (list output-matlab output-c))  ;;NOT NECESSARY
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab output-c))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
+		       servers))
+	    (list output-matlab output-c))
+  ;; (dtrace "starting matlab processing" #f)
+  ;; (system "date")
+  ;; (synchronous-run-commands-in-parallel-with-queueing commands-matlab
+  ;; 						      servers
+  ;; 						      matlab-cpus-per-job
+  ;; 						      output-matlab
+  ;; 						      source
+  ;; 						      data-directory)
+  ;; (dtrace "matlab processing complete" #f)
   (system "date")
   (for-each (lambda (server)
 	     (rsync-directory-to-server server data-directory source))
