@@ -51,12 +51,8 @@
 ;; 	(dtrace "saved image" n)
 ;; 	(loop (rest images) (rest boxes) (+ n 1)))))))
 ;;new version copied from Dan's ralicra2016/supplementary-material
-(define (visualize-proposals path dummy-f dummy-g outdir)
+(define (visualize-proposals path dummy-f dummy-g outdir data)
  (let* ((outpath (format #f "~a/~a" path outdir))
-	(data (read-object-from-file
-	       (format #f "~a/frame-data-~a-~a.sc" outpath
-		       (number->padded-string-of-length dummy-f 3)
-		       (number->padded-string-of-length dummy-g 3))))
 	(img-path (format #f "~a/images-~a-~a" outpath
 			  (number->padded-string-of-length dummy-f 3)
 			  (number->padded-string-of-length dummy-g 3)))
@@ -77,32 +73,20 @@
 	     (n 0))
    (if (or (null? images)
 	   (null? boxes))
-       (dtrace (format #f "finished in ~a" path) #f)
+       (dtrace (format #f "visualize-proposals finished in ~a" path) #f)
        (begin
-       ;; (let* ((scores
-       ;; 	       (map (lambda (x) (vector-ref x 4)) (vector->list (first boxes))))
-       ;; 	      (max-score (maximum scores))
-       ;; 	      (min-score (minimum scores)))
-	;; (dtrace "max-score " max-score)
-	;; (dtrace "min-score " min-score)
 	(for-each
 	 (lambda (box)
 	  (let* ((x1 (first box)) ;;we have a real box
 		 (y1 (second box))
 		 (w (- (third box) (first box)))
 		 (h (- (fourth box) (second box)))
-;;		 (red (* (/ (fifth box) max-score) 255))
-;;		 (blue (* (- 1 (/ (fifth box) max-score)) 255)))
 		 (red (* (minimum
 			  (list 1
 				(/ (- (fifth box) min-score)
 				   (- max-score min-score))))
 			 255))
 		 (blue
-		  ;; (* (- 1 (minimum
-		  ;; 	   (list 1
-		  ;; 		 (/ (- (fifth box) min-score)
-		  ;; 		    (- max-score min-score)))) 255))
 		  (* 255
 		     (maximum
 		      (list 0
@@ -126,54 +110,90 @@
 	(imlib:save (first images) (format #f "~a/rendered-proposals-~a.png"
 					   img-path
 					   (number->padded-string-of-length n 5)))
-	(dtrace "saved image" n)
+	;;(dtrace "saved image" n)
 	(loop (rest images) (rest boxes) (+ n 1)))))))
 				      
 
 (define (make-4-by-video-house-one-run path)
- (let ((outdir "test20151117")
-       (dummy-f 0.6)
-       (dummy-g 0.6))
+ (let* ((testdir "test20151117")
+	(outdir "foobar")
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(*the-max* (* 1.1 (max (first (first *house-x-y*))
+			       (first (second *house-x-y*)))))
+	(*the-min* (* 1.1 (min (second (first *house-x-y*))
+			       (second (second *house-x-y*)))))
+	(max-x *the-max*)
+	(max-y *the-max*)
+	(min-x *the-min*)
+	(min-y *the-min*))
   ;;abort if files aren't there
-  (if (not (file-exists? (format #f "~a/track.sc" path)))
-      (dtrace
-       (format #f "missing ~a/track.sc, make-4-by-video-house-one-run aborted" path)
-       #f))
-  (if (not (file-exists? (format #f "~a/~a/frame-data-~a-~a.sc"
-				 path
-				 outdir
-				 (number->padded-string-of-length dummy-f 3)
-				 (number->padded-string-of-length dummy-g 3))))
-      (dtrace
-       (format #f "missing ~a/~a/frame-data-*.sc, make-4-by-video-house-one-run aborted"
-	       path
-	       outdir)
-       #f))
-  (if (not (file-exists? (format #f "~a/~a/results-~a-~a.sc"
-				 path
-				 outdir
-				 (number->padded-string-of-length dummy-f 3)
-				 (number->padded-string-of-length dummy-g 3))))
-      (dtrace
-       (format #f "missing ~a/~a/results-*.sc, make-4-by-video-house-one-run aborted"
-	       path
-	       outdir)
-       #f))
-  (let* ((width 640)
-	 (height 640))
-   ;;THINK ABOUT reading in frame-data and results just once here then passing to each function-->should speed things up over reading the files multiple times
-   
-   ;;visualize all proposals
-   (visualize-proposals path dummy-f dummy-g outdir) 
-   ;;make joined plots of traces w/ all and winning proposals
-   (new-animate-track-with-boxes path outdir width height)
-   ;;stitch visualizations together
-   ;;stitch visualizations to joined plots
-   ;;make video
-   ;;clean up images
-   (rm (format #f "~a/~a/images-~a-~a/rendered-proposals*.png" path outdir dummy-f dummy-g))
-   
-  )))
+  (cond ((not (file-exists? (format #f "~a/track.sc" path)))
+	 (dtrace
+	  (format #f "missing ~a/track.sc, make-4-by-video-house-one-run aborted" path)
+	  #f))
+	((not (file-exists? (format #f "~a/~a/frame-data-~a-~a.sc"
+				    path
+				    testdir
+				    (number->padded-string-of-length dummy-f 3)
+				    (number->padded-string-of-length dummy-g 3))))
+	 (dtrace
+	  (format #f "missing ~a/~a/frame-data-*.sc, make-4-by-video-house-one-run aborted"
+		  path
+		  testdir)
+	  #f))
+	((not (file-exists? (format #f "~a/~a/results-~a-~a.sc"
+				    path
+				    testdir
+				    (number->padded-string-of-length dummy-f 3)
+				    (number->padded-string-of-length dummy-g 3))))
+	 (dtrace
+	  (format #f "missing ~a/~a/results-*.sc, make-4-by-video-house-one-run aborted"
+		  path
+		  testdir)
+	  #f))
+	(else
+	 (let* ((width 640)
+		(height 640)
+		(fps 10)
+		(data (read-object-from-file
+		       (format #f "~a/~a/frame-data-~a-~a.sc" path testdir
+			       (number->padded-string-of-length dummy-f 3)
+			       (number->padded-string-of-length dummy-g 3))))
+		(trace (read-object-from-file (format #f "~a/track.sc" path)))
+		(results (read-object-from-file
+			  (format #f "~a/~a/results-~a-~a.sc"
+				  path
+				  testdir
+				  (number->padded-string-of-length dummy-f 3)
+				  (number->padded-string-of-length dummy-g 3))))
+		)
+	  ;;visualize all proposals
+	  (visualize-proposals path dummy-f dummy-g testdir data) 
+	  ;;make joined plots of traces w/ all and winning proposals
+	  (animate-house-track-with-boxes path testdir outdir width height dummy-f dummy-g
+					  min-x max-x min-y max-y data trace results)
+	  ;;stitch visualizations together with joined plots
+	  (make-4-by-frames path testdir dummy-f dummy-g)
+	  ;;make video
+	  (system (format #f "ffmpeg -framerate ~a -i ~a/~a/images-~a-~a/frame-0%04d.png -b 2048k -r ~a ~a/~a/quad-video.avi"
+			  fps path testdir (number->padded-string-of-length dummy-f 3)
+			  (number->padded-string-of-length dummy-g 3) fps path testdir))
+	  ;;clean up images
+	  (rm (format #f "~a/~a/images-~a-~a/rendered-proposals*.png" path testdir dummy-f dummy-g))
+	  (rm (format #f "~a/~a/images-~a-~a/frame*.png" path testdir dummy-f dummy-g))
+	  (rm (format #f "~a/~a/images-~a-~a/joined*.png" path testdir dummy-f dummy-g))
+	  (rm (format #f "~a/~a/images-~a-~a/traces-joined*.png" path testdir dummy-f dummy-g))
+	  (dtrace (format #f "make-4-by-video-house-one-run complete in ~a" path ))
+  )))))
+
+(define (make-all-house-test-videos)
+ (let* ((basedir "/aux/sbroniko/vader-rover/logs/house-test-12nov15")
+	(rundirs (system-output (format #f "ls -d ~a/*/" basedir))))
+  (for-each
+   (lambda (dir)
+    (make-4-by-video-house-one-run dir))
+   rundirs)))
 
 
 (define (visualize-results-improved path dummy-f dummy-g data-output-dir)
@@ -517,12 +537,12 @@
     (lambda (b)
      (let* ((w (dtrace "w"(vector-ref b 3)))
 	   (pw (dtrace "pw" (magnitude (v- (vector (/ width 2) (/ height 2)) (world->pixel (vector w 0) width height -4.1 4.1 -4.1 4.1))))))
-     (imlib:draw-rectangle image
-			   (- (x (world->pixel (vector (x b) (y b)) width height -4.1 4.1 -4.1 4.1)) 0)
-			   (- (y (world->pixel (vector (x b) (y b)) width height -4.1 4.1 -4.1 4.1)) 0)
-			   pw
-			   pw
-			   (vector (* (/ (z b) max-score) 255) 0 0))))
+      (imlib:draw-rectangle image
+			    (- (x (world->pixel (vector (x b) (y b)) width height -4.1 4.1 -4.1 4.1)) 0)
+			    (- (y (world->pixel (vector (x b) (y b)) width height -4.1 4.1 -4.1 4.1)) 0)
+			    pw
+			    pw
+			    (vector (* (/ (z b) max-score) 255) 0 0))))
     (first detections-movie))
 (when (not (null? trace))
  (draw-trace2 trace image width height -4.1 4.1 -4.1 4.1))
@@ -531,18 +551,21 @@
 ;;(show-image image)
 (loop (rest track) (cons (list->vector (first track)) trace) (+ frame 1) (rest detections-movie)))))))
 
-(define (new-animate-track-with-boxes path  ;;path=main floorplan path
-				      testdir  ;;testdir=dir under path where frame-data and results are
-				      outdir
-				      width
-				      height
-				      dummy-f
-				      dummy-g
-				      min-x
-				      max-x
-				      min-y
-				      max-y)
- ;;abort if files aren't there
+(define (animate-house-track-with-boxes path  ;;path=main floorplan-sentence path
+					testdir  ;;testdir=dir under path where frame-data and results are
+					outdir
+					width
+					height
+					dummy-f
+					dummy-g
+					min-x
+					max-x
+					min-y
+					max-y
+					data
+					trace
+					results)
+ ;;abort if files aren't there--remove this once wrapper that passes this data is complete
  (if (not (file-exists? (format #f "~a/track.sc" path)))
      (dtrace
       (format #f "missing ~a/track.sc, new-animate-track-with-boxes aborted" path) #f))
@@ -567,96 +590,207 @@
  ;;if we get here, we have the data files we need
  (rm (format #f "/tmp/~a" outdir))
  (mkdir-p (format #f "/tmp/~a" outdir))
- (let ((track (downsample-list-by-factor
-	       (read-object-from-file (format #f "~a/track.sc" path))
+ (let* ((track (downsample-list-by-factor
+		trace ;; (read-object-from-file (format #f "~a/track.sc" path))
 		5))
-       (boxes (first (read-object-from-file
-		      (format #f "~a/~a/frame-data-~a-~a.sc"
-			      path
-			      testdir
-			      (number->padded-string-of-length dummy-f 3)
-			      (number->padded-string-of-length dummy-g 3)))))
-       (detections-movie
-	(map (lambda (frame-boxes)
-	      (map-vector (lambda (b)
-			   (vector (vector-ref b 5)
-				   (vector-ref b 6)
-				   (vector-ref b 4)
-				   (vector-ref b 7)))
-			  frame-boxes))
-	     boxes)) ;;SORT THESE before drawing on image
-       (scores (map (lambda (x) (vector-ref x 4)) (join (map vector->list boxes))))
-       (score-mean (list-mean scores))
-       (score-variance (list-variance scores))
-       (score-std (sqrt score-variance))
-       (max-score (+ score-mean (* 1 score-std)))
-       (min-score (- score-mean (* 1 score-std)))
-
-       (selected-index (first (read-object-from-file
-			       (format #f "~a/~a/frame-data-~a-~a.sc"
-				       path
-				       testdir
-				       (number->padded-string-of-length dummy-f 3)
-				       (number->padded-string-of-length dummy-g 3)))))
-       )
-  ;;START HERE-->combine inner loop of animate-house-tracks with animate-track-with-boxes
+	(boxes (first ;; (read-object-from-file
+		      ;;  (format #f "~a/~a/frame-data-~a-~a.sc"
+		      ;; 	       path
+		      ;; 	       testdir
+		      ;; 	       (number->padded-string-of-length dummy-f 3)
+		      ;; 	       (number->padded-string-of-length dummy-g 3)))
+		       data))
+	(detections-movie
+	 (map (lambda (frame-boxes)
+	       (map-vector (lambda (b)
+			    (vector (vector-ref b 5)
+				    (vector-ref b 6)
+				    (vector-ref b 4)
+				    (vector-ref b 7)))
+			   frame-boxes))
+	      boxes)) ;;SORT THESE before drawing on image
+	(scores (map (lambda (x) (vector-ref x 4)) (join (map vector->list boxes))))
+	(score-mean (list-mean scores))
+	(score-variance (list-variance scores))
+	(score-std (sqrt score-variance))
+	(max-score (+ score-mean (* 1 score-std)))
+	(min-score (- score-mean (* 1 score-std)))
+	
+	(selected-index (first ;; (read-object-from-file
+			       ;; 	(format #f "~a/~a/results-~a-~a.sc"
+			       ;; 		path
+			       ;; 		testdir
+			       ;; 		(number->padded-string-of-length dummy-f 3)
+			       ;; 		(number->padded-string-of-length dummy-g 3)))
+			 results))
+	)
   (let loop ((track track)
 	     (trace '())
 	     (frame 0)
-	     (detections-movie detections-movie)) 
-   (if (null? track)
-       '()
-       (let* ((image (imlib:create width height)))
-	(imlib:fill-rectangle image 0 0 width height `#(255 255 255)) 
-	(draw-object-on-floorplan (list 'the-start (vector 0 0)) image width height -4 4 -4 4)
-	(for-each 
-	 (lambda (pair)
-	  (imlib:draw-line image `#(0 0 0) 
-			   (x (world->pixel (first pair) width height -4.1 4.1 -4.1 4.1))
-			   (y (world->pixel (first pair)  width height -4.1 4.1 -4.1 4.1))
-			   (x (world->pixel (second pair) width height -4.1 4.1 -4.1 4.1))
-			   (y (world->pixel (second pair)  width height -4.1 4.1 -4.1 4.1))))
-	 (list
-	  (list `#(-4 -4) `#(-4 4))
-	  (list `#(-4 4) `#(4 4))
-	  (list `#(4 4) `#(4 -4))
-	  (list `#(4 -4) `#(-4 -4))
-     
-     ;; (list `#(-3 -2.62) `#(-3 3.93))
-     ;; 	  (list `#(-3 -2.62) `#(3.05 -2.62))
-     ;; 	  (list `#(3.05 3.93) `#(3.05 -2.62))
-     ;; 	  (list `#(3.05 3.93) `#(-3.0 3.93))
-   	  ;; (list `#(-1.37 -2.62) `#(-1.37 3.93))
-   	  ;; (list `#(0 -2.62) `#(0 3.93))
-   	  ;; (list `#(1.37 -2.62) `#(1.37 3.93))
-   	  ;; (list `#(-3 -1.31) `#(3.05 -1.31))
-   	  ;; (list `#(-3 0) `#(3.05 0))
-   	  ;; (list `#(-3 1.31) `#(3.05 1.31))
-   	  ;; (list `#(-3 2.62) `#(3.05 2.62))
-	  ))
-   (draw-world-robot image
-		     (vector (first (first track))
-			     (second (first track)))
-		     (third (first track))
-		     .2
-		     width height -4.1 4.1 -4.1 4.1)
-   (for-each-vector
-    (lambda (b)
-     (let* ((w (dtrace "w"(vector-ref b 3)))
-	   (pw (dtrace "pw" (magnitude (v- (vector (/ width 2) (/ height 2)) (world->pixel (vector w 0) width height -4.1 4.1 -4.1 4.1))))))
-     (imlib:draw-rectangle image
-			   (- (x (world->pixel (vector (x b) (y b)) width height -4.1 4.1 -4.1 4.1)) 0)
-			   (- (y (world->pixel (vector (x b) (y b)) width height -4.1 4.1 -4.1 4.1)) 0)
-			   pw
-			   pw
-			   (vector (* (/ (z b) max-score) 255) 0 0))))
-    (first detections-movie))
-(when (not (null? trace))
- (draw-trace2 trace image width height -4.1 4.1 -4.1 4.1))
-   (imlib:save image (format #f "/tmp/~a/frame-~a.png" outdir (number->padded-string-of-length frame 4)))
-   (imlib:free image)
+	     (detections-movie detections-movie)
+	     (selected-index selected-index)) 
+   (if (or (null? track) (null? detections-movie))
+       (begin
+	(rm (format #f "/tmp/~a/*" outdir))
+	(dtrace (format #f "animate-house-track-with-boxes finished in ~a" path) #f)
+	)
+       (let* ((image (imlib:create width height)) ;;image is all proposals
+	      (image2 (imlib:create width height)) ;;image2 is selected proposal
+	      (image-name (format #f "/tmp/~a/all-~a.png"
+				  outdir
+				  (number->padded-string-of-length frame 5)))
+	      (image2-name (format #f "/tmp/~a/selected-~a.png"
+				  outdir
+				  (number->padded-string-of-length frame 5)))
+	      (joined-name (format #f "~a/~a/images-~a-~a/traces-joined-~a.png"
+				   path
+				   testdir
+				   (number->padded-string-of-length dummy-f 3)
+				   (number->padded-string-of-length dummy-g 3)
+				   (number->padded-string-of-length frame 5)))
+	      )
+	(imlib:fill-rectangle image 0 0 width height `#(255 255 255))
+	(imlib:fill-rectangle image2 0 0 width height `#(255 255 255))
+	(imlib:draw-rectangle image 0 0 width height `#(0 0 0))
+	(imlib:draw-rectangle image2 0 0 width height `#(0 0 0))
+	(draw-object-on-floorplan (list 'the-start (vector 0 0))
+				  image width height min-x max-x min-y max-y)
+	(draw-object-on-floorplan (list 'the-start (vector 0 0))
+				  image2 width height min-x max-x min-y max-y)
+	(draw-world-robot image
+			  (vector (first (first track))
+				  (second (first track)))
+			  (third (first track))
+			  .2
+			  width height min-x max-x min-y max-y)
+	(draw-world-robot image2
+			  (vector (first (first track))
+				  (second (first track)))
+			  (third (first track))
+			  .2
+				 width height min-x max-x min-y max-y) 
+	;;THIS BLOCK draws the sized and colored rectangles
+	(for-each-vector
+	 (lambda (b)
+	  (let* ((w ;;(dtrace "w"
+		  (vector-ref b 3));;)
+		 (pw ;;(dtrace "pw"
+		  (magnitude
+		   (v- (world->pixel (vector 0 0)
+				     width
+				     height
+				     min-x
+				     max-x
+				     min-y
+				     max-y)
+		       (world->pixel (vector w 0)
+				     width
+				     height
+				     min-x
+				     max-x
+				     min-y
+				     max-y))));;)
+		 (red (* (minimum
+			  (list 1
+				(/ (- (z b) min-score)
+				   (- max-score min-score))))
+			 255))
+		 (blue
+		  (* 255
+		     (maximum
+		      (list 0
+			    (- 1
+			       (/ (- (z b) min-score)
+				  (- max-score min-score)))))))
+		 )
+	   (imlib:draw-rectangle
+	    image
+	    (- (x (world->pixel
+		   (vector (x b) (y b)) width height min-x max-x min-y max-y))
+	       (/ pw 2))
+	    (- (y (world->pixel
+		   (vector (x b) (y b)) width height min-x max-x min-y max-y))
+	       (/ pw 2))
+	    pw
+	    pw
+	    (vector red 0 blue))))
+	 (first detections-movie) ;;SORT THIS!!--probably not needed
+	 )
+	(when (< (first selected-index) (vector-length (first detections-movie)))
+	 ;;plot selected proposal in red
+	 (let* ((b (vector-ref (first detections-movie) (first selected-index)))
+		(w (vector-ref b 3))
+		(pw (magnitude
+		     (v- (world->pixel (vector 0 0)
+				       width
+				       height
+				       min-x
+				       max-x
+				       min-y
+				       max-y)
+			 (world->pixel (vector w 0)
+				       width
+				       height
+				       min-x
+				       max-x
+				       min-y
+				       max-y)))))
+	  (imlib:draw-rectangle
+	    image2
+	    (- (x (world->pixel
+		   (vector (x b) (y b)) width height min-x max-x min-y max-y))
+	       (/ pw 2))
+	    (- (y (world->pixel
+		   (vector (x b) (y b)) width height min-x max-x min-y max-y))
+	       (/ pw 2))
+	    pw
+	    pw
+	    (vector 255 0 0))))
+	(when (not (null? trace))
+	 (begin
+	  (draw-trace2 trace image width height min-x max-x min-y max-y)
+	  (draw-trace2 trace image2 width height min-x max-x min-y max-y)))
+	(imlib:save image image-name)
+	(imlib:save image2 image2-name)
+	(imlib:free image)
+	(imlib:free image2)
 ;;(show-image image)
-(loop (rest track) (cons (list->vector (first track)) trace) (+ frame 1) (rest detections-movie)))))))
+	;;stitch images together here, remove old images
+	(system (format #f "montage -tile 2x1 -geometry +0+0 ~a ~a ~a"
+			image-name image2-name joined-name))
+	(loop (rest track) (cons (list->vector (first track)) trace) (+ frame 1) (rest detections-movie) (rest selected-index)))))))
+
+(define (make-4-by-frames path testdir dummy-f dummy-g)
+ (let* ((imgdir (format #f "~a/~a/images-~a-~a"	path testdir
+			(number->padded-string-of-length dummy-f 3)
+			(number->padded-string-of-length dummy-g 3)))
+	(traces (system-output (format #f "ls ~a/traces*.png" imgdir)))
+	(lefts (system-output (format #f "ls ~a/rendered*.png" imgdir)))
+	(rights (system-output (format #f "ls ~a/0*.png" imgdir))))
+  (let loop ((traces traces)
+	     (lefts lefts)
+	     (rights rights)
+	     (i 0))
+   (if (or (null? traces) (null? lefts) (null? rights))
+       (begin
+	;;delete images here-TODO
+	(dtrace (format #f "make-4-by-frames complete in ~a" imgdir) #f))
+       (begin
+	(system (format #f "montage -tile 2x1 -geometry +0+0 ~a ~a ~a/joined-~a.png"
+			(first lefts) (first rights) imgdir
+			(number->padded-string-of-length i 5)))
+	(system (format
+		 #f
+		 "montage -tile 1x2 -geometry +0+0 ~a ~a/joined-~a.png ~a/frame-~a.png"
+		 (first traces)
+		 imgdir
+		 (number->padded-string-of-length i 5)
+		 imgdir
+		 (number->padded-string-of-length i 5)))
+	(loop (rest traces) (rest lefts) (rest rights) (+ i 1))
+	
+	)))))
+
 
 (define (downsample-to-length l l2)
  (let ((l1 (length l)))
@@ -790,6 +924,11 @@
  (system (format #f "montage -tile 3x1 -geometry +0+0 ~a ~a ~a ~a/joined-~a.png"
 		 img1 img2 img3 outdir (number->padded-string-of-length num 6))))
 
+(define (join-2-images-horizontal img1 img2 num outdir)
+ (system (format #f "montage -tile 2x1 -geometry +0+0 ~a ~a ~a ~a/joined-~a.png"
+		 img1 img2 outdir (number->padded-string-of-length num 6))))
+
+
 ;; ;;this makes frames of front-pano-trace
 (define (make-3-panel-frames basedir)
  (let* ((tempdir (format #f "~a/../tmp" basedir))
@@ -818,60 +957,7 @@
      		  (loop (rest fronts)
 			(rest panos)
 			(rest traces)
-			(+ i 1)))))
-     
-     ;; (cond ((< numfronts numtraces)
-     ;; 	    (let loop1 ((fronts fronts)
-     ;; 			(panos panos)
-     ;; 			(traces (sublist traces 0 numfronts))
-     ;; 			(i 0))
-     ;; 	     (if (or (null? fronts) (null? panos))
-     ;; 		 (dtrace "complete in cond #1" #f)
-     ;; 		 (begin
-     ;; 		  (join-3-images (first fronts)
-     ;; 				 (first panos)
-     ;; 				 (first traces)
-     ;; 				 i
-     ;; 				 camdir)
-     ;; 		  (loop1 (rest fronts)
-     ;; 			 (rest panos)
-     ;; 			 (rest traces)
-     ;; 			 (+ i 1))))))
-     ;; 	   ((< numtraces numfronts)
-     ;; 	    (let loop2 ((fronts (sublist fronts 0 numtraces))
-     ;; 			(panos panos)
-     ;; 			(traces traces)
-     ;; 			(i 0))
-     ;; 	     (if (or (null? fronts) (null? panos))
-     ;; 		 (dtrace "complete in cond #2" #f)
-     ;; 		 (begin
-     ;; 		  (join-3-images (first fronts)
-     ;; 				 (first panos)
-     ;; 				 (first traces)
-     ;; 				 i
-     ;; 				 camdir)
-     ;; 		  (loop2 (rest fronts)
-     ;; 			 (rest panos)
-     ;; 			 (rest traces)
-     ;; 			 (+ i 1))))))
-     ;; 	   (else ;;if we get here, numfronts = numtraces
-     ;; 	    (let loop3 ((fronts fronts)
-     ;; 			(panos panos)
-     ;; 			(traces traces)
-     ;; 			(i 0))
-     ;; 	     (if (or (null? fronts) (null? panos))
-     ;; 		 (dtrace "complete in else" #f)
-     ;; 		 (begin
-     ;; 		  (join-3-images (first fronts)
-     ;; 				 (first panos)
-     ;; 				 (first traces)
-     ;; 				 i
-     ;; 				 camdir)
-     ;; 		  (loop3 (rest fronts)
-     ;; 			 (rest panos)
-     ;; 			 (rest traces)
-     ;; 			 (+ i 1)))))))
-     ))
+			(+ i 1)))))))
    camdirs)))
 
 ;;this takes frames and makes video

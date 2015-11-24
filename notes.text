@@ -3855,11 +3855,21 @@ Open files in Emacs 11Nov15
 --Working on new-animate-tracks-with-boxes to make images of traces with all and
   selected proposals at the same time
 
+----------------git commit 9cb145c---------------
+
+24 Nov 15
+
+--Finished (make-all-house-test-videos) which makes 4-by videos for all house
+  runs.  Running overnight to test.
+
+--Talking with Jeff--reformulate graphical model to use ONLY world distance as
+  binary cost, and figure out how to take into account temporal proximity in frames.
 
 **SCREEN: screen -ls to list open screens
           screen -r foo to reconnect to screen foo
 	  ^A d to detach screen
 	  ^A k to kill session
+	  ^A ESC to scroll back
 
   rlwrap run-dsci to have history in dsci
 
