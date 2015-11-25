@@ -1,3 +1,6 @@
+(load "/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc")
+(load "/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc")
+
 ;; this is copied from scotts folder some place
 ;; (define frame-data (read-object-from-file "/tmp/frame-data.sc"))
 
@@ -184,16 +187,32 @@
 	  (rm (format #f "~a/~a/images-~a-~a/frame*.png" path testdir dummy-f dummy-g))
 	  (rm (format #f "~a/~a/images-~a-~a/joined*.png" path testdir dummy-f dummy-g))
 	  (rm (format #f "~a/~a/images-~a-~a/traces-joined*.png" path testdir dummy-f dummy-g))
-	  (dtrace (format #f "make-4-by-video-house-one-run complete in ~a" path ))
+	  (dtrace (format #f "make-4-by-video-house-one-run complete in ~a" path ) #f)
   )))))
 
 (define (make-all-house-test-videos)
- (let* ((basedir "/aux/sbroniko/vader-rover/logs/house-test-12nov15")
-	(rundirs (system-output (format #f "ls -d ~a/*/" basedir))))
+ (let* ((basedir "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
+	(rundirs (system-output (format #f "ls -d ~a*/" basedir)))
+	(source "seykhl")
+	(server "aruco")
+	(testdir "test20151117"))
+  (dtrace "starting make-all-house-test-videos" #f)
+  (system "date")
+  (rsync-directory-to-server source basedir server)
+  (dtrace "rsync files to server complete" #f)
+  (system "date")
   (for-each
    (lambda (dir)
-    (make-4-by-video-house-one-run dir))
-   rundirs)))
+    (if (file-exists? (format #f "~a~a/quad-video.avi" dir testdir))
+	(dtrace (format #f "~a~a/quad-video.avi already exists" dir testdir) #f)
+	(make-4-by-video-house-one-run dir)))
+   rundirs)
+  (rsync-directory-to-server server basedir source)
+  (dtrace "rsync files back to source complete" #f)
+  (system "date")
+  (dtrace "finished with make-all-house-test-videos"  #f)
+  (system "date")))
+
 
 
 (define (visualize-results-improved path dummy-f dummy-g data-output-dir)
@@ -1082,3 +1101,117 @@ pose))
    run-dirs)))
 ;;end functions to rename/rewrite from generate-msee1-dataset.sc
 
+;;below functions copied and modified from codetection-test.sc
+
+;;(define (get-detection-data-for-floorplan 
+(define (get-house-detection-data-one-run path testdir matlab-output-filename)
+ ;;this works a little differently than the old version since each run is treated as its own floorplan for this test
+ (if (not (file-exists? (format #f "~a/~a/results-0.6-0.6.sc" path testdir)))
+     (dtrace (format #f "no results file in ~a, aborting" path) #f)
+     (let* ((results-filename (format #f "~a/results-0.6-0.6.sc" testdir))
+	    (frame-data-filename (format #f "~a/frame-data-0.6-0.6.sc" testdir))
+	    (xys ;;(dtrace "xys"
+	     (get-xy-from-results-file
+	      (format #f "~a~a" path results-filename)))
+	    (scores ;;(dtrace "scores"
+	     (get-scores-from-results-and-frame-data-files
+	      (format #f "~a~a" path results-filename)
+	      (format #f "~a~a" path frame-data-filename)))
+	    ;;use most of what's above here to pass this data back into matlab
+	    
+	    ;;put new triangle stuff here--want 1/visible to be 4th column of matlab-data
+	    (all-poses (get-poses-that-match-frames path))
+	    (left-limits
+	     (map
+	      (lambda (p)
+	       (pixel-and-height->world
+		'#(0 205)
+		(robot-pose-to-camera->world-txf p *camera-offset-matrix*)
+		*camera-k-matrix* 0))
+	      all-poses))
+	    (right-limits
+	     (map
+	      (lambda (p)
+	       (pixel-and-height->world
+		'#(639 205)
+		(robot-pose-to-camera->world-txf p *camera-offset-matrix*)
+		*camera-k-matrix* 0))
+	      all-poses))
+	    (triangles
+	     (map (lambda (c l r) (list
+				   (subvector c 0 2)
+				   (subvector l 0 2)
+				   (subvector r 0 2)))
+		  all-poses left-limits right-limits))
+	    (frequencies
+	     (map (lambda (ll)
+		   (if (= ll 0)
+		       (dtrace "Error in get-detection-data-for-floorplan: detected box with count = 0" 0) ;;this shouldn't happen, since it means that a detected box was never counted as being in the field of view
+		       (/ 1 ll)))
+		  (map (lambda (l)
+			(reduce + l 0))
+		       (map (lambda (p)
+			     (map (lambda (t)
+				   (point-in-triangle (list->vector p) t))
+				  triangles))
+			    xys))))
+	    (matlab-data ;;(dtrace "matlab-data"
+	     (map (lambda (xy score freq)
+		   (list->vector (append xy (list score freq))))
+		  xys
+		  scores
+		  frequencies))
+	    )  
+      (start-matlab!)
+      (scheme->matlab! "detection_data" matlab-data)
+      (matlab (format #f
+		      "save('~a/~a/~a','detection_data')"
+		      path
+		      "test20151117"
+		      matlab-output-filename))
+      (dtrace (format #f "get-house-detection-data-one-run complete in ~a" path ) #f)
+      )))
+
+(define (make-house-plots-one-run path testdir matlab-detections-filename)
+ (let* ((x-y-max-min *house-x-y*)
+	(the-max (* 1.1 (max (first (first x-y-max-min))
+			     (first (second x-y-max-min)))))
+	(the-min (* 1.1 (min (second (first x-y-max-min))
+			     (second (second x-y-max-min)))))
+	(max-x (* 1.5 the-max))
+	(max-y (* 1.5 the-max))
+	(min-x (* 1.5 the-min))
+	(min-y (* 1.5 the-min))
+	(cm-between 5)
+	(gaussian-variance 0.25))
+  (start-matlab!)
+  (matlab
+   "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection'));")
+  (if (not (file-exists? (format #f "~a/~a/~a" path testdir
+				 matlab-detections-filename)))
+      (dtrace (format #f "no ~a file in ~a/~a, aborting" matlab-detections-filename
+		      path testdir) #f)
+      (begin
+       (matlab (format #f "load('~a/~a/~a')" path testdir matlab-detections-filename))
+       (matlab (format #f "path = '~a';" path))
+       (matlab (format #f "house_make_plots(path,detection_data,~a,~a,~a,~a,~a,~a);"
+		       min-x max-x min-y max-y cm-between gaussian-variance))
+       (dtrace (format #f "plots made for ~a~a" path testdir) #f)))))
+
+(define (make-all-house-plots)
+ (let* ((matlab-detections-filename "detection_data.mat")
+	(basedir "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
+	(rundirs (system-output (format #f "ls -d ~a*/" basedir)))
+	(testdir "test20151117")
+	(matlab-filename "detection_data.mat"))
+  (dtrace "starting make-all-house-plots" #f)
+  (system "date")
+  (for-each
+   (lambda (path)
+    (begin
+     (get-house-detection-data-one-run path testdir matlab-filename)
+     (make-house-plots-one-run path testdir matlab-filename)))
+   rundirs)
+  (dtrace "finished with make-all-house-plots" #f)
+  (system "date")))
+ 

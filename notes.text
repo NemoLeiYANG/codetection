@@ -3863,7 +3863,24 @@ Open files in Emacs 11Nov15
   runs.  Running overnight to test.
 
 --Talking with Jeff--reformulate graphical model to use ONLY world distance as
-  binary cost, and figure out how to take into account temporal proximity in frames.
+  binary cost, and figure out how to take into account temporal proximity in
+  frames.
+
+----------------git commit 4c7b61a---------------
+
+25 Nov 15
+
+--Problems running (make-all-house-test-videos) on seykhl--ran overnight and
+  only completed 4 videos.  Looked like it was thrashing/crushing the RAM.
+  Moved everything over to aruco and re-running.  Running in a screen session.
+
+--Have plotting software running and saving {contour,scatter,surface}.png for
+  each run on seykhl (screen).
+
+--Redid proposal and binary score code to save proposals separately from binary
+  scores.  Running (single-run-test) which calls the new functions in scheme and
+  matlab.  Should see results in floorplan-0-sentence-1/20151125-iter1.  Running
+  on aql in screen.
 
 **SCREEN: screen -ls to list open screens
           screen -r foo to reconnect to screen foo

@@ -1994,6 +1994,7 @@
 		 (number->padded-string-of-length dummy-f 3)
 		 (number->padded-string-of-length dummy-g 3)) #f))
 
+
 (define (quick-and-dirty-test)
  (let* ((data-directory
 	 "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
@@ -2034,6 +2035,57 @@
 			      dummy-g
 			      data-output-dir)
   (visualize-results-improved dir dummy-f dummy-g data-output-dir)))
+
+(define (single-run-test data-output-dirname)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+;;	(data-output-dirname "quick-test")
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/results-house-test-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(run-dir "floorplan-0-sentence-1")
+	(dir (format #f "~a~a" data-directory run-dir)))
+
+  (dtrace (format #f "starting single-run-test in ~a" data-output-dirname) #f)
+  (system "date")
+  (get-matlab-data-house-test-new dir
+				  top-k
+				  ssize
+				  alpha
+				  beta
+				  gamma
+				  delta
+				  dummy-f
+				  dummy-g
+				  data-output-dir)
+  (visualize-results-improved dir dummy-f dummy-g data-output-dir)
+  (system (format #f "rsync -avrz ~a~a/ seykhl:~a~a/"
+		  data-directory
+		  data-output-dirname
+		  data-directory
+		  data-output-dirname))
+  (dtrace (format #f "finished single-run-test in ~a" data-output-dirname) #f)
+  (system "date")
+  ))
   
 
 (define (read-camera-timing-new path)
@@ -2081,4 +2133,116 @@
 
 ;;to plot object detections from all floorplans
 ;;(map (lambda (num) (matlab "figure") (plot-objects-from-floorplan (format #f "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/plan~a" num) "test20150617/results-0.6-0.6.sc")) (list 0 1 2 3 4 5 6 7 8 9))
+
+(define (get-matlab-data-house-test-new
+	 path top-k ssize alpha beta gamma delta dummy-f dummy-g data-output-dir)
+ (mkdir-p (format #f "~a/~a" path data-output-dir))
+ (write-object-to-file
+  (get-matlab-proposals-similarity-full-video-new
+   top-k ssize path alpha beta gamma delta data-output-dir)
+  (format #f "~a/~a/frame-data-~a-~a.sc" path data-output-dir
+	  (number->padded-string-of-length dummy-f 3)
+	  (number->padded-string-of-length dummy-g 3)))
+ (dtrace (format #f "wrote ~a/~a/frame-data-~a-~a.sc" path data-output-dir
+		 (number->padded-string-of-length dummy-f 3)
+		 (number->padded-string-of-length dummy-g 3)) #f))
+
+(define (get-matlab-proposals-similarity-full-video-new top-k
+							box-size
+							data-path
+							alpha
+							beta
+							gamma
+							delta
+							data-output-dir)
+ (let* ((video-path (format #f "~a/video_front.avi" data-path))
+	(frames (video->frames 1 video-path))
+	(poses (align-frames-with-poses data-path (length frames)))
+	(coeff-sum (+ alpha beta gamma delta))
+	(alpha-norm (/ alpha coeff-sum))
+	(beta-norm (/ beta coeff-sum))
+	(gamma-norm (/ gamma coeff-sum))
+	(delta-norm (/ delta coeff-sum)))
+  (dtrace
+   "in new-sentence-codetection/get-matlab-proposals-similarity-full-video-new" #f)
+  (get-matlab-proposals-similarity-new top-k
+				       box-size
+				       frames
+				       poses
+				       alpha-norm
+				       beta-norm
+				       gamma-norm
+				       delta-norm
+				       data-path
+				       data-output-dir)))
+
+(define (get-matlab-proposals-similarity-new top-k
+					     box-size
+					     frames
+					     poses
+					     alpha-norm
+					     beta-norm
+					     gamma-norm
+					     delta-norm
+					     data-path
+					     data-output-dir)
+ (let* ((num-frames (length frames))
+	(one-frame (first frames))
+	(height (imlib:height one-frame))
+	(width (imlib:width one-frame)))
+  ;;(list frames poses)
+  (start-matlab!)
+  (matlab "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection/'))")
+  (scheme->matlab! "poses" poses)
+  (matlab (format #f "frames = zeros(~a,~a,~a,~a,'uint8');" height width 3 num-frames))
+  ;; convert frames to matlab matrix
+  (for-each-indexed
+   (lambda (frame i)
+    (with-temporary-file
+     "/tmp/imlib-frame.ppm"
+     (lambda (tmp-frame)
+      ;; write scheme frame to file
+      (imlib:save-image frame tmp-frame)
+      ;; read file as matlab frame
+      (matlab (format #f "frame=imread('~a');" tmp-frame))
+      (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
+    (imlib:free-image-and-decache frame) ;;might want to comment this out
+              ;;but could cause a memory leak if I don't free image elsewhere
+    )    
+   frames)
+  ;; call matlab function
+  (dtrace "calling NEW separated proposals and binary scores functions" #f)
+  ;; (matlab
+  ;;  (format
+  ;;   #f
+  ;;   "[boxes_w_fscore,gscore,num_gscore] = scott_proposals_similarity2(~a,~a,frames,poses,~a,~a,~a);"
+  ;;   top-k box-size alpha-norm beta-norm gamma-norm))
+  (if (not
+       (file-exists? (format #f "~a/~a/proposal_data.mat" data-path data-output-dir)))
+      (begin
+       (matlab
+	(format
+	 #f
+	 "[bboxes,valid_loc,phists] = new_proposals_and_dsift(~a,~a,frames,poses);"
+	 top-k box-size ))
+       (matlab (format #f
+		       "save('~a/~a/proposal_data.mat','bboxes','valid_loc','phists');"
+		       data-path data-output-dir))))
+  (matlab (format #f ("load('~a/~a/proposal_data.mat');" data-path data-output-dir)))
+  (matlab
+   (format
+    #f
+    "[boxes_w_fscore,gscore,num_gscore] = new_binary_scores(bboxes,valid_loc,phists,~a,~a,~a);" alpha-norm beta-norm gamma-norm))
+
+
+   
+  ;; convert matlab variables to scheme
+  (list (map-n (lambda (t)
+		(matlab (format #f "tmp=boxes_w_fscore(:,:,~a);" (+ t 1)))
+		(matlab-get-variable "tmp"))
+	       num-frames)
+	  (matlab-get-variable "gscore")
+	  (matlab-get-variable "num_gscore"))
+
+  ))
 
