@@ -3882,6 +3882,19 @@ Open files in Emacs 11Nov15
   matlab.  Should see results in floorplan-0-sentence-1/20151125-iter1.  Running
   on aql in screen.
 
+----------------git commit c1b141f---------------
+
+25 Nov 15 (2)
+
+--Changed new_binary_scores.m around line 289 to ensure that only the NEXT FRAME
+  is connected to each frame (temporally adjacent).
+
+--Also modified rendering-code.sc in (make-all-house-plots) to look for
+  detection_data.mat before running (get-house-detection-data-one-run path
+  testdir matlab-filename) 
+
+****USE FLOORPLAN BOUNDARIES AS PARAMETER TO PASS INTO MATLAB (REJECT OUTLIER PROPOSALS)***
+
 **SCREEN: screen -ls to list open screens
           screen -r foo to reconnect to screen foo
 	  ^A d to detach screen
@@ -3890,17 +3903,42 @@ Open files in Emacs 11Nov15
 
   rlwrap run-dsci to have history in dsci
 
-**need to make plots of scatter, surface, contour from each run (look in
-  new-sentence-codetection to find matlab commands and then make them into a
-  script/automate) 
-**need to make 4-by plot of trace and images with all proposals and selected
-  proposals (should all be in rendering-code.sc)
-  --look at animate-track-with-boxes to see how to do it; detections-movie is a
-    list of lists of boxes-->if only 1 box, will do just selected proposals
-  --look at visualize-proposals for rendering all proposals-->will probably need
-    some work to get functional again
-**LOOK AT rendering-code.sc in
-  ~dpbarret/darpa-collaboration/documentation/ralicra2016/supplementary-material 
+Open files 25Nov15
+.   notes.text          201366  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+  * *shell*             449123  Shell:run	  /etc/
+    codetection-test.sc  82554  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc
+    rendering-code.sc|c: 45472  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/rendering-code.sc
+  * *scheme*           1861104  Inferior Scheme:
+    toollib-multi-proce: 11819  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc
+ %  rendering-code.sc|s: 18204  Scheme		  /amd/upplysingaoflun/root/aux/home/dpbarret/darpa-collaboration/documentation/ralicra2016/supplementary-material/rendering-code.sc
+ %  supplementary-materi: 1738  Dired by name	  /amd/upplysingaoflun/root/aux/home/dpbarret/darpa-collaboration/documentation/ralicra2016/supplementary-material/
+ %  ralicra2016           1051  Dired by name	  /amd/upplysingaoflun/root/aux/home/dpbarret/darpa-collaboration/documentation/ralicra2016/
+ %  documentation        12168  Dired by name	  /amd/upplysingaoflun/root/aux/home/dpbarret/darpa-collaboration/documentation/
+ %  darpa-collaboration   3616  Dired by name	  /amd/upplysingaoflun/root/aux/home/dpbarret/darpa-collaboration/
+    generate-msee1-data: 54992  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/generate-msee1-dataset.sc
+    toollib-misc.sc      44479  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/ideas/toollib-misc.sc
+    today.text          120740  Text		  ~/vader-rover/today.text
+    toollib-codetection: 18999  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/toollib-codetection.sc
+  * *shell*<2>          468670  Shell:run	  ~/darpa-collaboration/ideas/
+    QobiScheme-AD.sc    295402  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/QobiScheme/source/QobiScheme-AD.sc
+  * *shell*<3>          534825  Shell:run	  ~/darpa-collaboration/rover/
+    .bash_history        17988  Fundamental	  ~/.bash_history
+    log_to_track.cpp     16043  C++/l		  /amd/upplysingaoflun/root/aux/home/sbroniko/vader-rover/position/log_to_track.cpp
+ %  toollib-feature-bas: 28048  Scheme		  /amd/upplysingaoflun/root/aux/home/dpbarret/darpa-collaboration/rover/toollib-feature-based-trace-generator.sc
+    output.text          11074  Text		  /tmp/output.text
+  * *scratch*             2868  Lisp Interaction
+    scott_proposals_onl: 16552  MATLAB		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/scott_proposals_only.m
+    proposals_and_simila: 3956  MATLAB		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/proposals_and_similarity.m
+    out_camera_data_25p: 44039  nXML Valid	  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/camera_calibration/out_camera_data_25ppms.xml
+    ralicra2016-labeling: 7261  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/ralicra2016-labeling.sc
+    table-test.sc          898  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/table-test.sc
+    toollib-matlab.sc    12100  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/ideas/toollib-matlab.sc
+ %  *Directory*            230  Help
+    *Help*                   0  Fundamental
+ %  *Disabled Command*     930  Help
+  * *Messages*            4119  Fundamental
+
+
 
 
 

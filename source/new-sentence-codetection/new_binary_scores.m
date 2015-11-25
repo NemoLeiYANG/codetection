@@ -284,24 +284,25 @@ boxes_w_fscore = bboxes;
 %gscore = simi;
 gscore = zeros(((T*top_k)^2)/2, 5,'single'); %each row is [f1,b1,f2,b2,g]
 g_idx = 0;
-for i = 1:T*top_k
-    for j = (i+1):T*top_k %can do this b/c matrix will be symmetric
-        if (G(i,j) > binary_score_threshold)%~= 0)
-            frame_idx1 = ceil(i/top_k);
-            frame_idx2 = ceil(j/top_k);
-            box_idx1 = mod(i,top_k);
-            if (box_idx1 == 0)
-                box_idx1 = top_k;
-            end %if
-            box_idx2 = mod(j,top_k);
-            if (box_idx2 == 0)
-                box_idx2 = top_k;
-            end %if
-            g_idx = g_idx + 1;
-            gscore(g_idx,:) = [frame_idx1, box_idx1, frame_idx2, ...
-                             box_idx2, G(i,j)];
+for i = 1:(T*top_k-1)
+    %    for j = (i+1):T*top_k %can do this b/c matrix will be symmetric
+    j=i+1; %this ensures only the NEXT FRAME is connected
+    if (G(i,j) > binary_score_threshold)%~= 0)
+        frame_idx1 = ceil(i/top_k);
+        frame_idx2 = ceil(j/top_k);
+        box_idx1 = mod(i,top_k);
+        if (box_idx1 == 0)
+            box_idx1 = top_k;
         end %if
-    end % for j
+        box_idx2 = mod(j,top_k);
+        if (box_idx2 == 0)
+            box_idx2 = top_k;
+        end %if
+        g_idx = g_idx + 1;
+        gscore(g_idx,:) = [frame_idx1, box_idx1, frame_idx2, ...
+                           box_idx2, G(i,j)];
+    end %if
+        %  end % for j
 end %for i
 gscore = gscore(1:g_idx,:);
 gscore = sortrows(gscore,3);

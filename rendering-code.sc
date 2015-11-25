@@ -1167,7 +1167,7 @@ pose))
       (matlab (format #f
 		      "save('~a/~a/~a','detection_data')"
 		      path
-		      "test20151117"
+		      testdir
 		      matlab-output-filename))
       (dtrace (format #f "get-house-detection-data-one-run complete in ~a" path ) #f)
       )))
@@ -1209,7 +1209,9 @@ pose))
   (for-each
    (lambda (path)
     (begin
-     (get-house-detection-data-one-run path testdir matlab-filename)
+     (unless (file-exists? (format #f "~a/~a/~a" path testdir
+				 matlab-detections-filename))
+      (get-house-detection-data-one-run path testdir matlab-filename))
      (make-house-plots-one-run path testdir matlab-filename)))
    rundirs)
   (dtrace "finished with make-all-house-plots" #f)
