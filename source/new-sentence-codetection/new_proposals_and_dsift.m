@@ -1,6 +1,6 @@
 function ...%[boxes_w_fscore,gscore,num_gscore]= 
     [bboxes,valid_loc,phists] = ...
-    new_proposals_and_dsift(top_k, ssize, frames, positions)%,alpha,beta,gamma)
+    new_proposals_and_dsift(top_k, ssize, frames, positions, min_x, max_x, min_y, max_y)%,alpha,beta,gamma)
 %inputs: top_k: number of proposals to generate in each frame
 %        ssize: the size to which each proposal is rescaled to (for
 %               phow_hist); ssize should be 2^i; increase i to trade efficiency for accuracy
@@ -49,6 +49,7 @@ fprintf('\nin new-sentence-codetection/new_proposals_and_dsift.m\n');
 %gaussparam2 = [.1,0]; %setting sigma=.1,mu=0 for width difference
 cam_offset = [-0.03 0.16 -0.2]; %estimated measurement, in m
 % world_boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
+world_boundary = [min_x max_x min_y max_y]; %[x1 x2 y1 y2] in m
 %distance_threshold = 0.5; %distance threshold for similarity score--in m
 %binary_score_threshold = 1e-6; %threshold for a binary score to go into ouput--ARBITRARY, may need to change
 %dbox_fscore = 0.5; %dummy box fscore value
@@ -78,7 +79,7 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
     %now do adjust scores and add world x,y,w information to matrix
     new_boxes = zeros(top_k, 8);
     new_boxes(:,1:5) = bbs;
-%     boundary = world_boundary;
+    boundary = world_boundary;
     valid_locations = false(top_k,1);
     temp_phists = zeros(phist_size,'single');
     for i = 1:top_k %for each proposal
@@ -108,41 +109,42 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
             new_boxes(i,5) = new_boxes(i,5)*exp(penalty);
             continue; %done with this box
         end %if locflag
-%REMOVING arbitrary penalty terms
-%         do penalty for boundaries/width/height
-%         bad_r = 0; bad_l = 0; bad_t = 0; bad_b = 0; bad_w = 0; bad_h = 0;
-%         if (bbs(i,1) < pixel_threshold) 
-%             bad_l = 1; end
-%         if (bbs(i,2) < pixel_threshold)
-%             bad_t = 1; end
-%         if ((bbs(i,1) + bbs(i,3) - 1) > (w - pixel_threshold))
-%             bad_r = 1; end
-%         if ((bbs(i,2) + bbs(i,4) - 1) > (h - pixel_threshold))
-%             bad_b = 1; end
-%         if (bbs(i,3) > (pct_threshold * w))
-%             bad_w = 1; end
-%         if (bbs(i,4) > (pct_threshold * h))
-%             bad_h = 1; end
-%         numbad = sum([bad_r,bad_l,bad_t,bad_b,bad_w,bad_h]);
-%         if (numbad >= 2)
-%             penalty = -10; %ARBITRARY penalty factor here--might need to adjust
-%             new_boxes(i,5) = new_boxes(i,5)*exp(penalty);
-%             continue; %done with this box
-%         end %if numbad
-%         if (loc(1) > boundary(2)) %xpenalty
-%             xpenalty = boundary(2) - loc(1);
-%         elseif (loc(1) < boundary(1))
-%             xpenalty = loc(1) - boundary(1);
-%         else
-%             xpenalty = 0;
-%         end %if loc(1)
-%         if (loc(2) > boundary(4)) %ypenalty
-%             ypenalty = boundary(4) - loc(2);
-%         elseif (loc(2) < boundary(3))
-%             ypenalty = loc(2) - boundary(3);
-%         else
-%             ypenalty = 0;
-%         end %if loc(2)
+            %REMOVING arbitrary penalty terms
+            %         do penalty for boundaries/width/height
+            %         bad_r = 0; bad_l = 0; bad_t = 0; bad_b = 0; bad_w = 0; bad_h = 0;
+            %         if (bbs(i,1) < pixel_threshold) 
+            %             bad_l = 1; end
+            %         if (bbs(i,2) < pixel_threshold)
+            %             bad_t = 1; end
+            %         if ((bbs(i,1) + bbs(i,3) - 1) > (w - pixel_threshold))
+            %             bad_r = 1; end
+            %         if ((bbs(i,2) + bbs(i,4) - 1) > (h - pixel_threshold))
+            %             bad_b = 1; end
+            %         if (bbs(i,3) > (pct_threshold * w))
+            %             bad_w = 1; end
+            %         if (bbs(i,4) > (pct_threshold * h))
+            %             bad_h = 1; end
+            %         numbad = sum([bad_r,bad_l,bad_t,bad_b,bad_w,bad_h]);
+            %         if (numbad >= 2)
+            %             penalty = -10; %ARBITRARY penalty factor here--might need to adjust
+            %             new_boxes(i,5) = new_boxes(i,5)*exp(penalty);
+            %             continue; %done with this box
+            %         end %if numbad
+         %FLOORPLAN LIMITS penalities   
+         if (loc(1) > boundary(2)) %xpenalty
+             xpenalty = boundary(2) - loc(1);
+         elseif (loc(1) < boundary(1))
+             xpenalty = loc(1) - boundary(1);
+         else
+             xpenalty = 0;
+         end %if loc(1)
+         if (loc(2) > boundary(4)) %ypenalty
+             ypenalty = boundary(4) - loc(2);
+         elseif (loc(2) < boundary(3))
+             ypenalty = loc(2) - boundary(3);
+         else
+             ypenalty = 0;
+         end %if loc(2)
 %         if (wwidth > width_threshold) %wpenalty
 %             wpenalty = width_threshold - wwidth; %%NOT SURE THIS IS DOING WHAT I WANT IT TO DO
 %             display(wpenalty);
@@ -150,7 +152,7 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
 %         else
 %             wpenalty = 0;
 %         end %if wwidth
-%         new_boxes(i,5) = new_boxes(i,5)*exp(xpenalty)*exp(ypenalty)*exp(wpenalty);
+        new_boxes(i,5) = new_boxes(i,5)*exp(xpenalty)*exp(ypenalty);%*exp(wpenalty);
         %compute histogram for box i (for s_score later)
         x1 = bbs(i,1); x2 = bbs(i,3) + bbs(i,1) - 1;
         y1 = bbs(i,2); y2 = bbs(i,4) + bbs(i,2) - 1;

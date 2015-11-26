@@ -3893,7 +3893,29 @@ Open files in Emacs 11Nov15
   detection_data.mat before running (get-house-detection-data-one-run path
   testdir matlab-filename) 
 
-****USE FLOORPLAN BOUNDARIES AS PARAMETER TO PASS INTO MATLAB (REJECT OUTLIER PROPOSALS)***
+----------------git commit 7000813---------------
+
+26 Nov 15
+
+--Fixed bug in codetection-test.sc get-matlab-proposals-similarity-new that
+  stopped proposal_data.mat from loading; also fixed conditional that stops a
+  bunch of unnecessary processing if proposal_data.mat already exists.
+
+--Changed top_k to be a parameter to single-run-test
+
+--Added floorplan boundaries (read from
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15/house-x-y.sc) to matlab
+  proposal generation (new_proposals_and_dsift.m) to penalize proposals outside
+  of floorplan.
+
+--20151125-iter1 completed, results look more reasonable than previous
+
+--Starting 2 new runs:
+  20151126-iter2--still 10 proposals/frame, but now with floorplan boundaries
+  20151126-iter3--changing to 40 proposals/frame 
+
+
+
 
 **SCREEN: screen -ls to list open screens
           screen -r foo to reconnect to screen foo

@@ -1,5 +1,5 @@
 function [boxes_w_fscore,gscore,num_gscore]= ... %d_score,w_score,s_score,G,distance_threshold,worldDist,phists,valid_loc,worldWpenexpmat]  
-    new_binary_scores(bboxes,valid_loc,phists,alpha,beta,gamma)
+    new_binary_scores(bboxes,valid_loc,phists,T,top_k,alpha,beta,gamma)
 %inputs: top_k: number of proposals to generate in each frame
 %        ssize: the size to which each proposal is rescaled to (for
 %               phow_hist); ssize should be 2^i; increase i to trade efficiency for accuracy

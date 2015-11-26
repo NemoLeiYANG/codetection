@@ -2036,10 +2036,19 @@
 			      data-output-dir)
   (visualize-results-improved dir dummy-f dummy-g data-output-dir)))
 
-(define (single-run-test data-output-dirname)
+(define (single-run-test data-output-dirname top-k)
  (let* ((data-directory
 	 "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
-	(top-k 10)
+	(*house-x-y* (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/house-x-y.sc"))
+	(*the-max* (* 1.1 (max (first (first *house-x-y*))
+			       (first (second *house-x-y*)))))
+	(*the-min* (* 1.1 (min (second (first *house-x-y*))
+			       (second (second *house-x-y*)))))
+	(max-x *the-max*)
+	(max-y *the-max*)
+	(min-x *the-min*)
+	(min-y *the-min*)
+	;;(top-k 10)
 	(ssize 64)
 	(alpha 1)
 	(beta 1)
@@ -2076,12 +2085,18 @@
 				  delta
 				  dummy-f
 				  dummy-g
-				  data-output-dir)
+				  data-output-dir
+				  min-x
+				  max-x
+				  min-y
+				  max-y)
   (visualize-results-improved dir dummy-f dummy-g data-output-dir)
-  (system (format #f "rsync -avrz ~a~a/ seykhl:~a~a/"
+  (system (format #f "rsync -avrz ~a/~a/~a/ seykhl:~a/~a/~a/"
 		  data-directory
+		  run-dir
 		  data-output-dirname
 		  data-directory
+		  run-dir
 		  data-output-dirname))
   (dtrace (format #f "finished single-run-test in ~a" data-output-dirname) #f)
   (system "date")
@@ -2135,11 +2150,11 @@
 ;;(map (lambda (num) (matlab "figure") (plot-objects-from-floorplan (format #f "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/generation/plan~a" num) "test20150617/results-0.6-0.6.sc")) (list 0 1 2 3 4 5 6 7 8 9))
 
 (define (get-matlab-data-house-test-new
-	 path top-k ssize alpha beta gamma delta dummy-f dummy-g data-output-dir)
+	 path top-k ssize alpha beta gamma delta dummy-f dummy-g data-output-dir min-x max-x min-y max-y)
  (mkdir-p (format #f "~a/~a" path data-output-dir))
  (write-object-to-file
   (get-matlab-proposals-similarity-full-video-new
-   top-k ssize path alpha beta gamma delta data-output-dir)
+   top-k ssize path alpha beta gamma delta data-output-dir min-x max-x min-y max-y)
   (format #f "~a/~a/frame-data-~a-~a.sc" path data-output-dir
 	  (number->padded-string-of-length dummy-f 3)
 	  (number->padded-string-of-length dummy-g 3)))
@@ -2154,7 +2169,8 @@
 							beta
 							gamma
 							delta
-							data-output-dir)
+							data-output-dir
+							min-x max-x min-y max-y)
  (let* ((video-path (format #f "~a/video_front.avi" data-path))
 	(frames (video->frames 1 video-path))
 	(poses (align-frames-with-poses data-path (length frames)))
@@ -2174,7 +2190,8 @@
 				       gamma-norm
 				       delta-norm
 				       data-path
-				       data-output-dir)))
+				       data-output-dir
+				       min-x max-x min-y max-y)))
 
 (define (get-matlab-proposals-similarity-new top-k
 					     box-size
@@ -2185,7 +2202,8 @@
 					     gamma-norm
 					     delta-norm
 					     data-path
-					     data-output-dir)
+					     data-output-dir
+					     min-x max-x min-y max-y)
  (let* ((num-frames (length frames))
 	(one-frame (first frames))
 	(height (imlib:height one-frame))
@@ -2193,49 +2211,50 @@
   ;;(list frames poses)
   (start-matlab!)
   (matlab "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection/'))")
-  (scheme->matlab! "poses" poses)
-  (matlab (format #f "frames = zeros(~a,~a,~a,~a,'uint8');" height width 3 num-frames))
-  ;; convert frames to matlab matrix
-  (for-each-indexed
-   (lambda (frame i)
-    (with-temporary-file
-     "/tmp/imlib-frame.ppm"
-     (lambda (tmp-frame)
-      ;; write scheme frame to file
-      (imlib:save-image frame tmp-frame)
-      ;; read file as matlab frame
-      (matlab (format #f "frame=imread('~a');" tmp-frame))
-      (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
-    (imlib:free-image-and-decache frame) ;;might want to comment this out
-              ;;but could cause a memory leak if I don't free image elsewhere
-    )    
-   frames)
-  ;; call matlab function
-  (dtrace "calling NEW separated proposals and binary scores functions" #f)
-  ;; (matlab
-  ;;  (format
-  ;;   #f
-  ;;   "[boxes_w_fscore,gscore,num_gscore] = scott_proposals_similarity2(~a,~a,frames,poses,~a,~a,~a);"
-  ;;   top-k box-size alpha-norm beta-norm gamma-norm))
   (if (not
        (file-exists? (format #f "~a/~a/proposal_data.mat" data-path data-output-dir)))
       (begin
+       (scheme->matlab! "poses" poses)
+       (matlab (format #f "frames = zeros(~a,~a,~a,~a,'uint8');" height width 3 num-frames))
+       ;; convert frames to matlab matrix
+       (for-each-indexed
+	(lambda (frame i)
+	 (with-temporary-file
+	  "/tmp/imlib-frame.ppm"
+	  (lambda (tmp-frame)
+	   ;; write scheme frame to file
+	   (imlib:save-image frame tmp-frame)
+	   ;; read file as matlab frame
+	   (matlab (format #f "frame=imread('~a');" tmp-frame))
+	   (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
+	 (imlib:free-image-and-decache frame) ;;might want to comment this out
+	 ;;but could cause a memory leak if I don't free image elsewhere
+	 )    
+	frames)
+       ;; call matlab function
+       ;; (matlab
+       ;;  (format
+       ;;   #f
+       ;;   "[boxes_w_fscore,gscore,num_gscore] = scott_proposals_similarity2(~a,~a,frames,poses,~a,~a,~a);"
+       ;;   top-k box-size alpha-norm beta-norm gamma-norm))
+       
+       (dtrace "calling new_proposals_and_dsift" #f)
        (matlab
 	(format
 	 #f
-	 "[bboxes,valid_loc,phists] = new_proposals_and_dsift(~a,~a,frames,poses);"
-	 top-k box-size ))
+	 "[bboxes,valid_loc,phists] = new_proposals_and_dsift(~a,~a,frames,poses,~a,~a,~a,~a);"
+	 top-k box-size min-x max-x min-y max-y))
        (matlab (format #f
 		       "save('~a/~a/proposal_data.mat','bboxes','valid_loc','phists');"
 		       data-path data-output-dir))))
-  (matlab (format #f ("load('~a/~a/proposal_data.mat');" data-path data-output-dir)))
+  (matlab (format #f "load('~a/~a/proposal_data.mat');" data-path data-output-dir))
+  (dtrace (format #f "loaded ~a/~a/proposal_data.mat" data-path data-output-dir) #f)
   (matlab
    (format
     #f
-    "[boxes_w_fscore,gscore,num_gscore] = new_binary_scores(bboxes,valid_loc,phists,~a,~a,~a);" alpha-norm beta-norm gamma-norm))
+    "[boxes_w_fscore,gscore,num_gscore] = new_binary_scores(bboxes,valid_loc,phists,~a,~a,~a,~a,~a);"
+    num-frames top-k alpha-norm beta-norm gamma-norm))
 
-
-   
   ;; convert matlab variables to scheme
   (list (map-n (lambda (t)
 		(matlab (format #f "tmp=boxes_w_fscore(:,:,~a);" (+ t 1)))
