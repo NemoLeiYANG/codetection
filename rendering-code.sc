@@ -190,6 +190,79 @@
 	  (dtrace (format #f "make-4-by-video-house-one-run complete in ~a" path ) #f)
   )))))
 
+(define (make-4-by-video-house-one-run-new path testdir)
+ (let* (;;(testdir "test20151117")
+	(outdir "foobar")
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(*the-max* (* 1.1 (max (first (first *house-x-y*))
+			       (first (second *house-x-y*)))))
+	(*the-min* (* 1.1 (min (second (first *house-x-y*))
+			       (second (second *house-x-y*)))))
+	(max-x *the-max*)
+	(max-y *the-max*)
+	(min-x *the-min*)
+	(min-y *the-min*))
+  ;;abort if files aren't there
+  (cond ((not (file-exists? (format #f "~a/track.sc" path)))
+	 (dtrace
+	  (format #f "missing ~a/track.sc, make-4-by-video-house-one-run aborted" path)
+	  #f))
+	((not (file-exists? (format #f "~a/~a/frame-data-~a-~a.sc"
+				    path
+				    testdir
+				    (number->padded-string-of-length dummy-f 3)
+				    (number->padded-string-of-length dummy-g 3))))
+	 (dtrace
+	  (format #f "missing ~a/~a/frame-data-*.sc, make-4-by-video-house-one-run aborted"
+		  path
+		  testdir)
+	  #f))
+	((not (file-exists? (format #f "~a/~a/results-~a-~a.sc"
+				    path
+				    testdir
+				    (number->padded-string-of-length dummy-f 3)
+				    (number->padded-string-of-length dummy-g 3))))
+	 (dtrace
+	  (format #f "missing ~a/~a/results-*.sc, make-4-by-video-house-one-run aborted"
+		  path
+		  testdir)
+	  #f))
+	(else
+	 (let* ((width 640)
+		(height 640)
+		(fps 10)
+		(data (read-object-from-file
+		       (format #f "~a/~a/frame-data-~a-~a.sc" path testdir
+			       (number->padded-string-of-length dummy-f 3)
+			       (number->padded-string-of-length dummy-g 3))))
+		(trace (read-object-from-file (format #f "~a/track.sc" path)))
+		(results (read-object-from-file
+			  (format #f "~a/~a/results-~a-~a.sc"
+				  path
+				  testdir
+				  (number->padded-string-of-length dummy-f 3)
+				  (number->padded-string-of-length dummy-g 3))))
+		)
+	  ;;visualize all proposals
+	  (visualize-proposals path dummy-f dummy-g testdir data) 
+	  ;;make joined plots of traces w/ all and winning proposals
+	  (animate-house-track-with-boxes path testdir outdir width height dummy-f dummy-g
+					  min-x max-x min-y max-y data trace results)
+	  ;;stitch visualizations together with joined plots
+	  (make-4-by-frames path testdir dummy-f dummy-g)
+	  ;;make video
+	  (system (format #f "ffmpeg -framerate ~a -i ~a/~a/images-~a-~a/frame-0%04d.png -b 2048k -r ~a ~a/~a/quad-video.avi"
+			  fps path testdir (number->padded-string-of-length dummy-f 3)
+			  (number->padded-string-of-length dummy-g 3) fps path testdir))
+	  ;;clean up images
+	  (rm (format #f "~a/~a/images-~a-~a/rendered-proposals*.png" path testdir dummy-f dummy-g))
+	  (rm (format #f "~a/~a/images-~a-~a/frame*.png" path testdir dummy-f dummy-g))
+	  (rm (format #f "~a/~a/images-~a-~a/joined*.png" path testdir dummy-f dummy-g))
+	  (rm (format #f "~a/~a/images-~a-~a/traces-joined*.png" path testdir dummy-f dummy-g))
+	  (dtrace (format #f "make-4-by-video-house-one-run complete in ~a" path ) #f)
+  )))))
+
 (define (make-all-house-test-videos)
  (let* ((basedir "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
 	(rundirs (system-output (format #f "ls -d ~a*/" basedir)))
@@ -1210,10 +1283,33 @@ pose))
    (lambda (path)
     (begin
      (unless (file-exists? (format #f "~a/~a/~a" path testdir
-				 matlab-detections-filename))
+				   matlab-detections-filename))
       (get-house-detection-data-one-run path testdir matlab-filename))
      (make-house-plots-one-run path testdir matlab-filename)))
    rundirs)
   (dtrace "finished with make-all-house-plots" #f)
   (system "date")))
- 
+
+(define (make-quad-video-and-plots-one-run path testdir matlab-filename)
+ (dtrace (format #f "starting make-quad-video-and-plots-one-run in ~a/~a" path testdir) #f)
+ (system "date")
+ (unless (file-exists? (format #f "~a/~a/~a" path testdir
+			       matlab-filename))
+  (get-house-detection-data-one-run path testdir matlab-filename))
+ (make-house-plots-one-run path testdir matlab-filename)
+ (if (file-exists? (format #f "~a/~a/quad-video.avi" path testdir))
+     (dtrace (format #f "~a/~a/quad-video.avi already exists" path testdir) #f)
+     (make-4-by-video-house-one-run-new path testdir))
+ (dtrace (format #f "finished with make-quad-video-and-plots-one-run in ~a/~a" path testdir) #f)
+ (system "date")
+ )
+
+(define (make-videos-and-plots)
+ (let* ((path "/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-1/")
+	(testdirs (list "20151125-iter1"  "20151125-iter2"  "20151126-iter3"))
+	(matlab-filename "detection_data.mat"))
+  ;;change the above for different runs
+  (for-each
+   (lambda (testdir)
+    (make-quad-video-and-plots-one-run path testdir matlab-filename))
+   testdirs)))

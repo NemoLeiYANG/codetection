@@ -3911,10 +3911,22 @@ Open files in Emacs 11Nov15
 --20151125-iter1 completed, results look more reasonable than previous
 
 --Starting 2 new runs:
-  20151126-iter2--still 10 proposals/frame, but now with floorplan boundaries
+  20151125-iter2--still 10 proposals/frame, but now with floorplan boundaries
   20151126-iter3--changing to 40 proposals/frame 
 
+----------------git commit 450d857---------------
 
+29 Nov 15
+
+--The 2 runs started on 26 Nov 15 look like they have completed.  Based on
+  completion times, iter3 w/ 40 proposals/frame only took ~40 minutes longer (~5
+  hours) than iter2 w/ 10 proposals/frame--all other parameters held the same
+  between these runs. Unfortunately, I did not have enough scrollback in screen
+  to see the split of that time between proposal generation and graphical model
+  inference.
+
+--Wrote (make-videos-and-plots) to do the visualizations for these runs. Started
+  at 1722.
 
 
 **SCREEN: screen -ls to list open screens
