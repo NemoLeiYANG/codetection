@@ -2101,6 +2101,66 @@
   (dtrace (format #f "finished single-run-test in ~a" data-output-dirname) #f)
   (system "date")
   ))
+
+(define (single-run-test-new data-output-dirname top-k)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
+	(*house-x-y* (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/house-x-y.sc"))
+	(*the-max* (* 1.1 (max (first (first *house-x-y*))
+			       (first (second *house-x-y*)))))
+	(*the-min* (* 1.1 (min (second (first *house-x-y*))
+			       (second (second *house-x-y*)))))
+	(max-x *the-max*)
+	(max-y *the-max*)
+	(min-x *the-min*)
+	(min-y *the-min*)
+	(ssize 64)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/results-house-test-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(run-dir "test-segment")
+	(dir (format #f "~a~a" data-directory run-dir))
+	(proposal-file (format #f "~a/proposal_boxes_1000.mat" dir))
+	(discount-factor 0.1))
+
+  (dtrace (format #f "starting single-run-test-new in ~a" data-output-dirname) #f)
+  (system "date")
+  (get-matlab-data-house-test-new2 dir
+				   top-k
+				   ssize
+				   dummy-f
+				   dummy-g
+				   data-output-dir
+				   min-x
+				   max-x
+				   min-y
+				   max-y
+				   proposal-file
+				   discount-factor)
+  (visualize-results-improved dir dummy-f dummy-g data-output-dir)
+  (system (format #f "rsync -avrz ~a/~a/~a/ seykhl:~a/~a/~a/"
+		  data-directory
+		  run-dir
+		  data-output-dirname
+		  data-directory
+		  run-dir
+		  data-output-dirname))
+  (dtrace (format #f "finished single-run-test-new in ~a" data-output-dirname) #f)
+  (system "date")
+  ))
   
 
 (define (read-camera-timing-new path)
@@ -2162,6 +2222,22 @@
 		 (number->padded-string-of-length dummy-f 3)
 		 (number->padded-string-of-length dummy-g 3)) #f))
 
+(define (get-matlab-data-house-test-new2
+	 path top-k ssize dummy-f dummy-g
+	 data-output-dir min-x max-x min-y max-y proposal-file discount-factor)
+ (mkdir-p (format #f "~a/~a" path data-output-dir))
+ (write-object-to-file
+  (get-matlab-proposals-similarity-full-video-new2
+   top-k ssize path data-output-dir min-x max-x min-y max-y
+   proposal-file discount-factor)
+  (format #f "~a/~a/frame-data-~a-~a.sc" path data-output-dir
+	  (number->padded-string-of-length dummy-f 3)
+	  (number->padded-string-of-length dummy-g 3)))
+ (dtrace (format #f "wrote ~a/~a/frame-data-~a-~a.sc" path data-output-dir
+		 (number->padded-string-of-length dummy-f 3)
+		 (number->padded-string-of-length dummy-g 3)) #f))
+
+
 (define (get-matlab-proposals-similarity-full-video-new top-k
 							box-size
 							data-path
@@ -2192,6 +2268,28 @@
 				       data-path
 				       data-output-dir
 				       min-x max-x min-y max-y)))
+
+(define (get-matlab-proposals-similarity-full-video-new2 top-k
+							 box-size
+							 data-path
+							 data-output-dir
+							 min-x max-x min-y max-y
+							 proposal-file
+							 discount-factor)
+ (let* ((video-path (format #f "~a/video_front.avi" data-path))
+	(frames (video->frames 1 video-path))
+	(poses (align-frames-with-poses data-path (length frames))))
+  (dtrace
+   "in new-sentence-codetection/get-matlab-proposals-similarity-full-video-new2" #f)
+  (get-matlab-proposals-similarity-new2 top-k
+					box-size
+					frames
+					poses
+					data-path
+					data-output-dir
+					min-x max-x min-y max-y
+					proposal-file
+					discount-factor)))
 
 (define (get-matlab-proposals-similarity-new top-k
 					     box-size
@@ -2265,3 +2363,157 @@
 
   ))
 
+(define (get-matlab-proposals-similarity-new2 top-k
+					      box-size
+					      frames
+					      poses
+					      data-path
+					      data-output-dir
+					      min-x max-x min-y max-y
+					      proposal-file
+					      discount-factor)
+ (let* ((num-frames (length frames))
+	(one-frame (first frames))
+	(height (imlib:height one-frame))
+	(width (imlib:width one-frame)))
+  ;;(list frames poses)
+  (start-matlab!)
+  (matlab "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection/'))")
+  (if (not
+       (file-exists? (format #f "~a/~a/proposal_data.mat" data-path data-output-dir)))
+      (begin
+       (scheme->matlab! "poses" poses)
+       (matlab (format #f "frames = zeros(~a,~a,~a,~a,'uint8');" height width 3 num-frames))
+       ;; convert frames to matlab matrix
+       (for-each-indexed
+	(lambda (frame i)
+	 (with-temporary-file
+	  "/tmp/imlib-frame.ppm"
+	  (lambda (tmp-frame)
+	   ;; write scheme frame to file
+	   (imlib:save-image frame tmp-frame)
+	   ;; read file as matlab frame
+	   (matlab (format #f "frame=imread('~a');" tmp-frame))
+	   (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
+	 (imlib:free-image-and-decache frame) ;;might want to comment this out
+	 ;;but could cause a memory leak if I don't free image elsewhere
+	 )    
+	frames)
+       ;; call matlab function
+       ;; (matlab
+       ;;  (format
+       ;;   #f
+       ;;   "[boxes_w_fscore,gscore,num_gscore] = scott_proposals_similarity2(~a,~a,frames,poses,~a,~a,~a);"
+       ;;   top-k box-size alpha-norm beta-norm gamma-norm))
+       (matlab (format #f "load('~a')" proposal-file))
+       (dtrace "calling new_score_saved_proposals_with_dsift" #f)
+       (matlab
+	(format
+	 #f
+	 "[bboxes,phists] = new_score_saved_proposals_with_dsift(proposal_boxes,~a,~a,frames,poses,~a,~a,~a,~a,~a);"
+	 top-k box-size min-x max-x min-y max-y discount-factor))
+       (matlab (format #f
+		       "save('~a/~a/proposal_data.mat','bboxes','phists');"
+		       data-path data-output-dir))))
+  (matlab (format #f "load('~a/~a/proposal_data.mat');" data-path data-output-dir))
+  (dtrace (format #f "loaded ~a/~a/proposal_data.mat" data-path data-output-dir) #f)
+  (matlab
+    "[boxes_w_fscore,gscore,num_gscore] = new_binary_scores_world_and_pixel(bboxes);")
+
+  ;; convert matlab variables to scheme
+  (list (map-n (lambda (t)
+		(matlab (format #f "tmp=boxes_w_fscore(:,:,~a);" (+ t 1)))
+		(matlab-get-variable "tmp"))
+	       num-frames)
+	  (matlab-get-variable "gscore")
+	  (matlab-get-variable "num_gscore"))))
+
+
+(define (get-and-save-proposal-boxes dir num-proposals)
+ (let* ((video-path (format #f "~a/video_front.avi" dir))
+	(frames (video->frames 1 video-path))
+	(num-frames (length frames))
+	(one-frame (first frames))
+	(height (imlib:height one-frame))
+	(width (imlib:width one-frame)))
+  (start-matlab!)
+  (matlab (format #f "num_proposals = ~a;" num-proposals))
+  (matlab "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection/'))")
+  (matlab (format #f "frames = zeros(~a,~a,~a,~a,'uint8');"
+		  height width 3 num-frames))
+  ;; convert frames to matlab matrix
+  (for-each-indexed
+   (lambda (frame i)
+    (with-temporary-file
+     "/tmp/imlib-frame.ppm"
+     (lambda (tmp-frame)
+      ;; write scheme frame to file
+      (imlib:save-image frame tmp-frame)
+      ;; read file as matlab frame
+      (matlab (format #f "frame=imread('~a');" tmp-frame))
+      (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
+    (imlib:free-image-and-decache frame) ;;might want to comment this out
+    ;;but could cause a memory leak if I don't free image elsewhere
+    )    
+   frames)
+  (matlab "proposal_boxes = get_proposals(frames,num_proposals)")
+  (matlab (format #f "filename = '~a/proposal_boxes_~a.mat';"
+		  dir num-proposals))
+  (matlab "save(filename,'proposal_boxes')")
+  (matlab "clear proposal_boxes;")
+  (dtrace (format #f "saved ~a/proposal_boxes_~a.mat" dir num-proposals) #f)
+  ))
+
+(define (get-and-save-proposal-boxes-all-videos num-proposals)
+ (let* ((rundirs
+	 (system-output
+	  "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/*/")))
+  (for-each
+   (lambda (dir)
+    (get-and-save-proposal-boxes dir num-proposals)) rundirs)))
+
+(define (frames-and-poses->matlab dir)
+ (let* ((video-path (format #f "~a/video_front.avi" dir))
+	(frames (video->frames 1 video-path))
+	(num-frames (length frames))
+	(one-frame (first frames))
+	(height (imlib:height one-frame))
+	(width (imlib:width one-frame))
+	(poses (align-frames-with-poses dir (length frames))))
+  (start-matlab!)
+  (matlab "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection/'))")
+  (matlab (format #f "frames = zeros(~a,~a,~a,~a,'uint8');"
+		  height width 3 num-frames))
+  (scheme->matlab! "poses" poses)
+  ;; convert frames to matlab matrix
+  (for-each-indexed
+   (lambda (frame i)
+    (with-temporary-file
+     "/tmp/imlib-frame.ppm"
+     (lambda (tmp-frame)
+      ;; write scheme frame to file
+      (imlib:save-image frame tmp-frame)
+      ;; read file as matlab frame
+      (matlab (format #f "frame=imread('~a');" tmp-frame))
+      (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
+    (imlib:free-image-and-decache frame) ;;might want to comment this out
+    ;;but could cause a memory leak if I don't free image elsewhere
+    )    
+   frames)
+  ))
+
+
+(define (simple-run-and-plot)
+ (let* ((path "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/")
+	(testdirs (list "20151130_top_k_10"
+			"20151130_top_k_50"
+			"20151130_top_k_100"))
+	(top-ks (list 10 50 100))
+	(matlab-filename "detection_data.mat"))
+  (single-run-test-new (first testdirs) (first top-ks))
+  (single-run-test-new (second testdirs) (second top-ks))
+  (single-run-test-new (third testdirs) (third top-ks))
+  (for-each
+   (lambda (testdir)
+    (make-quad-video-and-plots-one-run path testdir matlab-filename))
+   testdirs)))

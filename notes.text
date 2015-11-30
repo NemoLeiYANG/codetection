@@ -3928,6 +3928,45 @@ Open files in Emacs 11Nov15
 --Wrote (make-videos-and-plots) to do the visualizations for these runs. Started
   at 1722.
 
+----------------git commit dce7199---------------
+
+30 Nov 15
+
+--Fixed bugs in make-house-plots-one-run-new, seems to work now
+
+--Now working on getting a short, no-turn segment of video to test.  Will use
+  this with new code that does the following:
+  1. gets rid of (DOES NOT set to 0) unary scores of boxes behind camera 
+  2. gets rid of (DOES NOT set to 0) unary scores of boxes outside boundary
+  3. DISCOUNTS all other unary scores by some factor
+  4. adds box pixel distance for binary score
+  5. gets rid of world distance binary score 
+
+--Have short segment in house-test-12nov15/test-segment.  Had to manually modify
+  log/track files to match video.
+
+--Wrote get-and-save-proposal-boxes to do a large number of proposals from each
+  video--seems to work on its own, but has problems when running inside of
+  for-each in get-and-save-proposal-boxes-all-videos...seems to be working OK now
+
+--In new binary score function, keep both pixel distance and world distance as
+  measures.  Have a binary flag for each to turn on and off, with a parameter
+  that controls the weighting of their sum.  Can keep these as constants at the
+  top of the program for now.
+
+--Wrote new_score_saved_proposals_with_dsift.m to do 1-3 from above.
+
+--Wrote new_binary_scores_world_and_pixel to do 4-5 from above (and the stuff 2
+  comments up).
+
+--Wrote new scheme wrappers for all, starting with single-run-test-new.
+
+--Started simple-run-and-plot at 1835.  
+
+**NEED TO REMEMBER that rendering-code.sc loads codetection-test.sc, so can't
+  load rendering-code from codetection-test 
+
+
 
 **SCREEN: screen -ls to list open screens
           screen -r foo to reconnect to screen foo

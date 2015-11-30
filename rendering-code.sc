@@ -1237,6 +1237,12 @@ pose))
 	    )  
       (start-matlab!)
       (scheme->matlab! "detection_data" matlab-data)
+      (matlab "detection_data")
+      (dtrace (format #f
+		      "matlab command: save('~a/~a/~a','detection_data')"
+		      path
+		      testdir
+		      matlab-output-filename) #f)
       (matlab (format #f
 		      "save('~a/~a/~a','detection_data')"
 		      path
@@ -1271,6 +1277,36 @@ pose))
 		       min-x max-x min-y max-y cm-between gaussian-variance))
        (dtrace (format #f "plots made for ~a~a" path testdir) #f)))))
 
+(define (make-house-plots-one-run-new path testdir matlab-detections-filename)
+ (let* ((x-y-max-min *house-x-y*)
+	(the-max (* 1.1 (max (first (first x-y-max-min))
+			     (first (second x-y-max-min)))))
+	(the-min (* 1.1 (min (second (first x-y-max-min))
+			     (second (second x-y-max-min)))))
+	(max-x (* 1.5 the-max))
+	(max-y (* 1.5 the-max))
+	(min-x (* 1.5 the-min))
+	(min-y (* 1.5 the-min))
+	(cm-between 5)
+	(gaussian-variance 0.25))
+  (start-matlab!)
+  (matlab
+   "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection'));")
+  (if (not (file-exists? (format #f "~a/~a/~a" path testdir
+				 matlab-detections-filename)))
+      (dtrace (format #f "no ~a file in ~a/~a, aborting" matlab-detections-filename
+		      path testdir) #f)
+      (begin
+       ;;(matlab (format #f "load('~a/~a/~a')" path testdir matlab-detections-filename))
+       (matlab (format #f "mypath = '~a';" path))
+       (matlab (format #f "testdir = '~a';" testdir))
+       (matlab (format #f "filename = '~a';" matlab-detections-filename))
+       (matlab "load(sprintf('%s/%s/%s',mypath,testdir,filename))")
+       (matlab (format #f "house_make_plots_new(mypath,testdir,detection_data,~a,~a,~a,~a,~a,~a);"
+		       min-x max-x min-y max-y cm-between gaussian-variance))
+       (matlab "clear detection_data")
+       (dtrace (format #f "plots made for ~a~a" path testdir) #f)))))
+
 (define (make-all-house-plots)
  (let* ((matlab-detections-filename "detection_data.mat")
 	(basedir "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
@@ -1296,7 +1332,7 @@ pose))
  (unless (file-exists? (format #f "~a/~a/~a" path testdir
 			       matlab-filename))
   (get-house-detection-data-one-run path testdir matlab-filename))
- (make-house-plots-one-run path testdir matlab-filename)
+ (make-house-plots-one-run-new path testdir matlab-filename)
  (if (file-exists? (format #f "~a/~a/quad-video.avi" path testdir))
      (dtrace (format #f "~a/~a/quad-video.avi already exists" path testdir) #f)
      (make-4-by-video-house-one-run-new path testdir))
@@ -1313,3 +1349,4 @@ pose))
    (lambda (testdir)
     (make-quad-video-and-plots-one-run path testdir matlab-filename))
    testdirs)))
+
