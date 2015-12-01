@@ -68,8 +68,10 @@ worldY = reshape(worldY, T*top_k, 1);
 worldXY = [worldX worldY];
 %worldW = reshape(worldW, T*top_k, 1);
 
-pixXcenter = bboxes(:,1,:) + 0.5*bboxes(:,3,:);
-pixYcenter = bboxes(:,2,:) + 0.5*bboxes(:,4,:);
+% pixXcenter = bboxes(:,1,:) + 0.5*bboxes(:,3,:);
+% pixYcenter = bboxes(:,2,:) + 0.5*bboxes(:,4,:);
+pixXcenter = 0.5*(bboxes(:,3,:) - bboxes(:,1,:));
+pixYcenter = 0.5*(bboxes(:,4,:) - bboxes(:,2,:));
 pixXcenter = reshape(pixXcenter,T*top_k,1);
 pixYcenter = reshape(pixYcenter,T*top_k,1);
 pixXYcenter = [pixXcenter pixYcenter];
@@ -153,10 +155,13 @@ pixel_distance = p_score;
 
 if (world_distance_flag && pixel_distance_flag)
     G = a * world_distance + (1-a) * pixel_distance;
+    fprintf('binary score computed from COMBINATION\n');
 elseif (world_distance_flag)
     G = world_distance;
+    fprintf('binary score from WORLD DISTANCE\n');
 else
     G = pixel_distance;
+    fprintf('binary score from PIXEL DISTANCE\n');
 end %if
 
 %set output

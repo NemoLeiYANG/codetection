@@ -76,7 +76,7 @@
 	     (n 0))
    (if (or (null? images)
 	   (null? boxes))
-       (dtrace (format #f "visualize-proposals finished in ~a" path) #f)
+       (dtrace (format #f "visualize-proposals finished in ~a" outpath) #f)
        (begin
 	(for-each
 	 (lambda (box)
@@ -1236,7 +1236,9 @@ pose))
 		  frequencies))
 	    )  
       (start-matlab!)
-      (scheme->matlab! "detection_data" matlab-data)
+      (if (null? matlab-data)
+	  (matlab "detection_data = [];")
+	  (scheme->matlab! "detection_data" matlab-data))
       (matlab "detection_data")
       (dtrace (format #f
 		      "matlab command: save('~a/~a/~a','detection_data')"

@@ -3966,7 +3966,38 @@ Open files in Emacs 11Nov15
 **NEED TO REMEMBER that rendering-code.sc loads codetection-test.sc, so can't
   load rendering-code from codetection-test 
 
+ ----------------git commit 9340bf7---------------
 
+1 Dec 15
+
+--Bug somewhere in simple-run-and-plot that is causing
+  make-quad-videos-and-plots-one-run to crash.  Looks like there's a missing
+  .mat file (detection_data.mat?)
+
+--Fixed bug in new_binary_scores_world_and_pixel.m that had computed image
+  centers incorrectly.
+
+--Fixed bug where I failed to scale the dummy box unary score (dummy-f) by the
+  discount factor.
+
+--Noticed bug in frame-data-0.6-0.6.sc from 3 runs yesterday that every proposal
+  has the same pixel coordinates--figured out that I wasn't incrementing j
+  properly in new_score_saved_proposals_with_dsift--DUH!  Fixed.
+
+--Fixed bugs in rendering-code.sc and make_house_plots_new.m that caused
+  make-quad-video-and-plots-one-run to crash when the detection data was null
+  (i.e., all dummy boxes)
+
+--Re-running same test as last night with date changed to 1201.  Not all dummy
+  boxes this time, but still too many.  Doing some investigation into the scores
+  to see why--maybe the dummy-f and dummy-g are too high?
+
+--Looking on aql run to precompute proposals, saw that floorplan-0-sentence-3
+  and floorplan-0-sentence-4 seemed to get the error that I saw yesterday when
+  there weren't enough proposals--probably need to re-run these with a smaller
+  number of proposals
+
+***NEED TO rsync proposal_boxes files from aql back to seykhl and aruco
 
 **SCREEN: screen -ls to list open screens
           screen -r foo to reconnect to screen foo

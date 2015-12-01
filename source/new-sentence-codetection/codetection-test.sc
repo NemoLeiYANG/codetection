@@ -640,6 +640,66 @@
 	(dtrace "saved image" n)
 	(loop (rest images) (rest boxes) (+ n 1)))))))
 
+(define (visualize-results-improved-new path
+					dummy-f
+					dummy-g
+					data-output-dir
+					discount-factor)
+ (let* (;; (data (read-object-from-file (format #f "~a/frame-data-new3.sc" path)))
+	(data (read-object-from-file (format #f "~a/~a/frame-data-~a-~a.sc"
+					     path data-output-dir dummy-f dummy-g)))
+	(img-path (format #f "~a/~a/images-~a-~a" path data-output-dir
+			  (number->padded-string-of-length dummy-f 3)
+			  (number->padded-string-of-length dummy-g 3)))
+	(results (run-codetection-with-proposals-similarity data
+							    (* discount-factor
+							       dummy-f)
+					    ;;ensures dummy scaled same as real boxes
+							    dummy-g))
+	(boxes (third results))
+	(video-path (format #f "~a/video_front.avi" path))
+	(frames (video->frames 1 video-path))
+	)
+  (write-object-to-file results (format #f "~a/~a/results-~a-~a.sc"
+					path
+					data-output-dir
+					(number->padded-string-of-length dummy-f 3)
+					(number->padded-string-of-length dummy-g 3)))
+ ;; (dtrace "img-path" img-path)
+  (mkdir-p img-path)
+  (let loop ((images (map (lambda (f) (imlib:clone f)) frames))
+	     (boxes boxes)
+	     (n 0))
+   (if (or (null? images)
+	   (null? boxes))
+       (dtrace (format #f "finished in ~a" path) #f)
+       (let* ((box (first boxes))
+	      (image (first images)))
+	(if (null? box)
+	    (imlib-draw-text-on-image image ;;we have a dummy box
+				      "DUMMY BOX" ;;string
+				      (vector 255 0 0) ;;text color
+				      18 ;;font size?
+				      320 ;; x?
+				      240 ;; y?
+				      (vector 255 255 255) ;;bg color
+				      ) 
+	    (let* ((x1 (first box)) ;;we have a real box
+		   (y1 (second box))
+		   (w (- (third box) (first box)))
+		   (h (- (fourth box) (second box))))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0))
+	     (imlib:draw-rectangle image (- x1 1) (- y1 1)
+				   (+ w 2) (+ h 2) (vector 255 0 0))
+	     (imlib:draw-rectangle image (- x1 2) (- y1 2)
+				   (+ w 4) (+ h 4) (vector 255 0 0))
+	     ))
+	(imlib:save image (format #f "~a/~a.png"
+				  img-path
+				  (number->padded-string-of-length n 5)))
+	(dtrace "saved image" n)
+	(loop (rest images) (rest boxes) (+ n 1)))))))
+
 
 (define (run-full-results dummy-f dummy-g output-directory)
  (let* ((servers (list "jalitusteabe" "cuddwybodaeth" "istihbarat" "wywiad"))
@@ -2150,7 +2210,11 @@
 				   max-y
 				   proposal-file
 				   discount-factor)
-  (visualize-results-improved dir dummy-f dummy-g data-output-dir)
+  (visualize-results-improved-new dir
+				  dummy-f
+				  dummy-g
+				  data-output-dir
+				  discount-factor)
   (system (format #f "rsync -avrz ~a/~a/~a/ seykhl:~a/~a/~a/"
 		  data-directory
 		  run-dir
@@ -2436,6 +2500,7 @@
 	(one-frame (first frames))
 	(height (imlib:height one-frame))
 	(width (imlib:width one-frame)))
+  (dtrace (format #f "starting get-and-save-proposal-boxes in ~a" dir) #f)
   (start-matlab!)
   (matlab (format #f "num_proposals = ~a;" num-proposals))
   (matlab "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection/'))")
@@ -2461,7 +2526,10 @@
 		  dir num-proposals))
   (matlab "save(filename,'proposal_boxes')")
   (matlab "clear proposal_boxes;")
-  (dtrace (format #f "saved ~a/proposal_boxes_~a.mat" dir num-proposals) #f)
+  (if (file-exists? (format #f "~a/proposal_boxes_~a.mat" dir num-proposals))
+      (dtrace (format #f "saved ~a/proposal_boxes_~a.mat" dir num-proposals) #f)
+      (dtrace (format #f "**ERROR** saving ~a/proposal_boxes_~a.mat"
+		      dir num-proposals) #f))
   ))
 
 (define (get-and-save-proposal-boxes-all-videos num-proposals)
@@ -2505,9 +2573,13 @@
 
 (define (simple-run-and-plot)
  (let* ((path "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/")
-	(testdirs (list "20151130_top_k_10"
-			"20151130_top_k_50"
-			"20151130_top_k_100"))
+	(testdirs ;; (list "20151130_top_k_10"
+		  ;; 	"20151130_top_k_50"
+		  ;; 	"20151130_top_k_100")
+	 (list "20151201_top_k_10"
+	       "20151201_top_k_50"
+	       "20151201_top_k_100")
+		  )
 	(top-ks (list 10 50 100))
 	(matlab-filename "detection_data.mat"))
   (single-run-test-new (first testdirs) (first top-ks))
@@ -2515,5 +2587,9 @@
   (single-run-test-new (third testdirs) (third top-ks))
   (for-each
    (lambda (testdir)
-    (make-quad-video-and-plots-one-run path testdir matlab-filename))
-   testdirs)))
+    (make-quad-video-and-plots-one-run path testdir matlab-filename)
+    (system (format #f "rsync -avrz ~a/~a/ seykhl:~a/~a/"
+		  path testdir path testdir))
+    )
+   testdirs)
+  ))

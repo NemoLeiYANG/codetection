@@ -70,7 +70,7 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
     new_boxes = zeros(top_k, 8);
     temp_phists = zeros(phist_size,'single'); %do phists too
     i = 1; %index into new_boxes
-    j = 1; %index into proposal_boxes
+    j = 1; %index into proposal_boxes/bbs
     boundary = world_boundary; %copy in bounary locations
     while ((i <= top_k) && (j <= num_proposals))
         %assume box is on ground (height = 0) to find x,y location
@@ -94,8 +94,8 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
         %save x,y in columns 6 and 7
         new_boxes(i,6) = loc(1); new_boxes(i,7) = loc(2);
         %find width and save in column 8
-        lcorner = [bbs(i,1) (bbs(i,2)+bbs(i,4))];
-        rcorner = [(bbs(i,1)+bbs(i,3)) (bbs(i,2)+bbs(i,4))];
+        lcorner = [bbs(j,1) (bbs(j,2)+bbs(j,4))];
+        rcorner = [(bbs(j,1)+bbs(j,3)) (bbs(j,2)+bbs(j,4))];
         lcloc = pixel_and_height_to_world(lcorner,0,cam_k,pose,cam_offset);
         rcloc = pixel_and_height_to_world(rcorner,0,cam_k,pose,cam_offset);
         wwidth = norm(lcloc-rcloc); %had to replace pdist b/c license issues (statistics toolbox)
@@ -107,6 +107,7 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
         hist_out = phow_hist(img(y1:y2,x1:x2,:),ssize);
         temp_phists(i,:) = hist_out';
         i = i+1; %INCREMENT i
+        j = j+1; %INCREMENT j
     end %while
     bboxes(:,:,t) = new_boxes;
     phists(:,:,t) = temp_phists;
