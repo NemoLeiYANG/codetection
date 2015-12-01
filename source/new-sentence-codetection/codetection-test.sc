@@ -475,7 +475,9 @@
 				      c-sizeof-int #t))	
 	(score (bp-object-inference f-c g-c (length f)
 				    top-k dummy-f dummy-g num-g boxes-c))
-	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t)))
+	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t))
+	;;START HERE
+	)
   ;;  (dtrace "before (free boxes-c)" #f)
   (free boxes-c)
   ;;  (dtrace "before (easy-ffi:free 2 f f-c)" #f)
@@ -497,11 +499,13 @@
 		  proposals-boxes))
 	;;(ensure-scores ) is the function to make sure that the below list is
 	;;included in the results file
-	(map (lambda ;;f-score value (NOT A LIST) (empty list if dummy)
+	(map (lambda ;;f-score value (NOT A LIST) (dummy-f, not empty list, if dummy)
 	       (b scores) (list-ref scores b))
 	     boxes 
-	     (map (lambda (scores) (append scores '(())))
+	     ;;(map (lambda (scores) (append scores '(())))
+	     (map (lambda (scores) (append scores (list dummy-f)))
 		  f))
+	
 	     )
 
   ;;(list boxes) ;;just box indices
@@ -2215,7 +2219,7 @@
 				  dummy-g
 				  data-output-dir
 				  discount-factor)
-  (system (format #f "rsync -avrz ~a/~a/~a/ seykhl:~a/~a/~a/"
+  (system (format #f "rsync -arz ~a/~a/~a/ seykhl:~a/~a/~a/"
 		  data-directory
 		  run-dir
 		  data-output-dirname
@@ -2572,13 +2576,24 @@
 
 
 (define (simple-run-and-plot)
+ (dtrace "starting simple-run-and-plot" #f)
+ (system "date")
  (let* ((path "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/")
 	(testdirs ;; (list "20151130_top_k_10"
 		  ;; 	"20151130_top_k_50"
 		  ;; 	"20151130_top_k_100")
-	 (list "20151201_top_k_10"
-	       "20151201_top_k_50"
-	       "20151201_top_k_100")
+	 ;; (list "20151201_top_k_10"
+	 ;;       "20151201_top_k_50"
+	 ;;       "20151201_top_k_100")
+	 ;; (list "20151201a_top_k_10"
+	 ;;       "20151201a_top_k_50"
+	 ;;       "20151201a_top_k_100")
+	 ;; (list "20151201b_top_k_10"
+	 ;;       "20151201b_top_k_50"
+	 ;;       "20151201b_top_k_100")
+	 (list "20151201c_top_k_10"
+	       "20151201c_top_k_50"
+	       "20151201c_top_k_100")
 		  )
 	(top-ks (list 10 50 100))
 	(matlab-filename "detection_data.mat"))
@@ -2588,8 +2603,10 @@
   (for-each
    (lambda (testdir)
     (make-quad-video-and-plots-one-run path testdir matlab-filename)
-    (system (format #f "rsync -avrz ~a/~a/ seykhl:~a/~a/"
+    (system (format #f "rsync -arz ~a/~a/ seykhl:~a/~a/"
 		  path testdir path testdir))
     )
    testdirs)
+  (dtrace "simple-run-and-plot complete" #f)
+  (system "date")
   ))

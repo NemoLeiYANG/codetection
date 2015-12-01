@@ -57,6 +57,8 @@ bboxes = zeros(top_k, 8, T); %each row: [x y w h score xloc yloc wwidth]
 phist_size = [top_k, 12000];
 phists = zeros([phist_size,T],'single'); %for storing histograms--HARDCODED 12000 as size of phow_hist 
 
+fprintf('performing computation with disft/phist skipped\n');
+
 % compute
 parfor t = 1:T %main parfor loop to select top_k best proposals and also do histogram (dsift) scores
     %first get precomputed boxes and sort descending by score
@@ -101,11 +103,11 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
         wwidth = norm(lcloc-rcloc); %had to replace pdist b/c license issues (statistics toolbox)
         %pdist([lcloc'; rcloc'],'euclidean');
         new_boxes(i,8) = wwidth;
-        %compute histogram for box j (for s_score later)
-        x1 = bbs(j,1); x2 = bbs(j,3) + bbs(j,1) - 1;
-        y1 = bbs(j,2); y2 = bbs(j,4) + bbs(j,2) - 1;
-        hist_out = phow_hist(img(y1:y2,x1:x2,:),ssize);
-        temp_phists(i,:) = hist_out';
+%         %compute histogram for box j (for s_score later) SKIPPED FOR NOW
+%         x1 = bbs(j,1); x2 = bbs(j,3) + bbs(j,1) - 1;
+%         y1 = bbs(j,2); y2 = bbs(j,4) + bbs(j,2) - 1;
+%         hist_out = phow_hist(img(y1:y2,x1:x2,:),ssize);
+%         temp_phists(i,:) = hist_out';
         i = i+1; %INCREMENT i
         j = j+1; %INCREMENT j
     end %while

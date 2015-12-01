@@ -252,7 +252,7 @@
 	  ;;stitch visualizations together with joined plots
 	  (make-4-by-frames path testdir dummy-f dummy-g)
 	  ;;make video
-	  (system (format #f "ffmpeg -framerate ~a -i ~a/~a/images-~a-~a/frame-0%04d.png -b 2048k -r ~a ~a/~a/quad-video.avi"
+	  (system (format #f "ffmpeg -framerate ~a -i ~a/~a/images-~a-~a/frame-0%04d.png -b 4096k -r ~a ~a/~a/quad-video.avi"
 			  fps path testdir (number->padded-string-of-length dummy-f 3)
 			  (number->padded-string-of-length dummy-g 3) fps path testdir))
 	  ;;clean up images

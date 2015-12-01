@@ -34,7 +34,7 @@ fprintf('\nin new-sentence-codetection/new_binary_scores_world_and_pixel.m\n');
 % end
 
 %flags/parameters to use different methods
-world_distance_flag = false;
+world_distance_flag = true;%false;
 pixel_distance_flag = true;
 a = 0.5; % range [0,1], only used when both flags are true
 
@@ -44,7 +44,8 @@ a = 0.5; % range [0,1], only used when both flags are true
 %cam_offset = [-0.03 0.16 -0.2]; %estimated measurement, in m
 % world_boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
 %distance_threshold = 0.5; %distance threshold for similarity score--in m
-binary_score_threshold = 1e-6; %threshold for a binary score to go into ouput--ARBITRARY, may need to change
+binary_score_threshold = 0; %turning off binary score threshold
+        %1e-3;%1e-6; %threshold for a binary score to go into ouput--ARBITRARY, may need to change
 
 sigmoid_a = -6; %sigmoid steepness
 sigmoid_c = 0.75; %sigmoid threshold (50% value)
@@ -113,6 +114,7 @@ end % for i
 
 world_distance = d_score; %done with world distance computation
 pixel_distance = p_score;
+save('foo_p_score.mat','p_score');
 
 %d_score and w_score complete 
 
@@ -168,26 +170,41 @@ end %if
 boxes_w_fscore = bboxes;
 gscore = zeros(((T*top_k)^2)/2, 5,'single'); %each row is [f1,b1,f2,b2,g]
 g_idx = 0;
-for i = 1:(T*top_k-1)
-    %    for j = (i+1):T*top_k %can do this b/c matrix will be symmetric
-    j=i+1; %this ensures only the NEXT FRAME is connected
-    if (G(i,j) > binary_score_threshold)%~= 0)
-        frame_idx1 = ceil(i/top_k);
-        frame_idx2 = ceil(j/top_k);
-        box_idx1 = mod(i,top_k);
-        if (box_idx1 == 0)
-            box_idx1 = top_k;
-        end %if
-        box_idx2 = mod(j,top_k);
-        if (box_idx2 == 0)
-            box_idx2 = top_k;
-        end %if
-        g_idx = g_idx + 1;
-        gscore(g_idx,:) = [frame_idx1, box_idx1, frame_idx2, ...
-                           box_idx2, G(i,j)];
-    end %if
-        %  end % for j
-end %for i
+%%BAD--looks only 1 proposal ahead instead of 1 frame
+% for i = 1:(T*top_k-1)
+%     %    for j = (i+1):T*top_k %can do this b/c matrix will be symmetric
+%     j=i+1; %this ensures only the NEXT FRAME is connected
+%     if (G(i,j) > binary_score_threshold)%~= 0)
+%         frame_idx1 = ceil(i/top_k);
+%         frame_idx2 = ceil(j/top_k);
+%         box_idx1 = mod(i,top_k);
+%         if (box_idx1 == 0)
+%             box_idx1 = top_k;
+%         end %if
+%         box_idx2 = mod(j,top_k);
+%         if (box_idx2 == 0)
+%             box_idx2 = top_k;
+%         end %if
+%         g_idx = g_idx + 1;
+%         gscore(g_idx,:) = [frame_idx1, box_idx1, frame_idx2, ...
+%                            box_idx2, G(i,j)];
+%     end %if
+%         %  end % for j
+% end %for i
+
+for fr1 = 1:(T-1)
+    fr2 = fr1 + 1;
+    for i = 1:top_k
+        box1 = ((fr1-1)*top_k + i);
+        for j = 1:top_k
+            box2 = ((fr2-1)*top_k + j);
+            if (G(box1,box2) > binary_score_threshold)%~= 0)
+                g_idx = g_idx + 1;
+                gscore(g_idx,:) = [fr1, i, fr2, j, G(box1,box2)];
+            end %if
+        end %for j
+    end %for i
+end %for frame_idx1
 gscore = gscore(1:g_idx,:);
 gscore = sortrows(gscore,3);
 %might want to do sortrows(gscore,[1,3]) to sort by 1st then 3rd columns

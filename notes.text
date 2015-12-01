@@ -3966,7 +3966,7 @@ Open files in Emacs 11Nov15
 **NEED TO REMEMBER that rendering-code.sc loads codetection-test.sc, so can't
   load rendering-code from codetection-test 
 
- ----------------git commit 9340bf7---------------
+----------------git commit 9340bf7---------------
 
 1 Dec 15
 
@@ -3994,10 +3994,95 @@ Open files in Emacs 11Nov15
 
 --Looking on aql run to precompute proposals, saw that floorplan-0-sentence-3
   and floorplan-0-sentence-4 seemed to get the error that I saw yesterday when
-  there weren't enough proposals--probably need to re-run these with a smaller
-  number of proposals
+  there weren't enough proposals--re-running these with a smaller number of
+  proposals...will probably also have to look for others that error like this.
+
+----------------git commit 47e45fb---------------
+
+1 Dec 15 (2)
+
+--Looking at why we are getting dummy box on test-segment so often.
+
+--Found logic error in new_binary_scores_world_and_pixel.m where I'm selecting
+  the scores from G to put into g_score.  Was using j+1, which I thought was
+  limiting it to next frame, but was really limiting it to next proposal.
+  Restructured this to check all proposals in only next frame.
+
+--Output of fix above looks promising--went from outputting only ~70 total
+  binary scores to outputting ~500000 binary scores for the k=100 test.
+
+--Confirmed that 6 floorplan-sentence dirs that errored out in the first run all
+  had 'error: num-frames > cam-timing' pop up in align-frames-with-poses.  Looks
+  like this happens because camera_front.txt does not have the correct footer
+  lines, so read-camera-timing-new cuts off timing lines and thus
+  align-frames-with-poses doesn't have enough data.  Could fix this by doing
+  some parsing on camera_front.txt in read-camera-timing-new, instead of just
+  chopping off final lines.
+
+--Reran same test runs in 20151201a and got better results.  No more dummy
+  boxes, but box still jumps around a bit.  Need to probably look at the test
+  from Jeff's email (Dec 1, 1:08pm), but instead of looking at dummy box frames,
+  look at frames that select 'wrong' box.
+
+--Going to try to re-run test, but use world distance metric as comparison.
+  Probably could do third test with a mixture/weighted sum of both metrics.  To
+  speed things up, I commented out phow_hist call in
+  new_score_saved_proposals_with_dsift.m --> now runs in under 11 sec for up to
+  k=100!
+
+--20151201b dirs are world distance metric test; not so good.
+
+--20151201c dirs are pixel and world with a=0.5; not very good either.
+
+**working stuff in scheme-->need to add to codetection-test.sc run-codetection-with-proposals-similarity**
+> (load "rendering-code.sc")
+"rendering-code.sc"
+> (load "source/new-sentence-codetection/codetection-test.sc")
+"source/new-sentence-codetection/codetection-test.sc"
+> (define frame-data (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/20151201b_foo_top_k_10/frame-data-0.6-0.6.sc"))
+FRAME-DATA
+> (vector-length (second frame-data))
+7900
+> (define binary-scores (vector->list (second frame-data)))
+BINARY-SCORES
+> (length binary-scores)
+7900
+> (define indices (map (lambda (f) (subvector f 0 4)) binary-scores))
+INDICES
+> (first indices)
+#(1. 1. 2. 1.)
+> (position (vector 1. 1. 2. 9.) indices)
+8
+> (define exact-indices (map (lambda (v) (map-vector exact-round v)) indices))
+EXACT-INDICES
+> (first exact-indices)
+#(1 1 2 1)
+> (position (vector 1 1 2 9) exact-indices)
+8
+> (define g (matrix->list-of-lists (second frame-data)))
+***** G is redefined
+G
+> (first g)
+(1. 1. 2. 1. 0.9505696892738342)
+> 
+
+
 
 ***NEED TO rsync proposal_boxes files from aql back to seykhl and aruco
+
+The full list of runs that didn't complete successfully is:
+    floorplan-1-sentence-1
+    floorplan-1-sentence-2
+    floorplan-3-sentence-0
+    floorplan-3-sentence-3
+    floorplan-4-sentence-0
+    floorplan-4-sentence-4
+    floorplan-5-sentence-0 (This one did not have an error, it was just
+stuck in the bp.infer call.  I killed it manually)
+*MIGHT* need to manually remove these runs from the pool that is trying to
+    compute proposal_boxes
+
+
 
 **SCREEN: screen -ls to list open screens
           screen -r foo to reconnect to screen foo
