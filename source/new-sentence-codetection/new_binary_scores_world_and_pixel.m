@@ -114,7 +114,7 @@ end % for i
 
 world_distance = d_score; %done with world distance computation
 pixel_distance = p_score;
-save('foo_p_score.mat','p_score');
+%save('foo_p_score.mat','p_score');
 
 %d_score and w_score complete 
 

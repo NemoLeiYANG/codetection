@@ -170,6 +170,11 @@
  (c-function double ("bp_object_inference" pointer pointer int int
 		     double double int pointer)))
 
+(define bp-object-inference-new
+ (c-function double ("bp_object_inference_new" pointer pointer int int
+		     double double int pointer)))
+
+
 ;;------these don't work
 (define bp-label-inference
  (c-function double ("bp_label_inference" int int

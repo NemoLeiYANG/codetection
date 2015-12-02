@@ -473,8 +473,8 @@
 	(boxes-c (list->c-exact-array (malloc (* c-sizeof-int (length f)))
 				      (map-n (lambda _ 0) (length f))
 				      c-sizeof-int #t))	
-	(score (bp-object-inference f-c g-c (length f)
-				    top-k dummy-f dummy-g num-g boxes-c))
+	(score (bp-object-inference-new f-c g-c (length f)
+					top-k dummy-f dummy-g num-g boxes-c))
 	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t))
 	;;START HERE
 	)
@@ -651,7 +651,11 @@
 					discount-factor)
  (let* (;; (data (read-object-from-file (format #f "~a/frame-data-new3.sc" path)))
 	(data (read-object-from-file (format #f "~a/~a/frame-data-~a-~a.sc"
-					     path data-output-dir dummy-f dummy-g)))
+					     path data-output-dir
+					     ;; dummy-f dummy-g
+					     (number->padded-string-of-length dummy-f 3)
+					     (number->padded-string-of-length dummy-g 3)
+					     )))
 	(img-path (format #f "~a/~a/images-~a-~a" path data-output-dir
 			  (number->padded-string-of-length dummy-f 3)
 			  (number->padded-string-of-length dummy-g 3)))
@@ -701,7 +705,7 @@
 	(imlib:save image (format #f "~a/~a.png"
 				  img-path
 				  (number->padded-string-of-length n 5)))
-	(dtrace "saved image" n)
+	;;(dtrace "saved image" n)
 	(loop (rest images) (rest boxes) (+ n 1)))))))
 
 
@@ -2229,6 +2233,70 @@
   (dtrace (format #f "finished single-run-test-new in ~a" data-output-dirname) #f)
   (system "date")
   ))
+
+(define (single-run-test-new2 data-output-dirname top-k dummy-f dummy-g)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
+	(*house-x-y* (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/house-x-y.sc"))
+	(*the-max* (* 1.1 (max (first (first *house-x-y*))
+			       (first (second *house-x-y*)))))
+	(*the-min* (* 1.1 (min (second (first *house-x-y*))
+			       (second (second *house-x-y*)))))
+	(max-x *the-max*)
+	(max-y *the-max*)
+	(min-x *the-min*)
+	(min-y *the-min*)
+	(ssize 64)
+;;	(dummy-f 0.6)
+;;	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/results-house-test-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	;; (results-filename (format #f
+	;; 			  "~a/results-~a-~a.sc"
+	;; 			  data-output-dir
+	;; 			  dummy-f
+	;; 			  dummy-g))
+	;; (frame-data-filename (format #f
+	;; 			     "~a/frame-data-~a-~a.sc"
+	;; 			     data-output-dir
+	;; 			     dummy-f
+	;; 			     dummy-g))
+	(run-dir "test-segment")
+	(dir (format #f "~a~a" data-directory run-dir))
+	(proposal-file (format #f "~a/proposal_boxes_1000.mat" dir))
+	(discount-factor 0.1))
+
+  (dtrace (format #f "starting single-run-test-new in ~a" data-output-dirname) #f)
+  (system "date")
+  (get-matlab-data-house-test-new2 dir
+				   top-k
+				   ssize
+				   dummy-f
+				   dummy-g
+				   data-output-dir
+				   min-x
+				   max-x
+				   min-y
+				   max-y
+				   proposal-file
+				   discount-factor)
+  (visualize-results-improved-new dir
+				  dummy-f
+				  dummy-g
+				  data-output-dir
+				  discount-factor)
+  (system (format #f "rsync -arz ~a/~a/~a/ seykhl:~a/~a/~a/"
+		  data-directory
+		  run-dir
+		  data-output-dirname
+		  data-directory
+		  run-dir
+		  data-output-dirname))
+  (dtrace (format #f "finished single-run-test-new in ~a" data-output-dirname) #f)
+  (system "date")
+  ))
   
 
 (define (read-camera-timing-new path)
@@ -2298,12 +2366,14 @@
   (get-matlab-proposals-similarity-full-video-new2
    top-k ssize path data-output-dir min-x max-x min-y max-y
    proposal-file discount-factor)
-  (format #f "~a/~a/frame-data-~a-~a.sc" path data-output-dir
+  (format #f "~a/~a/frame-data-~a-~a.sc" path data-output-dir ;;dummy-f dummy-g))
 	  (number->padded-string-of-length dummy-f 3)
 	  (number->padded-string-of-length dummy-g 3)))
  (dtrace (format #f "wrote ~a/~a/frame-data-~a-~a.sc" path data-output-dir
+;;		 dummy-f dummy-g
 		 (number->padded-string-of-length dummy-f 3)
-		 (number->padded-string-of-length dummy-g 3)) #f))
+		 (number->padded-string-of-length dummy-g 3)
+		 ) #f))
 
 
 (define (get-matlab-proposals-similarity-full-video-new top-k
@@ -2610,3 +2680,51 @@
   (dtrace "simple-run-and-plot complete" #f)
   (system "date")
   ))
+
+(define (simple-test testdir top-k dummy-f dummy-g)
+ (dtrace "starting simple-test" #f)
+ (system "date")
+ (let* ((path "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/")
+	(matlab-filename "detection_data.mat"))
+  (single-run-test-new2 testdir top-k dummy-f dummy-g)
+  (make-quad-video-and-plots-one-run-new path
+					 testdir
+					 matlab-filename
+					 dummy-f
+					 dummy-g)
+  (system (format #f "rsync -arz ~a/~a/ seykhl:~a/~a/"
+		  path testdir path testdir)))
+ (dtrace "simple-test complete" #f)
+ (system "date"))
+
+(define (simple-run-and-plot-new)
+ (dtrace "starting simple-run-and-plot-new" #f)
+ (system "date")
+ (let* ((path "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/")
+	(testdirs
+	 (list "20151202f_top_k_10"
+	       "20151202f_top_k_50"
+	       "20151202f_top_k_100"
+	       "20151202f_top_k_200")
+		  )
+	(top-ks (list 10 50 100 200))
+	(matlab-filename "detection_data.mat")
+	(dummy-f 0.6)
+	(dummy-g 0.6))
+  (single-run-test-new2 (first testdirs) (first top-ks) dummy-f dummy-g)
+  (single-run-test-new2 (second testdirs) (second top-ks) dummy-f dummy-g)
+  (single-run-test-new2 (third testdirs) (third top-ks) dummy-f dummy-g)
+  (single-run-test-new2 (fourth testdirs) (fourth top-ks) dummy-f dummy-g)
+  (for-each
+   (lambda (testdir)
+    (make-quad-video-and-plots-one-run-new path
+					   testdir
+					   matlab-filename
+					   dummy-f
+					   dummy-g)
+    (system (format #f "rsync -arz ~a/~a/ seykhl:~a/~a/"
+		  path testdir path testdir))
+    )
+   testdirs)
+  (dtrace "simple-run-and-plot complete-new" #f)
+  (system "date")))
