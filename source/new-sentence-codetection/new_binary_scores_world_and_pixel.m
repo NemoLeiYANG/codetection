@@ -34,7 +34,7 @@ fprintf('\nin new-sentence-codetection/new_binary_scores_world_and_pixel.m\n');
 % end
 
 %flags/parameters to use different methods
-world_distance_flag = true;%false;
+world_distance_flag = false;
 pixel_distance_flag = true;
 a = 0.5; % range [0,1], only used when both flags are true
 
@@ -50,8 +50,8 @@ binary_score_threshold = 0; %turning off binary score threshold
 sigmoid_a = -6; %sigmoid steepness
 sigmoid_c = 0.75; %sigmoid threshold (50% value)
 
-sigmoid_a2 = -0.1; %for pixel distance
-sigmoid_c2 = 80; 
+sigmoid_a2 = -0.075;%-0.1; %for pixel distance
+sigmoid_c2 = 40;%80; 
 
 
 %now compute binary scores:
@@ -71,8 +71,8 @@ worldXY = [worldX worldY];
 
 % pixXcenter = bboxes(:,1,:) + 0.5*bboxes(:,3,:);
 % pixYcenter = bboxes(:,2,:) + 0.5*bboxes(:,4,:);
-pixXcenter = 0.5*(bboxes(:,3,:) - bboxes(:,1,:));
-pixYcenter = 0.5*(bboxes(:,4,:) - bboxes(:,2,:));
+pixXcenter = bboxes(:,1,:) + (0.5*(bboxes(:,3,:) - bboxes(:,1,:)));
+pixYcenter = bboxes(:,2,:) + (0.5*(bboxes(:,4,:) - bboxes(:,2,:)));
 pixXcenter = reshape(pixXcenter,T*top_k,1);
 pixYcenter = reshape(pixYcenter,T*top_k,1);
 pixXYcenter = [pixXcenter pixYcenter];

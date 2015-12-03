@@ -9,20 +9,36 @@
 ;; (+ (reduce + log-binary-scores 0) (reduce + log-unary-scores 0))
 
 ;; **working stuff in scheme-->need to add to codetection-test.sc run-codetection-with-proposals-similarity**
-;; (load "rendering-code.sc")
-;; (load "source/new-sentence-codetection/codetection-test.sc")
-;; (define frame-data (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/20151201b_foo_top_k_10/frame-data-0.6-0.6.sc"))
-;; (vector-length (second frame-data))
-;; (define binary-scores (vector->list (second frame-data)))
-;; (length binary-scores)
-;; (define indices (map (lambda (f) (subvector f 0 4)) binary-scores))
-;; (first indices)
-;; (position (vector 1. 1. 2. 9.) indices)
-;; (define exact-indices (map (lambda (v) (map-vector exact-round v)) indices))
-;; (first exact-indices)
-;; (position (vector 1 1 2 9) exact-indices)
-;; (define g-list (matrix->list-of-lists (second frame-data)))
-;; (first g-list)
+;; > (load "rendering-code.sc")
+;; "rendering-code.sc"
+;; > (load "source/new-sentence-codetection/codetection-test.sc")
+;; "source/new-sentence-codetection/codetection-test.sc"
+;; > (define frame-data (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/20151201b_foo_top_k_10/frame-data-0.6-0.6.sc"))
+;; FRAME-DATA
+;; > (vector-length (second frame-data))
+;; 7900
+;; > (define binary-scores (vector->list (second frame-data)))
+;; BINARY-SCORES
+;; > (length binary-scores)
+;; 7900
+;; > (define indices (map (lambda (f) (subvector f 0 4)) binary-scores))
+;; INDICES
+;; > (first indices)
+;; #(1. 1. 2. 1.)
+;; > (position (vector 1. 1. 2. 9.) indices)
+;; 8
+;; > (define exact-indices (map (lambda (v) (map-vector exact-round v)) indices))
+;; EXACT-INDICES
+;; > (first exact-indices)
+;; #(1 1 2 1)
+;; > (position (vector 1 1 2 9) exact-indices)
+;; 8
+;; > (define g-list (matrix->list-of-lists (second frame-data)))
+;; > (first g-list)
+;; (1. 1. 2. 1. 0.9505696892738342)
+;; > 
+
+
 
 ;; (define box-list (first results))
 ;; (define score-vals (map (lambda 

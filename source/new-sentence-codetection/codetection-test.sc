@@ -2702,10 +2702,10 @@
  (system "date")
  (let* ((path "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/")
 	(testdirs
-	 (list "20151202f_top_k_10"
-	       "20151202f_top_k_50"
-	       "20151202f_top_k_100"
-	       "20151202f_top_k_200")
+	 (list "20151203b_top_k_10"
+	       "20151203b_top_k_50"
+	       "20151203b_top_k_100"
+	       "20151203b_top_k_200")
 		  )
 	(top-ks (list 10 50 100 200))
 	(matlab-filename "detection_data.mat")
