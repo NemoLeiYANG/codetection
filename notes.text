@@ -4126,6 +4126,50 @@ Open files in Emacs 11Nov15
 --Thinking about changing pixel distance measure to IoU--looking for fast ways
   to do it in matlab.
 
+----------------git commit d9b25eb---------------
+
+4 Dec 15
+
+--Talking with Jeff on my way out yesterday:  Need to incorporate world distance
+  between proposals-->should help with the problem of the full-frame proposal in
+  frames where the robot is moving.  For frames where the robot is stationary,
+  this won't help.  Need to 'carry forward' the selected proposal in frames
+  where the robot is not moving/turning (can determine this from odometry).
+  With current setup in OpenGM, don't know if there's a way to copy new
+  proposals into subsequent frames-->maybe the simplest solution is to copy
+  forward ALL proposals between stationary frames when building bboxes from raw
+  frames in matlab.  **Won't be able to run this in parallel anymore, at least
+  not for stationary frames.**
+
+--Email from Jeff this morning seems to suggest a new approach using Viterbi
+  instead of OpenGM.
+
+--Implemented viterbi and have single-run-test-viterbi working now.  Need to
+  rewrite the plotting functions in rendering-code.sc.
+
+--Experimenting with a new distance-from-the-robot metric as a unary score so
+  that the model prefers things further away from the robot.
+
+--Email to group: 
+
+  Currently running tests in
+  seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/20151204f_ww_1_df_{0.1,0.5}_top_k_{10,50,100,200}.
+
+  Output images will be in ./images/ under each directory.  
+
+  The ww represents world weight (i.e., these are using 100% world distance and
+  0% pixel distance) and df represents discount factor.  I'm testing with
+  discount factors of both 0.1 and 0.5 to see what effect the new
+  distance-from-the-robot based unary score has.
+
+  I still need to finish fixing the code that does the plot/video creation--will
+  work on that from home this weekend.
+
+
+
+**THINK ABOUT: using linear functions instead of sigmoids for pixel distance and
+  world distance (maybe distance-from-robot as well); also using IoU or 4-D
+  distance measurement for pixel distance instead of centers
 
 ***NEED TO rsync proposal_boxes files from aql back to seykhl and aruco
 

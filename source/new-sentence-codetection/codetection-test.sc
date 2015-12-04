@@ -4,6 +4,7 @@
 ;;(load "/home/sbroniko/codetection/source/toollib-perspective-projection.sc")
 ;;(load "/home/sbroniko/codetection/source/sentence-codetection/codetection.sc")
 (load "/home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-plotting.sc") ;;for plotting stuff in matlab
+(load "/home/sbroniko/codetection/source/new-sentence-codetection/viterbi.sc")
 
 
 ;; (define-command
@@ -511,6 +512,83 @@
   ;;(list boxes) ;;just box indices
   ))
 
+(define (get-matlab-data-house-test-new2
+	 path top-k ssize dummy-f dummy-g
+	 data-output-dir min-x max-x min-y max-y proposal-file discount-factor)
+ (mkdir-p (format #f "~a/~a" path data-output-dir))
+ (write-object-to-file
+  (get-matlab-proposals-similarity-full-video-new2
+   top-k ssize path data-output-dir min-x max-x min-y max-y
+   proposal-file discount-factor)
+  (format #f "~a/~a/frame-data-~a-~a.sc" path data-output-dir ;;dummy-f dummy-g))
+	  (number->padded-string-of-length dummy-f 3)
+	  (number->padded-string-of-length dummy-g 3)))
+ (dtrace (format #f "wrote ~a/~a/frame-data-~a-~a.sc" path data-output-dir
+;;		 dummy-f dummy-g
+		 (number->padded-string-of-length dummy-f 3)
+		 (number->padded-string-of-length dummy-g 3)
+		 ) #f))
+
+
+(define (run-codetection-viterbi path
+				 top-k
+				 ssize
+				 data-output-dir
+				 min-x
+				 max-x
+				 min-y
+				 max-y
+				 proposal-file
+				 discount-factor
+				 world-weight)
+ (mkdir-p (format #f "~a/~a" path data-output-dir))
+ (let* ((proposals-similarity
+	 (get-matlab-proposals-similarity-viterbi
+	  top-k ssize path data-output-dir min-x max-x min-y max-y
+	  proposal-file discount-factor world-weight))
+	(proposals-boxes (map (lambda (boxes) (map (lambda (x) (sublist x 0 4))
+						   (matrix->list-of-lists boxes)))
+			      (first proposals-similarity)))
+	(proposals-xy (map (lambda (boxes) (map (lambda (x) (sublist x 5 7))
+						(matrix->list-of-lists boxes)))
+			   (first proposals-similarity)))
+	(f (map (lambda (boxes) (map fifth (matrix->list-of-lists boxes)))
+		(first proposals-similarity)))
+	(g-mat
+	 (begin
+	  (start-matlab!)
+	  (matlab (format #f "load('~a/~a/binary_score_data.mat');"
+			  path data-output-dir))
+	  (dtrace (format #f "loaded ~a/~a/binary_score_data.mat"
+			  path data-output-dir) #f)
+	  (transpose (matlab-get-variable "binary_scores"))))
+	(g (vector->list (map-vector (lambda (v) (vector->list v)) g-mat)))
+;;	(foo (dtrace "length f,g" (list (length f) (length g))))
+	(viterbi-output (viterbi-boxes f g))
+	(score (first viterbi-output))
+	(boxes (second viterbi-output)))
+  ;;output
+  (write-object-to-file proposals-similarity
+			(format #f "~a/~a/frame-data.sc"
+				path data-output-dir))
+  (list boxes ;;box numbers
+	(map (lambda  ;;xy locations as list (empty list if dummy)
+	       (b prop-xy) (list-ref prop-xy b))
+	     boxes
+	     (map (lambda (prop-xy) (append prop-xy '(())))
+		  proposals-xy))
+	(map (lambda ;;pixel locations as list (empty list if dummy)
+	       (b prop-boxes) (list-ref prop-boxes b))
+	     boxes
+	     (map (lambda (prop-boxes) (append prop-boxes '(())))
+		  proposals-boxes))
+	(map (lambda ;;f-score value (NOT A LIST) (dummy-f, not empty list, if dummy)
+	       (b scores) (list-ref scores b))
+	     boxes 
+	     (map (lambda (scores) (append scores '(())))
+	     ;;(map (lambda (scores) (append scores (list dummy-f)))
+		  f)))))
+
 (define (visualize-results-test data frames path name-prefix dummy-f dummy-g)
  (let* ((results (run-codetection-with-proposals-similarity data
 							    dummy-f
@@ -673,6 +751,71 @@
 					data-output-dir
 					(number->padded-string-of-length dummy-f 3)
 					(number->padded-string-of-length dummy-g 3)))
+ ;; (dtrace "img-path" img-path)
+  (mkdir-p img-path)
+  (let loop ((images (map (lambda (f) (imlib:clone f)) frames))
+	     (boxes boxes)
+	     (n 0))
+   (if (or (null? images)
+	   (null? boxes))
+       (dtrace (format #f "finished in ~a" path) #f)
+       (let* ((box (first boxes))
+	      (image (first images)))
+	(if (null? box)
+	    (imlib-draw-text-on-image image ;;we have a dummy box
+				      "DUMMY BOX" ;;string
+				      (vector 255 0 0) ;;text color
+				      18 ;;font size?
+				      320 ;; x?
+				      240 ;; y?
+				      (vector 255 255 255) ;;bg color
+				      ) 
+	    (let* ((x1 (first box)) ;;we have a real box
+		   (y1 (second box))
+		   (w (- (third box) (first box)))
+		   (h (- (fourth box) (second box))))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0))
+	     (imlib:draw-rectangle image (- x1 1) (- y1 1)
+				   (+ w 2) (+ h 2) (vector 255 0 0))
+	     (imlib:draw-rectangle image (- x1 2) (- y1 2)
+				   (+ w 4) (+ h 4) (vector 255 0 0))
+	     ))
+	(imlib:save image (format #f "~a/~a.png"
+				  img-path
+				  (number->padded-string-of-length n 5)))
+	;;(dtrace "saved image" n)
+	(loop (rest images) (rest boxes) (+ n 1)))))))
+
+(define (visualize-results-viterbi path
+				   top-k
+				   ssize
+				   data-output-dir
+				   min-x
+				   max-x
+				   min-y
+				   max-y
+				   proposal-file
+				   discount-factor
+				   world-weight)
+ (let* ((img-path (format #f "~a/~a/images" path data-output-dir))
+	(results (run-codetection-viterbi path
+					  top-k
+					  ssize
+					  data-output-dir
+					  min-x
+					  max-x
+					  min-y
+					  max-y
+					  proposal-file
+					  discount-factor
+					  world-weight))
+
+	(boxes (third results))
+	(video-path (format #f "~a/video_front.avi" path))
+	(frames (video->frames 1 video-path)))
+  (write-object-to-file results (format #f "~a/~a/results.sc"
+					path
+					data-output-dir))
  ;; (dtrace "img-path" img-path)
   (mkdir-p img-path)
   (let loop ((images (map (lambda (f) (imlib:clone f)) frames))
@@ -2297,6 +2440,48 @@
   (dtrace (format #f "finished single-run-test-new in ~a" data-output-dirname) #f)
   (system "date")
   ))
+
+(define (single-run-test-viterbi data-output-dir top-k world-weight)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
+	(*house-x-y*
+	 (read-object-from-file
+	  "/aux/sbroniko/vader-rover/logs/house-test-12nov15/house-x-y.sc"))
+	(*the-max* (* 1.1 (max (first (first *house-x-y*))
+			       (first (second *house-x-y*)))))
+	(*the-min* (* 1.1 (min (second (first *house-x-y*))
+			       (second (second *house-x-y*)))))
+	(max-x *the-max*)
+	(max-y *the-max*)
+	(min-x *the-min*)
+	(min-y *the-min*)
+	(ssize 64)
+	(run-dir "test-segment")
+	(dir (format #f "~a~a" data-directory run-dir))
+	(proposal-file (format #f "~a/proposal_boxes_1000.mat" dir))
+	(discount-factor 0.1))
+  (dtrace (format #f "starting single-run-test-viterbi in ~a" data-output-dir) #f)
+  (system "date")
+  (visualize-results-viterbi dir
+			     top-k
+			     ssize
+			     data-output-dir
+			     min-x
+			     max-x
+			     min-y
+			     max-y
+			     proposal-file
+			     discount-factor
+			     world-weight)
+  (system (format #f "rsync -arz ~a/~a/~a/ seykhl:~a/~a/~a/"
+		  data-directory
+		  run-dir
+		  data-output-dir
+		  data-directory
+		  run-dir
+		  data-output-dir))
+  (dtrace (format #f "finished single-run-test-viterbi in ~a" data-output-dir) #f)
+  (system "date")))
   
 
 (define (read-camera-timing-new path)
@@ -2566,6 +2751,68 @@
 	  (matlab-get-variable "gscore")
 	  (matlab-get-variable "num_gscore"))))
 
+(define (get-matlab-proposals-similarity-viterbi top-k
+						 box-size
+						 data-path
+						 data-output-dir
+						 min-x max-x min-y max-y
+						 proposal-file
+						 discount-factor
+						 world-weight)
+ (let* ((video-path (format #f "~a/video_front.avi" data-path))
+	(frames (video->frames 1 video-path))
+	(num-frames (length frames))
+	(poses (align-frames-with-poses data-path num-frames))
+	(one-frame (first frames))
+	(height (imlib:height one-frame))
+	(width (imlib:width one-frame)))
+  (dtrace
+   "in new-sentence-codetection/get-matlab-proposals-similarity-viterbi" #f)
+  (start-matlab!)
+  (matlab "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection/'))")
+  (if (not
+       (file-exists? (format #f "~a/~a/proposal_data.mat" data-path data-output-dir)))
+      (begin
+       (scheme->matlab! "poses" poses)
+       (matlab (format #f "frames = zeros(~a,~a,~a,~a,'uint8');" height width 3 num-frames))
+       ;; convert frames to matlab matrix
+       (for-each-indexed
+	(lambda (frame i)
+	 (with-temporary-file
+	  "/tmp/imlib-frame.ppm"
+	  (lambda (tmp-frame)
+	   ;; write scheme frame to file
+	   (imlib:save-image frame tmp-frame)
+	   ;; read file as matlab frame
+	   (matlab (format #f "frame=imread('~a');" tmp-frame))
+	   (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
+	 (imlib:free-image-and-decache frame))    
+	frames)
+       ;; call matlab function
+       (matlab (format #f "load('~a')" proposal-file))
+       (dtrace "calling new_score_saved_proposals_with_dsift" #f)
+       (matlab
+	(format
+	 #f
+	 "[bboxes,phists] = new_score_saved_proposals_with_dsift2(proposal_boxes,~a,~a,frames,poses,~a,~a,~a,~a,~a);"
+	 top-k box-size min-x max-x min-y max-y discount-factor))
+       (matlab (format #f"save('~a/~a/proposal_data.mat','bboxes','phists');"
+		       data-path data-output-dir))))
+  (matlab (format #f "load('~a/~a/proposal_data.mat');" data-path data-output-dir))
+  (dtrace (format #f "loaded ~a/~a/proposal_data.mat" data-path data-output-dir) #f)
+  (matlab (format #f "a = ~a;" world-weight))
+  (matlab
+    "[boxes_w_fscore,gscore,num_gscore,G,binary_scores] = new_binary_scores_world_and_pixel2(bboxes,a);")
+  (matlab (format #f "save('~a/~a/binary_score_data.mat','binary_scores');"
+		  data-path data-output-dir))
+  ;; convert matlab variables to scheme for output
+  (list (map-n (lambda (t)
+		(matlab (format #f "tmp=boxes_w_fscore(:,:,~a);" (+ t 1)))
+		(matlab-get-variable "tmp"))
+	       num-frames)
+	  (matlab-get-variable "gscore")
+	  (matlab-get-variable "num_gscore"))))
+
 
 (define (get-and-save-proposal-boxes dir num-proposals)
  (let* ((video-path (format #f "~a/video_front.avi" dir))
@@ -2728,3 +2975,35 @@
    testdirs)
   (dtrace "simple-run-and-plot complete-new" #f)
   (system "date")))
+
+
+(define (simple-run-and-plot-viterbi)
+ (dtrace "starting simple-run-and-plot-viterbi" #f)
+ (system "date")
+ (let* ((path "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/")
+	(testdirs
+	 (list "20151204f_ww_1_df_0.1_top_k_10"
+	       "20151204f_ww_1_df_0.1_top_k_50"
+	       "20151204f_ww_1_df_0.1_top_k_100"
+	       "20151204f_ww_1_df_0.1_top_k_200")
+		  )
+	(top-ks (list 10 50 100 200))
+	(matlab-filename "detection_data.mat"))
+  (single-run-test-viterbi (first testdirs) (first top-ks) 1)
+  (single-run-test-viterbi (second testdirs) (second top-ks) 1)
+  (single-run-test-viterbi (third testdirs) (third top-ks) 1)
+  (single-run-test-viterbi (fourth testdirs) (fourth top-ks) 1)
+  ;; (for-each
+  ;;  (lambda (testdir)
+  ;;   (make-quad-video-and-plots-one-run-new path
+  ;; 					   testdir
+  ;; 					   matlab-filename
+  ;; 					   dummy-f
+  ;; 					   dummy-g)
+  ;;   (system (format #f "rsync -arz ~a/~a/ seykhl:~a/~a/"
+  ;; 		  path testdir path testdir))
+  ;;   )
+  ;;  testdirs)
+  (dtrace "simple-run-and-plot complete-viterbi" #f)
+  (system "date")))
+
