@@ -2441,7 +2441,7 @@
   (system "date")
   ))
 
-(define (single-run-test-viterbi data-output-dir top-k world-weight)
+(define (single-run-test-viterbi data-output-dir top-k world-weight discount-factor)
  (let* ((data-directory
 	 "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
 	(*house-x-y*
@@ -2458,8 +2458,11 @@
 	(ssize 64)
 	(run-dir "test-segment")
 	(dir (format #f "~a~a" data-directory run-dir))
-	(proposal-file (format #f "~a/proposal_boxes_1000.mat" dir))
-	(discount-factor 0.1))
+	(proposal-file (format #f "~a/proposal_boxes_edgeboxes_2500.mat" dir))
+
+	 ;;(format #f "~a/proposal_boxes_1000.mat" dir))
+	;; (discount-factor 0.1)
+	)
   (dtrace (format #f "starting single-run-test-viterbi in ~a" data-output-dir) #f)
   (system "date")
   (visualize-results-viterbi dir
@@ -2981,29 +2984,33 @@
  (dtrace "starting simple-run-and-plot-viterbi" #f)
  (system "date")
  (let* ((path "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/")
+	(world-weight 1)
+	(discount-factor 0.1);;0.01);;0.1)
+	(top-ks (list 10 50 200 500 1000))
 	(testdirs
-	 (list "20151204f_ww_1_df_0.1_top_k_10"
-	       "20151204f_ww_1_df_0.1_top_k_50"
-	       "20151204f_ww_1_df_0.1_top_k_100"
-	       "20151204f_ww_1_df_0.1_top_k_200")
-		  )
-	(top-ks (list 10 50 100 200))
+	 (map (lambda (k)
+	       (format #f "20151207b_ww_~a_df_~a_top_k_~a"
+		       world-weight discount-factor k))
+	      top-ks))
 	(matlab-filename "detection_data.mat"))
-  (single-run-test-viterbi (first testdirs) (first top-ks) 1)
-  (single-run-test-viterbi (second testdirs) (second top-ks) 1)
-  (single-run-test-viterbi (third testdirs) (third top-ks) 1)
-  (single-run-test-viterbi (fourth testdirs) (fourth top-ks) 1)
-  ;; (for-each
-  ;;  (lambda (testdir)
-  ;;   (make-quad-video-and-plots-one-run-new path
-  ;; 					   testdir
-  ;; 					   matlab-filename
-  ;; 					   dummy-f
-  ;; 					   dummy-g)
-  ;;   (system (format #f "rsync -arz ~a/~a/ seykhl:~a/~a/"
-  ;; 		  path testdir path testdir))
-  ;;   )
-  ;;  testdirs)
-  (dtrace "simple-run-and-plot complete-viterbi" #f)
+  (single-run-test-viterbi (first testdirs)
+			   (first top-ks) world-weight discount-factor)
+  (single-run-test-viterbi (second testdirs)
+  			   (second top-ks) world-weight discount-factor)
+  (single-run-test-viterbi (third testdirs)
+  			   (third top-ks) world-weight discount-factor)
+  (single-run-test-viterbi (fourth testdirs)
+  			   (fourth top-ks) world-weight discount-factor)
+  (single-run-test-viterbi (fifth testdirs)
+  			   (fifth top-ks) world-weight discount-factor)
+  (for-each
+   (lambda (testdir)
+    (make-quad-video-and-plots-one-run-viterbi path
+					       testdir
+					       matlab-filename)
+    (system (format #f "rsync -arz ~a/~a/ seykhl:~a/~a/"
+		    path testdir path testdir)))
+   testdirs)
+  (dtrace "simple-run-and-plot-viterbi complete" #f)
   (system "date")))
 

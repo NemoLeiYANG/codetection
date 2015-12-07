@@ -12,7 +12,8 @@ opts.minScore = .01;  % min score of boxes to detect
 opts.maxBoxes = 1000;  % max number of boxes to detect
 
 %% detect Edge Box bounding box proposals (see edgeBoxes.m)
-I = imread('/home/haonan/Desktop/008.jpg');
+%I = imread('/home/haonan/Desktop/008.jpg');
+I = frames(:,:,:,1);
 tic, bbs=edgeBoxes(I,model,opts); toc
 
 disp(bbs(1:5,:));

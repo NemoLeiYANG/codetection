@@ -105,9 +105,10 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
         %display(proposal_loc);
         dist = pdist2(proposal_loc,pose(1:2),'euclidean');
         %display(dist);
-        new_fscore = sigmf(dist,[sig_a,sig_c]);
+        distance_factor = sigmf(dist,[sig_a,sig_c]); %used to be new_fscore
         %display(new_fscore);
-        new_boxes(i,5) = new_fscore;
+        new_boxes(i,5) = distance_factor * new_boxes(i,9);%new_fscore;
+        % use distance_factor as a penalty on proposal score
         %find width and save in column 8
         lcorner = [bbs(j,1) (bbs(j,2)+bbs(j,4))];
         rcorner = [(bbs(j,1)+bbs(j,3)) (bbs(j,2)+bbs(j,4))];

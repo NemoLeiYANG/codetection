@@ -115,6 +115,64 @@
 					   (number->padded-string-of-length n 5)))
 	;;(dtrace "saved image" n)
 	(loop (rest images) (rest boxes) (+ n 1)))))))
+
+(define (visualize-proposals-viterbi path outdir data)
+ (let* ((outpath (format #f "~a/~a" path outdir))
+	(img-path (format #f "~a/images" outpath))
+	(boxes (first data))
+	(scores (map (lambda (x) (vector-ref x 4)) (join (map vector->list boxes))))
+	(score-mean (list-mean scores))
+	(score-variance (list-variance scores))
+	(score-std (sqrt score-variance))
+	(max-score (+ score-mean (* 1 score-std)))
+	(min-score (- score-mean (* 1 score-std)))
+	(video-path (format #f "~a/video_front.avi" path))
+	(frames (video->frames 1 video-path)))
+  (mkdir-p img-path)
+  (let loop ((images (map (lambda (f) (imlib:clone f)) frames))
+	     (boxes boxes)
+	     (n 0))
+   (if (or (null? images)
+	   (null? boxes))
+       (dtrace (format #f "visualize-proposals finished in ~a" outpath) #f)
+       (begin
+	(for-each
+	 (lambda (box)
+	  (let* ((x1 (first box)) ;;we have a real box
+		 (y1 (second box))
+		 (w (- (third box) (first box)))
+		 (h (- (fourth box) (second box)))
+		 (red (* (minimum
+			  (list 1
+				(/ (- (fifth box) min-score)
+				   (- max-score min-score))))
+			 255))
+		 (blue
+		  (* 255
+		     (maximum
+		      (list 0
+			    (- 1
+			       (/ (- (fifth box) min-score)
+				  (- max-score min-score))))))
+		  ))
+	   (imlib:draw-rectangle
+	    (first images) x1 y1 w h
+	    (vector red 0 blue))
+	   (imlib:draw-rectangle
+	    (first images) (+ x1 1) (+ y1 1) w h
+	    (vector red 0 blue))
+	   (imlib:draw-rectangle
+	    (first images) (- x1 1) (- y1 1) w h
+	    (vector red 0 blue))
+	   ))
+	 (map vector->list (sort (vector->list (first boxes))
+				 <
+				 (lambda (b) (vector-ref b 4)))))
+	(imlib:save (first images) (format #f "~a/rendered-proposals-~a.png"
+					   img-path
+					   (number->padded-string-of-length n 5)))
+	;;(dtrace "saved image" n)
+	(loop (rest images) (rest boxes) (+ n 1)))))))
 				      
 
 (define (make-4-by-video-house-one-run path)
@@ -341,6 +399,67 @@
 	  (rm (format #f "~a/~a/images-~a-~a/traces-joined*.png" path testdir dummy-f dummy-g))
 	  (dtrace (format #f "make-4-by-video-house-one-run complete in ~a" path ) #f)
   )))))
+
+(define (make-4-by-video-house-one-run-viterbi path testdir)
+ (let* ((outdir "foobar")
+	(*the-max* (* 1.1 (max (first (first *house-x-y*))
+			       (first (second *house-x-y*)))))
+	(*the-min* (* 1.1 (min (second (first *house-x-y*))
+			       (second (second *house-x-y*)))))
+	(max-x *the-max*)
+	(max-y *the-max*)
+	(min-x *the-min*)
+	(min-y *the-min*))
+  ;;abort if files aren't there
+  (cond ((not (file-exists? (format #f "~a/track.sc" path)))
+	 (dtrace
+	  (format #f "missing ~a/track.sc, make-4-by-video-house-one-run-viterbi aborted" path)
+	  #f))
+	((not (file-exists? (format #f "~a/~a/frame-data.sc"
+				    path
+				    testdir)))
+	 (dtrace
+	  (format #f "missing ~a/~a/frame-data.sc, make-4-by-video-house-one-run-viterbi aborted"
+		  path
+		  testdir)
+	  #f))
+	((not (file-exists? (format #f "~a/~a/results.sc"
+				    path
+				    testdir)))
+	 (dtrace
+	  (format #f "missing ~a/~a/results.sc, make-4-by-video-house-one-run-viterbi aborted"
+		  path
+		  testdir)
+	  #f))
+	(else
+	 (let* ((width 640)
+		(height 640)
+		(fps 10)
+		(data (read-object-from-file
+		       (format #f "~a/~a/frame-data.sc" path testdir)))
+		(trace (read-object-from-file (format #f "~a/track.sc" path)))
+		(results (read-object-from-file
+			  (format #f "~a/~a/results.sc"
+				  path
+				  testdir))))
+	  ;;visualize all proposals
+	  (visualize-proposals-viterbi path testdir data) ;;NEW
+	  ;;make joined plots of traces w/ all and winning proposals
+	  (animate-house-track-with-boxes-viterbi path testdir outdir width height 
+						  min-x max-x min-y max-y data
+						  trace results) ;;NEW
+	  ;;stitch visualizations together with joined plots
+	  (make-4-by-frames-viterbi path testdir);;NEW
+	  ;;make video
+	  (system (format #f "ffmpeg -framerate ~a -i ~a/~a/images/frame-0%04d.png -b 4096k -r ~a ~a/~a/quad-video.avi"
+			  fps path testdir fps path testdir))
+	  ;;clean up images
+	  (rm (format #f "~a/~a/images/rendered-proposals*.png" path testdir))
+	  ;;(rm (format #f "~a/~a/images/frame*.png" path testdir))
+	  (rm (format #f "~a/~a/images/joined*.png" path testdir))
+	  (rm (format #f "~a/~a/images/traces-joined*.png" path testdir))
+	  (dtrace (format #f "make-4-by-video-house-one-run-viterbi complete in ~a"
+			  path ) #f))))))
 
 (define (make-all-house-test-videos)
  (let* ((basedir "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
@@ -931,6 +1050,171 @@
 			image-name image2-name joined-name))
 	(loop (rest track) (cons (list->vector (first track)) trace) (+ frame 1) (rest detections-movie) (rest selected-index)))))))
 
+(define (animate-house-track-with-boxes-viterbi path  ;;path=main floorplan-sentence path
+						testdir  ;;testdir=dir under path where frame-data and results are
+						outdir
+						width
+						height
+						min-x
+						max-x
+						min-y
+						max-y
+						data
+						trace
+						results)
+ (rm (format #f "/tmp/~a" outdir))
+ (mkdir-p (format #f "/tmp/~a" outdir))
+ (let* ((track (downsample-list-by-factor trace 5))
+	(boxes (first data))
+	(detections-movie
+	 (map (lambda (frame-boxes)
+	       (map-vector (lambda (b)
+			    (vector (vector-ref b 5)
+				    (vector-ref b 6)
+				    (vector-ref b 4)
+				    (vector-ref b 7)))
+			   frame-boxes))
+	      boxes)) ;;SORT THESE before drawing on image
+	(scores (map (lambda (x) (vector-ref x 4)) (join (map vector->list boxes))))
+	(score-mean (list-mean scores))
+	(score-variance (list-variance scores))
+	(score-std (sqrt score-variance))
+	(max-score (+ score-mean (* 1 score-std)))
+	(min-score (- score-mean (* 1 score-std)))
+	(selected-index (first results)))
+  (let loop ((track track)
+	     (trace '())
+	     (frame 0)
+	     (detections-movie detections-movie)
+	     (selected-index selected-index)) 
+   (if (or (null? track) (null? detections-movie))
+       (begin
+	(rm (format #f "/tmp/~a/*" outdir))
+	(dtrace (format #f "animate-house-track-with-boxes finished in ~a" path) #f)
+	)
+       (let* ((image (imlib:create width height)) ;;image is all proposals
+	      (image2 (imlib:create width height)) ;;image2 is selected proposal
+	      (image-name (format #f "/tmp/~a/all-~a.png"
+				  outdir
+				  (number->padded-string-of-length frame 5)))
+	      (image2-name (format #f "/tmp/~a/selected-~a.png"
+				  outdir
+				  (number->padded-string-of-length frame 5)))
+	      (joined-name (format #f "~a/~a/images/traces-joined-~a.png"
+				   path
+				   testdir
+				   (number->padded-string-of-length frame 5))))
+	(imlib:fill-rectangle image 0 0 width height `#(255 255 255))
+	(imlib:fill-rectangle image2 0 0 width height `#(255 255 255))
+	(imlib:draw-rectangle image 0 0 width height `#(0 0 0))
+	(imlib:draw-rectangle image2 0 0 width height `#(0 0 0))
+	(draw-object-on-floorplan (list 'the-start (vector 0 0))
+				  image width height min-x max-x min-y max-y)
+	(draw-object-on-floorplan (list 'the-start (vector 0 0))
+				  image2 width height min-x max-x min-y max-y)
+	(draw-world-robot image
+			  (vector (first (first track))
+				  (second (first track)))
+			  (third (first track))
+			  .2
+			  width height min-x max-x min-y max-y)
+	(draw-world-robot image2
+			  (vector (first (first track))
+				  (second (first track)))
+			  (third (first track))
+			  .2
+				 width height min-x max-x min-y max-y) 
+	;;THIS BLOCK draws the sized and colored rectangles
+	(for-each-vector
+	 (lambda (b)
+	  (let* ((w ;;(dtrace "w"
+		  (vector-ref b 3));;)
+		 (pw ;;(dtrace "pw"
+		  (magnitude
+		   (v- (world->pixel (vector 0 0)
+				     width
+				     height
+				     min-x
+				     max-x
+				     min-y
+				     max-y)
+		       (world->pixel (vector w 0)
+				     width
+				     height
+				     min-x
+				     max-x
+				     min-y
+				     max-y))));;)
+		 (red (* (minimum
+			  (list 1
+				(/ (- (z b) min-score)
+				   (- max-score min-score))))
+			 255))
+		 (blue
+		  (* 255
+		     (maximum
+		      (list 0
+			    (- 1
+			       (/ (- (z b) min-score)
+				  (- max-score min-score)))))))
+		 )
+	   (imlib:draw-rectangle
+	    image
+	    (- (x (world->pixel
+		   (vector (x b) (y b)) width height min-x max-x min-y max-y))
+	       (/ pw 2))
+	    (- (y (world->pixel
+		   (vector (x b) (y b)) width height min-x max-x min-y max-y))
+	       (/ pw 2))
+	    pw
+	    pw
+	    (vector red 0 blue))))
+	 (first detections-movie) ;;SORT THIS!!--probably not needed
+	 )
+	(when (< (first selected-index) (vector-length (first detections-movie)))
+	 ;;plot selected proposal in red
+	 (let* ((b (vector-ref (first detections-movie) (first selected-index)))
+		(w (vector-ref b 3))
+		(pw (magnitude
+		     (v- (world->pixel (vector 0 0)
+				       width
+				       height
+				       min-x
+				       max-x
+				       min-y
+				       max-y)
+			 (world->pixel (vector w 0)
+				       width
+				       height
+				       min-x
+				       max-x
+				       min-y
+				       max-y)))))
+	  (imlib:draw-rectangle
+	    image2
+	    (- (x (world->pixel
+		   (vector (x b) (y b)) width height min-x max-x min-y max-y))
+	       (/ pw 2))
+	    (- (y (world->pixel
+		   (vector (x b) (y b)) width height min-x max-x min-y max-y))
+	       (/ pw 2))
+	    pw
+	    pw
+	    (vector 255 0 0))))
+	(when (not (null? trace))
+	 (begin
+	  (draw-trace2 trace image width height min-x max-x min-y max-y)
+	  (draw-trace2 trace image2 width height min-x max-x min-y max-y)))
+	(imlib:save image image-name)
+	(imlib:save image2 image2-name)
+	(imlib:free image)
+	(imlib:free image2)
+;;(show-image image)
+	;;stitch images together here, remove old images
+	(system (format #f "montage -tile 2x1 -geometry +0+0 ~a ~a ~a"
+			image-name image2-name joined-name))
+	(loop (rest track) (cons (list->vector (first track)) trace) (+ frame 1) (rest detections-movie) (rest selected-index)))))))
+
 (define (make-4-by-frames path testdir dummy-f dummy-g)
  (let* ((imgdir (format #f "~a/~a/images-~a-~a"	path testdir
 			(number->padded-string-of-length dummy-f 3)
@@ -958,9 +1242,33 @@
 		 (number->padded-string-of-length i 5)
 		 imgdir
 		 (number->padded-string-of-length i 5)))
-	(loop (rest traces) (rest lefts) (rest rights) (+ i 1))
-	
-	)))))
+	(loop (rest traces) (rest lefts) (rest rights) (+ i 1)))))))
+
+(define (make-4-by-frames-viterbi path testdir)
+ (let* ((imgdir (format #f "~a/~a/images" path testdir))
+	(traces (system-output (format #f "ls ~a/traces*.png" imgdir)))
+	(lefts (system-output (format #f "ls ~a/rendered*.png" imgdir)))
+	(rights (system-output (format #f "ls ~a/0*.png" imgdir))))
+  (let loop ((traces traces)
+	     (lefts lefts)
+	     (rights rights)
+	     (i 0))
+   (if (or (null? traces) (null? lefts) (null? rights))
+       (begin
+	(dtrace (format #f "make-4-by-frames-viterbi complete in ~a" imgdir) #f))
+       (begin
+	(system (format #f "montage -tile 2x1 -geometry +0+0 ~a ~a ~a/joined-~a.png"
+			(first lefts) (first rights) imgdir
+			(number->padded-string-of-length i 5)))
+	(system (format
+		 #f
+		 "montage -tile 1x2 -geometry +0+0 ~a ~a/joined-~a.png ~a/frame-~a.png"
+		 (first traces)
+		 imgdir
+		 (number->padded-string-of-length i 5)
+		 imgdir
+		 (number->padded-string-of-length i 5)))
+	(loop (rest traces) (rest lefts) (rest rights) (+ i 1)))))))
 
 
 (define (downsample-to-length l l2)
@@ -1418,8 +1726,89 @@ pose))
 		      path
 		      testdir
 		      matlab-output-filename))
-      (dtrace (format #f "get-house-detection-data-one-run complete in ~a" path ) #f)
-      )))
+      (dtrace (format #f "get-house-detection-data-one-run complete in ~a"
+		      path ) #f))))
+
+(define (get-house-detection-data-one-run-viterbi path
+						  testdir
+						  matlab-output-filename)
+ ;;this works a little differently than the old version since each run is treated as its own floorplan for this test
+ (if (not (file-exists? (format #f "~a/~a/results.sc"
+				path
+				testdir)))
+     (dtrace (format #f "no results file in ~a, aborting" path) #f)
+     (let* ((results-filename (format #f "~a/results.sc"
+				      testdir))
+	    (frame-data-filename (format #f "~a/frame-data.sc" testdir))
+	    (xys ;;(dtrace "xys"
+	     (get-xy-from-results-file
+	      (format #f "~a~a" path results-filename)))
+	    (scores ;;(dtrace "scores"
+	     (get-scores-from-results-and-frame-data-files
+	      (format #f "~a~a" path results-filename)
+	      (format #f "~a~a" path frame-data-filename)))
+	    ;;use most of what's above here to pass this data back into matlab
+	    
+	    ;;put new triangle stuff here--want 1/visible to be 4th column of matlab-data
+	    (all-poses (get-poses-that-match-frames path))
+	    (left-limits
+	     (map
+	      (lambda (p)
+	       (pixel-and-height->world
+		'#(0 205)
+		(robot-pose-to-camera->world-txf p *camera-offset-matrix*)
+		*camera-k-matrix* 0))
+	      all-poses))
+	    (right-limits
+	     (map
+	      (lambda (p)
+	       (pixel-and-height->world
+		'#(639 205)
+		(robot-pose-to-camera->world-txf p *camera-offset-matrix*)
+		*camera-k-matrix* 0))
+	      all-poses))
+	    (triangles
+	     (map (lambda (c l r) (list
+				   (subvector c 0 2)
+				   (subvector l 0 2)
+				   (subvector r 0 2)))
+		  all-poses left-limits right-limits))
+	    (frequencies
+	     (map (lambda (ll)
+		   (if (= ll 0)
+		       (dtrace "Error in get-house-detection-data-one-run-viterbi: detected box with count = 0" 0) ;;this shouldn't happen, since it means that a detected box was never counted as being in the field of view
+		       (/ 1 ll)))
+		  (map (lambda (l)
+			(reduce + l 0))
+		       (map (lambda (p)
+			     (map (lambda (t)
+				   (point-in-triangle (list->vector p) t))
+				  triangles))
+			    xys))))
+	    (matlab-data ;;(dtrace "matlab-data"
+	     (map (lambda (xy score freq)
+		   (list->vector (append xy (list score freq))))
+		  xys
+		  scores
+		  frequencies))
+	    )  
+      (start-matlab!)
+      (if (null? matlab-data)
+	  (matlab "detection_data = [];")
+	  (scheme->matlab! "detection_data" matlab-data))
+      (matlab "detection_data")
+      (dtrace (format #f
+		      "matlab command: save('~a/~a/~a','detection_data')"
+		      path
+		      testdir
+		      matlab-output-filename) #f)
+      (matlab (format #f
+		      "save('~a/~a/~a','detection_data')"
+		      path
+		      testdir
+		      matlab-output-filename))
+      (dtrace (format #f "get-house-detection-data-one-run-viterbi complete in ~a"
+		      path ) #f))))
 
 (define (make-house-plots-one-run path testdir matlab-detections-filename)
  (let* ((x-y-max-min *house-x-y*)
@@ -1525,8 +1914,24 @@ pose))
      (dtrace (format #f "~a/~a/quad-video.avi already exists" path testdir) #f)
      (make-4-by-video-house-one-run-new2 path testdir dummy-f dummy-g))
  (dtrace (format #f "finished with make-quad-video-and-plots-one-run-new in ~a/~a" path testdir) #f)
+ (system "date"))
+
+(define (make-quad-video-and-plots-one-run-viterbi path
+						   testdir
+						   matlab-filename)
+ (dtrace (format #f "starting make-quad-video-and-plots-one-run-viterbi in ~a/~a"
+		 path testdir) #f)
  (system "date")
- )
+ (unless (file-exists? (format #f "~a/~a/~a" path testdir
+			       matlab-filename))
+  (get-house-detection-data-one-run-viterbi path testdir matlab-filename)) ;;NEW
+ (make-house-plots-one-run-new path testdir matlab-filename);;should work
+ (if (file-exists? (format #f "~a/~a/quad-video.avi" path testdir))
+     (dtrace (format #f "~a/~a/quad-video.avi already exists" path testdir) #f)
+     (make-4-by-video-house-one-run-viterbi path testdir));;NEW
+ (dtrace (format #f "finished with make-quad-video-and-plots-one-run-viterbi in ~a/~a"
+		 path testdir) #f)
+ (system "date"))
 
 (define (make-videos-and-plots)
  (let* ((path "/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-1/")

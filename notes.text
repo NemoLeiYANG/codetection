@@ -4165,6 +4165,26 @@ Open files in Emacs 11Nov15
   I still need to finish fixing the code that does the plot/video creation--will
   work on that from home this weekend.
 
+----------------git commit 9f0b881---------------
+
+7 Dec 15
+
+--**THINK ABOUT: new pixel distance measurement function-->previously talked
+    about using a 4-D measurement (all 4 corners), but won't a 2-D measurement
+    of opposite corners be equivalent, since all boxes are rectangular?
+
+--Have make-quad-video-and-plots-viterbi written to visualize new runs.
+
+--Do I want to compile viterbi.sc into dsci?
+
+--Changed new unary score in new_score_saved_proposals_with_dsift2.m to be a
+  modification (multiplication) of the original fscore rather than a replacement
+  of it.
+
+--Discovered that MCG was not matching hand-drawn ground truth proposals on a
+  significant number of frames.  Tried using edgeBoxes instead of MCG to see
+  what we can get from that.  Running this test as 20151207b with
+  discount-factor of 0.1 and as 20151207c with discount-factor of 0.01.
 
 
 **THINK ABOUT: using linear functions instead of sigmoids for pixel distance and
