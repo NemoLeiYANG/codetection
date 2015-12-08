@@ -1,4 +1,4 @@
-function [bboxes,phists] = ...
+function [bboxes]=...%,phists] = ...
     new_score_saved_proposals_with_dsift2(proposal_boxes,top_k,ssize,frames,positions,min_x,max_x,min_y,max_y,discount_factor)
 %inputs: proposal_boxes: Nx5xnum_frames array of saved proposals; each row is [x y w h score]
 %        top_k: number of proposals to generate in each frame
@@ -11,7 +11,7 @@ function [bboxes,phists] = ...
 %
 %outputs: bboxes: top_k x 8 x num_frames array of scored proposals:
 %               each row of top_k x 8 is (x1,y1,x2,y2,score,xloc,yloc,wwidth) 
-%         phists: top_k x 12000 x num_frames array of dsift descriptors 
+%         phists: top_k x 12000 x num_frames array of dsift descriptors NOT USED
 
 % add paths
 run('/home/sbroniko/codetection/source/new-sentence-codetection/MCG-PreTrained/install.m');
@@ -54,8 +54,8 @@ if (num_proposals < top_k)
     return;
 end %if
 bboxes = zeros(top_k, 9, T); %each row: [x y w h newscore xloc yloc wwidth oldscore]
-phist_size = [top_k, 12000];
-phists = zeros([phist_size,T],'single'); %for storing histograms--HARDCODED 12000 as size of phow_hist 
+%phist_size = [top_k, 12000];
+%phists = zeros([phist_size,T],'single'); %for storing histograms--HARDCODED 12000 as size of phow_hist 
 
 fprintf('performing computation with disft/phist skipped\n');
 
@@ -74,7 +74,7 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
     %now find the top_k best proposals that are in front of the camera and
     %in bounds
     new_boxes = zeros(top_k, 9);
-    temp_phists = zeros(phist_size,'single'); %do phists too
+%    temp_phists = zeros(phist_size,'single'); %do phists too
     i = 1; %index into new_boxes
     j = 1; %index into proposal_boxes/bbs
     boundary = world_boundary; %copy in bounary locations
@@ -126,7 +126,7 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
         j = j+1; %INCREMENT j
     end %while
     bboxes(:,:,t) = new_boxes;
-    phists(:,:,t) = temp_phists;
+%    phists(:,:,t) = temp_phists;
 %%unary scores and histogram scores complete
 end %parfor
 %converting from [x y w h] to [x1 y1 x2 y2]

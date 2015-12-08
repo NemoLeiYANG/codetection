@@ -4184,14 +4184,84 @@ Open files in Emacs 11Nov15
 --Discovered that MCG was not matching hand-drawn ground truth proposals on a
   significant number of frames.  Tried using edgeBoxes instead of MCG to see
   what we can get from that.  Running this test as 20151207b with
-  discount-factor of 0.1 and as 20151207c with discount-factor of 0.01.
+  discount-factors of 0.1 and 0.01 with world weight of 1, as well as df of 0.1
+  and ww of 0.5.
+
+----------------git commit a682fdc---------------
+
+8 Dec 15
+
+--For some reason, all my jobs, as well as screen sessions, on aruco last night
+  died.  Restarted 20151207b jobs (ww=0.5/df=0.1, ww=1/df={0.1,0.01}) spread out
+  over aruco, akili, save.
+
+--Looking at the runs with ww=0.5/df=0.1, for top_k = {10,50} the box still
+  jumps around quite a bit, but for top_k={200,500} track seems to stay pretty
+  coherent.  Size of box shifts a bit, but since we're only looking at 2 points
+  (pixel dist=center of box, world dist=center point of bottom line of box),
+  this is still coherent.  But the track is of a nonsense object (baseboard of
+  wall). The k=500 tracks for ww=1/df={0.1,0.01} are crap.  For df=0.1, box
+  jumps around.  For df=0.01, box jumps around less, but 'object' selected is
+  just a chunk of the carpet in front of the robot.  
+
+--The above leads me to think that df of 0.01 is too small-->might actually need
+  to be bigger than 0.1 with new unary scores from edgeBoxes.  Also thinking
+  that the pixel distance (or maybe some other metric we haven't though up yet)
+  is necessary, since the world distance is just a measure of one point.
+
+--Need to implement better pixel distance measure.  Going to try using a 4-d
+  distance with the input from each box being [x1 y1 x2 y2].
+
+--**Had to kill 20151207b jobs that used top_k=1000, caused servers to thrash.
+  Need to look at the matlab code there (probably main parfor loop in
+  new_score_saved_proposals_with_dsift2.m) to see if I've got a memory
+  leak-->1000 proposals/frame * 80 frames * a few bytes per proposal shouldn't
+  eat up all the memory.  Are there extra copies of variables being made?  Or
+  might it be something in the matlab->scheme transfer.  Need to look at this
+  more closely if we are going to use that many proposals.-->memory leak may NOT
+  be in main parfor loop--gets through this and then eats up memory when
+  computing binary scores-->memory explodes in pdist2 call in
+  new_binary_scores_world_and_pixel2.m-->need to fix this
+
+--Talking with Dan about new ideas.  Going to try to use 3-D world location of
+  box corners (top-left and bottom-right) to incorporate world width and height
+  in our world similarity measure--could probably replace bottom center point.
+  Dan is figuring out how to compute world Z for top box corners--will have the
+  same X and Y as the bottom corners.
+
+--Got new function from Dan in viterbi.sc, box-at-height->world-corners, that
+  outputs world xyz locations for box corners.  Probably need to convert that
+  into matlab in new_score_saved_proposals_with_dsift2.m
+
+--Changed pixel distance measure in new_binary_scores_world_and_pixel2.m to use
+  [x1 y1 x2 y2] for each proposal as a point in 4-d space and the compute
+  euclidean distance between.  Hoping this helps maintain a more constant box
+  size.  Testing this in 20151208a_ww_0.5_df_0.1_top_k_{10,50,200,500}.
+
+--Today's and yesterday's 50/50 runs look very similar for
+  top_k=200-->temporally coherent, but with a garbage object in the box.  Need
+  to look at how to get it to select better objects-->objectness score from
+  Alexe et al.?
+
+
+
+
+**LOOK AT MEMORY LEAK PROBLEM when using 1000 proposals/frame-->see ** note from
+  8 Dec 15.  Need to fix this before we can run larger jobs-->more than 80
+  frames in a run means that we will run into this problem at a lower
+  top_k...memory leak is NOT in new_score_saved..., it is in the pdist2 call
+  with worldXY in new_binary_scores_world_and_pixel2.m-->problem is that just
+  the 80000x80000 matrix to hold the output is huge-->need a different way when
+  T*top_k gets large
+
+**LOOK AT objectness score from Alexe et al.
 
 
 **THINK ABOUT: using linear functions instead of sigmoids for pixel distance and
   world distance (maybe distance-from-robot as well); also using IoU or 4-D
   distance measurement for pixel distance instead of centers
 
-***NEED TO rsync proposal_boxes files from aql back to seykhl and aruco
+
 
 The full list of runs that didn't complete successfully is:
     floorplan-1-sentence-1

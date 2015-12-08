@@ -19,7 +19,7 @@ addpath(genpath('vlfeat/toolbox'));
 addpath(genpath('forests_edges_boxes'));
 addpath(genpath('MCG-PreTrained'));
 
-fprintf('\nin new-sentence-codetection/new_binary_scores_world_and_pixel.m\n');
+fprintf('\nin new-sentence-codetection/new_binary_scores_world_and_pixel2.m\n');
 
 [top_k,~,T] = size(bboxes);
 
@@ -69,13 +69,22 @@ worldY = reshape(worldY, T*top_k, 1);
 worldXY = [worldX worldY];
 %worldW = reshape(worldW, T*top_k, 1);
 
-% pixXcenter = bboxes(:,1,:) + 0.5*bboxes(:,3,:);
-% pixYcenter = bboxes(:,2,:) + 0.5*bboxes(:,4,:);
-pixXcenter = bboxes(:,1,:) + (0.5*(bboxes(:,3,:) - bboxes(:,1,:)));
-pixYcenter = bboxes(:,2,:) + (0.5*(bboxes(:,4,:) - bboxes(:,2,:)));
-pixXcenter = reshape(pixXcenter,T*top_k,1);
-pixYcenter = reshape(pixYcenter,T*top_k,1);
-pixXYcenter = [pixXcenter pixYcenter];
+% %using pixel location of center of box for 2-d distance
+% % pixXcenter = bboxes(:,1,:) + 0.5*bboxes(:,3,:);
+% % pixYcenter = bboxes(:,2,:) + 0.5*bboxes(:,4,:);
+% pixXcenter = bboxes(:,1,:) + (0.5*(bboxes(:,3,:) - bboxes(:,1,:)));
+% pixYcenter = bboxes(:,2,:) + (0.5*(bboxes(:,4,:) - bboxes(:,2,:)));
+% pixXcenter = reshape(pixXcenter,T*top_k,1);
+% pixYcenter = reshape(pixYcenter,T*top_k,1);
+% pixXYcenter = [pixXcenter pixYcenter];
+
+%using pixel locations of top-left and bottom-right corners for 4-d
+%distance
+pixXleft = bboxes(:,1,:); pixXleft = reshape(pixXleft,T*top_k,1);
+pixYleft = bboxes(:,2,:); pixYleft = reshape(pixYleft,T*top_k,1);
+pixXright = bboxes(:,3,:); pixXright = reshape(pixXright,T*top_k,1);
+pixYright = bboxes(:,4,:); pixYright = reshape(pixYright,T*top_k,1);
+pixXYXY = [pixXleft pixYleft pixXright pixYright];
 
 % % ZERO THIS OUT BECAUSE NOT USING WORLD WIDTH HERE
 % worldW = worldW * 0;
@@ -83,8 +92,10 @@ pixXYcenter = [pixXcenter pixYcenter];
 %now compute distances -- using euclidean might be slow, but simpler than
 %using squared euclidean distance as input to gaussian kernel
 worldDist = real(pdist2(worldXY,worldXY,'euclidean')); %triu(real(pdist2(worldXY,worldXY,'euclidean'))); 
-pixDist = real(pdist2(pixXYcenter,pixXYcenter,'euclidean')); %triu(real(pdist2(pixXYcenter,pixXYcenter,'euclidean'))); 
-
+%old way with box center
+%pixDist = real(pdist2(pixXYcenter,pixXYcenter,'euclidean')); %triu(real(pdist2(pixXYcenter,pixXYcenter,'euclidean'))); 
+%new way with box corners
+pixDist = real(pdist2(pixXYXY,pixXYXY,'euclidean'));
 
 % % ZERO THIS OUT BECAUSE NOT USING WORLD WIDTH HERE
 % worldWdiff = triu(real(pdist2(worldW,worldW,'euclidean'))); 
@@ -97,6 +108,8 @@ pixDist = real(pdist2(pixXYcenter,pixXYcenter,'euclidean')); %triu(real(pdist2(p
 d_score = single(sigmf(worldDist,[sigmoid_a,sigmoid_c]));%triu(single(sigmf(worldDist,[sigmoid_a,sigmoid_c])));
 p_score = single(sigmf(pixDist,[sigmoid_a2,sigmoid_c2]));%triu(single(sigmf(pixDist,[sigmoid_a2,sigmoid_c2])));
 
+% fprintf('\nd_score and p_score computed\n');
+% return;
 
 % % ZERO THIS OUT BECAUSE NOT USING WORLD WIDTH HERE
 % w_score = triu(single(gaussmf(worldWdiff,gaussparam2)));
@@ -274,82 +287,3 @@ end %function scott_proposals_similarity
 % hist = cat(1,hists{:}) ;
 % hist = hist / sum(hist) ;
 % end
-
-% %my helper functions
-% function rotmat = rotation3dx(a) %roll
-%     rotmat = [1,0,0,0;...
-%               0,cos(a),-sin(a),0;...
-%               0,sin(a),cos(a),0;...
-%               0,0,0,1];
-% end
-% 
-% function rotmat = rotation3dy(a) %pitch
-%     rotmat = [cos(a),0,sin(a),0;...
-%               0,1,0,0;...
-%               -sin(a),0,cos(a),0;...
-%               0,0,0,1];
-% end
-% 
-% function rotmat = rotation3dz(a) %yaw
-%     rotmat = [cos(a),-sin(a),0,0;...
-%               sin(a),cos(a),0,0;...
-%               0,0,1,0;...
-%               0,0,0,1];
-% end
-% 
-% function transmat = translation3d(x,y,z)
-%     transmat = [1,0,0,x;...
-%                 0,1,0,y;...
-%                 0,0,1,z;...
-%                 0,0,0,1];
-% end
-
-% function trans = make_transform_3d(theta,phi,psi,x,y,z)
-%     transmat = translation3d(x,y,z);
-%     zrot = rotation3dz(theta);
-%     yrot = rotation3dy(phi);
-%     xrot = rotation3dx(psi);
-%     trans = transmat * zrot * yrot *xrot;
-% end
-
-% function world_to_cam = robot_pose_to_world__camera_txf(pose, cam_offset)
-%     x = cam_offset(1); y = cam_offset(2); z = cam_offset(3);
-%     trans1 = translation3d(x,y,z);
-%     trans2 = make_transform_3d((pose(3) - (pi/2)),0,-pi/2,...
-%                                pose(1), pose(2), 0);
-%     world_to_cam = trans1/trans2;                               
-% end 
-
-% function h = point_to_homogeneous(p)
-%     h = horzcat(p,1);
-% end
-% 
-% function p = homogeneous_to_point(h)
-%     p = h(1:(length(h)-1));
-% end
-
-% function p = transform_point_3d(mat, point)
-%     h = point_to_homogeneous(point);
-%     temp = mat*h';
-%     p = homogeneous_to_point(temp);
-% end
-
-% function [point valid] = pixel_and_height_to_world(pix, height, cam_k, pose, cam_offset)
-%     world_to_cam = robot_pose_to_world__camera_txf(pose,cam_offset);
-%     cam_world = transform_point_3d(inv(world_to_cam),[0,0,0]);
-%     fx = cam_k(1,1); fy = cam_k(2,2);
-%     cx = cam_k(1,3); cy = cam_k(2,3);
-%     px = (pix(1)-cx)/fx;
-%     py = (pix(2)-cy)/fy;
-%     pixel_world = transform_point_3d(inv(world_to_cam),[px,py,1]);
-%     dxyz = pixel_world - cam_world;
-%     if (dxyz(3) > 0)
-%         %point = [NaN, NaN];
-%         valid = false;
-%     else
-%         valid = true;
-%     end
-%     l = (height - cam_world(3))/dxyz(3);
-%     point = cam_world + dxyz*l;
-%     %end
-% end 
