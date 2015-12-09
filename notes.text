@@ -4243,7 +4243,42 @@ Open files in Emacs 11Nov15
   to look at how to get it to select better objects-->objectness score from
   Alexe et al.?
 
+----------------git commit d2e5348---------------
 
+9 Dec 15
+
+--Fixed problem with renaming of viterbi-boxes function in viterbi.sc.  Dan's
+  file is viterbi-new.sc.  Copied box-at-height->world-corners function into my
+  viterbi.sc, but will probably have to re-implement in matlab since that is
+  where I'm computing all other world points.
+
+--Implemented box-at-height->world-corners in matlab in
+  new_score_saved_proposals_with_dsift2.m to give 3-d world locations for top
+  left and bottom right corners of boxes.  Need to finish fixing the START HERE
+  and FIXME sections of that file to do new stuff (try to keep old structure as
+  much as possible; then change around new_binary_scores_world_and_pixel2.m
+
+--Talking with Jeff and Dan about using TLD (?? look up) for generating a set of
+  unscored tubes/tracks.  Dan also working on improving speed of viterbi and
+  having it generate multiple tracks.
+
+**NEED TO WORK ON:
+       --Implement box-at-height->world-corners in matlab to compute world
+       height of boxes **DONE**
+       --Need to finish fixing the START HERE   and FIXME sections of that file
+       to do new stuff (try to keep old structure as much as possible; then
+       change around new_binary_scores_world_and_pixel2.m to make world distance
+       measure 4-d like pixel distance measure is.
+       --Memory problem in new_binary_scores_world_and_pixel2.m-->need new way
+       to compute distances when T*top_k gets large--probably an iterative
+       method that builds G_mat directly instead of copying from G.
+       --FIX MATLAB SLOWNESS--viterbi is actually fast
+       --Think about ways to get better tracks out--currently getting a
+       temporally coherent track that is of a garbage object--implement/use
+       objectness measure (Alexe et al.)??--or use non-maximal suppression
+       (would probably be computationally intensive)
+       --Compile viterbi-boxes into dsci??
+       
 
 
 **LOOK AT MEMORY LEAK PROBLEM when using 1000 proposals/frame-->see ** note from

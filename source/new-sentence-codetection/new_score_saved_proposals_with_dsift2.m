@@ -10,7 +10,10 @@ function [bboxes]=...%,phists] = ...
 %        discount_factor: [0,1] value to multiply unary scores by
 %
 %outputs: bboxes: top_k x 8 x num_frames array of scored proposals:
-%               each row of top_k x 8 is (x1,y1,x2,y2,score,xloc,yloc,wwidth) 
+%               each row of top_k x 8 is
+%               (x1,y1,x2,y2,score,xloc,yloc,wwidth) OLD
+%                 top_k x N x num_frames array of scored proposals:
+%                 each row of topk_k START HERE
 %         phists: top_k x 12000 x num_frames array of dsift descriptors NOT USED
 
 % add paths
@@ -54,6 +57,7 @@ if (num_proposals < top_k)
     return;
 end %if
 bboxes = zeros(top_k, 9, T); %each row: [x y w h newscore xloc yloc wwidth oldscore]
+%FIXME above
 %phist_size = [top_k, 12000];
 %phists = zeros([phist_size,T],'single'); %for storing histograms--HARDCODED 12000 as size of phow_hist 
 
@@ -70,34 +74,52 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
     %display(pose);
     raw_bbs = proposal_boxes(:,:,t); %saved proposals
     bbs = sortrows(raw_bbs,-5); %sort descending by score
+    %converting from [x y w h] to [x1 y1 x2 y2]
+    bbs(:,3,:) = bbs(:,3,:) + bbs(:,1,:) - 1;
+    bbs(:,4,:) = bbs(:,4,:) + bbs(:,2,:) - 1;
     
     %now find the top_k best proposals that are in front of the camera and
     %in bounds
-    new_boxes = zeros(top_k, 9);
+    new_boxes = zeros(top_k, 9); %FIXME
 %    temp_phists = zeros(phist_size,'single'); %do phists too
     i = 1; %index into new_boxes
     j = 1; %index into proposal_boxes/bbs
     boundary = world_boundary; %copy in bounary locations
     while ((i <= top_k) && (j <= num_proposals))
-        %assume box is on ground (height = 0) to find x,y location
-        bc_point = [(bbs(j,1)+(bbs(j,3)/2))...
-                    (bbs(j,2)+bbs(j,4))]; %bottom center of box
-        [loc locflag] = pixel_and_height_to_world(bc_point, 0, cam_k, pose, cam_offset);
-        if ~locflag %box behind camera
+        %PROBABLY CAN REDO THIS WHOLE THING USING NEW
+        %box_at_height_to_world_corners to output world width and height of
+        %box, and also use new 3-d coordinates for world distance metric
+        
+        [newloc newlocflag] = ...
+            box_at_height_to_world_corners(bbs(j,1:2),bbs(j,3:4),0,cam_k,pose,cam_offset);
+        
+%         %assume box is on ground (height = 0) to find x,y location
+%         bc_point = [(bbs(j,1)+(bbs(j,3)/2))... %OLD VERSION OF BBS with [x y w h]
+%                     (bbs(j,2)+bbs(j,4))]; %bottom center of box
+%         [loc locflag] = pixel_and_height_to_world(bc_point, 0, cam_k, pose, cam_offset);
+        if ~newlocflag %box behind camera
             j=j+1; %don't use this box, move on
             continue; 
         end %if
-        if ((loc(1) > boundary(2)) ||...
-            (loc(1) < boundary(1)) ||...
-            (loc(2) > boundary(4)) ||...
-            (loc(2) < boundary(3))) %box out of bounds
+        if ((newloc(1) > boundary(2)) ||...
+            (newloc(3) > boundary(2)) ||...
+            (newloc(1) < boundary(1)) ||...
+            (newloc(3) < boundary(1)) ||...
+            (newloc(2) > boundary(4)) ||...
+            (newloc(4) > boundary(4)) ||...
+            (newloc(2) < boundary(3)) ||...
+            (newloc(4) < boundary(3))) %box out of bounds
+%         if ((loc(1) > boundary(2)) ||...
+%             (loc(1) < boundary(1)) ||...
+%             (loc(2) > boundary(4)) ||...
+%             (loc(2) < boundary(3))) %box out of bounds
             j = j+1; %don't use this box, move on
             continue;
         end %if
         %if we get here, box is in front of camera and in bounds, so use it
         %copy pixel locations and score
         new_boxes(i,1:5) = bbs(j,:);
-        %save x,y in columns 6 and 7
+        %save x,y in columns 6 and 7 FIXME
         new_boxes(i,6) = loc(1); new_boxes(i,7) = loc(2);
         new_boxes(i,9) = new_boxes(i,5); %save old fscore
         %compute new fscore
@@ -110,14 +132,15 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
         new_boxes(i,5) = distance_factor * new_boxes(i,9);%new_fscore;
         % use distance_factor as a penalty on proposal score
         %find width and save in column 8
-        lcorner = [bbs(j,1) (bbs(j,2)+bbs(j,4))];
-        rcorner = [(bbs(j,1)+bbs(j,3)) (bbs(j,2)+bbs(j,4))];
+        lcorner = [bbs(j,1) bbs(j,4)];%[bbs(j,1) (bbs(j,2)+bbs(j,4))];
+        rcorner = [bbs(j,3) bbs(j,4)];%[(bbs(j,1)+bbs(j,3)) (bbs(j,2)+bbs(j,4))];
         lcloc = pixel_and_height_to_world(lcorner,0,cam_k,pose,cam_offset);
         rcloc = pixel_and_height_to_world(rcorner,0,cam_k,pose,cam_offset);
         wwidth = norm(lcloc-rcloc); %had to replace pdist b/c license issues (statistics toolbox)
         %pdist([lcloc'; rcloc'],'euclidean');
         new_boxes(i,8) = wwidth;
 %         %compute histogram for box j (for s_score later) SKIPPED FOR NOW
+%FIXME--bbs now [x1 y1 x2 y2 ...], below assumes [x y w h]
 %         x1 = bbs(j,1); x2 = bbs(j,3) + bbs(j,1) - 1;
 %         y1 = bbs(j,2); y2 = bbs(j,4) + bbs(j,2) - 1;
 %         hist_out = phow_hist(img(y1:y2,x1:x2,:),ssize);
@@ -129,9 +152,11 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
 %    phists(:,:,t) = temp_phists;
 %%unary scores and histogram scores complete
 end %parfor
-%converting from [x y w h] to [x1 y1 x2 y2]
-bboxes(:,3,:) = bboxes(:,3,:) + bboxes(:,1,:) - 1;
-bboxes(:,4,:) = bboxes(:,4,:) + bboxes(:,2,:) - 1;
+
+%%NOW DOING THIS AT THE BEGINNING
+% %converting from [x y w h] to [x1 y1 x2 y2]
+% bboxes(:,3,:) = bboxes(:,3,:) + bboxes(:,1,:) - 1;
+% bboxes(:,4,:) = bboxes(:,4,:) + bboxes(:,2,:) - 1;
 %apply discount factor to unary scores
 bboxes(:,5,:) = discount_factor * bboxes(:,5,:);
 end %function
@@ -264,3 +289,34 @@ function [point valid] = pixel_and_height_to_world(pix, height, cam_k, pose, cam
     point = cam_world + dxyz*l;
     %end
 end 
+
+function [top_left_and_bottom_right_in_a_row,valid] = ...
+    box_at_height_to_world_corners(tl, br, height, cam_k, pose, cam_offset)
+    world_to_cam = robot_pose_to_world__camera_txf(pose,cam_offset);
+    cam_world = transform_point_3d(inv(world_to_cam),[0,0,0]);
+    fx = cam_k(1,1); fy = cam_k(2,2);
+    cx = cam_k(1,3); cy = cam_k(2,3);
+    pblx = (tl(1) - cx)/fx;
+    pbly = (br(2) - cy)/fy;
+    pbrx = (br(1) - cx)/fx;
+    pbry = pbly;
+    ptly = (tl(2) - cy)/fy;
+    bl_world = transform_point_3d(inv(world_to_cam),[pblx pbly 1]);
+    br_world = transform_point_3d(inv(world_to_cam),[pbrx pbry 1]);
+    tl_world = transform_point_3d(inv(world_to_cam),[pblx ptly 1]);
+    dxyzbl = bl_world - cam_world;
+    dxyzbr = br_world - cam_world;
+    dxyztl = tl_world - cam_world;
+    if (dxyzbl(3) > 0)
+        valid = false;
+    else
+        valid = true;
+    end
+    lbl = (height - cam_world(3))/dxyzbl(3);
+    lbr = (height - cam_world(3))/dxyzbr(3);
+    bottom_left = cam_world + lbl*dxyzbl;
+    bottom_right = cam_world + lbr*dxyzbr;
+    ltl = (bottom_left(1) - cam_world(1))/(tl_world(1) - cam_world(1));
+    top_left = cam_world + ltl*dxyztl;
+    top_left_and_bottom_right_in_a_row = [top_left' bottom_right'];
+end
