@@ -2797,8 +2797,13 @@
        (matlab
 	(format
 	 #f
-	 "[bboxes,phists] = new_score_saved_proposals_with_dsift2(proposal_boxes,~a,~a,frames,poses,~a,~a,~a,~a,~a);"
-	 top-k box-size min-x max-x min-y max-y discount-factor))
+	 "[bboxes] = new_score_saved_proposals_with_dsift2(proposal_boxes,~a,~a,frames,poses,~a,~a,~a,~a,~a);"
+	 top-k box-size min-x max-x min-y max-y discount-factor)
+	;; (format ;;OLD way with phists in output
+	;;  #f
+	;;  "[bboxes,phists] = new_score_saved_proposals_with_dsift2(proposal_boxes,~a,~a,frames,poses,~a,~a,~a,~a,~a);"
+	;;  top-k box-size min-x max-x min-y max-y discount-factor)
+	)
        (matlab (format #f"save('~a/~a/proposal_data.mat','bboxes')" ;;,'phists');" NOT USING PHISTS NOW
 		       data-path data-output-dir))))
   (matlab (format #f "load('~a/~a/proposal_data.mat');" data-path data-output-dir))
@@ -2986,21 +2991,21 @@
  (let* ((path "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/")
 	(world-weight 0.5);;1)
 	(discount-factor 0.1);;0.01);;0.1)
-	(top-ks (list 10 50 200 500));; 1000))
+	(top-ks (list 500));;10 50 100 200));; 500));; 1000))
 	(testdirs
 	 (map (lambda (k)
-	       (format #f "20151208a_ww_~a_df_~a_top_k_~a"
+	       (format #f "20151210a_ww_~a_df_~a_top_k_~a"
 		       world-weight discount-factor k))
 	      top-ks))
 	(matlab-filename "detection_data.mat"))
   (single-run-test-viterbi (first testdirs)
   			   (first top-ks) world-weight discount-factor)
-  (single-run-test-viterbi (second testdirs)
-  			   (second top-ks) world-weight discount-factor)
-  (single-run-test-viterbi (third testdirs)
-  			   (third top-ks) world-weight discount-factor)
-  (single-run-test-viterbi (fourth testdirs)
-  			   (fourth top-ks) world-weight discount-factor)
+  ;; (single-run-test-viterbi (second testdirs)
+  ;; 			   (second top-ks) world-weight discount-factor)
+  ;; (single-run-test-viterbi (third testdirs)
+  ;; 			   (third top-ks) world-weight discount-factor)
+  ;; (single-run-test-viterbi (fourth testdirs)
+  ;; 			   (fourth top-ks) world-weight discount-factor)
   ;; (single-run-test-viterbi (fifth testdirs)
   ;; 			   (fifth top-ks) world-weight discount-factor)
   (for-each

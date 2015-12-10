@@ -4262,23 +4262,44 @@ Open files in Emacs 11Nov15
   unscored tubes/tracks.  Dan also working on improving speed of viterbi and
   having it generate multiple tracks.
 
+----------------git commit 47aca32---------------
+
+10 Dec 15
+
+--Finished fixing new_score_saved_proposals_with_dsift2.m to use new world
+  distance metrics and save them.  Also adjusted parfor initialization to only
+  happen when top_k > 500, since top_k=500 runs in ~30s and it takes ~40s to
+  initialize parfor.  Not entirely sure why parfor seemed to work without init
+  before. 
+
+--Completed rewrite of new_binary_scores_world_and_pixel2.m to find world
+  distance measure using 6-d (2 3-d corners).  Appears to work.  Running test on
+  aruco with 50/50 split and df=0.1 for at least top_k={10,50,100,200}, maybe
+  500 as well.  Test is in 20151210a dirs.  Test with 500 didn't work--ran out
+  of memory.  Results look pretty much the same as the previous test with the
+  world location based on the single point.  Probably need to be able to run
+  with more proposals.
+
+--Started on restructuring new_binary_scores_world_and_pixel2.m.  Think I can
+  get rid of vectorize/restructure stuff and instead pull location data straight
+  from frames in bboxes, the compute and save in new G_mat.  Old G can probably
+  go away (or set to 0)--Do I need to create gscore output?  It's saved in text
+  file, but is it ever used?
+
 **NEED TO WORK ON:
-       --Implement box-at-height->world-corners in matlab to compute world
-       height of boxes **DONE**
-       --Need to finish fixing the START HERE   and FIXME sections of that file
-       to do new stuff (try to keep old structure as much as possible; then
-       change around new_binary_scores_world_and_pixel2.m to make world distance
-       measure 4-d like pixel distance measure is.
+       **SEE LAST NOTE FROM 10 DEC**
        --Memory problem in new_binary_scores_world_and_pixel2.m-->need new way
        to compute distances when T*top_k gets large--probably an iterative
        method that builds G_mat directly instead of copying from G.
        --FIX MATLAB SLOWNESS--viterbi is actually fast
+       ***USE NEW FILE WHILE TEST IS RUNNING***
        --Think about ways to get better tracks out--currently getting a
        temporally coherent track that is of a garbage object--implement/use
        objectness measure (Alexe et al.)??--or use non-maximal suppression
        (would probably be computationally intensive)
        --Compile viterbi-boxes into dsci??
-       
+       --**THINK ABOUT** new unary score from edgeBoxes seems to max out around
+       0.25...do we need a discount factor? or should it be a multiplier instead?
 
 
 **LOOK AT MEMORY LEAK PROBLEM when using 1000 proposals/frame-->see ** note from

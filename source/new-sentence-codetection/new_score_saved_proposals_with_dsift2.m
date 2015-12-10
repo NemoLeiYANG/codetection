@@ -12,30 +12,39 @@ function [bboxes]=...%,phists] = ...
 %outputs: bboxes: top_k x 8 x num_frames array of scored proposals:
 %               each row of top_k x 8 is
 %               (x1,y1,x2,y2,score,xloc,yloc,wwidth) OLD
-%                 top_k x N x num_frames array of scored proposals:
-%                 each row of topk_k START HERE
+%                 top_k x 16 x num_frames array of scored proposals:
+%                 each row of topk_k x 16 is
+%                   (x1,y1,x2,y2,newscore,xloc_bc,yloc_bc,wwidth,oldscore,x
+%                   loc_tl,yloc_tl,zloc_tl,xloc_br,yloc_br,zloc_br,wdist_bc)
 %         phists: top_k x 12000 x num_frames array of dsift descriptors NOT USED
 
 % add paths
-run('/home/sbroniko/codetection/source/new-sentence-codetection/MCG-PreTrained/install.m');
+
 addpath(pwd);
 addpath(genpath('piotr-toolbox'));
 addpath(genpath('vlfeat/toolbox'));
 addpath(genpath('forests_edges_boxes'));
-run('/home/sbroniko/codetection/source/new-sentence-codetection/vlfeat/toolbox/vl_setup');
 addpath(genpath('MCG-PreTrained'));
+%run('/home/sbroniko/codetection/source/new-sentence-codetection/vlfeat/toolbox/vl_setup');
+%run('/home/sbroniko/codetection/source/new-sentence-codetection/MCG-PreTrained/install.m');
+%MIGHT NEED TO REENABLE THESE IF WE GO BACK TO MCG
 
-fprintf('\nin new-sentence-codetection/new_score_saved_proposals_with_dsift.m\n');
+fprintf('\nin new-sentence-codetection/new_score_saved_proposals_with_dsift2.m\n');
 
-% % enable parfor
-% pools = matlabpool('size');
-% cpus = feature('numCores');
-% if pools ~= (cpus - 1)
-%     if pools > 0
-%         matlabpool('close');
-%     end
-%     matlabpool('open', cpus - 1);
-% end
+if top_k > 500 %MIGHT WANT to get rid of this if we go back to computing phists here (will always need parfor)
+    % enable parfor
+    pools = matlabpool('size');
+    cpus = feature('numCores');
+    if cpus > 8
+        cpus = 9;
+    end
+    if pools ~= (cpus - 1)
+        if pools > 0
+            matlabpool('close');
+        end
+        matlabpool('open', cpus - 1);
+    end
+end
 
 %experiment parameters--shouldn't change
 cam_offset = [-0.03 0.16 -0.2]; %estimated measurement, in m
@@ -56,8 +65,12 @@ if (num_proposals < top_k)
     fprintf('ERROR, top_k = %d when num_proposals = %d\n',top_k,num_proposals);
     return;
 end %if
-bboxes = zeros(top_k, 9, T); %each row: [x y w h newscore xloc yloc wwidth oldscore]
-%FIXME above
+%bboxes = zeros(top_k, 9, T); %each row: [x y w h newscore xloc yloc wwidth oldscore] OLD
+bboxes = zeros(top_k, 16, T); 
+%   each row of topk_k x 16 is
+%    [x1,y1,x2,y2,newscore,xloc_bc,yloc_bc,wwidth,oldscore,xloc_tl,yloc_tl,
+%     zloc_tl,xloc_br,yloc_br,zloc_br,wdist_bc]
+
 %phist_size = [top_k, 12000];
 %phists = zeros([phist_size,T],'single'); %for storing histograms--HARDCODED 12000 as size of phow_hist 
 
@@ -80,7 +93,11 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
     
     %now find the top_k best proposals that are in front of the camera and
     %in bounds
-    new_boxes = zeros(top_k, 9); %FIXME
+    new_boxes = zeros(top_k, 16); 
+%   each row of topk_k x 16 is
+%    [x1,y1,x2,y2,newscore,xloc_bc,yloc_bc,wwidth,oldscore,xloc_tl,yloc_tl,
+%     zloc_tl,xloc_br,yloc_br,zloc_br,wdist_bc]
+
 %    temp_phists = zeros(phist_size,'single'); %do phists too
     i = 1; %index into new_boxes
     j = 1; %index into proposal_boxes/bbs
@@ -92,12 +109,14 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
         
         [newloc newlocflag] = ...
             box_at_height_to_world_corners(bbs(j,1:2),bbs(j,3:4),0,cam_k,pose,cam_offset);
+% newloc is [world_x_tl,world_y_tl,world_z_tl,world_x_br,world_y_br,world_z_br]         
         
 %         %assume box is on ground (height = 0) to find x,y location
 %         bc_point = [(bbs(j,1)+(bbs(j,3)/2))... %OLD VERSION OF BBS with [x y w h]
 %                     (bbs(j,2)+bbs(j,4))]; %bottom center of box
-%         [loc locflag] = pixel_and_height_to_world(bc_point, 0, cam_k, pose, cam_offset);
-        if ~newlocflag %box behind camera
+        bc_point = [(bbs(j,1)+(0.5*(bbs(j,3)-bbs(j,1)))), bbs(j,4)];
+        [loc locflag] = pixel_and_height_to_world(bc_point, 0, cam_k, pose, cam_offset);
+        if (~newlocflag || ~locflag) %box behind camera
             j=j+1; %don't use this box, move on
             continue; 
         end %if
@@ -119,18 +138,24 @@ parfor t = 1:T %main parfor loop to select top_k best proposals and also do hist
         %if we get here, box is in front of camera and in bounds, so use it
         %copy pixel locations and score
         new_boxes(i,1:5) = bbs(j,:);
-        %save x,y in columns 6 and 7 FIXME
-        new_boxes(i,6) = loc(1); new_boxes(i,7) = loc(2);
-        new_boxes(i,9) = new_boxes(i,5); %save old fscore
+        %save bottom center world x,y in columns 6 and 7 
+        new_boxes(i,6:7) = loc(1:2); 
+        %save old fscore in column 9
+        new_boxes(i,9) = new_boxes(i,5); 
+        %save tl and br world locations in columns 10 through 15
+        new_boxes(i,10:15) = newloc;
         %compute new fscore
         proposal_loc = [loc(1) loc(2)];
-        %display(proposal_loc);
+%         %display(proposal_loc);
         dist = pdist2(proposal_loc,pose(1:2),'euclidean');
         %display(dist);
+        %save world distance to proposal bottom center in column 16
+        new_boxes(i,16) = dist;
         distance_factor = sigmf(dist,[sig_a,sig_c]); %used to be new_fscore
         %display(new_fscore);
         new_boxes(i,5) = distance_factor * new_boxes(i,9);%new_fscore;
         % use distance_factor as a penalty on proposal score
+        
         %find width and save in column 8
         lcorner = [bbs(j,1) bbs(j,4)];%[bbs(j,1) (bbs(j,2)+bbs(j,4))];
         rcorner = [bbs(j,3) bbs(j,4)];%[(bbs(j,1)+bbs(j,3)) (bbs(j,2)+bbs(j,4))];

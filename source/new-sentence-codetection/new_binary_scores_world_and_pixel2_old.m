@@ -36,9 +36,8 @@ addpath(genpath('MCG-PreTrained'));
 fprintf('\nin new-sentence-codetection/new_binary_scores_world_and_pixel2.m\n');
 
 [top_k,~,T] = size(bboxes);
-G=0;  %for now--if we end up not using, delete? or keep for compatibility
+
 %might want to tie this to top_k like in new_score_saved...
-%or might just want it on all the time
 % % enable parfor
 % pools = matlabpool('size');
 % cpus = feature('numCores');
@@ -75,10 +74,6 @@ sigmoid_c2 = 400;%40;%80;
 % 2) difference in world box width (all boxes all frames)
 % 3) visual similarity (Haonan's method) between boxes that are closer
 % together than some threshold
-
-%%START HERE--Think I can get rid of all this reshaping bs and just grab
-%%the location data directly from each frame for the computation--see work
-%%below in command window
 
 % %first vectorize world xy and width measures for all boxes OLD WAY
 % worldX = bboxes(:,6,:);
@@ -122,126 +117,117 @@ pixXright = bboxes(:,3,:); pixXright = reshape(pixXright,T*top_k,1);
 pixYright = bboxes(:,4,:); pixYright = reshape(pixYright,T*top_k,1);
 pixXYXY = [pixXleft pixYleft pixXright pixYright];
 
-%instead of using huge matrices, make matrices of top_k x top_k x (T-1)
-
-
-%%OLD METHOD THAT USED HUGE MATRIX
 % % ZERO THIS OUT BECAUSE NOT USING WORLD WIDTH HERE
 % worldW = worldW * 0;
 
-% %now compute distances -- using euclidean might be slow, but simpler than
-% %using squared euclidean distance as input to gaussian kernel
-% 
-% %old way using world location of bottom center of box
-% %worldDist = real(pdist2(worldXY,worldXY,'euclidean')); %triu(real(pdist2(worldXY,worldXY,'euclidean'))); 
-% %new way using 3-d box corners
-% worldDist = real(pdist2(worldXYZXYZ,worldXYZXYZ,'euclidean'));
-% 
-% %old way with box center
-% %pixDist = real(pdist2(pixXYcenter,pixXYcenter,'euclidean')); %triu(real(pdist2(pixXYcenter,pixXYcenter,'euclidean'))); 
-% %new way with box corners
-% pixDist = real(pdist2(pixXYXY,pixXYXY,'euclidean'));
-% 
-% % % ZERO THIS OUT BECAUSE NOT USING WORLD WIDTH HERE
-% % worldWdiff = triu(real(pdist2(worldW,worldW,'euclidean'))); 
-% % worldWdiff = worldWdiff * 0;
-% 
-% % %use gaussian kernel to scale to (0,1), higher=better
-% % d_score = triu(single(gaussmf(worldDist,gaussparam1)));
-% 
-% %use sigmoidal membership function to scale to (0,1), higher=better
-% d_score = single(sigmf(worldDist,[sigmoid_a,sigmoid_c]));%triu(single(sigmf(worldDist,[sigmoid_a,sigmoid_c])));
-% p_score = single(sigmf(pixDist,[sigmoid_a2,sigmoid_c2]));%triu(single(sigmf(pixDist,[sigmoid_a2,sigmoid_c2])));
-% 
-% % fprintf('\nd_score and p_score computed\n');
-% % return;
-% 
-% % % ZERO THIS OUT BECAUSE NOT USING WORLD WIDTH HERE
-% % w_score = triu(single(gaussmf(worldWdiff,gaussparam2)));
-% % w_score = w_score * 0;
-% 
-% 
-% %now zero out scores for boxes in same frame
-% blankscore = zeros(top_k,'single');
-% for i = 1:T
-%     start = (i-1)*top_k + 1; stop = i*top_k;
-%     d_score(start:stop,start:stop) = blankscore;
-% %    w_score(start:stop,start:stop) = blankscore;
-%     p_score(start:stop,start:stop) = blankscore;
-% end % for i
-% 
-% world_distance = d_score; %done with world distance computation
-% pixel_distance = p_score;
-% %save('foo_p_score.mat','p_score');
-% 
-% %d_score and w_score complete 
-% 
-% % %now do visual similarity (s_score) on boxes that are within some distance
-% % %threshold of each other
-% % s_score = zeros(T*top_k,'single');
-% % 
-% % % NO S_SCORES
-% % % for i = 1:T*top_k
-% % %     for j = (i+1):T*top_k %can do this b/c matrix will be symmetric
-% % %         if ((worldDist(i,j) < distance_threshold) && ...
-% % %             (w_score(i,j) ~= 0)) %last condition ensures that we don't do
-% % %                                  % similarity on boxes in same frame
-% % %             frame_idx1 = ceil(i/top_k);
-% % %             frame_idx2 = ceil(j/top_k);
-% % %             box_idx1 = mod(i,top_k);
-% % %             if (box_idx1 == 0)
-% % %                 box_idx1 = top_k;
-% % %             end %if
-% % %             box_idx2 = mod(j,top_k);
-% % %             if (box_idx2 == 0)
-% % %                 box_idx2 = top_k;
-% % %             end %if
-% % %             if ((~valid_loc(box_idx1,frame_idx1)) || ...
-% % %                 (~valid_loc(box_idx2,frame_idx2)))
-% % %                 continue; %at least one box not valid
-% % %             else %do pdist2 on histograms
-% % %                 hist1 = phists(box_idx1,:,frame_idx1);
-% % %                 hist2 = phists(box_idx2,:,frame_idx2);
-% % %                 tempscore = 1-pdist2(hist1,hist2,'chisq');
-% % %                 s_score(i,j) = tempscore;
-% % %                 s_score(j,i) = tempscore; %b/c matrix is symmetric
-% % %             end %If
-% % %         end %if
-% % %     end %for j
-% % % end %for i
-% 
+%now compute distances -- using euclidean might be slow, but simpler than
+%using squared euclidean distance as input to gaussian kernel
 
-%%FIXME--still need to do this combination
-% %linear combination of s_score, d_score, and w_score
-% %G = alpha*s_score + beta*d_score + gamma*w_score;
-% 
-% if (world_distance_flag && pixel_distance_flag)
-%     G = a * world_distance + (1-a) * pixel_distance;
-%     fprintf('binary score computed from COMBINATION\n');
-% elseif (world_distance_flag)
-%     G = world_distance;
-%     fprintf('binary score from WORLD DISTANCE\n');
-% else
-%     G = pixel_distance;
-%     fprintf('binary score from PIXEL DISTANCE\n');
-% end %if
-%%END OLD STUFF
+%old way using world location of bottom center of box
+%worldDist = real(pdist2(worldXY,worldXY,'euclidean')); %triu(real(pdist2(worldXY,worldXY,'euclidean'))); 
+%new way using 3-d box corners
+worldDist = real(pdist2(worldXYZXYZ,worldXYZXYZ,'euclidean'));
 
+%old way with box center
+%pixDist = real(pdist2(pixXYcenter,pixXYcenter,'euclidean')); %triu(real(pdist2(pixXYcenter,pixXYcenter,'euclidean'))); 
+%new way with box corners
+pixDist = real(pdist2(pixXYXY,pixXYXY,'euclidean'));
+
+% % ZERO THIS OUT BECAUSE NOT USING WORLD WIDTH HERE
+% worldWdiff = triu(real(pdist2(worldW,worldW,'euclidean'))); 
+% worldWdiff = worldWdiff * 0;
+
+% %use gaussian kernel to scale to (0,1), higher=better
+% d_score = triu(single(gaussmf(worldDist,gaussparam1)));
+
+%use sigmoidal membership function to scale to (0,1), higher=better
+d_score = single(sigmf(worldDist,[sigmoid_a,sigmoid_c]));%triu(single(sigmf(worldDist,[sigmoid_a,sigmoid_c])));
+p_score = single(sigmf(pixDist,[sigmoid_a2,sigmoid_c2]));%triu(single(sigmf(pixDist,[sigmoid_a2,sigmoid_c2])));
+
+% fprintf('\nd_score and p_score computed\n');
+% return;
+
+% % ZERO THIS OUT BECAUSE NOT USING WORLD WIDTH HERE
+% w_score = triu(single(gaussmf(worldWdiff,gaussparam2)));
+% w_score = w_score * 0;
+
+
+%now zero out scores for boxes in same frame
+blankscore = zeros(top_k,'single');
+for i = 1:T
+    start = (i-1)*top_k + 1; stop = i*top_k;
+    d_score(start:stop,start:stop) = blankscore;
+%    w_score(start:stop,start:stop) = blankscore;
+    p_score(start:stop,start:stop) = blankscore;
+end % for i
+
+world_distance = d_score; %done with world distance computation
+pixel_distance = p_score;
+%save('foo_p_score.mat','p_score');
+
+%d_score and w_score complete 
+
+% %now do visual similarity (s_score) on boxes that are within some distance
+% %threshold of each other
+% s_score = zeros(T*top_k,'single');
+% 
+% % NO S_SCORES
+% % for i = 1:T*top_k
+% %     for j = (i+1):T*top_k %can do this b/c matrix will be symmetric
+% %         if ((worldDist(i,j) < distance_threshold) && ...
+% %             (w_score(i,j) ~= 0)) %last condition ensures that we don't do
+% %                                  % similarity on boxes in same frame
+% %             frame_idx1 = ceil(i/top_k);
+% %             frame_idx2 = ceil(j/top_k);
+% %             box_idx1 = mod(i,top_k);
+% %             if (box_idx1 == 0)
+% %                 box_idx1 = top_k;
+% %             end %if
+% %             box_idx2 = mod(j,top_k);
+% %             if (box_idx2 == 0)
+% %                 box_idx2 = top_k;
+% %             end %if
+% %             if ((~valid_loc(box_idx1,frame_idx1)) || ...
+% %                 (~valid_loc(box_idx2,frame_idx2)))
+% %                 continue; %at least one box not valid
+% %             else %do pdist2 on histograms
+% %                 hist1 = phists(box_idx1,:,frame_idx1);
+% %                 hist2 = phists(box_idx2,:,frame_idx2);
+% %                 tempscore = 1-pdist2(hist1,hist2,'chisq');
+% %                 s_score(i,j) = tempscore;
+% %                 s_score(j,i) = tempscore; %b/c matrix is symmetric
+% %             end %If
+% %         end %if
+% %     end %for j
+% % end %for i
+
+%linear combination of s_score, d_score, and w_score
+%G = alpha*s_score + beta*d_score + gamma*w_score;
+
+if (world_distance_flag && pixel_distance_flag)
+    G = a * world_distance + (1-a) * pixel_distance;
+    fprintf('binary score computed from COMBINATION\n');
+elseif (world_distance_flag)
+    G = world_distance;
+    fprintf('binary score from WORLD DISTANCE\n');
+else
+    G = pixel_distance;
+    fprintf('binary score from PIXEL DISTANCE\n');
+end %if
 
 %set output
 boxes_w_fscore = bboxes;
 
-%OLD METHOD
-% %make top_k x top_k x (T-1) matrix of transitions between adjacent frames
-% G_mat = zeros(top_k,top_k,(T-1));
-% for i = 1:(T-1)
-%     rowstart = (i-1)*top_k + 1; rowstop = i*top_k;
-%     colstart = i*top_k + 1; colstop = (i+1)*top_k;
-%     G_mat(:,:,i) = G(rowstart:rowstop,colstart:colstop);
-%     G_mat(:,:,i) = G_mat(:,:,i)';
-%     %transposing here so that rows are second frame and columns are first
-%     %frame
-% end %for i
+%make top_k x top_k x (T-1) matrix of transitions between adjacent frames
+G_mat = zeros(top_k,top_k,(T-1));
+for i = 1:(T-1)
+    rowstart = (i-1)*top_k + 1; rowstop = i*top_k;
+    colstart = i*top_k + 1; colstop = (i+1)*top_k;
+    G_mat(:,:,i) = G(rowstart:rowstop,colstart:colstop);
+    G_mat(:,:,i) = G_mat(:,:,i)';
+    %transposing here so that rows are second frame and columns are first
+    %frame
+end %for i
 
 %build gscore list
 gscore = zeros(((T*top_k)^2)/2, 5,'single'); %each row is [f1,b1,f2,b2,g]
@@ -268,24 +254,22 @@ g_idx = 0;
 %         %  end % for j
 % end %for i
 
-%%OLD METHOD
-% for fr1 = 1:(T-1)
-%     fr2 = fr1 + 1;
-%     for i = 1:top_k
-%         box1 = ((fr1-1)*top_k + i);
-%         for j = 1:top_k
-%             box2 = ((fr2-1)*top_k + j);
-%             if (G(box1,box2) > binary_score_threshold)%~= 0)
-%                 g_idx = g_idx + 1;
-%                 gscore(g_idx,:) = [fr1, i, fr2, j, G(box1,box2)];
-%             end %if
-%         end %for j
-%     end %for i
-% end %for frame_idx1
-% gscore = gscore(1:g_idx,:);
-% gscore = sortrows(gscore,3);
-% %might want to do sortrows(gscore,[1,3]) to sort by 1st then 3rd columns
-
+for fr1 = 1:(T-1)
+    fr2 = fr1 + 1;
+    for i = 1:top_k
+        box1 = ((fr1-1)*top_k + i);
+        for j = 1:top_k
+            box2 = ((fr2-1)*top_k + j);
+            if (G(box1,box2) > binary_score_threshold)%~= 0)
+                g_idx = g_idx + 1;
+                gscore(g_idx,:) = [fr1, i, fr2, j, G(box1,box2)];
+            end %if
+        end %for j
+    end %for i
+end %for frame_idx1
+gscore = gscore(1:g_idx,:);
+gscore = sortrows(gscore,3);
+%might want to do sortrows(gscore,[1,3]) to sort by 1st then 3rd columns
 num_gscore = g_idx;
 %fprintf('Elapsed time for output setup: %f\n',toc);
 end %function scott_proposals_similarity
