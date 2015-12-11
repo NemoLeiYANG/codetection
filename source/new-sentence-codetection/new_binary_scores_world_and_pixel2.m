@@ -37,6 +37,7 @@ fprintf('\nin new-sentence-codetection/new_binary_scores_world_and_pixel2.m\n');
 
 [top_k,~,T] = size(bboxes);
 G=0;  %for now--if we end up not using, delete? or keep for compatibility
+
 %might want to tie this to top_k like in new_score_saved...
 %or might just want it on all the time
 % % enable parfor
@@ -60,7 +61,7 @@ pixel_distance_flag = true;
 %cam_offset = [-0.03 0.16 -0.2]; %estimated measurement, in m
 % world_boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
 %distance_threshold = 0.5; %distance threshold for similarity score--in m
-binary_score_threshold = 0; %turning off binary score threshold
+%binary_score_threshold = 0; %turning off binary score threshold
         %1e-3;%1e-6; %threshold for a binary score to go into ouput--ARBITRARY, may need to change
 
 sigmoid_a = -1;%-6; %sigmoid steepness
@@ -77,53 +78,73 @@ sigmoid_c2 = 400;%40;%80;
 % together than some threshold
 
 %%START HERE--Think I can get rid of all this reshaping bs and just grab
-%%the location data directly from each frame for the computation--see work
-%%below in command window
+%%the location data directly from each frame for the computation
 
-% %first vectorize world xy and width measures for all boxes OLD WAY
-% worldX = bboxes(:,6,:);
-% worldY = bboxes(:,7,:);
-% %worldW = bboxes(:,8,:);
-% worldX = reshape(worldX, T*top_k, 1);
-% worldY = reshape(worldY, T*top_k, 1);
-% worldXY = [worldX worldY];
-% %worldW = reshape(worldW, T*top_k, 1);
+pixel_coordinates = bboxes(:,1:4,:); %2 2-d (x1 y1 x2 y2)
+world_coordinates = bboxes(:,10:15,:); %2 3-d (wxtl,wytl,wztl,wxbr,wybr,wzbr)
 
-%new method for world locations/distance using 2 3-d corners
-worldX_tl = bboxes(:,10,:);
-worldY_tl = bboxes(:,11,:);
-worldZ_tl = bboxes(:,12,:);
-worldX_br = bboxes(:,13,:);
-worldY_br = bboxes(:,14,:);
-worldZ_br = bboxes(:,15,:);
-worldX_tl = reshape(worldX_tl,T*top_k,1);
-worldY_tl = reshape(worldY_tl,T*top_k,1);
-worldZ_tl = reshape(worldZ_tl,T*top_k,1);
-worldX_br = reshape(worldX_br,T*top_k,1);
-worldY_br = reshape(worldY_br,T*top_k,1);
-worldZ_br = reshape(worldZ_br,T*top_k,1);
-worldXYZXYZ = [worldX_tl worldY_tl worldZ_tl worldX_br worldY_br worldZ_br];
-
-
-% %using pixel location of center of box for 2-d distance
-% % pixXcenter = bboxes(:,1,:) + 0.5*bboxes(:,3,:);
-% % pixYcenter = bboxes(:,2,:) + 0.5*bboxes(:,4,:);
-% pixXcenter = bboxes(:,1,:) + (0.5*(bboxes(:,3,:) - bboxes(:,1,:)));
-% pixYcenter = bboxes(:,2,:) + (0.5*(bboxes(:,4,:) - bboxes(:,2,:)));
-% pixXcenter = reshape(pixXcenter,T*top_k,1);
-% pixYcenter = reshape(pixYcenter,T*top_k,1);
-% pixXYcenter = [pixXcenter pixYcenter];
-
-%using pixel locations of top-left and bottom-right corners for 4-d
-%distance
-pixXleft = bboxes(:,1,:); pixXleft = reshape(pixXleft,T*top_k,1);
-pixYleft = bboxes(:,2,:); pixYleft = reshape(pixYleft,T*top_k,1);
-pixXright = bboxes(:,3,:); pixXright = reshape(pixXright,T*top_k,1);
-pixYright = bboxes(:,4,:); pixYright = reshape(pixYright,T*top_k,1);
-pixXYXY = [pixXleft pixYleft pixXright pixYright];
+%%OLD WAY
+% % %first vectorize world xy and width measures for all boxes OLD WAY
+% % worldX = bboxes(:,6,:);
+% % worldY = bboxes(:,7,:);
+% % %worldW = bboxes(:,8,:);
+% % worldX = reshape(worldX, T*top_k, 1);
+% % worldY = reshape(worldY, T*top_k, 1);
+% % worldXY = [worldX worldY];
+% % %worldW = reshape(worldW, T*top_k, 1);
+% 
+% %new method for world locations/distance using 2 3-d corners
+% worldX_tl = bboxes(:,10,:);
+% worldY_tl = bboxes(:,11,:);
+% worldZ_tl = bboxes(:,12,:);
+% worldX_br = bboxes(:,13,:);
+% worldY_br = bboxes(:,14,:);
+% worldZ_br = bboxes(:,15,:);
+% worldX_tl = reshape(worldX_tl,T*top_k,1);
+% worldY_tl = reshape(worldY_tl,T*top_k,1);
+% worldZ_tl = reshape(worldZ_tl,T*top_k,1);
+% worldX_br = reshape(worldX_br,T*top_k,1);
+% worldY_br = reshape(worldY_br,T*top_k,1);
+% worldZ_br = reshape(worldZ_br,T*top_k,1);
+% worldXYZXYZ = [worldX_tl worldY_tl worldZ_tl worldX_br worldY_br worldZ_br];
+% 
+% 
+% % %using pixel location of center of box for 2-d distance
+% % % pixXcenter = bboxes(:,1,:) + 0.5*bboxes(:,3,:);
+% % % pixYcenter = bboxes(:,2,:) + 0.5*bboxes(:,4,:);
+% % pixXcenter = bboxes(:,1,:) + (0.5*(bboxes(:,3,:) - bboxes(:,1,:)));
+% % pixYcenter = bboxes(:,2,:) + (0.5*(bboxes(:,4,:) - bboxes(:,2,:)));
+% % pixXcenter = reshape(pixXcenter,T*top_k,1);
+% % pixYcenter = reshape(pixYcenter,T*top_k,1);
+% % pixXYcenter = [pixXcenter pixYcenter];
+% 
+% %using pixel locations of top-left and bottom-right corners for 4-d
+% %distance
+% pixXleft = bboxes(:,1,:); pixXleft = reshape(pixXleft,T*top_k,1);
+% pixYleft = bboxes(:,2,:); pixYleft = reshape(pixYleft,T*top_k,1);
+% pixXright = bboxes(:,3,:); pixXright = reshape(pixXright,T*top_k,1);
+% pixYright = bboxes(:,4,:); pixYright = reshape(pixYright,T*top_k,1);
+% pixXYXY = [pixXleft pixYleft pixXright pixYright];
 
 %instead of using huge matrices, make matrices of top_k x top_k x (T-1)
 
+pixel_distance = zeros(top_k,top_k,(T-1));
+world_distance = zeros(top_k,top_k,(T-1));
+
+%find each top_k x top_k score matrix individually (and pass thru sigmoid)
+
+for i = 1:(T-1)
+    pc1 = pixel_coordinates(:,:,i);
+    pc2 = pixel_coordinates(:,:,(i+1));
+    wc1 = world_coordinates(:,:,i);
+    wc2 = world_coordinates(:,:,(i+1));
+    tpd = sigmf(pdist2(pc1,pc2,'euclidean'),[sigmoid_a2,sigmoid_c2]);
+    twd = sigmf(pdist2(wc1,wc2,'euclidean'),[sigmoid_a,sigmoid_c]);
+    pixel_distance(:,:,i) = tpd';
+    world_distance(:,:,i) = twd';
+     %transposing here so that rows are second frame and columns are first
+     %frame
+end %for i 
 
 %%OLD METHOD THAT USED HUGE MATRIX
 % % ZERO THIS OUT BECAUSE NOT USING WORLD WIDTH HERE
@@ -211,7 +232,19 @@ pixXYXY = [pixXleft pixYleft pixXright pixYright];
 % % % end %for i
 % 
 
-%%FIXME--still need to do this combination
+%combine pixel and world distances
+if (world_distance_flag && pixel_distance_flag)
+    G_mat = a * world_distance + (1-a) * pixel_distance;
+    fprintf('binary score computed from COMBINATION\n');
+elseif (world_distance_flag)
+    G_mat = world_distance;
+    fprintf('binary score from WORLD DISTANCE\n');
+else
+    G_mat = pixel_distance;
+    fprintf('binary score from PIXEL DISTANCE\n');
+end %if
+
+% OLD METHOD
 % %linear combination of s_score, d_score, and w_score
 % %G = alpha*s_score + beta*d_score + gamma*w_score;
 % 
@@ -244,8 +277,24 @@ boxes_w_fscore = bboxes;
 % end %for i
 
 %build gscore list
-gscore = zeros(((T*top_k)^2)/2, 5,'single'); %each row is [f1,b1,f2,b2,g]
-g_idx = 0;
+
+num_gscore = numel(G_mat);
+gscore = zeros(1,5);
+%TRYING eliminating this to speed things up--need placeholder for output
+% gscore = zeros(num_gscore, 5,'single'); %each row is [f1,b1,f2,b2,g]
+% g_idx = 1;
+% for fr1 = 1:(T-1)
+%     fr2 = fr1 + 1;
+%     for i = 1:top_k
+%         for j = 1:top_k
+%             gscore(g_idx,:) = [fr1,j,fr2,i,G_mat(i,j,fr1)];
+%             g_idx = g_idx + 1;
+%         end %for j
+%     end %for i
+% end %for fr1
+
+%gscore = zeros(((T*top_k)^2)/2, 5,'single'); %each row is [f1,b1,f2,b2,g]
+%g_idx = 0;
 %%BAD--looks only 1 proposal ahead instead of 1 frame
 % for i = 1:(T*top_k-1)
 %     %    for j = (i+1):T*top_k %can do this b/c matrix will be symmetric
@@ -286,56 +335,7 @@ g_idx = 0;
 % gscore = sortrows(gscore,3);
 % %might want to do sortrows(gscore,[1,3]) to sort by 1st then 3rd columns
 
-num_gscore = g_idx;
+%num_gscore = g_idx;
 %fprintf('Elapsed time for output setup: %f\n',toc);
-end %function scott_proposals_similarity
+end %main function
 
-% %helper functions from phow_caltech101
-% function hist = phow_hist(im, ssize)
-% load('phow-model/vocab.mat');
-% model.vocab = vocab;
-% model.phowOpts = {'Step', 3};
-% model.numSpatialX = [2, 4];
-% model.numSpatialY = [2, 4];
-% model.quantizer = 'kdtree';
-% model.kdtree = vl_kdtreebuild(vocab);
-% hist = getImageDescriptor(model, im, ssize);
-% end
-% 
-% function im = standarizeImage(im, ssize)
-% im = im2single(im) ;
-% scaling = max([ssize/size(im,1) ssize/size(im,2)]);
-% newsize = round([size(im,1) size(im,2)]*scaling);
-% im = imresize(im, newsize);
-% end
-
-% function hist = getImageDescriptor(model, im, ssize)
-% im = standarizeImage(im, ssize) ;
-% width = size(im,2) ;
-% height = size(im,1) ;
-% numWords = size(model.vocab, 2) ;
-% % get PHOW features
-% [frames, descrs] = vl_phow(im, model.phowOpts{:}) ;
-% % quantize local descriptors into visual words
-% switch model.quantizer
-%   case 'vq'
-%     [~, binsa] = min(vl_alldist(model.vocab, single(descrs)), [], 1) ;
-%   case 'kdtree'
-%     binsa = double(vl_kdtreequery(model.kdtree, model.vocab, ...
-%                                   single(descrs), ...
-%                                   'MaxComparisons', 50)) ;
-% end
-% hists = cell(length(model.numSpatialX));
-% for i = 1:length(model.numSpatialX)
-%     binsx = vl_binsearch(linspace(1,width,model.numSpatialX(i)+1), frames(1,:)) ;
-%     binsy = vl_binsearch(linspace(1,height,model.numSpatialY(i)+1), frames(2,:)) ;
-%     % combined quantization
-%     bins = sub2ind([model.numSpatialY(i), model.numSpatialX(i), numWords], ...
-%                    binsy,binsx,binsa) ;
-%     hist = zeros(model.numSpatialY(i) * model.numSpatialX(i) * numWords, 1) ;
-%     hist = vl_binsum(hist, ones(size(bins)), bins) ;
-%     hists{i} = single(hist / sum(hist)) ;
-% end
-% hist = cat(1,hists{:}) ;
-% hist = hist / sum(hist) ;
-% end

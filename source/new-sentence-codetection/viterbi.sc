@@ -65,3 +65,29 @@
 	(world-top-left (v+ camera-world (k*v ltl dxyztl))))
 (dtrace "bottom-left bottom-tight top-left"
 	(list world-bottom-left world-bottom-right world-top-left))))
+
+(define (discount-boxes frames-boxes-scores track discount)
+ (map (lambda (boxes-scores box)
+       (map-indexed
+	(lambda (s i)
+	 (if (= i box)
+	     (- s discount)
+	     s))
+	boxes-scores))
+      frames-boxes-scores
+      track))
+
+(define (viterbi-multiple frames-boxes-scores
+			  frames-boxes-boxes-coherence
+			  num-tracks
+			  discount) ;;a SUBTRACTIVE discount 
+ (let loop
+   ((frames-boxes-scores frames-boxes-scores)
+    (i 0)
+    (scored-tracks '()))
+  (if (= i num-tracks)
+      scored-tracks
+      (let ((scored-track (viterbi-boxes frames-boxes-scores frames-boxes-boxes-coherence)))
+       (loop (discount-boxes frames-boxes-scores (second scored-track) discount)
+	     (+ i 1)
+	     (cons scored-track scored-tracks))))))

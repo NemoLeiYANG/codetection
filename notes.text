@@ -4286,13 +4286,41 @@ Open files in Emacs 11Nov15
   go away (or set to 0)--Do I need to create gscore output?  It's saved in text
   file, but is it ever used?
 
+----------------git commit aa2851d---------------
+
+11 Dec 15
+
+--Finished restructuring new_binary_scores_world_and_pixel2.m.  Now it just
+  computes the adjacent binary scores, not all binary scores.  Runs fairly fast
+  in matlab (~30s for 500 proposals, ~120s for 1000 proposals).  Discovered that
+  the program is spending a LARGE amount of time writing proposals-similarity to
+  frame-data.sc file.  Seems like the big delay is with writing the gscore
+  variable, which is the binary scores listed as #(f1 b1 f2 b2 g).  Don't think
+  I actually use that anymore, since the Viterbi implementation gets its data
+  from the G_mat variable.  Going to take that out and see if it speeds things
+  up. 
+
+--Put placeholder value in for gscore and it sped matlab portion up by about a
+  factor of 10.  Need to try the full scheme run to see if not having data in
+  that variable breaks anything.-->Test didn't seem to break anything, and it
+  runs much faster (top_k < 100 all ~60s, 200 in ~90s, 500 in ~5min, 1000 in
+  ~15min).  Results look pretty much the same. (20151211b dirs)
+
+--Running test where I hold the top_k at 200 while increasing df to see what
+  happens. (20151211c dirs)  Looks like increasing df to 0.3 changes the track,
+  but increasing beyond that doesn't make a big difference.
+
+--Got viterbi-multiple from Dan and wrote test to ensure it worked.  Next step
+  is to visualize the multiple tubes.
+
 **NEED TO WORK ON:
-       **SEE LAST NOTE FROM 10 DEC**
-       --Memory problem in new_binary_scores_world_and_pixel2.m-->need new way
-       to compute distances when T*top_k gets large--probably an iterative
-       method that builds G_mat directly instead of copying from G.
-       --FIX MATLAB SLOWNESS--viterbi is actually fast
-       ***USE NEW FILE WHILE TEST IS RUNNING***
+       --Visualizing multiple viterbi tubes
+       **2 possible ways to go** (or possibly do both)
+         --try to get objectness measure (fscore) to be better/useful
+	 --stick with current fscore and play with df to see if we can raise it
+	   without getting incoherent tracks
+       **Is there some other type of binary measure we can use that's different
+         from pixel and world distance?  Those are 
        --Think about ways to get better tracks out--currently getting a
        temporally coherent track that is of a garbage object--implement/use
        objectness measure (Alexe et al.)??--or use non-maximal suppression
@@ -4300,15 +4328,11 @@ Open files in Emacs 11Nov15
        --Compile viterbi-boxes into dsci??
        --**THINK ABOUT** new unary score from edgeBoxes seems to max out around
        0.25...do we need a discount factor? or should it be a multiplier instead?
-
-
-**LOOK AT MEMORY LEAK PROBLEM when using 1000 proposals/frame-->see ** note from
-  8 Dec 15.  Need to fix this before we can run larger jobs-->more than 80
-  frames in a run means that we will run into this problem at a lower
-  top_k...memory leak is NOT in new_score_saved..., it is in the pdist2 call
-  with worldXY in new_binary_scores_world_and_pixel2.m-->problem is that just
-  the 80000x80000 matrix to hold the output is huge-->need a different way when
-  T*top_k gets large
+       **LATER:
+         --Image tearing--try to sync barriers with camera shutter (FlyCap
+       	   API??)
+	 --Figure out why dsci on laptop sometimes crashes
+       
 
 **LOOK AT objectness score from Alexe et al.
 

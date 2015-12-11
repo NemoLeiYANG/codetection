@@ -589,6 +589,73 @@
 	     ;;(map (lambda (scores) (append scores (list dummy-f)))
 		  f)))))
 
+(define (run-codetection-viterbi-multiple path
+					  top-k
+					  ssize
+					  data-output-dir
+					  min-x
+					  max-x
+					  min-y
+					  max-y
+					  proposal-file
+					  discount-factor
+					  world-weight
+					  num-tubes
+					  reduce-factor)
+ (mkdir-p (format #f "~a/~a" path data-output-dir))
+ (let* ((proposals-similarity
+	 (get-matlab-proposals-similarity-viterbi
+	  top-k ssize path data-output-dir min-x max-x min-y max-y
+	  proposal-file discount-factor world-weight))
+	(proposals-boxes (map (lambda (boxes) (map (lambda (x) (sublist x 0 4))
+						   (matrix->list-of-lists boxes)))
+			      (first proposals-similarity)))
+	(proposals-xy (map (lambda (boxes) (map (lambda (x) (sublist x 5 7))
+						(matrix->list-of-lists boxes)))
+			   (first proposals-similarity)))
+	(f (map (lambda (boxes) (map fifth (matrix->list-of-lists boxes)))
+		(first proposals-similarity)))
+	(g-mat
+	 (begin
+	  (start-matlab!)
+	  (matlab (format #f "load('~a/~a/binary_score_data.mat');"
+			  path data-output-dir))
+	  (dtrace (format #f "loaded ~a/~a/binary_score_data.mat"
+			  path data-output-dir) #f)
+	  (transpose (matlab-get-variable "binary_scores"))))
+	(g (vector->list (map-vector (lambda (v) (vector->list v)) g-mat)))
+;;	(foo (dtrace "length f,g" (list (length f) (length g))))
+	(viterbi-output (viterbi-multiple f g num-tubes reduce-factor))
+	;; (scores (map first viterbi-output))
+	;; (boxes-lists (map second viterbi-output))
+	(winner (last viterbi-output))
+	(score (first winner))
+	(boxes (second winner))
+	)
+  ;;output
+  (dtrace "viterbi-multiple output:" viterbi-output)
+  (write-object-to-file proposals-similarity
+  			(format #f "~a/~a/frame-data.sc"
+  				path data-output-dir))
+  (list boxes ;;box numbers
+	(map (lambda  ;;xy locations as list (empty list if dummy)
+	       (b prop-xy) (list-ref prop-xy b))
+	     boxes
+	     (map (lambda (prop-xy) (append prop-xy '(())))
+		  proposals-xy))
+	(map (lambda ;;pixel locations as list (empty list if dummy)
+	       (b prop-boxes) (list-ref prop-boxes b))
+	     boxes
+	     (map (lambda (prop-boxes) (append prop-boxes '(())))
+		  proposals-boxes))
+	(map (lambda ;;f-score value (NOT A LIST) (dummy-f, not empty list, if dummy)
+	       (b scores) (list-ref scores b))
+	     boxes 
+	     (map (lambda (scores) (append scores '(())))
+	     ;;(map (lambda (scores) (append scores (list dummy-f)))
+		  f)))
+	       ))
+
 (define (visualize-results-test data frames path name-prefix dummy-f dummy-g)
  (let* ((results (run-codetection-with-proposals-similarity data
 							    dummy-f
@@ -809,6 +876,75 @@
 					  proposal-file
 					  discount-factor
 					  world-weight))
+
+	(boxes (third results))
+	(video-path (format #f "~a/video_front.avi" path))
+	(frames (video->frames 1 video-path)))
+  (write-object-to-file results (format #f "~a/~a/results.sc"
+					path
+					data-output-dir))
+ ;; (dtrace "img-path" img-path)
+  (mkdir-p img-path)
+  (let loop ((images (map (lambda (f) (imlib:clone f)) frames))
+	     (boxes boxes)
+	     (n 0))
+   (if (or (null? images)
+	   (null? boxes))
+       (dtrace (format #f "finished in ~a" path) #f)
+       (let* ((box (first boxes))
+	      (image (first images)))
+	(if (null? box)
+	    (imlib-draw-text-on-image image ;;we have a dummy box
+				      "DUMMY BOX" ;;string
+				      (vector 255 0 0) ;;text color
+				      18 ;;font size?
+				      320 ;; x?
+				      240 ;; y?
+				      (vector 255 255 255) ;;bg color
+				      ) 
+	    (let* ((x1 (first box)) ;;we have a real box
+		   (y1 (second box))
+		   (w (- (third box) (first box)))
+		   (h (- (fourth box) (second box))))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0))
+	     (imlib:draw-rectangle image (- x1 1) (- y1 1)
+				   (+ w 2) (+ h 2) (vector 255 0 0))
+	     (imlib:draw-rectangle image (- x1 2) (- y1 2)
+				   (+ w 4) (+ h 4) (vector 255 0 0))
+	     ))
+	(imlib:save image (format #f "~a/~a.png"
+				  img-path
+				  (number->padded-string-of-length n 5)))
+	;;(dtrace "saved image" n)
+	(loop (rest images) (rest boxes) (+ n 1)))))))
+
+(define (visualize-results-viterbi-multiple path
+					    top-k
+					    ssize
+					    data-output-dir
+					    min-x
+					    max-x
+					    min-y
+					    max-y
+					    proposal-file
+					    discount-factor
+					    world-weight
+					    num-tracks
+					    reduce-factor)
+ (let* ((img-path (format #f "~a/~a/images" path data-output-dir))
+	(results (run-codetection-viterbi-multiple path
+						   top-k
+						   ssize
+						   data-output-dir
+						   min-x
+						   max-x
+						   min-y
+						   max-y
+						   proposal-file
+						   discount-factor
+						   world-weight
+						   num-tracks
+						   reduce-factor))
 
 	(boxes (third results))
 	(video-path (format #f "~a/video_front.avi" path))
@@ -2485,6 +2621,56 @@
 		  data-output-dir))
   (dtrace (format #f "finished single-run-test-viterbi in ~a" data-output-dir) #f)
   (system "date")))
+
+(define (single-run-test-viterbi-multiple
+	 data-output-dir top-k world-weight discount-factor num-tubes reduce-factor)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
+	(*house-x-y*
+	 (read-object-from-file
+	  "/aux/sbroniko/vader-rover/logs/house-test-12nov15/house-x-y.sc"))
+	(*the-max* (* 1.1 (max (first (first *house-x-y*))
+			       (first (second *house-x-y*)))))
+	(*the-min* (* 1.1 (min (second (first *house-x-y*))
+			       (second (second *house-x-y*)))))
+	(max-x *the-max*)
+	(max-y *the-max*)
+	(min-x *the-min*)
+	(min-y *the-min*)
+	(ssize 64)
+	(run-dir "test-segment")
+	(dir (format #f "~a~a" data-directory run-dir))
+	(proposal-file (format #f "~a/proposal_boxes_edgeboxes_2500.mat" dir))
+
+	 ;;(format #f "~a/proposal_boxes_1000.mat" dir))
+	;; (discount-factor 0.1)
+	)
+  (dtrace (format #f "starting single-run-test-viterbi-multiple in ~a"
+		  data-output-dir) #f)
+  (system "date")
+  (visualize-results-viterbi-multiple dir
+				      top-k
+				      ssize
+				      data-output-dir
+				      min-x
+				      max-x
+				      min-y
+				      max-y
+				      proposal-file
+				      discount-factor
+				      world-weight
+				      num-tubes
+				      reduce-factor)
+  (system (format #f "rsync -arz ~a/~a/~a/ seykhl:~a/~a/~a/"
+		  data-directory
+		  run-dir
+		  data-output-dir
+		  data-directory
+		  run-dir
+		  data-output-dir))
+  (dtrace (format #f "finished single-run-test-viterbi-multiple in ~a"
+		  data-output-dir) #f)
+  (system "date")))
   
 
 (define (read-camera-timing-new path)
@@ -2990,16 +3176,23 @@
  (system "date")
  (let* ((path "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/")
 	(world-weight 0.5);;1)
-	(discount-factor 0.1);;0.01);;0.1)
-	(top-ks (list 500));;10 50 100 200));; 500));; 1000))
+	;;(discount-factor 0.01);;0.1)
+	(discount-factors (list 0.1 ));;0.3 0.5 0.7 0.9 1.1));;0.01);;0.1)
+	(top-k 200)
+	;;(top-ks (list 10 50 100 200 500 1000))
 	(testdirs
-	 (map (lambda (k)
-	       (format #f "20151210a_ww_~a_df_~a_top_k_~a"
-		       world-weight discount-factor k))
-	      top-ks))
+	 (map (lambda (d)
+	       (format #f "20151211_TESTING_ww_~a_df_~a_top_k_~a"
+		       world-weight d top-k))
+	      discount-factors))
+	;; (testdirs
+	;;  (map (lambda (k)
+	;;        (format #f "20151211b_ww_~a_df_~a_top_k_~a"
+	;; 	       world-weight discount-factor k))
+	;;       top-ks))
 	(matlab-filename "detection_data.mat"))
-  (single-run-test-viterbi (first testdirs)
-  			   (first top-ks) world-weight discount-factor)
+  ;; (single-run-test-viterbi (first testdirs)
+  ;; 			   (first top-ks) world-weight discount-factor)
   ;; (single-run-test-viterbi (second testdirs)
   ;; 			   (second top-ks) world-weight discount-factor)
   ;; (single-run-test-viterbi (third testdirs)
@@ -3008,14 +3201,30 @@
   ;; 			   (fourth top-ks) world-weight discount-factor)
   ;; (single-run-test-viterbi (fifth testdirs)
   ;; 			   (fifth top-ks) world-weight discount-factor)
-  (for-each
-   (lambda (testdir)
-    (make-quad-video-and-plots-one-run-viterbi path
-					       testdir
-					       matlab-filename)
-    (system (format #f "rsync -arz ~a/~a/ seykhl:~a/~a/"
-		    path testdir path testdir)))
-   testdirs)
+  ;; (single-run-test-viterbi (sixth testdirs)
+  ;; 			   (sixth top-ks) world-weight discount-factor)
+  (single-run-test-viterbi (first testdirs)
+  			   top-k world-weight (first discount-factors))
+  ;; (single-run-test-viterbi (second testdirs)
+  ;; 			   top-k world-weight (second discount-factors))
+  ;; (single-run-test-viterbi (third testdirs)
+  ;; 			   top-k world-weight (third discount-factors))
+  ;; (single-run-test-viterbi (fourth testdirs)
+  ;; 			   top-k world-weight (fourth discount-factors))
+  ;; (single-run-test-viterbi (fifth testdirs)
+  ;; 			   top-k world-weight (fifth discount-factors))
+  ;; (single-run-test-viterbi (sixth testdirs)
+  ;; 			   top-k world-weight (sixth discount-factors))
+  
+  ;;PLOTTING--disable to save time
+  ;; (for-each
+  ;;  (lambda (testdir)
+  ;;   (make-quad-video-and-plots-one-run-viterbi path
+  ;; 					       testdir
+  ;; 					       matlab-filename)
+  ;;   (system (format #f "rsync -arz ~a/~a/ seykhl:~a/~a/"
+  ;; 		    path testdir path testdir)))
+  ;;  testdirs)
   (dtrace "simple-run-and-plot-viterbi complete" #f)
   (system "date")))
 
