@@ -3228,3 +3228,35 @@
   (dtrace "simple-run-and-plot-viterbi complete" #f)
   (system "date")))
 
+;;;;;;------NEW STUFF for TLD tubes------
+
+(define (read-and-sort-matlab-proposals filename)
+ (start-matlab!)
+ (matlab (format #f "load ~a" filename))
+ (let* ((proposals (transpose (matlab-get-variable "proposal_boxes")))
+	(sorted-proposals (map (lambda (frame-boxes)
+				(sort (vector->list frame-boxes)
+				>
+				(lambda (b) (vector-ref b 4))))
+			       (vector->list proposals))))
+  sorted-proposals))
+
+(define *boxes* (read-and-sort-matlab-proposals "/net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/proposal_boxes_edgeboxes_2500.mat"))
+
+(define (get-tld-tube-from-box video-pathname box)
+ (let* ((video (ffmpeg-open-video video-pathname))
+	(video-width (ffmpeg-video-width video))
+	(video-height (ffmpeg-video-height video))
+	(boxes (read-from-string
+		(system-output
+		 (format #f
+			 "LD_LIBRARY_PATH=/home/dpbarret/opencv3/lib /home/sbroniko/codetection/source/new-sentence-codetection/run-TLD.out MEDIANFLOW ~a ~a ~a ~a ~a"
+			 video-pathname
+			 (min (max 1 (x box)) (- video-width 1))
+			 (min (max 1 (y box)) (- video-height 1))
+			 (min (max 1 (z box)) (- video-width 1))
+			 (min (max 1 (vector-ref box 3)) (- video-height 1))
+			 )))))
+  boxes))
+
+(define *video-path* "/net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/video_front.avi")

@@ -4313,7 +4313,19 @@ Open files in Emacs 11Nov15
 --Got viterbi-multiple from Dan and wrote test to ensure it worked.  Next step
   is to visualize the multiple tubes.
 
+----------------git commit 1abc860---------------
+
+15 Dec 15
+
+--Worked on Dan's tracker-test.sc stuff.  Have C/scheme function to return list
+  of boxes tracked from original (first frame) box.  Need to write wrapper to do
+  multiple lists, and also plotting the boxes in the floor plan.
+
+
 **NEED TO WORK ON:
+       --wrapper for get-tld-tube-from-box
+       --plot tld tube locations on floor plan (average location??)
+
        --Visualizing multiple viterbi tubes
        **2 possible ways to go** (or possibly do both)
          --try to get objectness measure (fscore) to be better/useful
