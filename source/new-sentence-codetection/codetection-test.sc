@@ -3241,7 +3241,7 @@
 			       (vector->list proposals))))
   sorted-proposals))
 
-(define *boxes* (read-and-sort-matlab-proposals "/net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/proposal_boxes_edgeboxes_2500.mat"))
+;; (define *boxes* (read-and-sort-matlab-proposals "/net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/proposal_boxes_edgeboxes_2500.mat"))
 
 (define (get-tld-tube-from-box video-pathname box)
  (let* ((video (ffmpeg-open-video video-pathname))
@@ -3260,3 +3260,31 @@
   boxes))
 
 (define *video-path* "/net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/video_front.avi")
+
+
+(define (generate-proposals video-pathname
+			    K  ;;top-k
+			    L) ;;number of frames to sample
+ (start-matlab!)
+ (let* ((num-frames (video-length (load-darpa-video video-pathname)))
+	(frequency (/ num-frames L))
+	(frames (video->frames frequency video-pathname)))
+  
+  #f))
+
+(define (frames->matlab! frames)
+ (start-matlab!)
+ (matlab "clear frames")
+ (for-each-indexed
+  (lambda (frame i)
+   (with-temporary-file
+    "/tmp/imlib-frame.ppm"
+    (lambda (tmp-frame)
+	   ;; write scheme frame to file
+	   (imlib:save-image frame tmp-frame)
+	   ;; read file as matlab frame
+	   (matlab (format #f "frame=imread('~a');" tmp-frame))
+	   (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
+	 (imlib:free-image-and-decache frame))    
+	frames))
+			
