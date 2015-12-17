@@ -3262,29 +3262,60 @@
 (define *video-path* "/net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/video_front.avi")
 
 
+(define (get-frame-numbers num-frames downsample)
+ (let loop ((frame-numbers '())
+	    (start #t)
+	    (i 0))
+  (if (or start (< i num-frames))
+      (if (zero? (modulo i downsample))
+	  (loop (cons i frame-numbers) #f (+ i 1))
+	  (loop frame-numbers #f (+ i 1)))
+      (reverse frame-numbers))))
+
 (define (generate-proposals video-pathname
 			    K  ;;top-k
-			    L) ;;number of frames to sample
- (start-matlab!)
- (let* ((num-frames (video-length (load-darpa-video video-pathname)))
-	(frequency (/ num-frames L))
-	(frames (video->frames frequency video-pathname)))
+			    L) ;;interval between frames (every Lth frame)
+ ;;(start-matlab!)
+ (if (not (integer? L))
+     (dtrace "ERROR: L must be an integer" #f)
+     (let* ((num-frames (video-length (load-darpa-video video-pathname)))
+	    (frames (video->frames L video-pathname))
+	    (frame-numbers (get-frame-numbers num-frames L)))
+      ;;(dtrace "before frames->matlab!" #f)
+      (frames->matlab! frames "frames")
+      ;;(dtrace "after frames->matlab!" #f)
+      (matlab (format #f "K=~a;" K))
+      ;;(dtrace "after K=" #f)
+      (matlab "bbs = get_proposals_edgeboxes(frames,K);")
   
-  #f))
+  
+      #f)))
 
-(define (frames->matlab! frames)
- (start-matlab!)
- (matlab "clear frames")
- (for-each-indexed
-  (lambda (frame i)
-   (with-temporary-file
-    "/tmp/imlib-frame.ppm"
-    (lambda (tmp-frame)
-	   ;; write scheme frame to file
-	   (imlib:save-image frame tmp-frame)
-	   ;; read file as matlab frame
-	   (matlab (format #f "frame=imread('~a');" tmp-frame))
-	   (matlab (format #f "frames(:,:,:,~a)=uint8(frame);" (+ i 1)))))
-	 (imlib:free-image-and-decache frame))    
-	frames))
-			
+(define (frames->matlab! frames matlab-name)
+ (let* ((num-frames (length frames))
+	(one-frame (first frames))
+	(height (imlib:height one-frame))
+	(width (imlib:width one-frame)))
+  (start-matlab!)
+  (matlab (format #f "clear ~a" matlab-name))
+  (matlab (format #f "~a = zeros(~a,~a,~a,~a,'uint8');"
+		  matlab-name height width 3 num-frames))
+  (for-each-indexed
+   (lambda (frame i)
+    (with-temporary-file
+     "/tmp/imlib-frame.ppm"
+     (lambda (tmp-frame)
+      ;; write scheme frame to file
+      (imlib:save-image frame tmp-frame)
+      ;; read file as matlab frame
+      (matlab (format #f "frame=imread('~a');" tmp-frame))
+      (matlab (format #f "~a(:,:,:,~a)=uint8(frame);" matlab-name (+ i 1)))))
+    (imlib:free-image-and-decache frame))    
+   frames)))
+
+;;start-up initialization stuff
+(start-matlab!)
+;;moved the below calls into ~/Documents/MATLAB/startup.m
+;; (matlab "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection/'))")
+;; (matlab "InstallEdgeBoxes")
+

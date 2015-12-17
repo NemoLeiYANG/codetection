@@ -1,0 +1,24 @@
+
+Warning: You are using gcc version "4.7.2-5)".  The version
+         currently supported with MEX is "4.2.3".
+         For a list of currently supported compilers see: 
+         http://www.mathworks.com/support/compilers/current_release/
+
+
+Warning: You are using gcc version "4.7.2-5)".  The version
+         currently supported with MEX is "4.2.3".
+         For a list of currently supported compilers see: 
+         http://www.mathworks.com/support/compilers/current_release/
+
+
+Warning: You are using gcc version "4.7.2-5)".  The version
+         currently supported with MEX is "4.2.3".
+         For a list of currently supported compilers see: 
+         http://www.mathworks.com/support/compilers/current_release/
+
+
+Warning: You are using gcc version "4.7.2-5)".  The version
+         currently supported with MEX is "4.2.3".
+         For a list of currently supported compilers see: 
+         http://www.mathworks.com/support/compilers/current_release/
+
