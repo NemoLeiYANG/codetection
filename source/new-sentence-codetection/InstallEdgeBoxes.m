@@ -8,4 +8,5 @@ mex private/edgeBoxesMex.cpp -outdir private '-DUSEOMP' CFLAGS="\$CFLAGS -fopenm
 model=load('/home/sbroniko/codetection/source/new-sentence-codetection/forests_edges_boxes/models/forest/modelBsds.mat');
 model=model.model;
 %diary off
+cd ..
 disp('complete with InstallEdgeBoxes');

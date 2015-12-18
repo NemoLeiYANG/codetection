@@ -31,20 +31,21 @@ addpath(genpath('MCG-PreTrained'));
 
 fprintf('\nin new-sentence-codetection/new_score_saved_proposals_with_dsift2.m\n');
 
-if top_k > 500 %MIGHT WANT to get rid of this if we go back to computing phists here (will always need parfor)
-    % enable parfor
-    pools = matlabpool('size');
-    cpus = feature('numCores');
-    if cpus > 8
-        cpus = 9;
-    end
-    if pools ~= (cpus - 1)
-        if pools > 0
-            matlabpool('close');
-        end
-        matlabpool('open', cpus - 1);
-    end
-end
+%NOW IN STARTUP
+% if top_k > 500 %MIGHT WANT to get rid of this if we go back to computing phists here (will always need parfor)
+%     % enable parfor
+%     pools = matlabpool('size');
+%     cpus = feature('numCores');
+%     if cpus > 8
+%         cpus = 9;
+%     end
+%     if pools ~= (cpus - 1)
+%         if pools > 0
+%             matlabpool('close');
+%         end
+%         matlabpool('open', cpus - 1);
+%     end
+% end
 
 %experiment parameters--shouldn't change
 cam_offset = [-0.03 0.16 -0.2]; %estimated measurement, in m

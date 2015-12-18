@@ -4365,6 +4365,25 @@ Open files in Emacs 11Nov15
   matlab) then pulling them out into scheme (probably as a list of lists) in
   order to do the get-tubes... call on them (also need to write that C function)
 
+----------------git commit f479b2c---------------
+
+18 Dec 15
+
+--Wrote enablePool.m in ~/Documents/MATLAB/ and called it before
+  InstallEdgeBoxes in startup.m to start parallel processing automatically.
+  Found out I had to call before InstallEdgeBoxes because it was causing matlab
+  to crash on seykhl (but not on servers) if I didn't.
+
+--Wrote nms_iou.m which does intersection over union on boxes and if >
+  threshold, picks box with higher score.
+
+--Have 1 and 2 complete.  Data is pulled back into scheme properly.  Next need
+  to rewrite Median Flow tracker in C to run forwards and backwards.
+
+--For the tracker Dan has suggested doing minimal mods to his original
+  tracker-->this would cause the video to be reloaded into an array on every box
+  in every starting frame--lots of loads.  Is there an easier way?  Maybe write
+  generate-proposals output to file then read the file in C and parse the data.
 
 
 **NEED TO WORK ON:

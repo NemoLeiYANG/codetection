@@ -1,0 +1,58 @@
+matlab:
+/amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/open-files.txt                         
+/amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/new_binary_scores_world_and_pixel2.m   
+/amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/new_score_saved_proposals_with_dsift2.m
+/amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/my_box_at_height_to_world_corners.m    
+/amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/house_make_plots_new.m                 
+/amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/get_proposals_edgeboxes.m              
+/amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/InstallEdgeBoxes.m                     
+/amd/upplysingaoflun/root/aux/home/sbroniko/Documents/MATLAB/startup.m                                                         
+/amd/upplysingaoflun/root/aux/home/sbroniko/Documents/MATLAB/enablePool.m         
+
+emacs:
+    notes.text          230174  Text		  ~/codetection/notes.text
+  * *shell*             532516  Shell:run	  /
+  * codetection-test.s: 119586  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc
+  * *scheme*           6619578  Inferior Scheme:
+  * *shell*<3>          561073  Shell:run	  ~/codetection/source/new-sentence-codetection/
+  * *shell*<2>          802237  Shell:run	  ~/darpa-collaboration/ideas/
+    viterbi-event-track: 23190  Scheme		  ~/darpa-collaboration/ideas/viterbi-event-tracker.sc
+    toollib-codetection: 19140  Scheme		  ~/codetection/source/new-sentence-codetection/toollib-codetection.sc
+    idealib-stuff.sc    215317  Scheme		  ~/darpa-collaboration/ideas/idealib-stuff.sc
+    toollib-image-proc: 124889  Scheme		  ~/darpa-collaboration/ideas/toollib-image-processing.sc
+ %  tracker-test.sc       1662  Scheme		  /amd/upplysingaoflun/root/aux/home/dpbarret/tracker-test.sc
+    run_TLD.cpp           7446  C++/l		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/run_TLD.cpp
+    scheme.text        2727978  Inferior Scheme:  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/20151202c_1_top_k_2/scheme.text
+    viterbi-new.sc        5949  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/viterbi-new.sc
+    rover-projection.sc   9409  Scheme		  ~/codetection/source/rover-projection.sc
+ %  run_and_display_TLD.: 7472  C++/l		  /amd/upplysingaoflun/root/aux/home/dpbarret/run_and_display_TLD.cpp
+  * *scratch*             5556  Lisp Interaction
+    viterbi.sc|new-sente: 4365  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/viterbi.sc
+ %  viterbi.sc|dpbarret   8998  Scheme		  /home/dpbarret/viterbi.sc
+    new_binary_scores_w: 12452  MATLAB		  ~/codetection/source/new-sentence-codetection/new_binary_scores_world_and_pixel2_old.m
+    rendering-code.sc|c: 71787  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/rendering-code.sc
+    toollib-matlab.sc    12100  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/ideas/toollib-matlab.sc
+    easy-ffi.sc           4716  Scheme		  ~/darpa-collaboration/ideas/easy-ffi.sc
+    inference.cpp        41719  C++/l		  ~/codetection/source/new-sentence-codetection/inference.cpp
+    viterbi.c             1217  C/l		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/viterbi.c
+ %  toollib-hog-hmm-c.: 143640  C/l		  /amd/upplysingaoflun/root/aux/home/dpbarret/darpa-collaboration/ideas/toollib-hog-hmm-c.c
+    gm-checking.sc        2996  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/gm-checking.sc
+    toollib-multi-proce: 11819  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc
+    inference.h           1038  C++/l		  ~/codetection/source/new-sentence-codetection/inference.h
+    QobiScheme-AD.sc    295402  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/QobiScheme/source/QobiScheme-AD.sc
+ %  rendering-code.sc|s: 18204  Scheme		  /amd/upplysingaoflun/root/aux/home/dpbarret/darpa-collaboration/documentation/ralicra2016/supplementary-material/rendering-code.sc
+    makefile             15227  GNUmakefile	  ~/darpa-collaboration/ideas/makefile
+    generate-msee1-data: 54992  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/generate-msee1-dataset.sc
+    toollib-misc.sc      44479  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/ideas/toollib-misc.sc
+    today.text          120740  Text		  ~/vader-rover/today.text
+    toollib-codetection: 18999  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/toollib-codetection.sc
+    .bash_history        17988  Fundamental	  ~/.bash_history
+    log_to_track.cpp     16043  C++/l		  /amd/upplysingaoflun/root/aux/home/sbroniko/vader-rover/position/log_to_track.cpp
+ %  toollib-feature-bas: 28048  Scheme		  /amd/upplysingaoflun/root/aux/home/dpbarret/darpa-collaboration/rover/toollib-feature-based-trace-generator.sc
+    output.text          11074  Text		  /tmp/output.text
+    scott_proposals_onl: 16552  MATLAB		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/scott_proposals_only.m
+    proposals_and_simila: 3956  MATLAB		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/proposals_and_similarity.m
+    out_camera_data_25p: 44039  nXML Valid	  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/camera_calibration/out_camera_data_25ppms.xml
+    ralicra2016-labeling: 7261  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/ralicra2016-labeling.sc
+    table-test.sc          898  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/sentence-codetection/table-test.sc
+

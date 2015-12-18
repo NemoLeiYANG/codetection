@@ -3259,6 +3259,13 @@
 			 )))))
   boxes))
 
+(define (scott-box->voc4 box)
+ (let* ((x1 (x box))
+       (y1 (y box))
+       (x2 (+ x1 (z box)))
+       (y2 (+ y1 (vector-ref box 3))))	   
+ (make-voc4-detection x1 y1 x2 y2 #f #f #f #f #f #f)))
+
 (define *video-path* "/net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/video_front.avi")
 
 
@@ -3275,21 +3282,29 @@
 (define (generate-proposals video-pathname
 			    K  ;;top-k
 			    L) ;;interval between frames (every Lth frame)
- ;;(start-matlab!)
+ (start-matlab!)
  (if (not (integer? L))
      (dtrace "ERROR: L must be an integer" #f)
      (let* ((num-frames (video-length (load-darpa-video video-pathname)))
 	    (frames (video->frames L video-pathname))
+	    (factor 10) ;;multiplier for proposals so that K will be left after NMS
+	    (iou 0.5)
 	    (frame-numbers (get-frame-numbers num-frames L)))
       ;;(dtrace "before frames->matlab!" #f)
       (frames->matlab! frames "frames")
       ;;(dtrace "after frames->matlab!" #f)
-      (matlab (format #f "K=~a;" K))
+      (matlab (format #f "K=~a;" K ))
+      (matlab (format #f "factor=~a;" factor))
       ;;(dtrace "after K=" #f)
-      (matlab "bbs = get_proposals_edgeboxes(frames,K);")
-  
-  
-      #f)))
+      (matlab "bbs = get_proposals_edgeboxes(frames,(K*factor));")
+      ;;run nms on generated proposals
+      (matlab (format #f "iou=~a;" iou))
+      (matlab "nmsbbs = nms_iou(bbs,iou,K);")
+      (list (length frame-numbers)
+	    K
+	    frame-numbers
+	    (transpose (matlab-get-variable "nmsbbs")))
+      )))
 
 (define (frames->matlab! frames matlab-name)
  (let* ((num-frames (length frames))
