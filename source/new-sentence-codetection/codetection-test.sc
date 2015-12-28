@@ -3288,7 +3288,7 @@
      (let* ((num-frames (video-length (load-darpa-video video-pathname)))
 	    (frames (video->frames L video-pathname))
 	    (factor 10) ;;multiplier for proposals so that K will be left after NMS
-	    (iou 0.5)
+	    (iou 0.5) ;;HARDCODED intersection-over-union ratio
 	    (frame-numbers (get-frame-numbers num-frames L)))
       ;;(dtrace "before frames->matlab!" #f)
       (frames->matlab! frames "frames")
@@ -3327,6 +3327,28 @@
       (matlab (format #f "~a(:,:,:,~a)=uint8(frame);" matlab-name (+ i 1)))))
     (imlib:free-image-and-decache frame))    
    frames)))
+
+(define (get-medianflow-tube-from-starting-frame-and-proposal-box video-pathname
+								  starting-frame
+								  box) ;;box is in format #(x,y,w,h)
+ (let* ((video (ffmpeg-open-video video-pathname))
+	(video-width (ffmpeg-video-width video))
+	(video-height (ffmpeg-video-height video))
+	;;(foo (dtrace "box" box))
+	;;error-checking input here to make sure box stays inside frame
+	(x-val (min (max 1 (x box)) (- video-width 1)))
+	(y-val (min (max 1 (y box)) (- video-height 1)))
+	(w-val (min (z box) (- (- video-width 1) (x box))))
+	(h-val (min (vector-ref box 3) (- (- video-height 1) (y box))))
+	(boxes (join (read-from-string
+		      (system-output
+		       (format #f
+			 "LD_LIBRARY_PATH=/home/dpbarret/opencv3/lib /home/sbroniko/codetection/source/new-sentence-codetection/run-MF.out ~a ~a ~a ~a ~a ~a"
+			 video-pathname
+			 starting-frame
+			 x-val y-val w-val h-val))))))
+
+  boxes))
 
 ;;start-up initialization stuff
 (start-matlab!)
