@@ -3236,8 +3236,8 @@
  (let* ((proposals (transpose (matlab-get-variable "proposal_boxes")))
 	(sorted-proposals (map (lambda (frame-boxes)
 				(sort (vector->list frame-boxes)
-				>
-				(lambda (b) (vector-ref b 4))))
+				      >
+				      (lambda (b) (vector-ref b 4))))
 			       (vector->list proposals))))
   sorted-proposals))
 
@@ -3300,10 +3300,18 @@
       ;;run nms on generated proposals
       (matlab (format #f "iou=~a;" iou))
       (matlab "nmsbbs = nms_iou(bbs,iou,K);")
-      (list (length frame-numbers)
-	    K
-	    frame-numbers
-	    (transpose (matlab-get-variable "nmsbbs")))
+      ;; (list (length frame-numbers)
+      ;; 	    K
+      ;; 	    frame-numbers
+      ;; 	    (map vector->list
+      ;; 		 (vector->list (transpose (matlab-get-variable "nmsbbs")))))
+      (map-indexed (lambda (num i) (list num (list-ref
+      					      (map vector->list
+      						   (vector->list
+      						    (transpose (matlab-get-variable
+      								"nmsbbs"))))
+      					      i)))
+      			   frame-numbers)
       )))
 
 (define (frames->matlab! frames matlab-name)
@@ -3330,7 +3338,9 @@
 
 (define (get-medianflow-tube-from-starting-frame-and-proposal-box video-pathname
 								  starting-frame
-								  box) ;;box is in format #(x,y,w,h)
+								  box)
+                                             ;;box is in format #(x,y,w,h,score)
+ ;;this carries the proposal score through to use in tube NMS
  (let* ((video (ffmpeg-open-video video-pathname))
 	(video-width (ffmpeg-video-width video))
 	(video-height (ffmpeg-video-height video))
@@ -3340,6 +3350,7 @@
 	(y-val (min (max 1 (y box)) (- video-height 1)))
 	(w-val (min (z box) (- (- video-width 1) (x box))))
 	(h-val (min (vector-ref box 3) (- (- video-height 1) (y box))))
+	(score (vector-ref box 4))
 	(boxes (join (read-from-string
 		      (system-output
 		       (format #f
@@ -3348,7 +3359,99 @@
 			 starting-frame
 			 x-val y-val w-val h-val))))))
 
-  boxes))
+  (list boxes score)))
+
+(define (get-all-tubes video-pathname K L)
+ (let* ((proposals-with-frame-numbers
+	 (generate-proposals video-pathname K L))
+	(all-tubes
+	 (join (map
+	  (lambda (prop-list)
+	   (map
+	    (lambda (box)
+	     (get-medianflow-tube-from-starting-frame-and-proposal-box video-pathname
+								       (first prop-list)
+								       box))
+	    (second prop-list)))
+	      proposals-with-frame-numbers))))
+  all-tubes))
+
+(define (get-all-tubes-sorted video-pathname K L)
+ (let* ((all-tubes (get-all-tubes video-pathname K L)))
+  (sort all-tubes > (lambda (b) (second b)))))
+
+(define (render-one-tube path ;;path to video
+			 tube-with-score
+			 outdir
+			 num)
+ (let* ((tube (first tube-with-score))
+	(video-pathname (format #f "~a/video_front.avi" path))
+	(output-path (format #f "~a/~a" path outdir))
+	(temp-path (format #f "~a/tmp" output-path))
+	(fps (third (video-info (load-darpa-video video-pathname))))
+	(frames (video->frames 1 video-pathname)))
+  (rm temp-path)
+  (rm (format #f "~a/~a.avi" output-path num))
+  (mkdir-p temp-path)
+  (let loop ((images frames)
+	     (tube tube)
+	     (n 0))
+   (if (or (null? tube) (null? images))
+       (dtrace "render-one-tube finished in ~a" output-path)
+       (begin
+	(let* ((box (first tube))
+	       (image (first images))
+	       (x-val (x box))
+	       (y-val (y box))
+	       (w-val (- (z box) (x box)))
+	       (h-val (- (vector-ref box 3) (y box))))
+	 (imlib:draw-rectangle image x-val y-val w-val h-val
+			       (vector 0 0 255))
+	 (imlib:draw-rectangle image (+ x-val 1) (+ y-val 1) w-val h-val
+			       (vector 0 0 255))
+	 (imlib:draw-rectangle image (- x-val 1) (- y-val 1) w-val h-val
+			       (vector 0 0 255))
+	 (imlib:save image (format #f "~a/img-~a.png" temp-path
+				   (number->padded-string-of-length n 5)))
+	 (loop (rest images) (rest tube) (+ n 1))))))
+  (system (format #f
+		  "ffmpeg -framerate ~a -i ~a/img-0%04d.png -b 4096k -r ~a ~a/~a.avi"
+		  fps temp-path fps output-path num))
+  (rm temp-path)))
+
+(define (render-all-tubes path ;;path to video
+			  tubes-with-scores ;; list of multiple tubes
+			  outdir)
+ (for-each-indexed
+  (lambda (tube i)
+   (render-one-tube path tube outdir i))
+  tubes-with-scores))
+
+(define (tube-test-end-to-end path
+			      outdir
+			      K
+			      L)
+ (let* ((video-pathname (format #f "~a/video_front.avi" path))
+	(sorted-tubes (get-all-tubes-sorted video-pathname K L)))
+  (render-all-tubes path sorted-tubes outdir)))
+
+(define (big-tube-test-end-to-end)
+ (let* ((num-tubes 20)
+	(paths (list "/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/"
+		    "/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-1-sentence-5/"
+		    "/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-2-sentence-0/"))
+	(outdir "20151229test2")
+	(K 10)
+	(L 10))
+  (for-each (lambda (path)
+	     (let* ((video-pathname (format #f "~a/video_front.avi" path))
+		    (sorted-tubes
+		     (sublist (get-all-tubes-sorted video-pathname K L) 0 num-tubes)))
+	      (render-all-tubes path sorted-tubes outdir)))
+	    paths)))
+
+
+	 
 
 ;;start-up initialization stuff
 (start-matlab!)
