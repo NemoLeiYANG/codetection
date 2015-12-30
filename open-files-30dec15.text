@@ -1,0 +1,26 @@
+.   notes.text          235972  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+  * *scheme*           1228146  Inferior Scheme:
+    codetection-test.s: 126642  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+ %  felz-baum-welch-t: 1005164  Scheme		  /home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-train.sc
+    idealib-tracks.sc   224055  Scheme		  ~/darpa-collaboration/ideas/idealib-tracks.sc
+  * *shell*<3>           65721  Shell:run	  ~/darpa-collaboration/
+  * *shell*<2>            7843  Shell:run	  ~/codetection/
+  * *shell*              52044  Shell:run	  ~/codetection/source/new-sentence-codetection/
+ %  felz-baum-welch-plot: 9947  Scheme		  /home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-plotting.sc
+  * *shell*<4>           10126  Shell:run	  /home/dpbarret/darpa-collaboration/pose-retraining/
+    makefile             15227  GNUmakefile	  ~/darpa-collaboration/ideas/makefile
+    felz-baum-welch-tr: 942313  Scheme		  ~/darpa-collaboration/pose-retraining/felz-baum-welch-train.sc
+    run_MF.cpp            8982  C++/l		  ~/codetection/source/new-sentence-codetection/run_MF.cpp
+    run_TLD.cpp           7446  C++/l		  ~/codetection/source/new-sentence-codetection/run_TLD.cpp
+    idealib-stuff.sc    215317  Scheme		  ~/darpa-collaboration/ideas/idealib-stuff.sc
+    rendering-code.sc    71787  Scheme		  ~/codetection/rendering-code.sc
+    QobiScheme-AD.sc    295402  Scheme		  ~/QobiScheme/source/QobiScheme-AD.sc
+    toollib-image-proc: 124889  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/ideas/toollib-image-processing.sc
+    toollib-codetection: 19140  Scheme		  ~/codetection/source/new-sentence-codetection/toollib-codetection.sc
+    open-files-18dec-15.: 6122  Text		  ~/codetection/open-files-18dec-15.text
+ %  tracker-test.sc       1662  Scheme		  /home/dpbarret/tracker-test.sc
+    foo.txt                967  Text		  /tmp/foo.txt
+ %  run_and_display_TLD.: 7472  C++/l		  /home/dpbarret/run_and_display_TLD.cpp
+    *scratch*              191  Lisp Interaction
+  * *Messages*            2623  Fundamental
+ %  *Ediff Registry*       482  MetaEdiff

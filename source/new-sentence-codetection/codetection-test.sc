@@ -3351,13 +3351,15 @@
 	(w-val (min (z box) (- (- video-width 1) (x box))))
 	(h-val (min (vector-ref box 3) (- (- video-height 1) (y box))))
 	(score (vector-ref box 4))
-	(boxes (join (read-from-string
-		      (system-output
-		       (format #f
-			 "LD_LIBRARY_PATH=/home/dpbarret/opencv3/lib /home/sbroniko/codetection/source/new-sentence-codetection/run-MF.out ~a ~a ~a ~a ~a ~a"
-			 video-pathname
-			 starting-frame
-			 x-val y-val w-val h-val))))))
+	(raw-boxes (join (read-from-string
+			  (system-output
+			   (format #f
+				   "LD_LIBRARY_PATH=/home/dpbarret/opencv3/lib /home/sbroniko/codetection/source/new-sentence-codetection/run-MF.out ~a ~a ~a ~a ~a ~a"
+				   video-pathname
+				   starting-frame
+				   x-val y-val w-val h-val)))))
+	(no-box '#(0 0 0 0))
+	(boxes (map (lambda (b) (if (equal? b no-box) #f b)) raw-boxes)))
 
   (list boxes score)))
 
@@ -3365,20 +3367,29 @@
  (let* ((proposals-with-frame-numbers
 	 (generate-proposals video-pathname K L))
 	(all-tubes
-	 (join (map
-	  (lambda (prop-list)
-	   (map
-	    (lambda (box)
-	     (get-medianflow-tube-from-starting-frame-and-proposal-box video-pathname
-								       (first prop-list)
-								       box))
-	    (second prop-list)))
-	      proposals-with-frame-numbers))))
+	 (join
+	  (map
+	   (lambda (prop-list)
+	    (begin
+	     (display (format #f "starting collection of ~a tubes in frame ~a of ~a"
+			      (length (second prop-list)) (first prop-list)
+			      video-pathname))
+	     (newline)
+	     (map
+	      (lambda (box)
+	       (get-medianflow-tube-from-starting-frame-and-proposal-box video-pathname
+									 (first prop-list)
+									 box))
+	      (second prop-list))))
+	   proposals-with-frame-numbers))))
   all-tubes))
 
 (define (get-all-tubes-sorted video-pathname K L)
  (let* ((all-tubes (get-all-tubes video-pathname K L)))
   (sort all-tubes > (lambda (b) (second b)))))
+
+;;tubes come out as a list of vectors, 1 per frame, in the format #(x1 y1 x2 y2).
+;;if no box is found in a frame, then that frame's vector is #(0 0 0 0)
 
 (define (render-one-tube path ;;path to video
 			 tube-with-score
@@ -3397,26 +3408,33 @@
 	     (tube tube)
 	     (n 0))
    (if (or (null? tube) (null? images))
-       (dtrace "render-one-tube finished in ~a" output-path)
-       (begin
-	(let* ((box (first tube))
-	       (image (first images))
-	       (x-val (x box))
-	       (y-val (y box))
-	       (w-val (- (z box) (x box)))
-	       (h-val (- (vector-ref box 3) (y box))))
-	 (imlib:draw-rectangle image x-val y-val w-val h-val
-			       (vector 0 0 255))
-	 (imlib:draw-rectangle image (+ x-val 1) (+ y-val 1) w-val h-val
-			       (vector 0 0 255))
-	 (imlib:draw-rectangle image (- x-val 1) (- y-val 1) w-val h-val
-			       (vector 0 0 255))
-	 (imlib:save image (format #f "~a/img-~a.png" temp-path
-				   (number->padded-string-of-length n 5)))
-	 (loop (rest images) (rest tube) (+ n 1))))))
+       #f;;(dtrace (format #f "render-one-tube finished in ~a" output-path) #f)
+       ;;(begin
+       (let ((image (first images)))
+	(if (first tube)
+	    (let* ((box (first tube))
+		   ;;(image (first images))
+		   (x-val (x box))
+		   (y-val (y box))
+		   (w-val (- (z box) (x box)))
+		   (h-val (- (vector-ref box 3) (y box))))
+	     (imlib:draw-rectangle image x-val y-val w-val h-val
+				   (vector 0 0 255))
+	     (imlib:draw-rectangle image (+ x-val 1) (+ y-val 1) w-val h-val
+				   (vector 0 0 255))
+	     (imlib:draw-rectangle image (- x-val 1) (- y-val 1) w-val h-val
+				   (vector 0 0 255))))
+	(imlib:save image (format #f "~a/img-~a.png" temp-path
+				  (number->padded-string-of-length n 5)))
+	(imlib:free-image-and-decache image)
+	(loop (rest images) (rest tube) (+ n 1)))))
   (system (format #f
-		  "ffmpeg -framerate ~a -i ~a/img-0%04d.png -b 4096k -r ~a ~a/~a.avi"
-		  fps temp-path fps output-path num))
+		  "ffmpeg -loglevel 0 -framerate ~a -i ~a/img-0%04d.png -b 4096k -r ~a ~a/~a.avi >/dev/null 2>&1"
+		  fps temp-path fps output-path
+		  (number->padded-string-of-length num 3)))
+  (display (format #f "saved ~a/~a.avi "
+		   output-path (number->padded-string-of-length num 3)))
+  (newline)
   (rm temp-path)))
 
 (define (render-all-tubes path ;;path to video
@@ -3427,6 +3445,51 @@
    (render-one-tube path tube outdir i))
   tubes-with-scores))
 
+;;------------------tube NMS functions
+
+(define (scott-box-x1 box) (x box))
+
+(define (scott-box-x2 box) (z box))
+
+(define (scott-box-y1 box) (y box))
+
+(define (scott-box-y2 box) (vector-ref box 3))
+
+(define (scott-box-area box)
+ (let* ((x1 (scott-box-x1 box))
+	(x2 (scott-box-x2 box))
+	(y1 (scott-box-y1 box))
+	(y2 (scott-box-y2 box)))
+  (* (- x2 x1) (- y2 y1))))
+
+(define (scott-box-intersection-area box1 box2)
+ (let* ((x1 (max (scott-box-x1 box1) (scott-box-x1 box2)))
+	(x2 (min (scott-box-x2 box1) (scott-box-x2 box2)))
+	(y1 (max (scott-box-y1 box1) (scott-box-y1 box2)))
+	(y2 (min (scott-box-y2 box1) (scott-box-y2 box2))))
+  (cond
+   ((or (> 0 (scott-box-area box1)) (> 0 (scott-box-area box2))) #f)
+   ((or (<= x2 x1) (<= y2 y1)) 0)
+   (else (* (- x2 x1) (- y2 y1))))))
+
+(define (scott-box-union-area box1 box2)
+ (let* ((box1-area (scott-box-area box1))
+	(box2-area (scott-box-area box2))
+	(intersection-area (scott-box-intersection-area box1 box2)))
+  (if (and (> box1-area 0) (> box2-area 0))
+      (- (+ box1-area box2-area) intersection-area)
+      0)))
+
+(define (scott-box-intersection-over-union box1 box2)
+ (let* ((union-area (scott-box-union-area box1 box2))
+	(intersection-area (scott-box-intersection-area box1 box2)))
+  (if (> union-area 0)
+      (/ intersection-area union-area)
+      0)))
+
+
+
+;;------------------TESTING STUFF-----------------------
 (define (tube-test-end-to-end path
 			      outdir
 			      K
@@ -3437,9 +3500,10 @@
 
 (define (big-tube-test-end-to-end)
  (let* ((num-tubes 20)
-	(paths (list "/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/"
-		    "/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-1-sentence-5/"
-		    "/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-2-sentence-0/"))
+	(paths (list ;;"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/"
+		    ;;"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-1-sentence-5/"
+		    "/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-2-sentence-0/"
+		))
 	(outdir "20151229test2")
 	(K 10)
 	(L 10))

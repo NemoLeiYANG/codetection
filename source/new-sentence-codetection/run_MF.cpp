@@ -135,6 +135,7 @@ int main( int argc, char** argv ){
   {
     cap >> frames[i];
   }
+  cap.release(); //clean up, just to be sure
   //  printf("frames copied\n");
   //  return 0;
 
