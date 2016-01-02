@@ -4435,6 +4435,8 @@ Open files in Emacs 11Nov15
 
 ----------------git commit 5725541---------------
 
+30 Dec 15
+
 --Run of big-tube-test-end-to-end on floorplan-1-sentence-5 by itself took ~49
   minutes (2917.81s).
 
@@ -4487,9 +4489,30 @@ Open files in Emacs 11Nov15
   4. backproject each box in each tube to world coordinate and compute variance
      over tube -- in scheme over matlab?
 
+----------------git commit c173c0e---------------
+
+1 Jan 16
+
+--Wrote tube-intersection-over-union and tubes-overlap? to implement tube IoU as
+  described above.  Seems to work properly.
+
+--Next implemented tube-nms to reject tubes that overlap too much (as described
+  above).  Seems to work properly.
+
+--Next step is to render top 20 (?) tubes on all good videos and see if that
+  gets us all interesting objects.
 
 
 
+--Tasks from Jeff email 1638 30 Dec
+  1. NMS on tubes working
+     DONE 1 Jan
+  2. render top 20 tubes for all videos -- or raise num-tubes till we get all
+  interesting objects
+  3. replace 0,0,0,0 with boolean for box presence 
+     DONE 30 Dec--tested and appears to still work with rendering functions
+  4. backproject each box in each tube to world coordinate and compute variance
+     over tube -- in scheme over matlab?
 
 ***TO THINK ABOUT: 
       For tube NMS: 

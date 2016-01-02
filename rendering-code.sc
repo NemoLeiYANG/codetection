@@ -1,5 +1,6 @@
 (load "/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc")
-(load "/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc")
+;;(load "/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc")
+(load "/home/sbroniko/codetection/source/rover-projection.sc")
 
 ;; this is copied from scotts folder some place
 ;; (define frame-data (read-object-from-file "/tmp/frame-data.sc"))

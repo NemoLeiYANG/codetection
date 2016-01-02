@@ -3456,21 +3456,27 @@
 (define (scott-box-y2 box) (vector-ref box 3))
 
 (define (scott-box-area box)
- (let* ((x1 (scott-box-x1 box))
-	(x2 (scott-box-x2 box))
-	(y1 (scott-box-y1 box))
-	(y2 (scott-box-y2 box)))
-  (* (- x2 x1) (- y2 y1))))
+ (if box
+     (let* ((x1 (scott-box-x1 box))
+	    (x2 (scott-box-x2 box))
+	    (y1 (scott-box-y1 box))
+	    (y2 (scott-box-y2 box)))
+      (* (- x2 x1) (- y2 y1)))
+     0))
 
 (define (scott-box-intersection-area box1 box2)
- (let* ((x1 (max (scott-box-x1 box1) (scott-box-x1 box2)))
-	(x2 (min (scott-box-x2 box1) (scott-box-x2 box2)))
-	(y1 (max (scott-box-y1 box1) (scott-box-y1 box2)))
-	(y2 (min (scott-box-y2 box1) (scott-box-y2 box2))))
-  (cond
-   ((or (> 0 (scott-box-area box1)) (> 0 (scott-box-area box2))) #f)
-   ((or (<= x2 x1) (<= y2 y1)) 0)
-   (else (* (- x2 x1) (- y2 y1))))))
+ (let* ((box1-area (scott-box-area box1))
+	(box2-area (scott-box-area box2)))
+  (if (or (= 0 box1-area) (= 0 box2-area))
+      0
+      (let* ((x1 (max (scott-box-x1 box1) (scott-box-x1 box2)))
+	     (x2 (min (scott-box-x2 box1) (scott-box-x2 box2)))
+	     (y1 (max (scott-box-y1 box1) (scott-box-y1 box2)))
+	     (y2 (min (scott-box-y2 box1) (scott-box-y2 box2))))
+       (cond
+	((or (> 0 box1-area) (> 0 box2-area)) #f)
+	((or (<= x2 x1) (<= y2 y1)) 0)
+	(else (* (- x2 x1) (- y2 y1))))))))
 
 (define (scott-box-union-area box1 box2)
  (let* ((box1-area (scott-box-area box1))
@@ -3486,6 +3492,46 @@
   (if (> union-area 0)
       (/ intersection-area union-area)
       0)))
+
+(define (tube-intersection-over-union tube1-with-score
+				      tube2-with-score) 
+ (let* ((tube1 (first tube1-with-score))
+	(tube2 (first tube2-with-score))
+	(intersection-sum (reduce +
+				  (map (lambda (b1 b2)
+					(scott-box-intersection-area b1 b2))
+				       tube1 tube2)
+				  0))
+	(union-sum (reduce +
+			   (map (lambda (b1 b2)
+				 (scott-box-union-area b1 b2))
+				tube1 tube2)
+			   0)))
+  (/ intersection-sum union-sum)))
+
+(define (tubes-overlap? tube1-with-score
+			tube2-with-score
+			threshold)
+ (> (tube-intersection-over-union tube1-with-score tube2-with-score)
+    threshold))
+
+(define (tube-nms tubes-list threshold)
+ ;; (let* ((tubes (sort tubes-list > (lambda (b) (second b)))))
+ ;;  ;;ensure sorted tube list
+ ;;  (let loop ((nms-list (first tubes))
+ ;; 	     (remaining-tubes (rest tubes)))
+ ;;   (if (null? remaining-tubes)
+ ;;       (reverse nms-list)
+ ;;       (
+ (let loop ((tubes (sort tubes-list > (lambda (b) (second b))))
+	    (nms-tubes '()))
+  (if (null? tubes)
+      (reverse nms-tubes)
+      (loop (remove-if (lambda (test-tube)
+			(tubes-overlap? (first tubes) test-tube threshold))
+		       (rest tubes))
+	    (cons (first tubes) nms-tubes)))))
+	
 
 
 
