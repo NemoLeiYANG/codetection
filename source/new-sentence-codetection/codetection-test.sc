@@ -3507,7 +3507,9 @@
 				 (scott-box-union-area b1 b2))
 				tube1 tube2)
 			   0)))
-  (/ intersection-sum union-sum)))
+  (if (= union-sum 0)
+      0
+      (/ intersection-sum union-sum))))
 
 (define (tubes-overlap? tube1-with-score
 			tube2-with-score
@@ -3523,10 +3525,15 @@
  ;;   (if (null? remaining-tubes)
  ;;       (reverse nms-list)
  ;;       (
+ (display (format #f "starting tube-nms with ~a tubes" (length tubes-list)))
+ (newline)
  (let loop ((tubes (sort tubes-list > (lambda (b) (second b))))
 	    (nms-tubes '()))
   (if (null? tubes)
-      (reverse nms-tubes)
+      ;; (begin
+      ;;  (display (format #f "tube-nms complete: ~a tubes output" (length nms-tubes)))
+      ;;  (newline)
+      (reverse nms-tubes);;)
       (loop (remove-if (lambda (test-tube)
 			(tubes-overlap? (first tubes) test-tube threshold))
 		       (rest tubes))
@@ -3560,12 +3567,102 @@
 	      (render-all-tubes path sorted-tubes outdir)))
 	    paths)))
 
+(define (big-tube-test-end-to-end2 outdir)
+ (let* ((num-tubes 20)
+	(paths (system-output "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/floor*/"))	
+	(K 10)
+	(L 10)
+	(nms-threshold 0.5))
+  (dtrace "Starting big-tube-test-end-to-end2 at " (system "date"))
+  (for-each (lambda (path)
+	     (let* ((video-pathname (format #f "~a/video_front.avi" path))
+		    (outfile-name (format #f "~a/~a/nms-tubes.sc" path outdir))
+		    (sorted-tubes
+		     (get-all-tubes-sorted video-pathname K L))
+		    (nms-tubes
+		     (tube-nms sorted-tubes nms-threshold))
+		    (tubes-to-render (sublist nms-tubes 0 num-tubes)))
+	      (mkdir-p (format #f "~a/~a" path outdir))
+	      (write-object-to-file nms-tubes outfile-name)
+	      (display
+	       (format #f "wrote ~a, ~a tubes" outfile-name (length nms-tubes)))
+	      (newline)
+	      ;; (render-all-tubes path tubes-to-render outdir) ;;removing to just save the nms-tracks.sc files
+	      ))
+	    paths)
+  (dtrace "Finished big-tube-test-end-to-end2 at " (system "date"))))
+
+;;THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
+
+(define (get-all-nms-tubes-and-render-n path outdir K L tube-nms-threshold N)
+ (dtrace (format #f "starting get-all-nms-tubes-and-render-n for ~a" path) #f)
+ (system "date")
+ (let* ((num-tubes N)
+	(nms-threshold tube-nms-threshold)
+	(video-pathname (format #f "~a/video_front.avi" path))
+	(outfile-name (format #f "~a/~a/nms-tubes.sc" path outdir))
+	(sorted-tubes
+	 (get-all-tubes-sorted video-pathname K L))
+	(nms-tubes
+	 (tube-nms sorted-tubes nms-threshold))
+	(tubes-to-render (sublist nms-tubes 0 num-tubes)))
+  (mkdir-p (format #f "~a/~a" path outdir))
+  (write-object-to-file nms-tubes outfile-name)
+  (dtrace (format #f "wrote ~a, ~a tubes" outfile-name (length nms-tubes)) #f)
+  (render-all-tubes path tubes-to-render outdir))
+ (dtrace (format #f "rendered ~a tubes in ~a/~a"  N path outdir) #f)
+ (system "date"))
+
+(define (get-and-render-n-nms-tubes-house-test outdir N)
+ (let* ((K 10)
+	(L 10)
+	(tube-nms-threshold 0.5)
+	(servers (list "chino" "buddhi" "maniishaa" "alykkyys"))
+	(source "seykhl")
+	(cpus-per-job 5)
+	(data-directory "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
+	(paths (system-output (format #f "ls -d ~afloor*/" data-directory)))
+	(output-c (format #f "~aresults-~a/" data-directory outdir))
+	(commands-c
+	 (map
+	  (lambda (dir)
+	   (format #f
+		   "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (get-all-nms-tubes-and-render-n \"~a\" \"~a\" ~a ~a ~a ~a) :n :n :n :n :b"
+		   dir outdir K L tube-nms-threshold N))
+	  paths)))
+  (dtrace (format #f "starting get-and-render-n-nms-tubes-house-test with output in ~a and n = ~a"
+		  outdir N) #f)
+  (system "date")
+  (mkdir-p output-c)
+  (for-each
+   (lambda (server)
+    (run-unix-command-on-server
+     (format #f "mkdir -p ~a" output-c) server))
+   servers)
+  (synchronous-run-commands-in-parallel-with-queueing commands-c
+						      servers
+						      cpus-per-job
+						      output-c
+						      source
+						      data-directory)
+  (dtrace "processing complete, beginning rsync of results" #f)
+  (system "date")
+  (for-each
+   (lambda (server)
+    (rsync-directory-to-server server data-directory source))
+   servers)
+  (dtrace "results rsync complete" #f)
+  (dtrace
+   (format #f "get-and-render-n-nms-tubes-house-test complete in ~a with n = ~a"
+	   outdir N) #f)
+  (system "date")))
+		   
+  
 
 	 
 
 ;;start-up initialization stuff
 (start-matlab!)
-;;moved the below calls into ~/Documents/MATLAB/startup.m
-;; (matlab "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection/'))")
-;; (matlab "InstallEdgeBoxes")
+;;adding path and running InstallEdgeBoxes and enablePool now done in
+;;~/Documents/MATLAB/startup.m
 

@@ -4502,6 +4502,66 @@ Open files in Emacs 11Nov15
 --Next step is to render top 20 (?) tubes on all good videos and see if that
   gets us all interesting objects.
 
+----------------git commit 40f902f---------------
+
+2 Jan 16
+
+--1st attempt at running big-tube-test-end-to-end2 (with nms-tubes) started at
+  2025 on 1 Jan 16.  Restarted at 2057 after finding divide-by-zero error.
+  Restarted again at 2327 after finding I forgot a mkdir-p before saving the
+  tubes.sc file.
+
+--Third restart ran until it hit floorplan-0-sentence-4 then gave the same 'too
+  many files open' error message that I saw from the memory leak last
+  week--where could there be a memory leak now??  Do I fix this by splitting it
+  up and restarting dsci for every run?
+
+--Also saw that I had a logic error--was running NMS *AFTER* taking the top
+  num-tubes tubes--FIXED.
+
+--Full copy of /aux/sbroniko/vader-rover/logs/house-test-12nov15/ copied to all
+  workstations but mohio and all servers but jalitusteabe, upplysingaoflun,
+  verstand, arivu
+
+--Restarted run named 20160102test1 at 0718 on 2 Jan.  Had some sort of hang, so
+  killed it.
+
+--Restarted 20160102test1 again at 0845.  Crashed again due to too many open
+  files error.  Thinking that I need to split it up among a couple of different
+  workstations and have dsci exit after completing each run.
+
+--Instead, going to try to skip the rendering and just save the nms-tracks.sc
+  file, then deal with the rendering problem later.  Renaming this test as
+  20160102test2, starting at 1838 on 2 Jan.
+
+--Need to write a separate rendering function--maybe still split out among
+  different workstations?
+
+3 Jan 16
+
+--20160102test2 run crashed in the middle of floorplan-0-sentence-6 with the
+  'too many open files' error again.  RAM was maxed out.  The leak must be
+  somewhere in the tube collection function--maybe in C++?  Can still probably
+  get around this by splitting up between workstations and restarting dsci fresh
+  for each run.
+
+--Wrote get-all-nms-tubes-and-render-n to process a single run and
+  get-and-render-n-nms-tubes-house-test to process all runs over several
+  machines.
+
+--Started run of get-and-render-n-nms-tubes-house-test from seykhl on (chino,
+  buddhi, maniishaa, alykkyys) with n = 20 at 1627.
+
+--Still running as of 2108:
+"running for:" "15300seconds"
+"started-jobs:" 22
+"waiting-jobs:" 5
+"done-jobs:" 16
+"effective cpus" (0. 0. 0. 0.)
+
+
+
+**THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
 
 
 --Tasks from Jeff email 1638 30 Dec
@@ -4509,10 +4569,12 @@ Open files in Emacs 11Nov15
      DONE 1 Jan
   2. render top 20 tubes for all videos -- or raise num-tubes till we get all
   interesting objects
+     RUNNING as of 2108 3 Jan--should complete overnight
   3. replace 0,0,0,0 with boolean for box presence 
      DONE 30 Dec--tested and appears to still work with rendering functions
   4. backproject each box in each tube to world coordinate and compute variance
      over tube -- in scheme over matlab?
+     TO DO
 
 ***TO THINK ABOUT: 
       For tube NMS: 
