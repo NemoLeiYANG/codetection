@@ -3282,29 +3282,39 @@
 (define (generate-proposals video-pathname
 			    K  ;;top-k
 			    L) ;;interval between frames (every Lth frame)
+ (dtrace "in generate-proposals before start-matlab!" #f)
  (start-matlab!)
+  (dtrace "in generate-proposals after start-matlab!" #f)
  (if (not (integer? L))
      (dtrace "ERROR: L must be an integer" #f)
      (let* ((num-frames (video-length (load-darpa-video video-pathname)))
 	    (frames (video->frames L video-pathname))
 	    (factor 10) ;;multiplier for proposals so that K will be left after NMS
-	    (iou 0.5) ;;HARDCODED intersection-over-union ratio
+	    (iou 0.5) ;;HARDCODED PROPOSAL BOX intersection-over-union ratio
 	    (frame-numbers (get-frame-numbers num-frames L)))
-      ;;(dtrace "before frames->matlab!" #f)
+      (dtrace "before frames->matlab!" #f)
       (frames->matlab! frames "frames")
-      ;;(dtrace "after frames->matlab!" #f)
+      (dtrace "after frames->matlab!" #f)
+      ;; (map imlib:free-image-and-decache frames) ;;NEW
+      ;; (dtrace "after imlib:free" #f)
       (matlab (format #f "K=~a;" K ))
       (matlab (format #f "factor=~a;" factor))
-      ;;(dtrace "after K=" #f)
+      (dtrace "after K=" #f)
       (matlab "bbs = get_proposals_edgeboxes(frames,(K*factor));")
+      (dtrace "after bbs =" #f)
       ;;run nms on generated proposals
       (matlab (format #f "iou=~a;" iou))
       (matlab "nmsbbs = nms_iou(bbs,iou,K);")
+      (dtrace "after nmsbbs =" #f)
+      ;; (matlab "clear frames") ;;NEW--cleaning up memory
+      ;; (dtrace "after clear frames" #f)
       ;; (list (length frame-numbers)
       ;; 	    K
       ;; 	    frame-numbers
       ;; 	    (map vector->list
       ;; 		 (vector->list (transpose (matlab-get-variable "nmsbbs")))))
+      ;; (map imlib:free-image-and-decache frames) ;;NEW
+      ;; (dtrace "after imlib:free" #f)
       (map-indexed (lambda (num i) (list num (list-ref
       					      (map vector->list
       						   (vector->list
@@ -3606,6 +3616,10 @@
 	(nms-tubes
 	 (tube-nms sorted-tubes nms-threshold))
 	(tubes-to-render (sublist nms-tubes 0 num-tubes)))
+  (if (not (start-matlab!))
+      (begin
+       (matlab "clear all")
+       (dtrace "called clear all in matlab" #f)))
   (mkdir-p (format #f "~a/~a" path outdir))
   (write-object-to-file nms-tubes outfile-name)
   (dtrace (format #f "wrote ~a, ~a tubes" outfile-name (length nms-tubes)) #f)
@@ -3617,12 +3631,25 @@
  (let* ((K 10)
 	(L 10)
 	(tube-nms-threshold 0.5)
-	(servers (list "chino" "buddhi" "maniishaa" "alykkyys"))
+	;;(servers (list "chino" "buddhi" "maniishaa" "alykkyys"))
+	;;(servers (list "chino" "buddhi" "maniishaa" "alykkyys" "seulki" "faisneis"))
+	;;(servers (list "alykkyys" "faisneis"))
+	(servers (list "cuddwybodaeth" "istihbarat" "wywiad"))
 	(source "seykhl")
-	(cpus-per-job 5)
+	;;(cpus-per-job 5)
+	(cpus-per-job 7) ;;for 2G servers
 	(data-directory "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
 	(paths (system-output (format #f "ls -d ~afloor*/" data-directory)))
+	;; (paths
+	;;  (map (lambda (dir)
+	;;        (format #f "~a~a" data-directory dir))
+	;;       ;; (list "floorplan-0-sentence-0" "floorplan-0-sentence-1"
+	;;       ;; 	    "floorplan-3-sentence-4" "floorplan-4-sentence-5"
+	;;       ;; 	    "floorplan-5-sentence-1" "floorplan-5-sentence-2")
+	;;       (list "floorplan-4-sentence-5/" "floorplan-5-sentence-2/")
+	;;       ))
 	(output-c (format #f "~aresults-~a/" data-directory outdir))
+	;;(output-c (format #f "~aresults-~a-rerun3/" data-directory outdir))
 	(commands-c
 	 (map
 	  (lambda (dir)
@@ -3659,10 +3686,12 @@
 		   
   
 
-	 
+;;(define (align-tubes-with-poses q
+
+
 
 ;;start-up initialization stuff
-(start-matlab!)
+
 ;;adding path and running InstallEdgeBoxes and enablePool now done in
 ;;~/Documents/MATLAB/startup.m
-
+(start-matlab!)

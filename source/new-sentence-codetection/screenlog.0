@@ -1,0 +1,1552 @@
+Identity added: /home/sbroniko/.ssh/id_rsa_github (/home/sbroniko/.ssh/id_rsa_github)
+]0;sbroniko@seykhl: ~/codetection/source/new-sentence-codetection[01;32msbroniko@seykhl[00m:[01;36m[new-sentence-codetection][00m$ pkill -u sbronikohtop[Kcat output-3.out err[Chtop[Kcat output-3.err out[Cls[Kcd /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Chtop[Kpkill -u sbronikohtop[Kcat output-5.out ls[Kcat output-2.out htop[Kcat output-2.out htop[Kcat output-2.out err[Cls[Kcd /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Chtop[Kpkill -u sbronikohtop[Kcat output-7.out htop[Kpkill -u sbronikohtop[Kcd /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cls[Kcat output-2.err out[Chtop[Kcat output-2.out htop[Kcat output-2.out ls[Kcat output-5.out htop[Kpkill -u sbronikohtop[Kcd /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cls[Kcat output-3.out err[Chtop[Kcat output-3.err out[Chtop[Kpkill -u sbroniko[Krlwrap darpa-wrap run-dsci
+[K***** INITIALIZEVAR Duplicately defined symbol +
+***** INITIALIZEVAR Duplicately defined symbol -
+***** INITIALIZEVAR Duplicately defined symbol *
+***** INITIALIZEVAR Duplicately defined symbol /
+***** INITIALIZEVAR Duplicately defined symbol SQRT
+***** INITIALIZEVAR Duplicately defined symbol EXP
+***** INITIALIZEVAR Duplicately defined symbol LOG
+***** INITIALIZEVAR Duplicately defined symbol EXPT
+***** INITIALIZEVAR Duplicately defined symbol SIN
+***** INITIALIZEVAR Duplicately defined symbol COS
+***** INITIALIZEVAR Duplicately defined symbol ATAN
+***** INITIALIZEVAR Duplicately defined symbol =
+***** INITIALIZEVAR Duplicately defined symbol <
+***** INITIALIZEVAR Duplicately defined symbol >
+***** INITIALIZEVAR Duplicately defined symbol <=
+***** INITIALIZEVAR Duplicately defined symbol >=
+***** INITIALIZEVAR Duplicately defined symbol ZERO?
+***** INITIALIZEVAR Duplicately defined symbol POSITIVE?
+***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
+***** INITIALIZEVAR Duplicately defined symbol REAL?
+Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
+> [K> [K> (load "codetection-test.sc")[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K(load "codetection-test.sc")
+MODULE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+*3G-AND-4G-SERVERS*
+*2G-SERVERS*
+*WORKSTATIONS*
+SERVER-NAME->NUMBER-OF-CPUS
+GET-SERVER-IDLE-PERCENT
+GET-APPROXIMATE-FREE-SERVER-CPUS
+GET-TOTAL-SERVER-FREE-CPUS
+REPEAT-LIST-TO-LENGTH-N
+DETERMINE-JOB-TO-SERVER-MAPPING
+DETERMINE-JOB-TO-SERVER-MAPPING-WITH-QUEUEING
+SANITIZE-STRING-FOR-SPAWNING
+CREATE-DSCI-JOB
+CREATE-DSCI-JOB2
+SPAWN-JOBS
+SPAWN-AND-WAIT-FOR-JOBS
+SPAWN-AND-WAIT-FOR-JOBS-WITH-QUEUEING
+SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL
+RSYNC-DIRECTORY-TO-SERVER
+RUN-UNIX-COMMAND-ON-SERVER
+SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL-WITH-QUEUEING
+"/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc"
+MODULE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+TRANSFORM-WORLD-POINT-TO-PIXEL
+TRANSFORM-WORLD-POINT-TO-PIXEL-WITH-TRANSFORMATION
+TRANSFORM-WORLD-POINT->PIXEL-GENERIC
+DRAW-POINT-PROJECTION
+DRAW-TEXT-PROJECTION
+DRAW-LINE-PROJECTION
+DRAW-ARROW-PROJECTION
+DRAW-AXIS-PROJECTION
+WORLD-FORWARD-PROJECT
+DRAW-3D-LINES-PROJECTION
+DRAW-CIRCLE-PROJECTION
+FACING-CAMERA?
+FIND-CYLINDER-LINES
+POINTS->SETS-OF-VISIBLE-POINTS
+DRAW-CYLINDER-PROJECTION
+DRAW-KING-BOTTOM-PROJECTION
+MAKE-CYLINDER-IMAGE
+MAKE-KING-BOTTOM-IMAGE
+TEST-MAKE-CYLINDER-IMAGE
+TEST-MAKE-KING-BOTTOM-IMAGE
+"/home/dpbarret/imitate/tool/toollib-perspective-projection.sc"
+LINSPACE
+V/S
+VECTORS->ANGLE
+MY-ROTATION-3D-X
+MY-ROTATION-3D-Y
+MY-ROTATION-3D-Z
+MY-MAKE-TRANSFORM-3D
+INVERT-TX-MATRIX
+***** POINT->HOMOGENOUS is redefined
+POINT->HOMOGENOUS
+***** HOMOGENOUS->POINT is redefined
+HOMOGENOUS->POINT
+***** TRANSFORM-POINT-3D is redefined
+TRANSFORM-POINT-3D
+PIXEL-AND-HEIGHT->WORLD
+READ-ROBOT-ESTIMATED-POSE-FROM-LOG-FILE
+INTERPOLATE-LINE
+DRAW-3D-LINES-PROJECTION-NICE
+ROBOT-POSE-TO-WORLD->CAMERA-TXF
+ROBOT-POSE-TO-CAMERA->WORLD-TXF
+READ-CAMERA-TIMING
+TEST
+"/home/sbroniko/codetection/source/rover-projection.sc"
+PLOT-BOX-SCORES
+PLOT-BOX-SCORES-PRELOADED
+PLOT-LINES-IN-MATLAB
+PLOT-LINES-IN-MATLAB-WITH-SYMBOLS
+READ-PROBABILITIES-FROM-BOX-LIST
+READ-FRAME-NUMBERS-FROM-BOX-LIST
+READ-FILENAMES-FROM-BOX-LIST
+OFFSET-VIDEO-FRAME-NUMBERS
+PLOT-PROBABILITIES-FROM-BOX-LIST
+PLOT-SCORES-FROM-TRAINING
+PLOT-HMM-LIKELIHOODS
+PLOT-TRACK-SCORES
+VISUALIZE-BEST-MODELS
+VISUALIZE-BEST-ROOTS
+VISUALIZE-STATE-ITERATIONS
+"/home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-plotting.sc"
+VITERBI-BOXES
+BOX-AT-HEIGHT->WORLD-CORNERS
+DISCOUNT-BOXES
+VITERBI-MULTIPLE
+"/home/sbroniko/codetection/source/new-sentence-codetection/viterbi.sc"
+*CAMERA-OFFSET*
+*CAMERA-OFFSET-MATRIX*
+*CAMERA-K-MATRIX*
+SELECT-FRAMES
+RUN-CODETECTION-WITH-FRAMES
+RUN-CODETECTION-WITH-VIDEO
+ALIGN-FRAMES-WITH-POSES
+GET-POSES-THAT-MATCH-FRAMES
+FRAME-TEST
+SCOTT-PROPOSALS&SIMILARITY-WITH-FRAMES
+SCOTT-RUN-CODETECTION-FULL-VIDEO
+FRAME-TEST2
+MAKE-FRAMES
+GET-MATLAB-PROPOSALS-SIMILARITY
+GET-MATLAB-PROPOSALS-SIMILARITY-BY-FRAME
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO
+RUN-CODETECTION-WITH-PROPOSALS-SIMILARITY
+GET-MATLAB-DATA-HOUSE-TEST-NEW2
+RUN-CODETECTION-VITERBI
+RUN-CODETECTION-VITERBI-MULTIPLE
+VISUALIZE-RESULTS-TEST
+VISUALIZE-RESULTS
+VISUALIZE-RESULTS-IMPROVED
+VISUALIZE-RESULTS-IMPROVED-NEW
+VISUALIZE-RESULTS-VITERBI
+VISUALIZE-RESULTS-VITERBI-MULTIPLE
+RUN-FULL-RESULTS
+MATLAB-DATA-TO-FILES
+GET-MATLAB-DATA-TRAINING-OR-GENERATION-IMPROVED
+GET-MATLAB-DATA-AUTO-DRIVE-IMPROVED
+GET-MATLAB-DATA-TRAINING-OR-GENERATION
+RESULTS-END-TO-END
+JOIN-IMAGES
+JOIN-ALL-IMAGES
+RUN-MY-SHIT
+RUN-MY-SHIT-2
+GET-XY-FROM-RESULTS-FILE
+PLOT-OBJECTS-FROM-FILE
+*XMIN*
+*XMAX*
+*YMIN*
+*YMAX*
+*BOUNDARIES*
+*X-1*
+*X0*
+*X+1*
+*Y-1*
+*Y0*
+*Y+1*
+*Y+2*
+POINT-LOCATIONS
+PLOT-GRID
+PLOT-OBJECTS-FROM-FLOORPLAN
+PLOT-OBJECTS-FROM-FLOORPLAN-MULTICOLOR
+ENSURE-SCORES
+GET-SCORES-FROM-RESULTS-AND-FRAME-DATA-FILES
+GET-DETECTION-IMAGES
+MAKE-TEST-FILE
+GET-DETECTION-DATA-FOR-FLOORPLAN
+POINT-IN-TRIANGLE
+DETECT-SORT-LABEL-OBJECTS-SINGLE-FLOORPLAN
+GET-CODETECTION-RESULTS-TRAINING-OR-GENERATION
+GET-CODETECTION-RESULTS-AUTO-DRIVE
+GET-OBJECT-DETECTIONS-ALL-FLOORPLANS
+CODETECT-SORT-TEMPLABEL-TRAINING-OR-GENERATION
+CODETECT-SORT-TEMPLABEL-AUTO-DRIVE
+GET-GROUND-TRUTH-FROM-DATASET-FILE
+GET-LABELED-GROUND-TRUTH-FROM-DATASET-FILE
+MAKE-SCHEME-FILE-OF-XYS
+MAKE-SCHEME-FILE-OF-XYS-SEPARATED
+SCOTT-PROPOSALS-ONLY
+RUN-CODETECTION-ONLY-HOUSE-TEST
+RUN-CODETECTION-ONLY-HOUSE-TEST-2
+GET-CODETECTION-RESULTS-HOUSE-TEST
+GET-CODETECTION-RESULTS-HOUSE-TEST-2
+GET-MATLAB-DATA-HOUSE-TEST
+QUICK-AND-DIRTY-TEST
+SINGLE-RUN-TEST
+SINGLE-RUN-TEST-NEW
+SINGLE-RUN-TEST-NEW2
+SINGLE-RUN-TEST-VITERBI
+SINGLE-RUN-TEST-VITERBI-MULTIPLE
+READ-CAMERA-TIMING-NEW
+GET-MATLAB-DATA-HOUSE-TEST-NEW
+***** GET-MATLAB-DATA-HOUSE-TEST-NEW2 is redefined
+GET-MATLAB-DATA-HOUSE-TEST-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-NEW
+GET-MATLAB-PROPOSALS-SIMILARITY-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-VITERBI
+GET-AND-SAVE-PROPOSAL-BOXES
+GET-AND-SAVE-PROPOSAL-BOXES-ALL-VIDEOS
+FRAMES-AND-POSES->MATLAB
+SIMPLE-RUN-AND-PLOT
+SIMPLE-TEST
+SIMPLE-RUN-AND-PLOT-NEW
+SIMPLE-RUN-AND-PLOT-VITERBI
+READ-AND-SORT-MATLAB-PROPOSALS
+GET-TLD-TUBE-FROM-BOX
+SCOTT-BOX->VOC4
+*VIDEO-PATH*
+GET-FRAME-NUMBERS
+GENERATE-PROPOSALS
+FRAMES->MATLAB!
+GET-MEDIANFLOW-TUBE-FROM-STARTING-FRAME-AND-PROPOSAL-BOX
+GET-ALL-TUBES
+GET-ALL-TUBES-SORTED
+RENDER-ONE-TUBE
+RENDER-ALL-TUBES
+SCOTT-BOX-X1
+SCOTT-BOX-X2
+SCOTT-BOX-Y1
+SCOTT-BOX-Y2
+SCOTT-BOX-AREA
+SCOTT-BOX-INTERSECTION-AREA
+SCOTT-BOX-UNION-AREA
+SCOTT-BOX-INTERSECTION-OVER-UNION
+TUBE-INTERSECTION-OVER-UNION
+TUBES-OVERLAP?
+TUBE-NMS
+TUBE-TEST-END-TO-END
+BIG-TUBE-TEST-END-TO-END
+BIG-TUBE-TEST-END-TO-END2
+GET-ALL-NMS-TUBES-AND-RENDER-N
+GET-AND-RENDER-N-NMS-TUBES-HOUSE-TEST
+[K/usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
+[K26357328
+"codetection-test.sc"
+> [K> [K> (load "codetection-test.sc")[C[C[Cget-and-render-n-nms-tubes-house-test "20160104-server-test" 5)[C[C[K(get-and-render-n-nms-tubes-house-test "20160104-server-test" 5)
+"starting get-and-render-n-nms-tubes-house-test with output in 20160104-server-test and n = 5" #F
+Mon Jan  4 18:13:31 EST 2016
+"unix command:" "ssh cuddwybodaeth \"mkdir -p /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[K"unix command:" "ssh istihbarat \"mkdir -p /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[K"unix command:" "ssh wywiad \"mkdir -p /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Krm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//*.out': No such file or directory
+rm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//*.err': No such file or directory
+rm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+[Krm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//*.out': No such file or directory
+rm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//*.err': No such file or directory
+rm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+[Krm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//*.out': No such file or directory
+rm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//*.err': No such file or directory
+rm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+"rsync command:" "ssh cuddwybodaeth \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/\""
+[Kreceiving incremental file list
+[Kfloorplan-0-sentence-6/
+[Kresults-20160104-server-test/
+[K
+sent 432 bytes  received 689202 bytes  459756.00 bytes/sec
+total size is 63422417622  speedup is 91965.33
+"rsync command:" "ssh istihbarat \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/\""
+[Kreceiving incremental file list
+[Kresults-20160104-server-test/
+[K
+sent 427 bytes  received 689197 bytes  459749.33 bytes/sec
+total size is 63422417622  speedup is 91966.66
+"rsync command:" "ssh wywiad \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/\""
+[Kreceiving incremental file list
+[Kfloorplan-0-sentence-5/
+[Kresults-20160104-server-test/
+[K
+sent 432 bytes  received 689202 bytes  459756.00 bytes/sec
+total size is 63422417622  speedup is 91965.33
+[K"effective cpus" (7. 7. 7.)
+"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-1.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-1.err\" | ssh cuddwybodaeth 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-1 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-1/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-2.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-2.err\" | ssh istihbarat 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-2 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-2/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-3.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-3.err\" | ssh wywiad 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-3 & sleep .25"
+[K"system-returned:" 0
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.err
+output-1.out
+
+sent 69 bytes  received 2243 bytes  1541.33 bytes/sec
+total size is 6815  speedup is 2.95
+[K"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-2.err
+output-2.out
+
+sent 69 bytes  received 2239 bytes  1538.67 bytes/sec
+total size is 6815  speedup is 2.95
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+output-3.err
+output-3.out
+
+sent 66 bytes  received 2236 bytes  4604.00 bytes/sec
+total size is 6815  speedup is 2.96
+"running for:" "0seconds"
+"started-jobs:" 3
+"waiting-jobs:" 24
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.out
+
+sent 104 bytes  received 412 bytes  1032.00 bytes/sec
+total size is 7668  speedup is 14.86
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-2.out
+
+sent 104 bytes  received 355 bytes  306.00 bytes/sec
+total size is 7221  speedup is 15.73
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+output-3.out
+
+sent 101 bytes  received 404 bytes  1010.00 bytes/sec
+total size is 7531  speedup is 14.91
+"running for:" "180seconds"
+"started-jobs:" 3
+"waiting-jobs:" 24
+"done-jobs:" 0
+[K"effective cpus" (0. 7. 0.)
+"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-3/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-4.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-4.err\" | ssh istihbarat 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-4 & sleep .25"
+[K"system-returned:" 0
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.out
+
+sent 110 bytes  received 159 bytes  538.00 bytes/sec
+total size is 8216  speedup is 30.54
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-4.err
+output-4.out
+
+sent 69 bytes  received 2515 bytes  1722.67 bytes/sec
+total size is 14615  speedup is 5.66
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-3.out
+
+sent 110 bytes  received 147 bytes  514.00 bytes/sec
+total size is 7805  speedup is 30.37
+"running for:" "360seconds"
+"started-jobs:" 4
+"waiting-jobs:" 23
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.out
+[K
+sent 116 bytes  received 151 bytes  178.00 bytes/sec
+total size is 8627  speedup is 32.31
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-4.out
+
+sent 104 bytes  received 441 bytes  1090.00 bytes/sec
+total size is 14889  speedup is 27.32
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-3.out
+
+sent 110 bytes  received 155 bytes  176.67 bytes/sec
+total size is 8079  speedup is 30.49
+"running for:" "540seconds"
+"started-jobs:" 4
+"waiting-jobs:" 23
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.out
+
+sent 116 bytes  received 168 bytes  568.00 bytes/sec
+total size is 9179  speedup is 32.32
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-4.out
+
+sent 110 bytes  received 183 bytes  195.33 bytes/sec
+total size is 15300  speedup is 52.22
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-3.out
+
+sent 110 bytes  received 163 bytes  546.00 bytes/sec
+total size is 8353  speedup is 30.60
+[K"running for:" "720seconds"
+"started-jobs:" 4
+"waiting-jobs:" 23
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[KIdentity added: /home/sbroniko/.ssh/id_rsa_github (/home/sbroniko/.ssh/id_rsa_github)
+]0;sbroniko@seykhl: ~/codetection/source/new-sentence-codetection[01;32msbroniko@seykhl[00m:[01;36m[new-sentence-codetection][00m$ rlwrap darpa-wrap run-dsci
+[K***** INITIALIZEVAR Duplicately defined symbol +
+***** INITIALIZEVAR Duplicately defined symbol -
+***** INITIALIZEVAR Duplicately defined symbol *
+***** INITIALIZEVAR Duplicately defined symbol /
+***** INITIALIZEVAR Duplicately defined symbol SQRT
+***** INITIALIZEVAR Duplicately defined symbol EXP
+***** INITIALIZEVAR Duplicately defined symbol LOG
+***** INITIALIZEVAR Duplicately defined symbol EXPT
+***** INITIALIZEVAR Duplicately defined symbol SIN
+***** INITIALIZEVAR Duplicately defined symbol COS
+***** INITIALIZEVAR Duplicately defined symbol ATAN
+***** INITIALIZEVAR Duplicately defined symbol =
+***** INITIALIZEVAR Duplicately defined symbol <
+***** INITIALIZEVAR Duplicately defined symbol >
+***** INITIALIZEVAR Duplicately defined symbol <=
+***** INITIALIZEVAR Duplicately defined symbol >=
+***** INITIALIZEVAR Duplicately defined symbol ZERO?
+***** INITIALIZEVAR Duplicately defined symbol POSITIVE?
+***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
+***** INITIALIZEVAR Duplicately defined symbol REAL?
+Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
+> [K> [K> (get-and-render-n-nms-tubes-house-test "20160104-server-test" 5)[C[C[C[36Pload "codetection-test.sc")[C[C[Cget-and-render-n-nms-tubes-house-test "20160104-server-test" 5)[C[C[C[36Pload "codetection-test.sc")[C[C[K(load "codetection-test.sc")
+MODULE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+*3G-AND-4G-SERVERS*
+*2G-SERVERS*
+*WORKSTATIONS*
+SERVER-NAME->NUMBER-OF-CPUS
+GET-SERVER-IDLE-PERCENT
+GET-APPROXIMATE-FREE-SERVER-CPUS
+GET-TOTAL-SERVER-FREE-CPUS
+REPEAT-LIST-TO-LENGTH-N
+DETERMINE-JOB-TO-SERVER-MAPPING
+DETERMINE-JOB-TO-SERVER-MAPPING-WITH-QUEUEING
+SANITIZE-STRING-FOR-SPAWNING
+CREATE-DSCI-JOB
+CREATE-DSCI-JOB2
+SPAWN-JOBS
+SPAWN-AND-WAIT-FOR-JOBS
+SPAWN-AND-WAIT-FOR-JOBS-WITH-QUEUEING
+SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL
+RSYNC-DIRECTORY-TO-SERVER
+RUN-UNIX-COMMAND-ON-SERVER
+SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL-WITH-QUEUEING
+"/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc"
+MODULE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+TRANSFORM-WORLD-POINT-TO-PIXEL
+TRANSFORM-WORLD-POINT-TO-PIXEL-WITH-TRANSFORMATION
+TRANSFORM-WORLD-POINT->PIXEL-GENERIC
+DRAW-POINT-PROJECTION
+DRAW-TEXT-PROJECTION
+DRAW-LINE-PROJECTION
+DRAW-ARROW-PROJECTION
+DRAW-AXIS-PROJECTION
+WORLD-FORWARD-PROJECT
+DRAW-3D-LINES-PROJECTION
+DRAW-CIRCLE-PROJECTION
+FACING-CAMERA?
+FIND-CYLINDER-LINES
+POINTS->SETS-OF-VISIBLE-POINTS
+DRAW-CYLINDER-PROJECTION
+DRAW-KING-BOTTOM-PROJECTION
+MAKE-CYLINDER-IMAGE
+MAKE-KING-BOTTOM-IMAGE
+TEST-MAKE-CYLINDER-IMAGE
+TEST-MAKE-KING-BOTTOM-IMAGE
+"/home/dpbarret/imitate/tool/toollib-perspective-projection.sc"
+LINSPACE
+V/S
+VECTORS->ANGLE
+MY-ROTATION-3D-X
+MY-ROTATION-3D-Y
+MY-ROTATION-3D-Z
+MY-MAKE-TRANSFORM-3D
+INVERT-TX-MATRIX
+***** POINT->HOMOGENOUS is redefined
+POINT->HOMOGENOUS
+***** HOMOGENOUS->POINT is redefined
+HOMOGENOUS->POINT
+***** TRANSFORM-POINT-3D is redefined
+TRANSFORM-POINT-3D
+PIXEL-AND-HEIGHT->WORLD
+READ-ROBOT-ESTIMATED-POSE-FROM-LOG-FILE
+INTERPOLATE-LINE
+DRAW-3D-LINES-PROJECTION-NICE
+ROBOT-POSE-TO-WORLD->CAMERA-TXF
+ROBOT-POSE-TO-CAMERA->WORLD-TXF
+READ-CAMERA-TIMING
+TEST
+"/home/sbroniko/codetection/source/rover-projection.sc"
+PLOT-BOX-SCORES
+PLOT-BOX-SCORES-PRELOADED
+PLOT-LINES-IN-MATLAB
+PLOT-LINES-IN-MATLAB-WITH-SYMBOLS
+READ-PROBABILITIES-FROM-BOX-LIST
+READ-FRAME-NUMBERS-FROM-BOX-LIST
+READ-FILENAMES-FROM-BOX-LIST
+OFFSET-VIDEO-FRAME-NUMBERS
+PLOT-PROBABILITIES-FROM-BOX-LIST
+PLOT-SCORES-FROM-TRAINING
+PLOT-HMM-LIKELIHOODS
+PLOT-TRACK-SCORES
+VISUALIZE-BEST-MODELS
+VISUALIZE-BEST-ROOTS
+VISUALIZE-STATE-ITERATIONS
+"/home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-plotting.sc"
+VITERBI-BOXES
+BOX-AT-HEIGHT->WORLD-CORNERS
+DISCOUNT-BOXES
+VITERBI-MULTIPLE
+"/home/sbroniko/codetection/source/new-sentence-codetection/viterbi.sc"
+*CAMERA-OFFSET*
+*CAMERA-OFFSET-MATRIX*
+*CAMERA-K-MATRIX*
+SELECT-FRAMES
+RUN-CODETECTION-WITH-FRAMES
+RUN-CODETECTION-WITH-VIDEO
+ALIGN-FRAMES-WITH-POSES
+GET-POSES-THAT-MATCH-FRAMES
+FRAME-TEST
+SCOTT-PROPOSALS&SIMILARITY-WITH-FRAMES
+SCOTT-RUN-CODETECTION-FULL-VIDEO
+FRAME-TEST2
+MAKE-FRAMES
+GET-MATLAB-PROPOSALS-SIMILARITY
+GET-MATLAB-PROPOSALS-SIMILARITY-BY-FRAME
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO
+RUN-CODETECTION-WITH-PROPOSALS-SIMILARITY
+GET-MATLAB-DATA-HOUSE-TEST-NEW2
+RUN-CODETECTION-VITERBI
+RUN-CODETECTION-VITERBI-MULTIPLE
+VISUALIZE-RESULTS-TEST
+VISUALIZE-RESULTS
+VISUALIZE-RESULTS-IMPROVED
+VISUALIZE-RESULTS-IMPROVED-NEW
+VISUALIZE-RESULTS-VITERBI
+VISUALIZE-RESULTS-VITERBI-MULTIPLE
+RUN-FULL-RESULTS
+MATLAB-DATA-TO-FILES
+GET-MATLAB-DATA-TRAINING-OR-GENERATION-IMPROVED
+GET-MATLAB-DATA-AUTO-DRIVE-IMPROVED
+GET-MATLAB-DATA-TRAINING-OR-GENERATION
+RESULTS-END-TO-END
+JOIN-IMAGES
+JOIN-ALL-IMAGES
+RUN-MY-SHIT
+RUN-MY-SHIT-2
+GET-XY-FROM-RESULTS-FILE
+PLOT-OBJECTS-FROM-FILE
+*XMIN*
+*XMAX*
+*YMIN*
+*YMAX*
+*BOUNDARIES*
+*X-1*
+*X0*
+*X+1*
+*Y-1*
+*Y0*
+*Y+1*
+*Y+2*
+POINT-LOCATIONS
+PLOT-GRID
+PLOT-OBJECTS-FROM-FLOORPLAN
+PLOT-OBJECTS-FROM-FLOORPLAN-MULTICOLOR
+ENSURE-SCORES
+GET-SCORES-FROM-RESULTS-AND-FRAME-DATA-FILES
+GET-DETECTION-IMAGES
+MAKE-TEST-FILE
+GET-DETECTION-DATA-FOR-FLOORPLAN
+POINT-IN-TRIANGLE
+DETECT-SORT-LABEL-OBJECTS-SINGLE-FLOORPLAN
+GET-CODETECTION-RESULTS-TRAINING-OR-GENERATION
+GET-CODETECTION-RESULTS-AUTO-DRIVE
+GET-OBJECT-DETECTIONS-ALL-FLOORPLANS
+CODETECT-SORT-TEMPLABEL-TRAINING-OR-GENERATION
+CODETECT-SORT-TEMPLABEL-AUTO-DRIVE
+GET-GROUND-TRUTH-FROM-DATASET-FILE
+GET-LABELED-GROUND-TRUTH-FROM-DATASET-FILE
+MAKE-SCHEME-FILE-OF-XYS
+MAKE-SCHEME-FILE-OF-XYS-SEPARATED
+SCOTT-PROPOSALS-ONLY
+RUN-CODETECTION-ONLY-HOUSE-TEST
+RUN-CODETECTION-ONLY-HOUSE-TEST-2
+GET-CODETECTION-RESULTS-HOUSE-TEST
+GET-CODETECTION-RESULTS-HOUSE-TEST-2
+GET-MATLAB-DATA-HOUSE-TEST
+QUICK-AND-DIRTY-TEST
+SINGLE-RUN-TEST
+SINGLE-RUN-TEST-NEW
+SINGLE-RUN-TEST-NEW2
+SINGLE-RUN-TEST-VITERBI
+SINGLE-RUN-TEST-VITERBI-MULTIPLE
+READ-CAMERA-TIMING-NEW
+GET-MATLAB-DATA-HOUSE-TEST-NEW
+***** GET-MATLAB-DATA-HOUSE-TEST-NEW2 is redefined
+GET-MATLAB-DATA-HOUSE-TEST-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-NEW
+GET-MATLAB-PROPOSALS-SIMILARITY-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-VITERBI
+GET-AND-SAVE-PROPOSAL-BOXES
+GET-AND-SAVE-PROPOSAL-BOXES-ALL-VIDEOS
+FRAMES-AND-POSES->MATLAB
+SIMPLE-RUN-AND-PLOT
+SIMPLE-TEST
+SIMPLE-RUN-AND-PLOT-NEW
+SIMPLE-RUN-AND-PLOT-VITERBI
+READ-AND-SORT-MATLAB-PROPOSALS
+GET-TLD-TUBE-FROM-BOX
+SCOTT-BOX->VOC4
+*VIDEO-PATH*
+GET-FRAME-NUMBERS
+GENERATE-PROPOSALS
+FRAMES->MATLAB!
+GET-MEDIANFLOW-TUBE-FROM-STARTING-FRAME-AND-PROPOSAL-BOX
+GET-ALL-TUBES
+GET-ALL-TUBES-SORTED
+RENDER-ONE-TUBE
+RENDER-ALL-TUBES
+SCOTT-BOX-X1
+SCOTT-BOX-X2
+SCOTT-BOX-Y1
+SCOTT-BOX-Y2
+SCOTT-BOX-AREA
+SCOTT-BOX-INTERSECTION-AREA
+SCOTT-BOX-UNION-AREA
+SCOTT-BOX-INTERSECTION-OVER-UNION
+TUBE-INTERSECTION-OVER-UNION
+TUBES-OVERLAP?
+TUBE-NMS
+TUBE-TEST-END-TO-END
+BIG-TUBE-TEST-END-TO-END
+BIG-TUBE-TEST-END-TO-END2
+GET-ALL-NMS-TUBES-AND-RENDER-N
+GET-AND-RENDER-N-NMS-TUBES-HOUSE-TEST
+[K/usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
+[K34668112
+"codetection-test.sc"
+> [K> [K> (load "codetection-test.sc")[C[C[Cget-and-render-n-nms-tubes-house-test "20160104-server-test" 5)[C[C[K(get-and-render-n-nms-tubes-house-test "20160104-server-test" 5)
+"starting get-and-render-n-nms-tubes-house-test with output in 20160104-server-test and n = 5" #F
+Mon Jan  4 18:32:01 EST 2016
+"unix command:" "ssh cuddwybodaeth \"mkdir -p /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[K"unix command:" "ssh istihbarat \"mkdir -p /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[K"unix command:" "ssh wywiad \"mkdir -p /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Krm: cannot remove `/net/seykhl//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+[Krm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//*.out': No such file or directory
+rm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//*.err': No such file or directory
+rm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+[Krm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//*.out': No such file or directory
+rm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//*.err': No such file or directory
+rm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+[Krm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//*.out': No such file or directory
+rm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//*.err': No such file or directory
+rm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+"rsync command:" "ssh cuddwybodaeth \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/\""
+[Kreceiving incremental file list
+[Kresults-20160104-server-test/
+[K
+sent 427 bytes  received 689197 bytes  1379248.00 bytes/sec
+total size is 63422417622  speedup is 91966.66
+"rsync command:" "ssh istihbarat \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/\""
+[Kreceiving incremental file list
+[Kresults-20160104-server-test/
+
+sent 427 bytes  received 689197 bytes  1379248.00 bytes/sec
+total size is 63422417622  speedup is 91966.66
+"rsync command:" "ssh wywiad \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/\""
+[Kreceiving incremental file list
+[Kresults-20160104-server-test/
+[K
+sent 427 bytes  received 689197 bytes  1379248.00 bytes/sec
+total size is 63422417622  speedup is 91966.66
+[K"effective cpus" (7. 7. 7.)
+"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-1.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-1.err\" | ssh cuddwybodaeth 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-1 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-1/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-2.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-2.err\" | ssh istihbarat 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-2 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-2/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-3.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-3.err\" | ssh wywiad 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-3 & sleep .25"
+[K"system-returned:" 0
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.err
+output-1.out
+
+sent 69 bytes  received 2762 bytes  1887.33 bytes/sec
+total size is 7828  speedup is 2.77
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-2.err
+output-2.out
+
+sent 69 bytes  received 2436 bytes  1670.00 bytes/sec
+total size is 7221  speedup is 2.88
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+output-3.err
+output-3.out
+
+sent 66 bytes  received 2758 bytes  5648.00 bytes/sec
+total size is 7828  speedup is 2.77
+[K"running for:" "0seconds"
+"started-jobs:" 3
+"waiting-jobs:" 24
+"done-jobs:" 0
+[K"effective cpus" (7. 7. 7.)
+"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-3/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-4.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-4.err\" | ssh cuddwybodaeth 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-4 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-4/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-5.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-5.err\" | ssh istihbarat 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-5 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-5/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-6.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-6.err\" | ssh wywiad 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-6 & sleep .25"
+[K"system-returned:" 0
+[KIdentity added: /home/sbroniko/.ssh/id_rsa_github (/home/sbroniko/.ssh/id_rsa_github)
+]0;sbroniko@seykhl: ~/codetection/source/new-sentence-codetection[01;32msbroniko@seykhl[00m:[01;36m[new-sentence-codetection][00m$ pkill -u sbronikohtop[Kcat output-3.out ls[Kcd /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Chtop[Kpkill -u sbronikocat output-4.out ls[Khtopcat output-2.out htop[Kcat output-2.out htop[Kcat output-2.out err[Cls[Kcd /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Chtop[Kpkill -u sbronikohtop[Kcat output-1.out htop[Kpkill -u sbronikohtop[Kcd /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cls[Kcat output-2.err out[Chtop[Kcat output-2.out htop[Kcat output-2.out htop[K[2Plscat output-4.out pkill -u sbronikohtop[Kcd /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cls[Kcat output-3.out htop[Kpkill -u sbroniko[Krlwrap darpa-wrap run-dsci
+[K***** INITIALIZEVAR Duplicately defined symbol +
+***** INITIALIZEVAR Duplicately defined symbol -
+***** INITIALIZEVAR Duplicately defined symbol *
+***** INITIALIZEVAR Duplicately defined symbol /
+***** INITIALIZEVAR Duplicately defined symbol SQRT
+***** INITIALIZEVAR Duplicately defined symbol EXP
+***** INITIALIZEVAR Duplicately defined symbol LOG
+***** INITIALIZEVAR Duplicately defined symbol EXPT
+***** INITIALIZEVAR Duplicately defined symbol SIN
+***** INITIALIZEVAR Duplicately defined symbol COS
+***** INITIALIZEVAR Duplicately defined symbol ATAN
+***** INITIALIZEVAR Duplicately defined symbol =
+***** INITIALIZEVAR Duplicately defined symbol <
+***** INITIALIZEVAR Duplicately defined symbol >
+***** INITIALIZEVAR Duplicately defined symbol <=
+***** INITIALIZEVAR Duplicately defined symbol >=
+***** INITIALIZEVAR Duplicately defined symbol ZERO?
+***** INITIALIZEVAR Duplicately defined symbol POSITIVE?
+***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
+***** INITIALIZEVAR Duplicately defined symbol REAL?
+Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
+> [K> [K> (get-and-render-n-nms-tubes-house-test "20160104-server-test" 5)[C[C[C[36Pload "codetection-test.sc")[C[C[K(load "codetection-test.sc")
+MODULE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+*3G-AND-4G-SERVERS*
+*2G-SERVERS*
+*WORKSTATIONS*
+SERVER-NAME->NUMBER-OF-CPUS
+GET-SERVER-IDLE-PERCENT
+GET-APPROXIMATE-FREE-SERVER-CPUS
+GET-TOTAL-SERVER-FREE-CPUS
+REPEAT-LIST-TO-LENGTH-N
+DETERMINE-JOB-TO-SERVER-MAPPING
+DETERMINE-JOB-TO-SERVER-MAPPING-WITH-QUEUEING
+SANITIZE-STRING-FOR-SPAWNING
+CREATE-DSCI-JOB
+CREATE-DSCI-JOB2
+SPAWN-JOBS
+SPAWN-AND-WAIT-FOR-JOBS
+SPAWN-AND-WAIT-FOR-JOBS-WITH-QUEUEING
+SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL
+RSYNC-DIRECTORY-TO-SERVER
+RUN-UNIX-COMMAND-ON-SERVER
+SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL-WITH-QUEUEING
+"/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc"
+MODULE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+TRANSFORM-WORLD-POINT-TO-PIXEL
+TRANSFORM-WORLD-POINT-TO-PIXEL-WITH-TRANSFORMATION
+TRANSFORM-WORLD-POINT->PIXEL-GENERIC
+DRAW-POINT-PROJECTION
+DRAW-TEXT-PROJECTION
+DRAW-LINE-PROJECTION
+DRAW-ARROW-PROJECTION
+DRAW-AXIS-PROJECTION
+WORLD-FORWARD-PROJECT
+DRAW-3D-LINES-PROJECTION
+DRAW-CIRCLE-PROJECTION
+FACING-CAMERA?
+FIND-CYLINDER-LINES
+POINTS->SETS-OF-VISIBLE-POINTS
+DRAW-CYLINDER-PROJECTION
+DRAW-KING-BOTTOM-PROJECTION
+MAKE-CYLINDER-IMAGE
+MAKE-KING-BOTTOM-IMAGE
+TEST-MAKE-CYLINDER-IMAGE
+TEST-MAKE-KING-BOTTOM-IMAGE
+"/home/dpbarret/imitate/tool/toollib-perspective-projection.sc"
+LINSPACE
+V/S
+VECTORS->ANGLE
+MY-ROTATION-3D-X
+MY-ROTATION-3D-Y
+MY-ROTATION-3D-Z
+MY-MAKE-TRANSFORM-3D
+INVERT-TX-MATRIX
+***** POINT->HOMOGENOUS is redefined
+POINT->HOMOGENOUS
+***** HOMOGENOUS->POINT is redefined
+HOMOGENOUS->POINT
+***** TRANSFORM-POINT-3D is redefined
+TRANSFORM-POINT-3D
+PIXEL-AND-HEIGHT->WORLD
+READ-ROBOT-ESTIMATED-POSE-FROM-LOG-FILE
+INTERPOLATE-LINE
+DRAW-3D-LINES-PROJECTION-NICE
+ROBOT-POSE-TO-WORLD->CAMERA-TXF
+ROBOT-POSE-TO-CAMERA->WORLD-TXF
+READ-CAMERA-TIMING
+TEST
+"/home/sbroniko/codetection/source/rover-projection.sc"
+PLOT-BOX-SCORES
+PLOT-BOX-SCORES-PRELOADED
+PLOT-LINES-IN-MATLAB
+PLOT-LINES-IN-MATLAB-WITH-SYMBOLS
+READ-PROBABILITIES-FROM-BOX-LIST
+READ-FRAME-NUMBERS-FROM-BOX-LIST
+READ-FILENAMES-FROM-BOX-LIST
+OFFSET-VIDEO-FRAME-NUMBERS
+PLOT-PROBABILITIES-FROM-BOX-LIST
+PLOT-SCORES-FROM-TRAINING
+PLOT-HMM-LIKELIHOODS
+PLOT-TRACK-SCORES
+VISUALIZE-BEST-MODELS
+VISUALIZE-BEST-ROOTS
+VISUALIZE-STATE-ITERATIONS
+"/home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-plotting.sc"
+VITERBI-BOXES
+BOX-AT-HEIGHT->WORLD-CORNERS
+DISCOUNT-BOXES
+VITERBI-MULTIPLE
+"/home/sbroniko/codetection/source/new-sentence-codetection/viterbi.sc"
+*CAMERA-OFFSET*
+*CAMERA-OFFSET-MATRIX*
+*CAMERA-K-MATRIX*
+SELECT-FRAMES
+RUN-CODETECTION-WITH-FRAMES
+RUN-CODETECTION-WITH-VIDEO
+ALIGN-FRAMES-WITH-POSES
+GET-POSES-THAT-MATCH-FRAMES
+FRAME-TEST
+SCOTT-PROPOSALS&SIMILARITY-WITH-FRAMES
+SCOTT-RUN-CODETECTION-FULL-VIDEO
+FRAME-TEST2
+MAKE-FRAMES
+GET-MATLAB-PROPOSALS-SIMILARITY
+GET-MATLAB-PROPOSALS-SIMILARITY-BY-FRAME
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO
+RUN-CODETECTION-WITH-PROPOSALS-SIMILARITY
+GET-MATLAB-DATA-HOUSE-TEST-NEW2
+RUN-CODETECTION-VITERBI
+RUN-CODETECTION-VITERBI-MULTIPLE
+VISUALIZE-RESULTS-TEST
+VISUALIZE-RESULTS
+VISUALIZE-RESULTS-IMPROVED
+VISUALIZE-RESULTS-IMPROVED-NEW
+VISUALIZE-RESULTS-VITERBI
+VISUALIZE-RESULTS-VITERBI-MULTIPLE
+RUN-FULL-RESULTS
+MATLAB-DATA-TO-FILES
+GET-MATLAB-DATA-TRAINING-OR-GENERATION-IMPROVED
+GET-MATLAB-DATA-AUTO-DRIVE-IMPROVED
+GET-MATLAB-DATA-TRAINING-OR-GENERATION
+RESULTS-END-TO-END
+JOIN-IMAGES
+JOIN-ALL-IMAGES
+RUN-MY-SHIT
+RUN-MY-SHIT-2
+GET-XY-FROM-RESULTS-FILE
+PLOT-OBJECTS-FROM-FILE
+*XMIN*
+*XMAX*
+*YMIN*
+*YMAX*
+*BOUNDARIES*
+*X-1*
+*X0*
+*X+1*
+*Y-1*
+*Y0*
+*Y+1*
+*Y+2*
+POINT-LOCATIONS
+PLOT-GRID
+PLOT-OBJECTS-FROM-FLOORPLAN
+PLOT-OBJECTS-FROM-FLOORPLAN-MULTICOLOR
+ENSURE-SCORES
+GET-SCORES-FROM-RESULTS-AND-FRAME-DATA-FILES
+GET-DETECTION-IMAGES
+MAKE-TEST-FILE
+GET-DETECTION-DATA-FOR-FLOORPLAN
+POINT-IN-TRIANGLE
+DETECT-SORT-LABEL-OBJECTS-SINGLE-FLOORPLAN
+GET-CODETECTION-RESULTS-TRAINING-OR-GENERATION
+GET-CODETECTION-RESULTS-AUTO-DRIVE
+GET-OBJECT-DETECTIONS-ALL-FLOORPLANS
+CODETECT-SORT-TEMPLABEL-TRAINING-OR-GENERATION
+CODETECT-SORT-TEMPLABEL-AUTO-DRIVE
+GET-GROUND-TRUTH-FROM-DATASET-FILE
+GET-LABELED-GROUND-TRUTH-FROM-DATASET-FILE
+MAKE-SCHEME-FILE-OF-XYS
+MAKE-SCHEME-FILE-OF-XYS-SEPARATED
+SCOTT-PROPOSALS-ONLY
+RUN-CODETECTION-ONLY-HOUSE-TEST
+RUN-CODETECTION-ONLY-HOUSE-TEST-2
+GET-CODETECTION-RESULTS-HOUSE-TEST
+GET-CODETECTION-RESULTS-HOUSE-TEST-2
+GET-MATLAB-DATA-HOUSE-TEST
+QUICK-AND-DIRTY-TEST
+SINGLE-RUN-TEST
+SINGLE-RUN-TEST-NEW
+SINGLE-RUN-TEST-NEW2
+SINGLE-RUN-TEST-VITERBI
+SINGLE-RUN-TEST-VITERBI-MULTIPLE
+READ-CAMERA-TIMING-NEW
+GET-MATLAB-DATA-HOUSE-TEST-NEW
+***** GET-MATLAB-DATA-HOUSE-TEST-NEW2 is redefined
+GET-MATLAB-DATA-HOUSE-TEST-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-NEW
+GET-MATLAB-PROPOSALS-SIMILARITY-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-VITERBI
+GET-AND-SAVE-PROPOSAL-BOXES
+GET-AND-SAVE-PROPOSAL-BOXES-ALL-VIDEOS
+FRAMES-AND-POSES->MATLAB
+SIMPLE-RUN-AND-PLOT
+SIMPLE-TEST
+SIMPLE-RUN-AND-PLOT-NEW
+SIMPLE-RUN-AND-PLOT-VITERBI
+READ-AND-SORT-MATLAB-PROPOSALS
+GET-TLD-TUBE-FROM-BOX
+SCOTT-BOX->VOC4
+*VIDEO-PATH*
+GET-FRAME-NUMBERS
+GENERATE-PROPOSALS
+FRAMES->MATLAB!
+GET-MEDIANFLOW-TUBE-FROM-STARTING-FRAME-AND-PROPOSAL-BOX
+GET-ALL-TUBES
+GET-ALL-TUBES-SORTED
+RENDER-ONE-TUBE
+RENDER-ALL-TUBES
+SCOTT-BOX-X1
+SCOTT-BOX-X2
+SCOTT-BOX-Y1
+SCOTT-BOX-Y2
+SCOTT-BOX-AREA
+SCOTT-BOX-INTERSECTION-AREA
+SCOTT-BOX-UNION-AREA
+SCOTT-BOX-INTERSECTION-OVER-UNION
+TUBE-INTERSECTION-OVER-UNION
+TUBES-OVERLAP?
+TUBE-NMS
+TUBE-TEST-END-TO-END
+BIG-TUBE-TEST-END-TO-END
+BIG-TUBE-TEST-END-TO-END2
+GET-ALL-NMS-TUBES-AND-RENDER-N
+GET-AND-RENDER-N-NMS-TUBES-HOUSE-TEST
+[K/usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
+[K36064848
+"codetection-test.sc"
+> [K> [K> (load "codetection-test.sc")[C[C[Cget-and-render-n-nms-tubes-house-test "20160104-server-test" 5)[C[C[C[36Pload "codetection-test.sc")[C[C[Cget-and-render-n-nms-tubes-house-test "20160104-server-test" 5)[C[C[K(get-and-render-n-nms-tubes-house-test "20160104-server-test" 5)
+"starting get-and-render-n-nms-tubes-house-test with output in 20160104-server-test and n = 5" #F
+Mon Jan  4 18:44:14 EST 2016
+"unix command:" "ssh cuddwybodaeth \"mkdir -p /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[K"unix command:" "ssh istihbarat \"mkdir -p /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[K"unix command:" "ssh wywiad \"mkdir -p /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Krm: cannot remove `/net/seykhl//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+[Krm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+[Krm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+[Krm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+"rsync command:" "ssh cuddwybodaeth \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/\""
+[Kreceiving incremental file list
+[K
+sent 422 bytes  received 689192 bytes  459742.67 bytes/sec
+total size is 63422417622  speedup is 91968.00
+"rsync command:" "ssh istihbarat \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/\""
+[Kreceiving incremental file list
+[Kresults-20160104-server-test/
+[K
+sent 427 bytes  received 689197 bytes  459749.33 bytes/sec
+total size is 63422417622  speedup is 91966.66
+"rsync command:" "ssh wywiad \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/\""
+[Kreceiving incremental file list
+[Kresults-20160104-server-test/
+[K
+sent 427 bytes  received 689197 bytes  459749.33 bytes/sec
+total size is 63422417622  speedup is 91966.66
+[K"effective cpus" (7. 7. 7.)
+"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-1.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-1.err\" | ssh cuddwybodaeth 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-1 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-1/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-2.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-2.err\" | ssh istihbarat 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-2 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-2/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-3.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-3.err\" | ssh wywiad 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-3 & sleep .25"
+[K"system-returned:" 0
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.err
+output-1.out
+
+sent 69 bytes  received 2763 bytes  1888.00 bytes/sec
+total size is 7829  speedup is 2.76
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+output-2.err
+output-2.out
+
+sent 66 bytes  received 2759 bytes  5650.00 bytes/sec
+total size is 7829  speedup is 2.77
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-3.err
+output-3.out
+
+sent 69 bytes  received 2437 bytes  5012.00 bytes/sec
+total size is 7221  speedup is 2.88
+"running for:" "0seconds"
+"started-jobs:" 3
+"waiting-jobs:" 24
+"done-jobs:" 0
+[K"effective cpus" (7. 7. 7.)
+"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-3/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-4.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-4.err\" | ssh cuddwybodaeth 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-4 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-4/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-5.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-5.err\" | ssh istihbarat 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-5 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-5/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-6.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-6.err\" | ssh wywiad 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-6 & sleep .25"
+[K"system-returned:" 0
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-4.err
+output-4.out
+
+sent 69 bytes  received 2794 bytes  1908.67 bytes/sec
+total size is 15658  speedup is 5.47
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-5.err
+output-5.out
+
+sent 69 bytes  received 2793 bytes  5724.00 bytes/sec
+total size is 15658  speedup is 5.47
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+output-6.err
+output-6.out
+
+sent 66 bytes  received 2791 bytes  5714.00 bytes/sec
+total size is 15050  speedup is 5.27
+"running for:" "180seconds"
+"started-jobs:" 6
+"waiting-jobs:" 21
+"done-jobs:" 0
+[K"effective cpus" (7. 7. 7.)
+"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-6/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-7.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-7.err\" | ssh cuddwybodaeth 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-7 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-7/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-8.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-8.err\" | ssh istihbarat 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-8 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-1-sentence-0/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-9.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-9.err\" | ssh wywiad 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-9 & sleep .25"
+[K"system-returned:" 0
+[K[Kk[KIdentity added: /home/sbroniko/.ssh/id_rsa_github (/home/sbroniko/.ssh/id_rsa_github)
+]0;sbroniko@seykhl: ~/codetection/source/new-sentence-codetection[01;32msbroniko@seykhl[00m:[01;36m[new-sentence-codetection][00m$ rlwrap darpa-wrap run-dsci
+[K***** INITIALIZEVAR Duplicately defined symbol +
+***** INITIALIZEVAR Duplicately defined symbol -
+***** INITIALIZEVAR Duplicately defined symbol *
+***** INITIALIZEVAR Duplicately defined symbol /
+***** INITIALIZEVAR Duplicately defined symbol SQRT
+***** INITIALIZEVAR Duplicately defined symbol EXP
+***** INITIALIZEVAR Duplicately defined symbol LOG
+***** INITIALIZEVAR Duplicately defined symbol EXPT
+***** INITIALIZEVAR Duplicately defined symbol SIN
+***** INITIALIZEVAR Duplicately defined symbol COS
+***** INITIALIZEVAR Duplicately defined symbol ATAN
+***** INITIALIZEVAR Duplicately defined symbol =
+***** INITIALIZEVAR Duplicately defined symbol <
+***** INITIALIZEVAR Duplicately defined symbol >
+***** INITIALIZEVAR Duplicately defined symbol <=
+***** INITIALIZEVAR Duplicately defined symbol >=
+***** INITIALIZEVAR Duplicately defined symbol ZERO?
+***** INITIALIZEVAR Duplicately defined symbol POSITIVE?
+***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
+***** INITIALIZEVAR Duplicately defined symbol REAL?
+Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
+> [K> [K> (get-and-render-n-nms-tubes-house-test "20160104-server-test" 5)[C[C[C[36Pload "codetection-test.sc")[C[C[K(load "codetection-test.sc")
+MODULE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+*3G-AND-4G-SERVERS*
+*2G-SERVERS*
+*WORKSTATIONS*
+SERVER-NAME->NUMBER-OF-CPUS
+GET-SERVER-IDLE-PERCENT
+GET-APPROXIMATE-FREE-SERVER-CPUS
+GET-TOTAL-SERVER-FREE-CPUS
+REPEAT-LIST-TO-LENGTH-N
+DETERMINE-JOB-TO-SERVER-MAPPING
+DETERMINE-JOB-TO-SERVER-MAPPING-WITH-QUEUEING
+SANITIZE-STRING-FOR-SPAWNING
+CREATE-DSCI-JOB
+CREATE-DSCI-JOB2
+SPAWN-JOBS
+SPAWN-AND-WAIT-FOR-JOBS
+SPAWN-AND-WAIT-FOR-JOBS-WITH-QUEUEING
+SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL
+RSYNC-DIRECTORY-TO-SERVER
+RUN-UNIX-COMMAND-ON-SERVER
+SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL-WITH-QUEUEING
+"/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc"
+MODULE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+TRANSFORM-WORLD-POINT-TO-PIXEL
+TRANSFORM-WORLD-POINT-TO-PIXEL-WITH-TRANSFORMATION
+TRANSFORM-WORLD-POINT->PIXEL-GENERIC
+DRAW-POINT-PROJECTION
+DRAW-TEXT-PROJECTION
+DRAW-LINE-PROJECTION
+DRAW-ARROW-PROJECTION
+DRAW-AXIS-PROJECTION
+WORLD-FORWARD-PROJECT
+DRAW-3D-LINES-PROJECTION
+DRAW-CIRCLE-PROJECTION
+FACING-CAMERA?
+FIND-CYLINDER-LINES
+POINTS->SETS-OF-VISIBLE-POINTS
+DRAW-CYLINDER-PROJECTION
+DRAW-KING-BOTTOM-PROJECTION
+MAKE-CYLINDER-IMAGE
+MAKE-KING-BOTTOM-IMAGE
+TEST-MAKE-CYLINDER-IMAGE
+TEST-MAKE-KING-BOTTOM-IMAGE
+"/home/dpbarret/imitate/tool/toollib-perspective-projection.sc"
+LINSPACE
+V/S
+VECTORS->ANGLE
+MY-ROTATION-3D-X
+MY-ROTATION-3D-Y
+MY-ROTATION-3D-Z
+MY-MAKE-TRANSFORM-3D
+INVERT-TX-MATRIX
+***** POINT->HOMOGENOUS is redefined
+POINT->HOMOGENOUS
+***** HOMOGENOUS->POINT is redefined
+HOMOGENOUS->POINT
+***** TRANSFORM-POINT-3D is redefined
+TRANSFORM-POINT-3D
+PIXEL-AND-HEIGHT->WORLD
+READ-ROBOT-ESTIMATED-POSE-FROM-LOG-FILE
+INTERPOLATE-LINE
+DRAW-3D-LINES-PROJECTION-NICE
+ROBOT-POSE-TO-WORLD->CAMERA-TXF
+ROBOT-POSE-TO-CAMERA->WORLD-TXF
+READ-CAMERA-TIMING
+TEST
+"/home/sbroniko/codetection/source/rover-projection.sc"
+PLOT-BOX-SCORES
+PLOT-BOX-SCORES-PRELOADED
+PLOT-LINES-IN-MATLAB
+PLOT-LINES-IN-MATLAB-WITH-SYMBOLS
+READ-PROBABILITIES-FROM-BOX-LIST
+READ-FRAME-NUMBERS-FROM-BOX-LIST
+READ-FILENAMES-FROM-BOX-LIST
+OFFSET-VIDEO-FRAME-NUMBERS
+PLOT-PROBABILITIES-FROM-BOX-LIST
+PLOT-SCORES-FROM-TRAINING
+PLOT-HMM-LIKELIHOODS
+PLOT-TRACK-SCORES
+VISUALIZE-BEST-MODELS
+VISUALIZE-BEST-ROOTS
+VISUALIZE-STATE-ITERATIONS
+"/home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-plotting.sc"
+VITERBI-BOXES
+BOX-AT-HEIGHT->WORLD-CORNERS
+DISCOUNT-BOXES
+VITERBI-MULTIPLE
+"/home/sbroniko/codetection/source/new-sentence-codetection/viterbi.sc"
+*CAMERA-OFFSET*
+*CAMERA-OFFSET-MATRIX*
+*CAMERA-K-MATRIX*
+SELECT-FRAMES
+RUN-CODETECTION-WITH-FRAMES
+RUN-CODETECTION-WITH-VIDEO
+ALIGN-FRAMES-WITH-POSES
+GET-POSES-THAT-MATCH-FRAMES
+FRAME-TEST
+SCOTT-PROPOSALS&SIMILARITY-WITH-FRAMES
+SCOTT-RUN-CODETECTION-FULL-VIDEO
+FRAME-TEST2
+MAKE-FRAMES
+GET-MATLAB-PROPOSALS-SIMILARITY
+GET-MATLAB-PROPOSALS-SIMILARITY-BY-FRAME
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO
+RUN-CODETECTION-WITH-PROPOSALS-SIMILARITY
+GET-MATLAB-DATA-HOUSE-TEST-NEW2
+RUN-CODETECTION-VITERBI
+RUN-CODETECTION-VITERBI-MULTIPLE
+VISUALIZE-RESULTS-TEST
+VISUALIZE-RESULTS
+VISUALIZE-RESULTS-IMPROVED
+VISUALIZE-RESULTS-IMPROVED-NEW
+VISUALIZE-RESULTS-VITERBI
+VISUALIZE-RESULTS-VITERBI-MULTIPLE
+RUN-FULL-RESULTS
+MATLAB-DATA-TO-FILES
+GET-MATLAB-DATA-TRAINING-OR-GENERATION-IMPROVED
+GET-MATLAB-DATA-AUTO-DRIVE-IMPROVED
+GET-MATLAB-DATA-TRAINING-OR-GENERATION
+RESULTS-END-TO-END
+JOIN-IMAGES
+JOIN-ALL-IMAGES
+RUN-MY-SHIT
+RUN-MY-SHIT-2
+GET-XY-FROM-RESULTS-FILE
+PLOT-OBJECTS-FROM-FILE
+*XMIN*
+*XMAX*
+*YMIN*
+*YMAX*
+*BOUNDARIES*
+*X-1*
+*X0*
+*X+1*
+*Y-1*
+*Y0*
+*Y+1*
+*Y+2*
+POINT-LOCATIONS
+PLOT-GRID
+PLOT-OBJECTS-FROM-FLOORPLAN
+PLOT-OBJECTS-FROM-FLOORPLAN-MULTICOLOR
+ENSURE-SCORES
+GET-SCORES-FROM-RESULTS-AND-FRAME-DATA-FILES
+GET-DETECTION-IMAGES
+MAKE-TEST-FILE
+GET-DETECTION-DATA-FOR-FLOORPLAN
+POINT-IN-TRIANGLE
+DETECT-SORT-LABEL-OBJECTS-SINGLE-FLOORPLAN
+GET-CODETECTION-RESULTS-TRAINING-OR-GENERATION
+GET-CODETECTION-RESULTS-AUTO-DRIVE
+GET-OBJECT-DETECTIONS-ALL-FLOORPLANS
+CODETECT-SORT-TEMPLABEL-TRAINING-OR-GENERATION
+CODETECT-SORT-TEMPLABEL-AUTO-DRIVE
+GET-GROUND-TRUTH-FROM-DATASET-FILE
+GET-LABELED-GROUND-TRUTH-FROM-DATASET-FILE
+MAKE-SCHEME-FILE-OF-XYS
+MAKE-SCHEME-FILE-OF-XYS-SEPARATED
+SCOTT-PROPOSALS-ONLY
+RUN-CODETECTION-ONLY-HOUSE-TEST
+RUN-CODETECTION-ONLY-HOUSE-TEST-2
+GET-CODETECTION-RESULTS-HOUSE-TEST
+GET-CODETECTION-RESULTS-HOUSE-TEST-2
+GET-MATLAB-DATA-HOUSE-TEST
+QUICK-AND-DIRTY-TEST
+SINGLE-RUN-TEST
+SINGLE-RUN-TEST-NEW
+SINGLE-RUN-TEST-NEW2
+SINGLE-RUN-TEST-VITERBI
+SINGLE-RUN-TEST-VITERBI-MULTIPLE
+READ-CAMERA-TIMING-NEW
+GET-MATLAB-DATA-HOUSE-TEST-NEW
+***** GET-MATLAB-DATA-HOUSE-TEST-NEW2 is redefined
+GET-MATLAB-DATA-HOUSE-TEST-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-NEW
+GET-MATLAB-PROPOSALS-SIMILARITY-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-VITERBI
+GET-AND-SAVE-PROPOSAL-BOXES
+GET-AND-SAVE-PROPOSAL-BOXES-ALL-VIDEOS
+FRAMES-AND-POSES->MATLAB
+SIMPLE-RUN-AND-PLOT
+SIMPLE-TEST
+SIMPLE-RUN-AND-PLOT-NEW
+SIMPLE-RUN-AND-PLOT-VITERBI
+READ-AND-SORT-MATLAB-PROPOSALS
+GET-TLD-TUBE-FROM-BOX
+SCOTT-BOX->VOC4
+*VIDEO-PATH*
+GET-FRAME-NUMBERS
+GENERATE-PROPOSALS
+FRAMES->MATLAB!
+GET-MEDIANFLOW-TUBE-FROM-STARTING-FRAME-AND-PROPOSAL-BOX
+GET-ALL-TUBES
+GET-ALL-TUBES-SORTED
+RENDER-ONE-TUBE
+RENDER-ALL-TUBES
+SCOTT-BOX-X1
+SCOTT-BOX-X2
+SCOTT-BOX-Y1
+SCOTT-BOX-Y2
+SCOTT-BOX-AREA
+SCOTT-BOX-INTERSECTION-AREA
+SCOTT-BOX-UNION-AREA
+SCOTT-BOX-INTERSECTION-OVER-UNION
+TUBE-INTERSECTION-OVER-UNION
+TUBES-OVERLAP?
+TUBE-NMS
+TUBE-TEST-END-TO-END
+BIG-TUBE-TEST-END-TO-END
+BIG-TUBE-TEST-END-TO-END2
+GET-ALL-NMS-TUBES-AND-RENDER-N
+GET-AND-RENDER-N-NMS-TUBES-HOUSE-TEST
+[K/usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
+[K47058512
+"codetection-test.sc"
+> [K> [K> (load "codetection-test.sc")[C[C[Cget-and-render-n-nms-tubes-house-test "20160104-server-test" 5)[C[C[K(get-and-render-n-nms-tubes-house-test "20160104-server-test" 5)
+"starting get-and-render-n-nms-tubes-house-test with output in 20160104-server-test and n = 5" #F
+Mon Jan  4 18:52:56 EST 2016
+"unix command:" "ssh cuddwybodaeth \"mkdir -p /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[K"unix command:" "ssh istihbarat \"mkdir -p /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[K"unix command:" "ssh wywiad \"mkdir -p /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Krm: cannot remove `/net/seykhl//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+[Krm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+[Krm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+[Krm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-*': No such file or directory
+"rsync command:" "ssh cuddwybodaeth \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/\""
+[Kreceiving incremental file list
+[K
+sent 422 bytes  received 689192 bytes  1379228.00 bytes/sec
+total size is 63422417622  speedup is 91968.00
+"rsync command:" "ssh istihbarat \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/\""
+[Kreceiving incremental file list
+[K
+sent 422 bytes  received 689192 bytes  1379228.00 bytes/sec
+total size is 63422417622  speedup is 91968.00
+"rsync command:" "ssh wywiad \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/\""
+[Kreceiving incremental file list
+[K
+sent 422 bytes  received 689192 bytes  1379228.00 bytes/sec
+total size is 63422417622  speedup is 91968.00
+[K"effective cpus" (7. 7. 7.)
+"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-1.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-1.err\" | ssh cuddwybodaeth 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-1 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-1/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-2.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-2.err\" | ssh istihbarat 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-2 & sleep .25"
+[K"system-returned:" 0
+[K"about to execute command:" "echo \" echo '(load \\\"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\\\") (get-all-nms-tubes-and-render-n \\\"/aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-2/\\\" \\\"20160104-server-test\\\" 10 10 0.5 5) :n :n :n :n :b' |  darpa-wrap run-dsci -mh 30000 1>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-3.out 2>/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//output-3.err\" | ssh wywiad 'bash -s'  && touch /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test//done-3 & sleep .25"
+[K"system-returned:" 0
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.err
+output-1.out
+
+sent 69 bytes  received 2487 bytes  5112.00 bytes/sec
+total size is 7394  speedup is 2.89
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+output-2.err
+output-2.out
+
+sent 66 bytes  received 2484 bytes  1700.00 bytes/sec
+total size is 7394  speedup is 2.90
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-3.err
+output-3.out
+
+sent 69 bytes  received 2487 bytes  5112.00 bytes/sec
+total size is 7394  speedup is 2.89
+"running for:" "0seconds"
+"started-jobs:" 3
+"waiting-jobs:" 24
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.out
+
+sent 104 bytes  received 419 bytes  348.67 bytes/sec
+total size is 7942  speedup is 15.19
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+output-2.out
+
+sent 101 bytes  received 410 bytes  1022.00 bytes/sec
+total size is 7668  speedup is 15.01
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-3.out
+
+sent 104 bytes  received 412 bytes  1032.00 bytes/sec
+total size is 7668  speedup is 14.86
+"running for:" "180seconds"
+"started-jobs:" 3
+"waiting-jobs:" 24
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.out
+
+sent 110 bytes  received 167 bytes  554.00 bytes/sec
+total size is 8490  speedup is 30.65
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+output-2.out
+
+sent 107 bytes  received 148 bytes  170.00 bytes/sec
+total size is 7942  speedup is 31.15
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-3.out
+
+sent 110 bytes  received 151 bytes  522.00 bytes/sec
+total size is 7942  speedup is 30.43
+"running for:" "360seconds"
+"started-jobs:" 3
+"waiting-jobs:" 24
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.out
+
+sent 116 bytes  received 164 bytes  186.67 bytes/sec
+total size is 9041  speedup is 32.29
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+output-2.out
+
+sent 107 bytes  received 152 bytes  518.00 bytes/sec
+total size is 8079  speedup is 31.19
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-3.out
+
+sent 110 bytes  received 159 bytes  179.33 bytes/sec
+total size is 8216  speedup is 30.54
+"running for:" "540seconds"
+"started-jobs:" 3
+"waiting-jobs:" 24
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.out
+
+sent 122 bytes  received 157 bytes  558.00 bytes/sec
+total size is 9593  speedup is 34.38
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+output-2.out
+
+sent 107 bytes  received 160 bytes  534.00 bytes/sec
+total size is 8353  speedup is 31.28
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-3.out
+
+sent 116 bytes  received 147 bytes  526.00 bytes/sec
+total size is 8490  speedup is 32.28
+"running for:" "720seconds"
+"started-jobs:" 3
+"waiting-jobs:" 24
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.out
+
+sent 128 bytes  received 149 bytes  554.00 bytes/sec
+total size is 10007  speedup is 36.13
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+output-2.out
+
+sent 113 bytes  received 148 bytes  522.00 bytes/sec
+total size is 8627  speedup is 33.05
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-3.out
+
+sent 116 bytes  received 156 bytes  181.33 bytes/sec
+total size is 8765  speedup is 32.22
+"running for:" "900seconds"
+"started-jobs:" 3
+"waiting-jobs:" 24
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-1.out
+
+sent 128 bytes  received 165 bytes  586.00 bytes/sec
+total size is 10559  speedup is 36.04
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+output-2.out
+
+sent 113 bytes  received 156 bytes  179.33 bytes/sec
+total size is 8903  speedup is 33.10
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/house-test-12nov15/results-20160104-server-test/\""
+[Kreceiving incremental file list
+./
+output-3.out
+
+sent 116 bytes  received 164 bytes  560.00 bytes/sec
+total size is 9041  speedup is 32.29
+"running for:" "1080seconds"
+"started-jobs:" 3
+"waiting-jobs:" 24
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K

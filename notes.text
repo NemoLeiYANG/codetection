@@ -4559,22 +4559,110 @@ Open files in Emacs 11Nov15
 "done-jobs:" 16
 "effective cpus" (0. 0. 0. 0.)
 
+----------------git commit a9b38f5---------------
+
+4 Jan 16
+
+--get-and-render-n... test from last night completed 21/27 runs correctly.  Not
+  sure why other 6 did not run correctly.  They are:
+  done-1  floorplan-0-sentence-0 chino
+  done-2  floorplan-0-sentence-1 buddhi
+  done-20 floorplan-3-sentence-4 chino
+  done-23 floorplan-4-sentence-5 buddhi
+  done-24 floorplan-5-sentence-1 maniishaa
+  done-25 floorplan-5-sentence-2 alykkyys
+
+--Going to re-run the above using 6 total workstations (previous 4 plus seulki
+  and faisneis)
+
+--Talking with Dan about workaround to get around open files problem--CAN'T be
+  in C because that program exits at the end of each run--MUST be somewhere in
+  scheme, but where??
+
+--While this is running, turning attention to doing backprojection of each box
+  in each tube to world.
+
+--Tried doing some memory cleanup in generate-proposals, but it always seemed to
+  cause a crash.  I think dsci automatically cleans up any variables (like
+  frames) that I declare in a let.  But should still need to clean up after
+  matlab--probably call a matlab clear all at the end of the whole deal??
+
+--Experimented with calling a matlab clear all, but it doesn't seem to do
+  anything and isn't any different than killing and restarting dsci.  For
+  test-segment with K=L=10, still freed up 2GB RAM after killing dsci--WHERE IS
+  IT GOING???
+
+--Gave up on finding memory/file handle leak-->doesn't seem productive if the
+  workaround works.
+
+--I THINK I've found *A* problem in the 6 runs that didn't complete.  Was able
+  to call each directly (separate screen session on each machine) and get all to
+  run EXCEPT for floorplan-4-sentence-5-->that one had a matlab error in
+  get_proposals_edgeboxes.m.  Figured out the problem was that for a particular
+  frame, num_proposals was > than the number of boxes returned from edgeBoxes,
+  so dsci was crashing (which prevented any output from getting printed to the
+  files).  Fixed it by only requesting the number of boxes available if that
+  number is < num_proposals.  Seems to work now.  Not sure why the other runs
+  didn't go--0-0 and 0-1 might have been from the old problems somewhere, and
+  those might have affected others..???  Probably should try a re-run of these
+  on the 2G servers overnight.
+
+--Final try of 2G sever run started at 1852.
 
 
 **THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
 
 
---Tasks from Jeff email 1638 30 Dec
-  1. NMS on tubes working
-     DONE 1 Jan
-  2. render top 20 tubes for all videos -- or raise num-tubes till we get all
-  interesting objects
-     RUNNING as of 2108 3 Jan--should complete overnight
-  3. replace 0,0,0,0 with boolean for box presence 
-     DONE 30 Dec--tested and appears to still work with rendering functions
-  4. backproject each box in each tube to world coordinate and compute variance
-     over tube -- in scheme over matlab?
-     TO DO
+**TASKS from Jeff email 4 Jan 16
+  1. fix bug that prevented completion if 6/27 (by EOD m4jan2016) DONE???
+  2. backproject each box in each tube to world coordinate and compute variance
+       over tube (by EOD m4jan2016)
+  3. graphical model
+     a. similarity between tubes based on PHOW with chi^2 and HOG with L2
+        (by EOD m4jan2016)
+     b. get sentences for each temporal segment of each video
+        (by EOD t5jan2016)
+        assume segmentation of sentence in phrase, temporal segmentation of
+        video, and alignment between the two
+     c. construct graphical model with vertex for head noun in each phrase
+        ranging  over tubes in corresponding temporal segment
+        (by EOD t5jan2016)
+     d. binary edge between two vertices in different videos with the same
+        head noun encoding similarity
+        (by EOD t5jan2016)
+     e. compute world position for each box in each tube with odometry for that
+        frame
+        (by EOD m4jan2016)
+     f. discard tubes that have high variance in set of world positions
+        (by EOD m4jan2016)
+     g. associate each tube with the average world position of the boxes
+        (by EOD m4jan2016)
+     h. assume we know meanings of prepositions
+        (done, get from Dan)
+     i. unary score for vertex based on how well the world position and robot
+        position/velocity satisfy head preposition in sentence segment
+        (by EOD t5jan2016)
+     j. start running graphical model
+        (t5jan2016 night)
+  4. future investigate ObjectnessMeasure, if works, replace proposal score
+     for proposal NMS and tube average proposal score for tube NMS
+
+
+***screenlog.0 cleanup***
+Once you capture your session in screenlog.n , you can cat the file to the terminal and then use screen's hardcopy command to dump the cat's output to a file . The result will provide you with clean output that does not have any escape sequences.
+
+The only 'gotcha' seems to be to make sure that hardcopy captures eveyrthing in the scrollback buffer and that the scrollback buffer contains only what you want to capture.
+
+1. $ screen
+2. $ cd /path/to/screenlog.n directory/
+3. $ wc -l screenlog.n 
+4. $ screen -X scrollback 245 # 245 is the number of lines found from your wc command + 5 
+5. $ cat screenlog.n
+6. $ screen -X hardcopy -h screenlog.n.cleaned 
+Note that -h ensures that you capture the entire scrollback history and not just whats in immediate view
+
+The screenlog.n.cleaned file will now contain a hardcopy of the cat output and won't include any escape sequences
+*** ***
 
 ***TO THINK ABOUT: 
       For tube NMS: 
