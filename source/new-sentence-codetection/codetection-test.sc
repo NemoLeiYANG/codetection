@@ -3730,7 +3730,6 @@
 	(align-one-tube-with-poses tube pose-list)))
       tubes-list))
 
-;;DON'T FORGET (robot-pose-to-camera->world-txf robot-pose camera-offset-matrix)
 (define (read-and-align-scored-tubes path outdir)
  (let* ((pose-list (get-poses-that-match-frames path))
 	(tubes-filename (format #f "~a/~a/nms-tubes.sc" path outdir))
@@ -3791,6 +3790,8 @@
 	 br-corners poses) ;;lines to box bottom right corners
 	)))
 
+;;------optimization stuff
+
 ;;will need to get rid of tubes with < 2 frames at some point (where?)
 
 ;;for initial guess, take first 2 lines and find point of intersection (or closest point)
@@ -3832,8 +3833,28 @@
 ;; (define (line-line-intersection
 	   
   
+;;------more optimization stuff 6 jan 16----- 
+(define (get-deltas-from-track track)
+ (let loop ((track track)
+	    (deltas '()))
+  (if (= 1 (length track))
+      (list->vector (join (map vector->list (reverse deltas))))
+      (let ((diff (v- (first track) (second track))))
+       (loop (rest track)
+	     (cons (vector (x diff) (y diff) 0 (z diff) 0 0) deltas))))))
+
+(define (get-deltas-cost x-delta odometry-delta)
+ (magnitude-squared (v- odometry-deltas x-deltas)))
+
+(define (split-deltas deltas-vector)
+ (map list->vector (split-n 6 (vector->list deltas-vector))))
+
+(define (merge-deltas list-of-deltas)
+ (list->vector (join (map vector->list list-of-deltas))))
+
+(define (find-poses-from-deltas-vector-and-initial-pose deltas-vector initial-pose)
  
-       
+ )
 
 ;;start-up initialization stuff
 

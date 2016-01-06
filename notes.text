@@ -4675,8 +4675,53 @@ fault      (core dumped) LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6
   --Is there a way to reject outliers?? (RANSAC?)
   --Or would pseudoinverse be a better method to use to solve?
 
+----------------git commit b3efec9---------------
 
-**LOOK AT googled matlab pseudoinverse function
+6 Jan 16
+
+--Email to Jeff: 
+We did simple checks yesterday and found that the optimizer gave us the answer
+we expected.  I also found a matlab-based 3d line intersection function
+(lineIntersect3d) that uses least squares and feeding it the same data as our
+nlopt produced the same results.  So I'm more convinced now that the problem is
+not in our optimizer. 
+
+The data we're working with (at least in this example tube) seems be
+affected by the presence of outliers.
+
+I ran all pairwise combinations of lines and found found some
+intersection points (~100/5000) that were near ground truth (which I
+measured at home last night).  These points all seemed to have a
+pretty low final cost function value (< 1e-5).  There were also bad
+points with a similarly low (or lower) cost function value, but these
+seem to be points that lie behind the camera.  I'm thinking that this
+might be a path to something useful...
+
+I was also thinking that something like RANSAC might be useful to
+reduce the influence of outliers, but I'm not sure how to go about
+choosing the parameters that RANSAC needs.
+----
+
+--FINAL VALUE of cost function from nlopt is the sum of the squared distances
+  from the optimized point to the given lines.***
+
+--Wrote a couple of functions in junk.sc (clean-inner-list and
+  get-tubes-of-length) to do the selection of points with low cost function
+  values and to cut down a set of tubes to those with at least num boxes.  Not
+  sure if these will be useful later
+
+--After looking at the data, realized that there is significant drift in the
+  robot theta angle (> 1 deg in ~3s while sitting still) which is causing
+  problems in projection.  Dan and I came up with the idea to simultaneously
+  optimize both the intersection point (as previous) as well as the deltas of
+  (x,y,z,theta,phi,psi) given the tube of (x1,y1,x2,y2) pixel locations, the
+  (known noisy) odometry, and the camera intrinsics/offset.
+
+--Have structure of big optimization sketched out.  Now need to implement the
+  helper functions that go into the giant cost function and run on a single
+  tube.  Then expand to run on all tubes of a particular run.
+
+
 
 
 **THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)

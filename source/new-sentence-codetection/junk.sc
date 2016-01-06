@@ -9,4 +9,31 @@
 	       (= (z (first data)) prevf2))
 	  (loop (rest data) prevf1 prevf2 counter)
 	  (loop (rest data) (x (first data)) (z (first data)) (+ counter 1))))))
- 
+
+(define (clean-inner-list inner-list val)
+ (let* ((ind1 (first inner-list))
+	(to-clean (second inner-list)))
+  (let loop ((in to-clean)
+	     (out '()))
+   (if (null? in)
+       (list ind1 (reverse out))
+       (if (> val (x (y (second (first in)))))
+	   (loop (rest in) (cons (first in) out))
+	   (loop (rest in) out))))))
+
+;;(write-object-to-file (map (lambda (l) (clean-inner-list l 1e-5)) *test-points*) "/tmp/scott-points-clean.sc")
+
+(define (get-tubes-of-length tubes tube-lengths num)
+ (let loop ((tubes tubes)
+	    (tube-lengths tube-lengths)
+	    (out-tubes '()))
+  (if (null? tubes)
+      (reverse out-tubes)
+      (if (< num (first tube-lengths))
+	  (loop (rest tubes)
+		(rest tube-lengths)
+		(cons (first tubes) out-tubes))
+	  (loop (rest tubes)
+		(rest tube-lengths)
+		out-tubes)))))
+
