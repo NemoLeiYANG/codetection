@@ -4609,6 +4609,75 @@ Open files in Emacs 11Nov15
 
 --Final try of 2G sever run started at 1852.
 
+----------------git commit c60259b---------------
+
+5 Jan 16
+
+--Test from last night only had 4 completed runs this AM--WTF???  Going to try
+  restarting it after removing enablePool from ~/Documents/MATLAB/startup.m and
+  moving the start-matlab! call from the end of codetection-test.sc to the
+  actual function where matlab is used (generate-proposals).  Also adding
+  faisneis, seulki, alykkyys, buddhi, and chino to the server pool. **removed
+  buddhi after seeing Jeff running stuff there, added maniishaa in its place**
+
+--Had immediate error on alykkyys on output-6 (floorplan-0-sentence-5):
+??? Invalid MEX-file
+'/home/sbroniko/codetection/source/new-sentence-codetection/forests_edges_boxes/private/edgesNmsMex.mexa64':
+/home/sbroniko/codetection/source/new-sentence-codetection/forests_edges_boxes/private/edgesNmsMex.mexa64:
+file too short.
+
+Error in ==> edgeBoxes>edgeBoxesImg at 86
+E=edgesNmsMex(E,O,2,0,1,model.opts.nThreads);
+
+Error in ==> edgeBoxes at 74
+if(~iscell(I)), bbs=edgeBoxesImg(I,model,o); else n=length(I);
+
+Error in ==> get_proposals_edgeboxes>(parfor body) at 14
+        temp_boxes = edgeBoxes(img,model); %proposals
+
+Error in ==> parallel_function at 479
+            consume(base, limit, F(base, limit, supply(base, limit)));
+
+Error in ==> get_proposals_edgeboxes at 11
+    parfor t = 1:T %main parfor loop to do proposals and histogram scores
+ 
+??? Undefined function or variable 'bbs'.
+ 
+??? Error using ==> save
+Variable 'nmsbbs' not found.
+ 
+/home/sbroniko/darpa-collaboration/bin/darpa-wrap: line 13: 54574 Segmentation
+fault      (core dumped) LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libstdc++.so.6 
+
+  The file is there--is it an access issue?  Would adding a random delay help
+  fix it?
+
+--Added pause(rand()) to matlab startup.m just before InstallEdgeBoxes call to
+  see if that helps.  Also modified InstallEdgeBoxes to not actually call the
+  mex compile commands unless edgeBoxesMex.mex64 does not exist, and put a
+  similar if statement in startup.m to prevent calling toolboxCompile unless
+  necessary. 
+
+--Restarted test (20160105-rerun-test) at 1119.  Time monitoring in the program
+  seems to be a little off--when it said it was running for 10800s (3 hours),
+  the real time was 1451, or ~3.5 hours.  The rsync at the beginning accounts
+  for some of that, but not all.
+
+--20160105-rerun test completed at 1839.  Looks like everything worked
+  correctly. 
+
+--Wrote new functions starting in 'backprojection stuff' section of
+  codetection-test.sc.  Have find-point-from-lines working using nlopt and it
+  gets an expected answer when we zero out the x coordinate.  With the x
+  coordinate in, though, we get a bogus answer that seems scaled down from the
+  correct answer.  We're thinking that nlopt is trying to minimize the error to
+  all by scaling.
+  --Is there a way to reject outliers?? (RANSAC?)
+  --Or would pseudoinverse be a better method to use to solve?
+
+
+**LOOK AT googled matlab pseudoinverse function
+
 
 **THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
 
@@ -4616,7 +4685,7 @@ Open files in Emacs 11Nov15
 **TASKS from Jeff email 4 Jan 16
   1. fix bug that prevented completion if 6/27 (by EOD m4jan2016) DONE???
   2. backproject each box in each tube to world coordinate and compute variance
-       over tube (by EOD m4jan2016)
+       over tube (by EOD m4jan2016)  START HERE AT END OF codetection-test.sc
   3. graphical model
      a. similarity between tubes based on PHOW with chi^2 and HOG with L2
         (by EOD m4jan2016)

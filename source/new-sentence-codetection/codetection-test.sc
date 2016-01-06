@@ -3268,6 +3268,8 @@
 
 (define *video-path* "/net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/video_front.avi")
 
+(define *test-path* "/net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/")
+
 
 (define (get-frame-numbers num-frames downsample)
  (let loop ((frame-numbers '())
@@ -3604,6 +3606,25 @@
 
 ;;THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
 
+(define (get-all-nms-tubes path outdir K L tube-nms-threshold)
+ (dtrace (format #f "starting get-all-nms-tubes for ~a" path) #f)
+ (system "date")
+ (let* ((nms-threshold tube-nms-threshold)
+	(video-pathname (format #f "~a/video_front.avi" path))
+	(outfile-name (format #f "~a/~a/nms-tubes.sc" path outdir))
+	(sorted-tubes
+	 (get-all-tubes-sorted video-pathname K L))
+	(nms-tubes
+	 (tube-nms sorted-tubes nms-threshold)))
+  (if (not (start-matlab!))
+      (begin
+       (matlab "clear all")
+       (dtrace "called clear all in matlab" #f)))
+  (mkdir-p (format #f "~a/~a" path outdir))
+  (write-object-to-file nms-tubes outfile-name)
+  (dtrace (format #f "wrote ~a, ~a tubes" outfile-name (length nms-tubes)) #f)
+  (system "date")))
+
 (define (get-all-nms-tubes-and-render-n path outdir K L tube-nms-threshold N)
  (dtrace (format #f "starting get-all-nms-tubes-and-render-n for ~a" path) #f)
  (system "date")
@@ -3634,10 +3655,12 @@
 	;;(servers (list "chino" "buddhi" "maniishaa" "alykkyys"))
 	;;(servers (list "chino" "buddhi" "maniishaa" "alykkyys" "seulki" "faisneis"))
 	;;(servers (list "alykkyys" "faisneis"))
-	(servers (list "cuddwybodaeth" "istihbarat" "wywiad"))
+	(servers ;;(list "cuddwybodaeth" "istihbarat" "wywiad"))
+	 (list "cuddwybodaeth" "istihbarat" "wywiad" "faisneis" "seulki"
+	       "alykkyys" "maniishaa" "chino"))
 	(source "seykhl")
-	;;(cpus-per-job 5)
-	(cpus-per-job 7) ;;for 2G servers
+	(cpus-per-job 5)
+	;;(cpus-per-job 7) ;;for 2G servers
 	(data-directory "/aux/sbroniko/vader-rover/logs/house-test-12nov15/")
 	(paths (system-output (format #f "ls -d ~afloor*/" data-directory)))
 	;; (paths
@@ -3685,13 +3708,137 @@
   (system "date")))
 		   
   
+;;------------backprojection stuff----------------
 
-;;(define (align-tubes-with-poses q
+(define (align-one-tube-with-poses tube-with-score pose-list)
+ (let* ((tube (first tube-with-score))
+	(score (second tube-with-score)))
+  (if (not (= (length tube) (length pose-list)))
+      (dtrace "ERROR: tube and pose-list not equal length" #f)
+      (list (map (lambda (box pose) (list box pose)) tube pose-list)
+	    score))))
 
+(define (remove-false-boxes aligned-tube-with-score)
+ (let* ((aligned-tube (first aligned-tube-with-score))
+	(score (second aligned-tube-with-score)))
+  (list (remove-if-not (lambda (x) (first x)) aligned-tube)
+	score)))
 
+(define (align-all-tubes-with-poses-and-remove-falses tubes-list pose-list)
+ (map (lambda (tube)
+       (remove-false-boxes
+	(align-one-tube-with-poses tube pose-list)))
+      tubes-list))
+
+;;DON'T FORGET (robot-pose-to-camera->world-txf robot-pose camera-offset-matrix)
+(define (read-and-align-scored-tubes path outdir)
+ (let* ((pose-list (get-poses-that-match-frames path))
+	(tubes-filename (format #f "~a/~a/nms-tubes.sc" path outdir))
+	(tubes-list (if (file-exists? tubes-filename)
+			(read-object-from-file tubes-filename)
+			#f))) ;;could call get-all-nms-tubes here--need more parameters
+  (if (not tubes-list)
+      (dtrace (format #f "ERROR: ~a does not exist" tubes-filename) #f)
+      (align-all-tubes-with-poses-and-remove-falses tubes-list pose-list))))
+	
+
+(define (pixel-and-pose->world-line p robot-pose
+				    camera-offset-matrix camera-intrinsics)
+ ;;produces a pair of points: the camera world location and a point on the line
+ ;;through the pixel (depth ambiguity)
+ (let* ((camera->world
+	 (robot-pose-to-camera->world-txf robot-pose camera-offset-matrix))
+	(camera-world (transform-point-3d camera->world (vector 0 0 0)))
+	;;	(foo (dtrace "camera-world" camera-world))
+	(fx  (matrix-ref camera-intrinsics 0 0))
+	(fy  (matrix-ref camera-intrinsics 1 1))
+	(px  (/ (- (x p) (matrix-ref camera-intrinsics 0 2)) fx))
+	(py  (/ (- (y p) (matrix-ref camera-intrinsics 1 2)) fy))
+	(pixel-world  (transform-point-3d camera->world (vector px py 1)))
+	;; (bar (dtrace "pixel-world" pixel-world))
+	)
+  (list camera-world pixel-world)))
+
+(define (aligned-tube-with-score->lines tube-with-score)
+ (let* ((tube (first tube-with-score))
+	(camera-offset-matrix *camera-offset-matrix*) ;;PREDEFINED
+	(camera-intrinsics *camera-k-matrix*) ;;PREDEFINED
+	(poses (map second tube))
+	(tl-corners (map (lambda (p) (subvector (first p) 0 2)) tube))
+	(tr-corners (map (lambda (p) (vector (z (first p)) (y (first p)))) tube))
+	(bl-corners (map (lambda (p) (vector (x (first p))
+					     (vector-ref (first p) 3))) tube))
+	(br-corners (map (lambda (p) (subvector (first p) 2 4)) tube)))
+  (list (map
+	 (lambda (px pose)
+	  (pixel-and-pose->world-line px pose
+				      camera-offset-matrix camera-intrinsics))
+	 tl-corners poses) ;;lines to box top left corners
+	(map
+	 (lambda (px pose)
+	  (pixel-and-pose->world-line px pose
+				      camera-offset-matrix camera-intrinsics))
+	 tr-corners poses) ;;lines to box top right corners
+	(map
+	 (lambda (px pose)
+	  (pixel-and-pose->world-line px pose
+				      camera-offset-matrix camera-intrinsics))
+	 bl-corners poses) ;;lines to box bottom left corners
+	(map
+	 (lambda (px pose)
+	  (pixel-and-pose->world-line px pose
+				      camera-offset-matrix camera-intrinsics))
+	 br-corners poses) ;;lines to box bottom right corners
+	)))
+
+;;will need to get rid of tubes with < 2 frames at some point (where?)
+
+;;for initial guess, take first 2 lines and find point of intersection (or closest point)
+
+(define (point-line-squared-distance point line) ;;this is my simple cost function
+ ;;point is #(x y z), line is (#(x1 y1 z1) #(x2 y2 z2))
+ (let* ((x0 point)
+	(x1 (first line))
+	(x2 (second line)))
+  (/ (magnitude-squared
+      (cross (v- x2 x1)
+	     (v- x1 x0)))
+     (distance-squared x2 x1))))
+
+(define (find-point-from-lines lines initial-guess)
+ (let* ((f (lambda (x)
+	    (reduce +
+		    (map (lambda (line) (point-line-squared-distance x line)) lines)
+		    0)))
+	(g (gradient-r f)))
+  (optimize-with-nlopt
+   nlopt:ld-lbfgs 
+   initial-guess
+   (lambda (opt)
+    (nlopt:set-min-objective opt
+			     (lambda (x g?) (vector (f x) (g x))))))))
+
+;; (define (line-line-squared-distance line1 line2)
+;;  (let* ((x1 (first line1))
+;; 	(x2 (second line1))
+;; 	(x3 (first line2))
+;; 	(x4 (second line2))
+;; 	(a (v- x2 x1))
+;; 	(b (v- x4 x3))
+;; 	(c (v- x3 x1)))
+;;   (/ (sqr (dot c (cross a b)))
+;;      (magnitude-squared (cross a b)))))
+
+;; (define (line-line-intersection
+	   
+  
+ 
+       
 
 ;;start-up initialization stuff
 
 ;;adding path and running InstallEdgeBoxes and enablePool now done in
 ;;~/Documents/MATLAB/startup.m
-(start-matlab!)
+;;(start-matlab!)
+;;REMOVED and put back in (generate-proposals)
+
