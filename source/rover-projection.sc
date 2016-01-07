@@ -182,17 +182,17 @@
        (loop (rest points))))))
 
 
-(define (robot-pose-to-world->camera-txf robot-pose camera-offset)
- (m*
-  (translation-3d -30 160 -200)
-  (invert-tx-matrix
-		(my-make-transform-3d (- (z robot-pose) half-pi)
-				      0
-				      (- half-pi)
-				      (* (x robot-pose) 1000)
-				      (* (y robot-pose) 1000)
-				      0
-				      ))))
+;; (define (robot-pose-to-world->camera-txf robot-pose camera-offset)
+;;  (m*
+;;   (translation-3d-30 160 -200)
+;;   (invert-tx-matrix
+;; 		(my-make-transform-3d (- (z robot-pose) half-pi)
+;; 				      0
+;; 				      (- half-pi)
+;; 				      (* (x robot-pose) 1000)
+;; 				      (* (y robot-pose) 1000)
+;; 				      0
+;; 				      ))))
 
 (define (robot-pose-to-camera->world-txf robot-pose camera-offset-matrix)
  (invert-tx-matrix
@@ -206,7 +206,41 @@
 			  (y robot-pose);;(* (y robot-pose) 1000)
 			  0
 			  )))))
- 
+
+(define (x-y-theta->6dof pose)
+ (vector (x pose) (y pose) 0. (z pose) 0. 0.))
+
+
+(define (world-6dof->robot-6dof pose)
+ (let* ((old-pose (subvector pose 0 3))
+	(theta (vector-ref pose 3)))
+  (vector-append (transform-point-3d
+		  (my-make-transform-3d (- half-pi) 0 0 0 0 0)
+		  old-pose)
+		 (vector (- theta half-pi) 0. 0.))))
+
+(define (robot-6dof->world-6dof pose)
+ (let* ((old-pose (subvector pose 0 3))
+	(theta (vector-ref pose 3)))
+  (vector-append (transform-point-3d
+		  (my-make-transform-3d (+ half-pi) 0 0 0 0 0)
+		  old-pose)
+		 (vector (+ theta half-pi) 0. 0.))))
+
+;; (define (robot-pose-6dof-to-camera->world-txf robot-pose camera-offset-matrix)
+;;  (invert-tx-matrix
+;;   (m*
+;;    camera-offset-matrix
+;;    (invert-tx-matrix
+;;     (my-make-transform-3d (- (z robot-pose) half-pi)
+;; 			  0
+;; 			  (- half-pi)
+;; 			  (x robot-pose);;(* (x robot-pose) 1000)
+;; 			  (y robot-pose);;(* (y robot-pose) 1000)
+;; 			  0
+;; 			  )))))
+
+
 (define (read-camera-timing path)
  (let* ((lines (read-file path))
        (data-lines (sublist lines 2 (- (length lines) 3))))

@@ -4721,8 +4721,23 @@ choosing the parameters that RANSAC needs.
   helper functions that go into the giant cost function and run on a single
   tube.  Then expand to run on all tubes of a particular run.
 
+----------------git commit 6de28e4---------------
 
+7 Jan 16
 
+--Talking with Dan; confirmed the need to redo position calculations taking into
+  account full 6DOF (x,y,z,theta,phi,psi); also discussed the need to have
+  position deltas in ROBOT coordinate system b/c errors accumulate over time.
+
+--Have some functions for 6dof stuff working in codetection-test.sc and
+  rover-projection.sc.  Need to work on
+  find-6dof-poses-list-from-deltas-vector-and-initial-pose b/c it doesn't seem
+  to be giving the answer I'm looking for-->should I change how I compute the
+  deltas (i.e., order of operands)?
+
+**QUESTION: With new method of estimating 6DOF parameters for robot motion, do I
+  need a new method of computing position that takes into account ALL of
+  (x,y,z,theta,phi,psi)?? 
 
 **THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
 

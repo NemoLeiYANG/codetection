@@ -1,0 +1,29 @@
+.   rover-projection.sc  10388  Scheme		  ~/codetection/source/rover-projection.sc
+  * *shell*              86504  Shell:run	  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/
+  * *scheme*            648923  Inferior Scheme:
+    notes.text          249530  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+    codetection-test.s: 140239  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+    toollib-misc.sc      44479  Scheme		  ~/darpa-collaboration/ideas/toollib-misc.sc
+  * *shell*<2>          236503  Shell:run	  ~/darpa-collaboration/
+ %  toollib-perspective: 19422  Scheme		  /home/dpbarret/imitate/tool/toollib-perspective-projection.sc
+    junk.sc               1152  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/junk.sc
+    scott-points.sc     695816  Scheme		  /tmp/scott-points.sc
+    track.sc             10803  Scheme		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/track.sc
+    scott-points-clean: 238995  Scheme		  /tmp/scott-points-clean.sc
+  * *scratch*             1338  Lisp Interaction
+    toollib-matlab.sc    12100  Scheme		  ~/darpa-collaboration/ideas/toollib-matlab.sc
+ %  *Process List*         351  Help
+    QobiScheme-AD.sc    295402  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/QobiScheme/source/QobiScheme-AD.sc
+    viterbi-new.sc        5949  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/viterbi-new.sc
+ %  *Completions*          152  Completion List
+    foo.txt|tmp|            12  Text		  /tmp/foo.txt
+    rendering-code.sc    71852  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/rendering-code.sc
+    toollib-multi-proce: 11819  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc
+    idealib-stuff.sc    215317  Scheme		  ~/darpa-collaboration/ideas/idealib-stuff.sc
+  * *shell*<3>            3865  Shell:run	  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/
+    toollib-codetection: 19140  Scheme		  ~/codetection/source/new-sentence-codetection/toollib-codetection.sc
+    foo.txt|sbroniko      3104  Text		  ~/foo.txt
+    open-files-30dec15.t: 2200  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/open-files-30dec15.text
+  * *Messages*            2780  Fundamental
+    *Help*                   0  Fundamental
+ %  *Disabled Command*     930  Help

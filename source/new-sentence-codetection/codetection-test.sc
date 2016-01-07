@@ -3737,8 +3737,8 @@
 			(read-object-from-file tubes-filename)
 			#f))) ;;could call get-all-nms-tubes here--need more parameters
   (if (not tubes-list)
-      (dtrace (format #f "ERROR: ~a does not exist" tubes-filename) #f)
-      (align-all-tubes-with-poses-and-remove-falses tubes-list pose-list))))
+      (dtrace (format #f "ERROR: ~a does not exist" tubes-filename) #f
+      (align-all-tubes-with-poses-and-remove-falses tubes-list pose-list)))))
 	
 
 (define (pixel-and-pose->world-line p robot-pose
@@ -3834,14 +3834,27 @@
 	   
   
 ;;------more optimization stuff 6 jan 16----- 
-(define (get-deltas-from-track track)
+
+(define (get-deltas-of-world-track-3dof track)
  (let loop ((track track)
 	    (deltas '()))
   (if (= 1 (length track))
-      (list->vector (join (map vector->list (reverse deltas))))
+      (merge-deltas (reverse deltas))
+      ;;      (list->vector (join (map vector->list (reverse deltas))))
       (let ((diff (v- (first track) (second track))))
        (loop (rest track)
-	     (cons (vector (x diff) (y diff) 0 (z diff) 0 0) deltas))))))
+	     (cons (vector (x diff) (y diff) 0. (z diff) 0. 0.) deltas))))))
+
+(define (world-track-3dof->robot-track-6dof world-track)
+ (map (lambda (p) (world-6dof->robot-6dof (x-y-theta->6dof p))) world-track))
+
+(define (get-deltas-of-robot-track-6dof track)
+ (let loop ((track track)
+	    (deltas '()))
+  (if (= 1 (length track))
+      (merge-deltas (reverse deltas))
+      (loop (rest track)
+	    (cons (v- (first track) (second track)) deltas)))))
 
 (define (get-deltas-cost x-delta odometry-delta)
  (magnitude-squared (v- odometry-deltas x-deltas)))
@@ -3850,11 +3863,31 @@
  (map list->vector (split-n 6 (vector->list deltas-vector))))
 
 (define (merge-deltas list-of-deltas)
- (list->vector (join (map vector->list list-of-deltas))))
+ (reduce vector-append list-of-deltas '#()))
 
-(define (find-poses-from-deltas-vector-and-initial-pose deltas-vector initial-pose)
- 
- )
+(define (split-points points-vector)
+ (map list->vector (split-n 3 (vector->list points-vector))))
+
+(define (merge-points list-of-points)
+ (reduce vector-append list-of-points '#()))
+
+(define (merge-giant-vector points-vector deltas-vector)
+ (vector-append points-vector deltas-vector))
+
+(define (split-giant-vector giant-vector num-points)
+ (let ((n (vector-length giant-vector)))
+  (list (subvector giant-vector 0 (* 3 num-points))
+	(subvector giant-vector (* 3 num-points) n))))
+
+(define (find-6dof-poses-list-from-deltas-vector-and-initial-pose deltas-vector
+								  initial-pose)
+ (let loop ((list-of-deltas (split-deltas deltas-vector))
+	    (poses (list initial-pose)))
+  (if (null? list-of-deltas)
+      (reverse poses)
+      (loop (rest list-of-deltas)
+	    (cons (v+ (first list-of-deltas) (first poses)) poses)))))
+  
 
 ;;start-up initialization stuff
 
