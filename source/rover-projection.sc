@@ -211,34 +211,53 @@
  (vector (x pose) (y pose) 0. (z pose) 0. 0.))
 
 
-(define (world-6dof->robot-6dof pose)
- (let* ((old-pose (subvector pose 0 3))
-	(theta (vector-ref pose 3)))
-  (vector-append (transform-point-3d
-		  (my-make-transform-3d (- half-pi) 0 0 0 0 0)
-		  old-pose)
-		 (vector (- theta half-pi) 0. 0.))))
+;; (define (world-6dof->robot-6dof pose)
+;;  (let* ((old-pose (subvector pose 0 3))
+;; 	(theta (vector-ref pose 3)))
+;;   (vector-append (transform-point-3d
+;; 		  (my-make-transform-3d (- half-pi) 0 0 0 0 0)
+;; 		  old-pose)
+;; 		 (vector (- theta half-pi) 0. 0.))))
+
+;; (define (robot-6dof->world-6dof pose)
+;;  (let* ((old-pose (subvector pose 0 3))
+;; 	(theta (vector-ref pose 3)))
+;;   (vector-append (transform-point-3d
+;; 		  (my-make-transform-3d (+ half-pi) 0 0 0 0 0)
+;; 		  old-pose)
+;; 		 (vector (+ theta half-pi) 0. 0.))))
+;;the above could be wrong
 
 (define (robot-6dof->world-6dof pose)
- (let* ((old-pose (subvector pose 0 3))
-	(theta (vector-ref pose 3)))
-  (vector-append (transform-point-3d
-		  (my-make-transform-3d (+ half-pi) 0 0 0 0 0)
-		  old-pose)
-		 (vector (+ theta half-pi) 0. 0.))))
+ #f)
 
-;; (define (robot-pose-6dof-to-camera->world-txf robot-pose camera-offset-matrix)
-;;  (invert-tx-matrix
-;;   (m*
-;;    camera-offset-matrix
-;;    (invert-tx-matrix
-;;     (my-make-transform-3d (- (z robot-pose) half-pi)
-;; 			  0
-;; 			  (- half-pi)
-;; 			  (x robot-pose);;(* (x robot-pose) 1000)
-;; 			  (y robot-pose);;(* (y robot-pose) 1000)
-;; 			  0
-;; 			  )))))
+(define (world-6dof->robot-6dof pose)
+ #f)
+
+
+;;FIXME
+;; (define (world-delta->robot-delta world-delta world-pose)
+;;  (let* ((theta (vector-ref world-pose 3))
+;; 	(delta-xyz (subvector world-delta 0 3))
+;; 	(delta-angles (subvector world-delta 3 6)))
+;;   (vector-append
+
+(define (robot-pose-6dof-to-camera->world-txf robot-pose-6dof camera-offset-matrix)
+ ;;robot-pose-6dof is (x,y,z,theta,phi,psi) -- my-make-transform-3d puts angles first
+ (let* ((xval (x robot-pose-6dof))
+	(yval (y robot-pose-6dof))
+	(zval (z robot-pose-6dof))
+	(theta (vector-ref robot-pose-6dof 3))
+	(phi (vector-ref robot-pose-6dof 4))
+	(psi (vector-ref robot-pose-6dof 5)))
+ (invert-tx-matrix
+  (m*
+   camera-offset-matrix
+   (invert-tx-matrix
+    (my-make-transform-3d (- theta half-pi)
+			  phi
+			  (- psi half-pi)
+			  xval yval zval))))))
 
 
 (define (read-camera-timing path)

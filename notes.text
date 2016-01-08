@@ -4735,9 +4735,68 @@ choosing the parameters that RANSAC needs.
   to be giving the answer I'm looking for-->should I change how I compute the
   deltas (i.e., order of operands)?
 
+----------------git commit 181f09a---------------
+
+8 Jan 16
+
+--Rewrote get-deltas-of-* functions to have the delta computed as (v- second
+  first) instead of the other way around.  REMEMBER THAT the functions use OF
+  instead of FROM.
+
+--Wrote world-track-3dof->world-track-6dof and used it to ensure that world
+  track reconstructed from robot-coordinate-system deltas matched odometry
+  track.
+
+--Wrote robot-pose-6dof-to-camera->world-txf in rover-projection.sc, confirmed
+  that it returns the same camera->world transform matrix that the old 3dof pose
+  version does. 
+
+--Wrote pixel-and-pose-6dof->world-line in codetection-test.sc, confirmed that
+  it returns the same line points as the old 3dof pose version does.
+
+--Wrote raw-tube-with-score-and-pose-list-6dof->lines which computes lines to
+  all 4 box corners like the old aligned-tube-with-score->lines.
+
+--Modified point-line-squared-distance to allow for #f's in list of lines.
+
+--Tested find-point-from-lines with new raw-tube-wtih-score->lines and got same
+  answer as using previous aligned-tube-with-score->lines...seems to be working
+  correctly. 
+
+--Started writing new optimizer (find-points-and-deltas) but had to stop when we
+  realized that there were problems with how I was computing deltas in the world
+  and robot frames.
+
+--**NEED TO FIX** working on get-deltas-list-in-robot-6dof.  Takes raw odometry,
+    turns it into 6dof world odometry, then finds world deltas (so far).  Next
+    needs to transform this into world deltas at each step (should be just a
+    fixed - half-pi shift from world to robot, plus/minus the world theta to
+    align the coordinate systems.  This will give robot delta x, delta y.  Delta
+    theta will be the same as in world b/c the z axes are aligned.
+
+--**Then will need to work on the reverse, going from the robot frame back to
+    world.  Should be able to build two transformation matrices (world1->robot1,
+    robot1->robot2), multiply them together, and then use
+    my-transform->parameters to pull out the 6dof change in world frame.  
+
+--**test for this working will be that I can take a path, get the deltas into
+    robot frame, and then do the reverse and get the original path back out.
+    Also should be able to artificially add a half-pi theta shift to the first
+    delta and then get back a shifted path
+
+
+
+
+
+
+***THOUGHT--need to think more about what Jeff said in meeting on 7Jan about
+   treating the position (error?) as a low-order polynomial function and then
+   using the optimization to estimate the parameters of this function-->how do
+   we do this??
+
 **QUESTION: With new method of estimating 6DOF parameters for robot motion, do I
   need a new method of computing position that takes into account ALL of
-  (x,y,z,theta,phi,psi)?? 
+  (x,y,z,theta,phi,psi)?? ***DONE****
 
 **THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
 

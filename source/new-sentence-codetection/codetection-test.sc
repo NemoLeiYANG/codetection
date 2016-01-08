@@ -3758,6 +3758,28 @@
 	)
   (list camera-world pixel-world)))
 
+(define (pixel-and-pose-6dof->world-line p robot-pose-6dof
+					 camera-offset-matrix camera-intrinsics)
+ ;;produces a pair of points: the camera world location and a point on the line
+ ;;through the pixel (depth ambiguity)
+ ;;also deals with #f's in place of pixel (tube placeholders)
+ (if p
+     (let* ((camera->world
+	     (robot-pose-6dof-to-camera->world-txf robot-pose-6dof
+						   camera-offset-matrix))
+	    (camera-world (transform-point-3d camera->world (vector 0 0 0)))
+	    ;;	(foo (dtrace "camera-world" camera-world))
+	    (fx  (matrix-ref camera-intrinsics 0 0))
+	    (fy  (matrix-ref camera-intrinsics 1 1))
+	    (px  (/ (- (x p) (matrix-ref camera-intrinsics 0 2)) fx))
+	    (py  (/ (- (y p) (matrix-ref camera-intrinsics 1 2)) fy))
+	    (pixel-world  (transform-point-3d camera->world (vector px py 1)))
+	    ;; (bar (dtrace "pixel-world" pixel-world))
+	    )
+      (list camera-world pixel-world))
+     #f))
+
+
 (define (aligned-tube-with-score->lines tube-with-score)
  (let* ((tube (first tube-with-score))
 	(camera-offset-matrix *camera-offset-matrix*) ;;PREDEFINED
@@ -3790,6 +3812,42 @@
 	 br-corners poses) ;;lines to box bottom right corners
 	)))
 
+(define (raw-tube-with-score-and-pose-list-6dof->lines raw-tube-with-score
+						       pose-list-6dof)
+ (let* ((tube (first raw-tube-with-score))
+	(camera-offset-matrix *camera-offset-matrix*) ;;PREDEFINED
+	(camera-intrinsics *camera-k-matrix*) ;;PREDEFINED
+	;;need if's in the below because the raw tube has to keep #f's in
+	;;no-box frames for placeholders/alignment
+	(tl-corners (map (lambda (p) (if p (subvector p 0 2) #f)) tube))
+	(tr-corners (map (lambda (p) (if p (vector (z  p) (y p)) #f)) tube))
+	(bl-corners (map (lambda (p) (if p
+					 (vector (x p)
+						   (vector-ref p 3))
+					 #f)) tube))
+	(br-corners (map (lambda (p) (if p (subvector p 2 4) #f)) tube)))
+  (list 
+   (map
+    (lambda (px pose)
+     (pixel-and-pose-6dof->world-line px pose
+				      camera-offset-matrix camera-intrinsics))
+    tl-corners pose-list-6dof)
+   (map
+    (lambda (px pose)
+     (pixel-and-pose-6dof->world-line px pose
+				      camera-offset-matrix camera-intrinsics))
+    tr-corners pose-list-6dof)
+   (map
+    (lambda (px pose)
+     (pixel-and-pose-6dof->world-line px pose
+				      camera-offset-matrix camera-intrinsics))
+    bl-corners pose-list-6dof)
+   (map
+    (lambda (px pose)
+     (pixel-and-pose-6dof->world-line px pose
+				      camera-offset-matrix camera-intrinsics))
+    br-corners pose-list-6dof))))
+
 ;;------optimization stuff
 
 ;;will need to get rid of tubes with < 2 frames at some point (where?)
@@ -3798,13 +3856,16 @@
 
 (define (point-line-squared-distance point line) ;;this is my simple cost function
  ;;point is #(x y z), line is (#(x1 y1 z1) #(x2 y2 z2))
- (let* ((x0 point)
-	(x1 (first line))
-	(x2 (second line)))
-  (/ (magnitude-squared
-      (cross (v- x2 x1)
-	     (v- x1 x0)))
-     (distance-squared x2 x1))))
+ (if line ;;added 8Jan15 to account for #f's as placeholders
+     (let* ((x0 point)
+	    (x1 (first line))
+	    (x2 (second line)))
+      (/ (magnitude-squared
+	  (cross (v- x2 x1)
+		 (v- x1 x0)))
+	 (distance-squared x2 x1)))
+     0))
+ 
 
 (define (find-point-from-lines lines initial-guess)
  (let* ((f (lambda (x)
@@ -3818,6 +3879,47 @@
    (lambda (opt)
     (nlopt:set-min-objective opt
 			     (lambda (x g?) (vector (f x) (g x))))))))
+
+
+;; (define (find-points-and-deltas odometry raw-tubes-with-score)
+;;  (let* ((num-points (length raw-tubes-with-score))
+;; 	(world-track-6dof (world-track-3dof->world-track-6dof odometry))
+;; 	;;(deltas (get-deltas-of-robot-track-6dof
+;; 	;;  	   (world-track-3dof->robot-track-6dof odometry)))
+;; 	(initial-guess-points
+;; 	 (map
+;; 	  (lambda (tube)
+;; 	   (find-point-from-lines
+;; 	    (first
+;; 	     (raw-tube-with-score-and-pose-list-6dof->lines tube world-track-6dof))
+;; 	    (vector 0 0 0)))
+;; 	  raw-tubes-with-score))
+;; 	(initial-guess (vector-append (merge-points initial-guess-points)
+;; 				      (merge-deltas deltas)))
+;; 	(f (lambda (x)
+;; 	    (let* ((split-vector (split-giant-vector x num-points))
+;; 		   (points-vector (first split-vector))
+;; 		   (deltas-vector (second split-vector))
+;; 		   (robot-poses-6dof
+;; 		    (find-6dof-poses-list-from-deltas-vector-and-initial-pose deltas-vector (vector 0. 0. 0. 0. 0. 0.)))
+		   
+;; 	    (reduce +
+;; 		    (map (lambda (
+;; 		    0)))
+
+;; 	;; (f (lambda (x)
+;; 	;;     (reduce +
+;; 	;; 	    (map (lambda (line) (point-line-squared-distance x line)) lines)
+;; 	;; 	    0)))
+;; 	(g (gradient-r f)))
+;;   (optimize-with-nlopt
+;;    nlopt:ld-lbfgs 
+;;    initial-guess
+;;    (lambda (opt)
+;;     (nlopt:set-min-objective opt
+;; 			     (lambda (x g?) (vector (f x) (g x))))))))
+
+
 
 ;; (define (line-line-squared-distance line1 line2)
 ;;  (let* ((x1 (first line1))
@@ -3841,20 +3943,40 @@
   (if (= 1 (length track))
       (merge-deltas (reverse deltas))
       ;;      (list->vector (join (map vector->list (reverse deltas))))
-      (let ((diff (v- (first track) (second track))))
+      (let ((diff (v- (second track) (first track))))
        (loop (rest track)
 	     (cons (vector (x diff) (y diff) 0. (z diff) 0. 0.) deltas))))))
 
-(define (world-track-3dof->robot-track-6dof world-track)
- (map (lambda (p) (world-6dof->robot-6dof (x-y-theta->6dof p))) world-track))
+;; (define (world-track-3dof->robot-track-6dof world-track)
+;;  (map (lambda (p) (world-6dof->robot-6dof (x-y-theta->6dof p))) world-track))
+;;not sure this is right
 
-(define (get-deltas-of-robot-track-6dof track)
- (let loop ((track track)
+(define (world-track-3dof->world-track-6dof track-3dof)
+ (map (lambda (p) (x-y-theta->6dof p)) track-3dof))
+
+(define (get-deltas-list-from-world-track-6dof world-track-6dof)
+ (let loop ((track world-track-6dof)
 	    (deltas '()))
   (if (= 1 (length track))
-      (merge-deltas (reverse deltas))
+      (reverse deltas)
       (loop (rest track)
-	    (cons (v- (first track) (second track)) deltas)))))
+	    (cons (v- (second track) (first track)) deltas)))))
+
+;;FIXME
+;; (define (get-deltas-list-in-robot-6dof track-world-3dof)
+;;  (let* ((track-world-6dof
+;; 	 (world-track-3dof->world-track-6dof track-world-3dof))
+;; 	(world-deltas-list
+;; 	 (get-deltas-list-from-world-track-6dof track-world-6dof))
+
+;; (define (get-deltas-of-robot-track-6dof track)
+;;  (let loop ((track track)
+;; 	    (deltas '()))
+;;   (if (= 1 (length track))
+;;       (merge-deltas (reverse deltas))
+;;       (loop (rest track)
+;; 	    (cons (v- (second track) (first track)) deltas)))))
+;;not sure this works right
 
 (define (get-deltas-cost x-delta odometry-delta)
  (magnitude-squared (v- odometry-deltas x-deltas)))
