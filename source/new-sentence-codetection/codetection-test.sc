@@ -3951,6 +3951,21 @@
 ;;  (map (lambda (p) (world-6dof->robot-6dof (x-y-theta->6dof p))) world-track))
 ;;not sure this is right
 
+(define (world-delta-and-pose-6dof->robot-delta-6dof delta pose)
+ (let* ((d-pose (subvector delta 0 3))
+	(d-angles (subvector delta 3 6))
+	(w-pose (subvector pose 0 3))
+	(w-x (x w-pose))
+	(w-y (y w-pose))
+	(w-z (z w-pose))
+	(w-theta (vector-ref pose 3)))
+  (vector-append
+   (v- (transform-point-3d
+	(my-make-transform-3d (- w-theta) 0 0 w-x w-y w-z)
+	d-pose)
+       w-pose) ;;subtracting out original world position -- correct??
+   d-angles)))
+
 (define (world-track-3dof->world-track-6dof track-3dof)
  (map (lambda (p) (x-y-theta->6dof p)) track-3dof))
 
@@ -3962,12 +3977,21 @@
       (loop (rest track)
 	    (cons (v- (second track) (first track)) deltas)))))
 
-;;FIXME
-;; (define (get-deltas-list-in-robot-6dof track-world-3dof)
-;;  (let* ((track-world-6dof
-;; 	 (world-track-3dof->world-track-6dof track-world-3dof))
-;; 	(world-deltas-list
-;; 	 (get-deltas-list-from-world-track-6dof track-world-6dof))
+(define (get-deltas-list-in-robot-6dof track-world-3dof)
+ (let*  ((track-world-6dof
+	  (world-track-3dof->world-track-6dof track-world-3dof))
+	 (world-deltas-list
+	  (get-deltas-list-from-world-track-6dof track-world-6dof)))
+  (let loop ((track track-world-6dof)
+	     (world-deltas world-deltas-list)
+	     (robot-deltas-list '()))
+   (if (null? world-deltas)
+       (reverse robot-deltas-list)
+       (loop (rest track)
+	     (rest world-deltas)
+	     (cons (world-delta-and-pose-6dof->robot-delta-6dof (first world-deltas)
+								(first track))
+		   robot-deltas-list))))))
 
 ;; (define (get-deltas-of-robot-track-6dof track)
 ;;  (let loop ((track track)

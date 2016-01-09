@@ -4769,7 +4769,7 @@ choosing the parameters that RANSAC needs.
 
 --**NEED TO FIX** working on get-deltas-list-in-robot-6dof.  Takes raw odometry,
     turns it into 6dof world odometry, then finds world deltas (so far).  Next
-    needs to transform this into world deltas at each step (should be just a
+    needs to transform this into robot deltas at each step (should be just a
     fixed - half-pi shift from world to robot, plus/minus the world theta to
     align the coordinate systems.  This will give robot delta x, delta y.  Delta
     theta will be the same as in world b/c the z axes are aligned.
@@ -4782,10 +4782,15 @@ choosing the parameters that RANSAC needs.
 --**test for this working will be that I can take a path, get the deltas into
     robot frame, and then do the reverse and get the original path back out.
     Also should be able to artificially add a half-pi theta shift to the first
-    delta and then get back a shifted path
+    delta and then get back a shifted path.
 
+----------------git commit d949f07--------------
 
+9 Jan 16
 
+--Appear to have get-deltas-list-in-robot-6dof (which relies on
+  world-delta-and-pose-6dof->robot-delta-6dof) working correctly.  Sent to Dan
+  for him to check.
 
 
 
