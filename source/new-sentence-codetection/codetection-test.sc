@@ -5,6 +5,8 @@
 ;;(load "/home/sbroniko/codetection/source/sentence-codetection/codetection.sc")
 (load "/home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-plotting.sc") ;;for plotting stuff in matlab
 (load "/home/sbroniko/codetection/source/new-sentence-codetection/viterbi.sc")
+;;for my-transform->parameters
+;;(load "/home/sbroniko/imitate/tool/toollib-misc.sc");;can't load right, so copied into rover-projection.sc
 
 
 ;; (define-command
@@ -3965,6 +3967,47 @@
 	d-pose)
        w-pose) ;;subtracting out original world position -- correct??
    d-angles)))
+
+(define (correct-angle angle) ;;takes angle in [-pi,pi) to [0,2pi)
+ (if (< angle 0)
+     (+ angle (* 2 pi))
+     angle))
+
+(define (world-pose-and-robot-delta-6dof->world-pose-6dof world-pose
+							  robot-delta)
+ (let* ((w-xyz (subvector world-pose 0 3))
+	(w-angles (subvector world-pose 3 6))
+	(r-xyz (subvector robot-delta 0 3))
+	(r-angles (subvector robot-delta 3 6))
+	(world->r1 (my-make-transform-3d (x w-angles)
+					 (y w-angles)
+					 (z w-angles)
+					 (x w-xyz)
+					 (y w-xyz)
+					 (z w-xyz)))
+	(r1->r2 (my-make-transform-3d (x r-angles)
+				      (y r-angles)
+				      (z r-angles)
+				      (x r-xyz)
+				      (y r-xyz)
+				      (z r-xyz)))
+	(A (m* world->r1 r1->r2))
+	(params (my-transform->parameters A)))
+  (vector-append (subvector params 3 6)
+		 (map-vector (lambda (a) (correct-angle a))
+			     (subvector params 0 3)))))
+
+(define (robot-deltas-list-and-world-start-3dof->world-track-6dof deltas-list
+								  world-start-3dof)
+ (let ((track-start (x-y-theta->6dof world-start-3dof)))
+  (let loop ((deltas deltas-list)
+	     (track (list track-start)))
+   (if (null? deltas)
+       (reverse track)
+       (loop (rest deltas)
+	     (cons (world-pose-and-robot-delta-6dof->world-pose-6dof (first track)
+								     (first deltas))
+		   track))))))
 
 (define (world-track-3dof->world-track-6dof track-3dof)
  (map (lambda (p) (x-y-theta->6dof p)) track-3dof))

@@ -47,6 +47,55 @@
 	     (my-rotation-3d-y phi))
 	 (my-rotation-3d-x psi))))
 
+;;copied from ~/imitate/tool/toollib-misc.sc
+(define (my-transform->parameters txf)
+ (if (not (or (equal? (matrix-ref txf 2 0) 1)
+	      (equal? (matrix-ref txf 2 0) -1)))
+     (let* ((theta1 (- (asin (matrix-ref txf 2 0))))
+	    (theta2 (- pi theta1))
+	    (psi1 (atan (/ (matrix-ref txf 2 1)
+			   (cos theta1))
+			(/ (matrix-ref txf 2 2)
+			   (cos theta1))))
+	    (psi2 (atan (/ (matrix-ref txf 2 1)
+			   (cos theta2))
+			(/ (matrix-ref txf 2 2)
+			   (cos theta2))))
+	    (phi1 (atan (/ (matrix-ref txf 1 0)
+			   (cos theta1))
+			(/ (matrix-ref txf 0 0)
+			   (cos theta1))))
+	    (phi2 (atan (/ (matrix-ref txf 1 0)
+			   (cos theta2))
+			(/ (matrix-ref txf 0 0)
+			   (cos theta2)))))
+      (vector  phi1
+	       theta1
+	       psi1
+	       (matrix-ref txf 0 3)
+	       (matrix-ref txf 1 3)
+	       (matrix-ref txf 2 3)))
+     ;;(list  phi2
+     ;;	   theta2
+     ;;   psi2
+     ;; (matrix-ref txf 0 3)
+     ;; (matrix-ref txf 1 3)
+     ;; (matrix-ref txf 2 3))))
+     (let* ((phi 0)
+	    (theta (if (equal? (matrix-ref txf 2 0) -1)
+		       (- (/ pi 2))
+		       (/ pi 2)))
+	    (psi (if (equal? (matrix-ref txf 2 0) -1)
+		     (+ phi (atan (matrix-ref txf 0 1)
+				  (matrix-ref txf 0 2)))
+		     (+ (- phi) (atan (- (matrix-ref txf 0 1))
+				      (- (matrix-ref txf 0 2)))))))
+      (vector phi
+	      theta
+	      psi
+	      (matrix-ref txf 0 3)
+	      (matrix-ref txf 1 3)
+	      (matrix-ref txf 2 3)))))
 
 (define (invert-tx-matrix txf)
  (let* ((transposed-r (transpose (submatrix txf 0 0 3 3)))
@@ -210,6 +259,8 @@
 (define (x-y-theta->6dof pose)
  (vector (x pose) (y pose) 0. (z pose) 0. 0.))
 
+(define (six-dof->x-y-theta pose)
+ (vector (x pose) (y pose) (vector-ref pose 3)))
 
 ;; (define (world-6dof->robot-6dof pose)
 ;;  (let* ((old-pose (subvector pose 0 3))

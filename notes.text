@@ -4792,7 +4792,35 @@ choosing the parameters that RANSAC needs.
   world-delta-and-pose-6dof->robot-delta-6dof) working correctly.  Sent to Dan
   for him to check.
 
+----------------git commit 62ed3f4--------------
 
+10 Jan 16
+
+--Tested get-deltas-list-in-robot-6dof more and it still appears correct.
+
+--Wrote world-pose-and-robot-delta-6dof->world-pose-6dof, appears to work
+  correctly.
+
+--Wrote correct-angle to map angles in [-pi,pi) to [0,2pi) like track data is.
+
+--Wrote robot-deltas-list-and-world-start-6dof->world-track-6dof to apply
+  world-pose-and-robot-delta-6dof->world-pose-6dof to a list of deltas with a
+  world start-->appears to give correct track back for *fake-track* and its
+  deltas as input (at least to the 15th decimal place).
+
+--Tested path recovery with 90 degree shifts and appeared to get out the path I
+  was expecting.
+
+--Tested path delta-finding and recovery with a segment of actual path, and got
+  the original path back to within a reasonable number (> 10) of decimal
+  places.  Declaring success
+
+--The fake track used for testing:
+(define *fake-track* (list (vector 0. 0. half-pi) (vector 0. 1. half-pi) (vector
+1. 2. (/ pi 4)) (vector 2. 3. (/ pi 4)) (vector 3. 4. 0) (vector 4. 4. half-pi)
+(vector 4. 5. (/ (* pi 3) 4)) (vector 3. 6. pi) (vector 2. 6. (/ (* 5 pi) 4))))
+
+--Also used sublist 30 40 of the test-segment track
 
 ***THOUGHT--need to think more about what Jeff said in meeting on 7Jan about
    treating the position (error?) as a low-order polynomial function and then
