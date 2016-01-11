@@ -4803,7 +4803,7 @@ choosing the parameters that RANSAC needs.
 
 --Wrote correct-angle to map angles in [-pi,pi) to [0,2pi) like track data is.
 
---Wrote robot-deltas-list-and-world-start-6dof->world-track-6dof to apply
+--Wrote robot-deltas-list-and-world-start-3dof->world-track-6dof to apply
   world-pose-and-robot-delta-6dof->world-pose-6dof to a list of deltas with a
   world start-->appears to give correct track back for *fake-track* and its
   deltas as input (at least to the 15th decimal place).
@@ -4821,6 +4821,21 @@ choosing the parameters that RANSAC needs.
 (vector 4. 5. (/ (* pi 3) 4)) (vector 3. 6. pi) (vector 2. 6. (/ (* 5 pi) 4))))
 
 --Also used sublist 30 40 of the test-segment track
+
+----------------git commit 04d0648--------------
+
+11 Jan 16
+
+--Have find-points-and-deltas working.  Works reasonably well on 3-point
+  synthetic example--finds optimum quickly when started at optimum, but when one
+  of the points is perturbed it doesn't do very well.  Could be because of such
+  a small number of points--perturbing 1 is 1/3 the total.  
+
+--Currently trying a run on the test-segment (80 frames) with all 25 tubes,
+  results going into
+  /home/sbroniko/codetection/source/new-sentence-codetection/screenlog.0.  Also
+  trying runs using {5,10,15,20} tubes (subset of the 25) in separate processes
+  (no logging that output).
 
 ***THOUGHT--need to think more about what Jeff said in meeting on 7Jan about
    treating the position (error?) as a low-order polynomial function and then

@@ -3883,43 +3883,75 @@
 			     (lambda (x g?) (vector (f x) (g x))))))))
 
 
-;; (define (find-points-and-deltas odometry raw-tubes-with-score)
-;;  (let* ((num-points (length raw-tubes-with-score))
-;; 	(world-track-6dof (world-track-3dof->world-track-6dof odometry))
-;; 	;;(deltas (get-deltas-of-robot-track-6dof
-;; 	;;  	   (world-track-3dof->robot-track-6dof odometry)))
-;; 	(initial-guess-points
-;; 	 (map
-;; 	  (lambda (tube)
-;; 	   (find-point-from-lines
-;; 	    (first
-;; 	     (raw-tube-with-score-and-pose-list-6dof->lines tube world-track-6dof))
-;; 	    (vector 0 0 0)))
-;; 	  raw-tubes-with-score))
-;; 	(initial-guess (vector-append (merge-points initial-guess-points)
-;; 				      (merge-deltas deltas)))
-;; 	(f (lambda (x)
-;; 	    (let* ((split-vector (split-giant-vector x num-points))
-;; 		   (points-vector (first split-vector))
-;; 		   (deltas-vector (second split-vector))
-;; 		   (robot-poses-6dof
-;; 		    (find-6dof-poses-list-from-deltas-vector-and-initial-pose deltas-vector (vector 0. 0. 0. 0. 0. 0.)))
-		   
-;; 	    (reduce +
-;; 		    (map (lambda (
-;; 		    0)))
-
-;; 	;; (f (lambda (x)
-;; 	;;     (reduce +
-;; 	;; 	    (map (lambda (line) (point-line-squared-distance x line)) lines)
-;; 	;; 	    0)))
-;; 	(g (gradient-r f)))
-;;   (optimize-with-nlopt
-;;    nlopt:ld-lbfgs 
-;;    initial-guess
-;;    (lambda (opt)
-;;     (nlopt:set-min-objective opt
-;; 			     (lambda (x g?) (vector (f x) (g x))))))))
+(define (find-points-and-deltas odometry raw-tubes-with-score)
+ (let* ((num-points (length raw-tubes-with-score))
+	(counter 0)
+	(world-track-6dof (world-track-3dof->world-track-6dof odometry))
+	(initial-deltas (get-deltas-list-in-robot-6dof odometry))
+	(initial-guess-points
+	 (dtrace "initial-guess-points "
+		 (map
+		  (lambda (tube)
+		   (x (find-point-from-lines
+		       (dtrace "lines "
+			       (first
+				(raw-tube-with-score-and-pose-list-6dof->lines
+				 tube world-track-6dof)))
+			       (vector 0 0 0))))
+		  raw-tubes-with-score)))
+	(tube-lengths
+	 (map (lambda (f) (length (removeq #f (first f))))
+	      raw-tubes-with-score))
+	(initial-guess (vector-append (merge-points initial-guess-points)
+				      (merge-deltas initial-deltas)))
+	(f (lambda (x)
+	    (let* ((split-vector (split-giant-vector x num-points))
+		   (points-vector (first split-vector))
+		   (points-list (split-points points-vector))
+		   (deltas-vector (second split-vector))
+		   (deltas-list (split-deltas deltas-vector))
+		   (robot-poses-6dof
+		    (robot-deltas-list-and-world-start-3dof->world-track-6dof
+		     deltas-list (first odometry)))
+		   (odometry-diff-cost
+		    (* 0.01
+		       (/ (reduce +
+				  (map (lambda (a b) (magnitude-squared
+						      (subtract-pose a b)))
+				       deltas-list
+				       initial-deltas)
+				  0)
+			  (* 6 (length odometry)))))
+		   (final-cost (+ odometry-diff-cost
+				  (reduce +
+					  (map (lambda (tube point len)
+						(let* ((lines
+							(first ;;b/c ->lines returns 4 corners
+							 (raw-tube-with-score-and-pose-list-6dof->lines
+							  tube
+							  robot-poses-6dof))))
+						 (/ (reduce +
+							    (map (lambda (l)
+								  (point-line-squared-distance point l))
+								 lines)
+							    0)
+						    len)))
+					       raw-tubes-with-score
+					       points-list
+					       tube-lengths)				  
+					  0))))
+	     (when (= (modulo counter 100) 0)
+	      (dtrace "odometry-diff-cost " (primal* odometry-diff-cost))
+	      (dtrace "final-cost" (primal* final-cost)))
+	     (set! counter (+ counter 1))
+	     final-cost)))
+	(g (gradient-r f)))
+  (optimize-with-nlopt
+   nlopt:ld-lbfgs 
+   initial-guess
+   (lambda (opt)
+    (nlopt:set-min-objective opt
+			     (lambda (x g?) (vector (f x) (g x))))))))
 
 
 
@@ -3970,8 +4002,24 @@
 
 (define (correct-angle angle) ;;takes angle in [-pi,pi) to [0,2pi)
  (if (< angle 0)
-     (+ angle (* 2 pi))
-     angle))
+     (correct-angle (+ angle two-pi))
+     (if (> angle two-pi)
+	 (correct-angle (- angle two-pi))
+	 angle)))
+
+(define (angle-minus angle1 angle2)
+ (let* ((a1 (correct-angle angle1))
+	(a2 (correct-angle angle2)))
+  (minimump (list (- a1 a2) (- (+ a1 two-pi) a2) (- a1 (+ a2 two-pi)))
+	    (lambda (p) (if (< p 0) (* -1 p) p)))))
+
+(define (subtract-pose pose1 pose2)
+ (vector (- (x pose1) (x pose2))
+	 (- (y pose1) (y pose2))
+	 (- (z pose1) (z pose2))
+	 (angle-minus (vector-ref pose1 3) (vector-ref pose2 3))
+	 (angle-minus (vector-ref pose1 4) (vector-ref pose2 4))
+	 (angle-minus (vector-ref pose1 5) (vector-ref pose2 5))))
 
 (define (world-pose-and-robot-delta-6dof->world-pose-6dof world-pose
 							  robot-delta)
@@ -4012,13 +4060,15 @@
 (define (world-track-3dof->world-track-6dof track-3dof)
  (map (lambda (p) (x-y-theta->6dof p)) track-3dof))
 
+
 (define (get-deltas-list-from-world-track-6dof world-track-6dof)
  (let loop ((track world-track-6dof)
 	    (deltas '()))
   (if (= 1 (length track))
       (reverse deltas)
       (loop (rest track)
-	    (cons (v- (second track) (first track)) deltas)))))
+	    (cons (subtract-pose (second track) (first track))
+		  deltas)))))
 
 (define (get-deltas-list-in-robot-6dof track-world-3dof)
  (let*  ((track-world-6dof
@@ -4045,8 +4095,9 @@
 ;; 	    (cons (v- (second track) (first track)) deltas)))))
 ;;not sure this works right
 
-(define (get-deltas-cost x-delta odometry-delta)
- (magnitude-squared (v- odometry-deltas x-deltas)))
+;;not useful
+;; (define (get-deltas-cost x-delta odometry-delta)
+;;  (magnitude-squared (v- odometry-deltas x-deltas)))
 
 (define (split-deltas deltas-vector)
  (map list->vector (split-n 6 (vector->list deltas-vector))))

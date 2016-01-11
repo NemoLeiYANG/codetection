@@ -47,11 +47,14 @@
 	     (my-rotation-3d-y phi))
 	 (my-rotation-3d-x psi))))
 
+(define (my-asin x) (lift-real->real asin (lambda (x) (/ 1 (sqrt (- 1 (sqr x))))) x))
+
+
 ;;copied from ~/imitate/tool/toollib-misc.sc
 (define (my-transform->parameters txf)
  (if (not (or (equal? (matrix-ref txf 2 0) 1)
 	      (equal? (matrix-ref txf 2 0) -1)))
-     (let* ((theta1 (- (asin (matrix-ref txf 2 0))))
+     (let* ((theta1 (- (my-asin (matrix-ref txf 2 0))))
 	    (theta2 (- pi theta1))
 	    (psi1 (atan (/ (matrix-ref txf 2 1)
 			   (cos theta1))
@@ -244,17 +247,19 @@
 ;; 				      ))))
 
 (define (robot-pose-to-camera->world-txf robot-pose camera-offset-matrix)
- (invert-tx-matrix
-  (m*
-   camera-offset-matrix
-   (invert-tx-matrix
-    (my-make-transform-3d (- (z robot-pose) half-pi)
-			  0
-			  (- half-pi)
-			  (x robot-pose);;(* (x robot-pose) 1000)
-			  (y robot-pose);;(* (y robot-pose) 1000)
-			  0
-			  )))))
+ (if (= (vector-length robot-pose) 3)
+     (invert-tx-matrix
+      (m*
+       camera-offset-matrix
+       (invert-tx-matrix
+	(my-make-transform-3d (- (z robot-pose) half-pi)
+			      0
+			      (- half-pi)
+			      (x robot-pose);;(* (x robot-pose) 1000)
+			      (y robot-pose);;(* (y robot-pose) 1000)
+			      0
+			      ))))
+     #f))
 
 (define (x-y-theta->6dof pose)
  (vector (x pose) (y pose) 0. (z pose) 0. 0.))
