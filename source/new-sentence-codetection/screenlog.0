@@ -338,4 +338,2100 @@ Mon Jan 11 16:53:41 EST 2016
 "final-cost" 0.002843503439785083
 [K"o[K"o[K"odometry-diff-cost " 1.683881212847928e-07
 "final-cost" 0.002248631544985701
+[K"odomet[K"odomet[K"odometry-diff-cost " 2.074071384550674e-07
+"final-cost" 0.0018615712503343
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 2.450688001173974e-07
+"final-cost" 0.001646604599590963
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 2.744075152230849e-07
+"final-cost" 0.001492621614947779
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 2.945712996386956e-07
+"final-cost" 0.001394901903919153
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 3.1285932570558e-07
+"final-cost" 0.001341874324802262
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 3.446260670325091e-07
+"final-cost" 0.001262883368960645
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 3.847163721456667e-07
+"final-cost" 0.001210150933632166
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 4.265736202139436e-07
+"final-cost" 0.001161591217594267
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 4.90343418343333e-07
+"final-cost" 0.001102274753550818
+[K"odometry-diff-cost [K"odometry-diff-cost [K"odometry-diff-cost " 5.500094134413889e-07
+"final-cost" 0.00104861258622466
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 5.734984257395182e-07
+"final-cost" 0.001021038288204312
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 5.868857594252346e-07
+"final-cost" 0.0009835645097309167
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 5.904161613379642e-07
+"final-cost" 0.0009544624268904329
+[K"odometry-diff-cost " 5.930532827171422e-07
+"final-cost" [K"final-cost" [K"final-cost" 0.0009295659212930923
+[K"odometry-diff-cost "[K"odometry-diff-cost "[K"odometry-diff-cost " 5.955348377058105e-07
+"final-cost" 0.0009179058866535287
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 5.87119141144649e-07
+"final-cost" 0.0009000640654252888
+[K"odometry-diff-cost [K"odometry-diff-cost [K"odometry-diff-cost " 5.948809883609875e-07
+"final-cost" 0.0008797892839436049
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.446040113538875e-07
+"final-cost" 0.0008555786683039436
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.303397670095922e-07
+"final-cost" 0.0008481527312048688
+[K"odometry-diff-cost " [K"odometry-diff-cost " [K"odometry-diff-cost " 6.327030526287074e-07
+"final-cost" 0.0008387012813679454
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.372578393208633e-07
+"final-cost" 0.0008294797023856373
+[K"odometry-diff-cost " [K"odometry-diff-cost " [K"odometry-diff-cost " 6.425604085488259e-07
+"final-cost" 0.0008225665673828921
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.500454254518863e-07
+"final-cost" 0.0008153870656923475
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 6.583268922545487e-07
+"final-cost" 0.000808697604167606
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.705286611752103e-07
+"final-cost" 0.0007981226502494623
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 6.835292266738736e-07
+"final-cost" 0.0007866566526905477
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.986872808879766e-07
+"final-cost" 0.0007717582753890517
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 7.141937913819095e-07
+"final-cost" 0.0007498863155517474
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.221366458361318e-07
+"final-cost" 0.0007318522332517444
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.238091447331062e-07
+"final-cost" 0.0007170489635709133
+[K"odometry-diff-cost [K"odometry-diff-cost [K"odometry-diff-cost " 7.25770607748739e-07
+"final-cost" 0.0007120102472751494
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 7.228762835317594e-07
+"final-cost" 0.0007060718134744366
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.148254412728236e-07
+"final-cost" 0.0006975127146839807
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.990839600551929e-07
+"final-cost" 0.0006862545236395795
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 6.897011404626767e-07
+"final-cost" 0.0006789712803947664
+[K"odometry-diff-cost [K"odometry-diff-cost [K"odometry-diff-cost " 6.770365286368774e-07
+"final-cost" 0.000669700354094071
+[K"odometr[K"odometr[K"odometry-diff-cost " 6.667025413719321e-07
+"final-cost" 0.0006608919434110432
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 6.561477939790837e-07
+"final-cost" 0.0006466534704379339
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.539551259175963e-07
+"final-cost" 0.0006354788125533747
+[K"odometry-diff-cost "[K"odometry-diff-cost "[K"odometry-diff-cost " 6.645065046299029e-07
+"final-cost" 0.0006229772899452226
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.828869143752441e-07
+"final-cost" 0.0006126117186919166
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.358425871963379e-07
+"final-cost" 0.0005894152910958311
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.658350778583871e-07
+"final-cost" 0.0005757924827003702
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 7.599453054612667e-07
+"final-cost" 0.0005692667613685433
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 7.444636286286305e-07
+"final-cost" 0.0005613804840544043
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.277352348790735e-07
+"final-cost" 0.0005533751243684296
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.165614511075342e-07
+"final-cost" 0.0005460618655737933
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.07144127840738e-07
+"final-cost" 0.0005373203062627811
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.027585489096385e-07
+"final-cost" 0.0005305378767256906
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 6.979010899052999e-07
+"final-cost" 0.0005196024047758305
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.978067177494599e-07
+"final-cost" 0.00051161882098136
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 6.949594792963519e-07
+"final-cost" 0.0005041381950888635
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.893792084591582e-07
+"final-cost" 0.0004966524905023615
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.860853899813694e-07
+"final-cost" 0.0004910631168991588
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 6.820948068083659e-07
+"final-cost" 0.0004839567702566628
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.805702360352947e-07
+"final-cost" 0.0004719983058794099
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 2.267921330824133e-06
+"final-cost" 39666.1642483897
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 6.794795424092199e-07
+"final-cost" 0.000446063513834168
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.754249783831883e-07
+"final-cost" 0.0004410287776539902
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.702812911078905e-07
+"final-cost" 0.0004367767262657812
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 6.644153600008096e-07
+"final-cost" 0.0004309819440901574
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 6.601948396067923e-07
+"final-cost" 0.0004251396021264576
+[K"odometry-diff-cost [K"odometry-diff-cost [K"odometry-diff-cost " 6.610024647101631e-07
+"final-cost" 0.0004208181785720664
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 6.6596307792282e-07
+"final-cost" 0.0004171237594687319
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 6.730665175741093e-07
+"final-cost" 0.0004131192093848218
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.795432752774502e-07
+"final-cost" 0.0004089708969359142
+[K"odometry-diff-cost " 6.850293575234072e-07
+"final-cos[K"final-cos[K"final-cost" 0.0004054184912922425
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.931409665712891e-07
+"final-cost" 0.0004008801315219396
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 6.982395646513314e-07
+"final-cost" 0.000394706890415194
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.943323168382164e-07
+"final-cost" 0.0003877638280573985
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 6.907668988973304e-07
+"final-cost" 0.0003840644105759844
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.890349529251996e-07
+"final-cost" 0.0003823453009382576
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.864139486908476e-07
+"final-cost" 0.0003808066085060272
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.7993378345167e-07
+"final-cost" 0.0003774985846947238
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.760388065644626e-07
+"final-cost" 0.0003746087752608341
+[K"odometry-diff-cost " [K"odometry-diff-cost " [K"odometry-diff-cost " 6.71487178182905e-07
+"final-cost" 0.0003715924903462069
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.693487130993023e-07
+"final-cost" 0.0003688286131542729
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 6.685658478151719e-07
+"final-cost" 0.0003668032706272981
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.673000302629644e-07
+"final-cost" 0.0003649577009984676
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 6.647293636193663e-07
+"final-cost" 0.0003628676513634161
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.636901976755063e-07
+"final-cost" 0.0003607320074853902
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 6.635524431029748e-07
+"final-cost" 0.0003572066176516574
+[K"odometry-diff-cost " [K"odometry-diff-cost " [K"odometry-diff-cost " 6.627371875558626e-07
+"final-cost" 0.0003542107017114903
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.626349775559356e-07
+"final-cost" 0.0003536275175336445
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.624071583522965e-07
+"final-cost" 0.0003532009428532506
+[K"odometry-diff-cost "[K"odometry-diff-cost "[K"odometry-diff-cost " 6.62448404677826e-07
+"final-cost" 0.0003521034988479034
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.616211655072849e-07
+"final-cost" 0.0003505912925768537
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.593318619040388e-07
+"final-cost" 0.0003487664424044062
+[K"odometry-diff-cost [K"odometry-diff-cost [K"odometry-diff-cost " 6.592182830849915e-07
+"final-cost" 0.0003474926715606525
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.615302112267646e-07
+"final-cost" 0.0003463745183210435
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.660656966251266e-07
+"final-cost" 0.000344947113868822
+[K"odometry-diff-cost " 6.711997805196544e-07
+"[K"[K"final-cost" 0.0003433725457074204
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.774445294903311e-07
+"final-cost" 0.0003415516447405877
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.807617252659715e-07
+"final-cost" 0.0003398941665298428
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 6.868727427703061e-07
+"final-cost" 0.0003376128036485162
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 8.382096909213824e-06
+"final-cost" 55643.89592135251
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 6.885208815726801e-07
+"final-cost" 0.0003357913275847271
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.859676941611587e-07
+"final-cost" 0.0003351230071621117
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 6.813645540696237e-07
+"final-cost" 0.0003340069974174765
+[K"odometry-diff-cost "[K"odometry-diff-cost "[K"odometry-diff-cost " 6.778647175531262e-07
+"final-cost" 0.0003328896492911916
+[K"odometry-diff-cost "[K"odometry-diff-cost "[K"odometry-diff-cost " 6.763499277553309e-07
+"final-cost" 0.0003321139856655775
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.742296547419029e-07
+"final-cost" 0.00033115865907772
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.728474923185195e-07
+"final-cost" 0.0003297696459370559
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.725922700652423e-07
+"final-cost" 0.000328740971032499
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 6.731590539413755e-07
+"final-cost" 0.0003275858108681646
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.759719278097592e-07
+"final-cost" 0.0003265890507992689
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.784461753681449e-07
+"final-cost" 0.0003252320551583009
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.784364067049655e-07
+"final-cost" 0.0003249633879901794
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.781324439632187e-07
+"final-cost" 0.0003246457493728841
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.762165594037317e-07
+"final-cost" 0.0003238583039549026
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.745230808986477e-07
+"final-cost" 0.0003229812498668672
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 6.737903544230364e-07
+"final-cost" 0.0003223703967919805
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 6.737459271887804e-07
+"final-cost" 0.0003216074096753179
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.758631785785343e-07
+"final-cost" 0.0003206513814105313
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.808648993740911e-07
+"final-cost" 0.0003196967002867854
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 6.861857573206542e-07
+"final-cost" 0.0003188105376446792
+[K"odometr[K"odometr[K"odometry-diff-cost " 6.893697040428661e-07
+"final-cost" 0.0003179271212337751
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.960609634032367e-07
+"final-cost" 0.0003167335620731145
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.989027970745639e-07
+"final-cost" 0.0003159689709989531
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 6.987835398767055e-07
+"final-cost" 0.0003158984684552915
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 6.977362350928187e-07
+"final-cost" 0.0003155640862587465
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.957305010804359e-07
+"final-cost" 0.0003151315331114591
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 6.920280226035886e-07
+"final-cost" 0.0003144369238550639
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 6.898559397361795e-07
+"final-cost" 0.0003138684925105327
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 6.871044981135852e-07
+"final-cost" 0.0003132152314152257
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.84627335174239e-07
+"final-cost" 0.0003126401254181159
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 6.823262786549958e-07
+"final-cost" 0.0003118506353284502
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 6.822103657310153e-07
+"final-cost" 0.0003112773660970048
+[K"odometry-diff-cost " 6.8[K"odometry-diff-cost " 6.8[K"odometry-diff-cost " 6.839986547052672e-07
+"final-cost" 0.0003103498552649794
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.856487077675323e-07
+"final-cost" 0.0003097138771075905
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.879343722005223e-07
+"final-cost" 0.0003088312568285881
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.892622994503304e-07
+"final-cost" 0.0003084212444667503
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.890943963067711e-07
+"final-cost" 0.0003082878041215942
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 6.882850368148709e-07
+"final-cost" 0.0003080017704428541
+[K"odometr[K"odometr[K"odometry-diff-cost " 6.868901523754226e-07
+"final-cost" 0.0003074673763509338
+[K"odomet[K"odomet[K"odometry-diff-cost " 6.855056940698688e-07
+"final-cost" 0.0003068443946539514
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.8497261077993e-07
+"final-cost" 0.0003065111318786396
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.842531440183306e-07
+"final-cost" 0.0003058600676199172
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 6.85348254140441e-07
+"final-cost" 0.0003049909218443576
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.887503443621776e-07
+"final-cost" 0.0003044765646668908
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 6.94429229846864e-07
+"final-cost" 0.0003036381260201759
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.995826979981356e-07
+"final-cost" 0.0003027579501157242
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 7.049439454455154e-07
+"final-cost" 0.0003017095121010184
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.129544020249173e-07
+"final-cost" 0.0002960119021176012
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.144175145025828e-07
+"final-cost" 0.00029530928597432
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.140112124372017e-07
+"final-cost" 0.0002941790586692436
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.135012987384905e-07
+"final-cost" 0.0002917550035297866
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.127085625822382e-07
+"final-cost" 0.0002904648275120167
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.101706592330329e-07
+"final-cost" 0.0002896878295926539
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 7.077370196844287e-07
+"final-cost" 0.0002889755401123769
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.058570655391209e-07
+"final-cost" 0.0002882981337378185
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.038272720847896e-07
+"final-cost" 0.0002877966904498156
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.998599538591158e-07
+"final-cost" 0.000287033005858476
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.973305622818455e-07
+"final-cost" 0.0002861778230647553
+[K"odometry-diff-cost " 6.97816254[K"odometry-diff-cost " 6.97816254[K"odometry-diff-cost " 6.978162547213598e-07
+"final-cost" 0.0002856447276460392
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.985112916742461e-07
+"final-cost" 0.0002849124870576547
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.002234743066461e-07
+"final-cost" 0.0002841958991357199
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.965689855644247e-07
+"final-cost" 0.0002826939848123205
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.968277509801533e-07
+"final-cost" 0.0002819947589203609
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.971686993439875e-07
+"final-cost" 0.0002814334669590608
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.973042107123299e-07
+"final-cost" 0.0002810876782073535
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.97763782139254e-07
+"final-cost" 0.0002804994998720129
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 6.97686924933585e-07
+"final-cost" 0.0002799045311148427
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.001711007688579e-07
+"final-cost" 0.0002790272088530406
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.028197417102151e-07
+"final-cost" 0.0002782999765535641
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.061683496955447e-07
+"final-cost" 0.0002774735324919964
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.105716224062638e-07
+"final-cost" 0.0002758848980294963
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.138981202430231e-07
+"final-cost" 0.0002745582779363556
+[K"odometry-diff-cost " 7.137988593307119e-07[K"odometry-diff-cost " 7.137988593307119e-07[K"odometry-diff-cost " 7.137988593307119e-07
+"final-cost" 0.000274404085507112
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 7.127549777952614e-07
+"final-cost" 0.0002738860222021558
+[K"odometry-diff-cost [K"odometry-diff-cost [K"odometry-diff-cost " 7.094755262459967e-07
+"final-cost" 0.000272793948390754
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.067460444583805e-07
+"final-cost" 0.0002718693246583556
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.04485218157562e-07
+"final-cost" 0.0002712368439407117
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.018210654665186e-07
+"final-cost" 0.0002705932525778295
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.003776344869715e-07
+"final-cost" 0.0002700785274063134
+[K"odometr[K"odometr[K"odometry-diff-cost " 6.994555654892291e-07
+"final-cost" 0.00026930685358724
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 6.989186077608565e-07
+"final-cost" 0.0002684915167381551
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 6.988368542695431e-07
+"final-cost" 0.0002679283071437764
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.983563116374671e-07
+"final-cost" 0.0002665434269567559
+[K"odometr[K"odometr[K"odometry-diff-cost " 6.982769236958624e-07
+"final-cost" 0.0002662262810986645
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.979794102185141e-07
+"final-cost" 0.0002659282607712246
+[K"odomet[K"odomet[K"odometry-diff-cost " 6.971446063738121e-07
+"final-cost" 0.0002653420727746734
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.968872140031636e-07
+"final-cost" 0.000265010698858063
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.96842622322536e-07
+"final-cost" 0.0002646643276778592
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.977834096813315e-07
+"final-cost" 0.0002640732143438617
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.998799449107874e-07
+"final-cost" 0.000263394683028158
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.016908928663184e-07
+"final-cost" 0.0002628873683832992
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.028026704584095e-07
+"final-cost" 0.0002623232651247996
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 7.057905902034668e-07
+"final-cost" 0.0002615357975141527
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.082495475199483e-07
+"final-cost" 0.000260440478251977
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 7.109524191945884e-07
+"final-cost" 0.0002593305891077248
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.120171147276011e-07
+"final-cost" 0.0002583833082045948
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.117832994409653e-07
+"final-cost" 0.0002579556384967125
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.113723501110654e-07
+"final-cost" 0.0002573499954869346
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.099048159461651e-07
+"final-cost" 0.0002565273911745285
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.065965158876634e-07
+"final-cost" 0.0002555037385591666
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.035465980990014e-07
+"final-cost" 0.0002545615298270535
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.027033588898708e-07
+"final-cost" 0.0002541096493089298
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.013264154483904e-07
+"final-cost" 0.0002535098133811155
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.997193126196864e-07
+"final-cost" 0.0002528663067225672
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.984741681044809e-07
+"final-cost" 0.0002523111854997445
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 6.9827157578455e-07
+"final-cost" 0.0002521178781765963
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 6.984688997645185e-07
+"final-cost" 0.0002519908546845313
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 6.988880070967945e-07
+"final-cost" 0.0002517629413689957
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 6.998590109018316e-07
+"final-cost" 0.0002511556757670237
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.004317751912278e-07
+"final-cost" 0.0002503878765958234
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.017663736807498e-07
+"final-cost" 0.0002496832644365574
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.035752867547349e-07
+"final-cost" 0.0002490303141361762
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.058934518847023e-07
+"final-cost" 0.0002483057972871777
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.087117684884949e-07
+"final-cost" 0.0002472459280670374
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.162753162483995e-07
+"final-cost" 0.0002448298689689472
+[K"odometry-diff-cost " 7.163367331223761e-0[K"odometry-diff-cost " 7.163367331223761e-0[K"odometry-diff-cost " 7.163367331223761e-07
+"final-cost" 0.0002445136139724684
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.156818361614831e-07
+"final-cost" 0.0002440671167172846
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.150171408252451e-07
+"final-cost" 0.0002435267349844959
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.132283220620673e-07
+"final-cost" 0.0002427813875271815
+[K"odometry-diff-cost [K"odometry-diff-cost [K"odometry-diff-cost " 7.084696811550565e-07
+"final-cost" 0.0002414443225241054
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.046500903697534e-07
+"final-cost" 0.0002404198806132015
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.032806588913255e-07
+"final-cost" 0.0002399516068407781
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.023679625858728e-07
+"final-cost" 0.0002395040105247745
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 7.022610068688316e-07
+"final-cost" 0.0002385852294814823
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.018407360213043e-07
+"final-cost" 0.000238054175266954
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.008099705305618e-07
+"final-cost" 0.0002376084614028935
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.991556503213996e-07
+"final-cost" 0.0002368275917424307
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 6.977361380156982e-07
+"final-cost" 0.0002357025723620683
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 6.977557428745195e-07
+"final-cost" 0.0002352436201158151
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 6.984210285040548e-07
+"final-cost" 0.0002346839402479951
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 6.996414119848826e-07
+"final-cost" 0.0002342527134814984
+[K"odometry-diff-cost "[K"odometry-diff-cost "[K"odometry-diff-cost " 7.003817679537821e-07
+"final-cost" 0.0002339860068025185
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.011616088494462e-07
+"final-cost" 0.0002336309247678362
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.018623866457386e-07
+"final-cost" 0.0002333226043769103
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.026337077016645e-07
+"final-cost" 0.0002328239815264325
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.038781513463695e-07
+"final-cost" 0.0002321756263930513
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.051065959247004e-07
+"final-cost" 0.0002316731955609283
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.050028955100895e-07
+"final-cost" 0.0002315699064633596
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 7.050755862041501e-07
+"final-cost" 0.0002313674904166616
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.054021413431353e-07
+"final-cost" 0.0002311914218042774
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.055478992658703e-07
+"final-cost" 0.000230969579145078
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.054919984603409e-07
+"final-cost" 0.000230687860537637
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.053777802069496e-07
+"final-cost" 0.0002303266302914378
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.046833782878202e-07
+"final-cost" 0.0002299741839845159
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.023599420904118e-07
+"final-cost" 0.0002292194607957577
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.019223842097897e-07
+"final-cost" 0.0002288276214158498
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.023872982452689e-07
+"final-cost" 0.0002285595870291839
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.035471182963608e-07
+"final-cost" 0.0002280275139014964
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 7.043552234961312e-07
+"final-cost" 0.000227677464129797
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.042111660290896e-07
+"final-cost" 0.0002272467847326474
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.042680531481421e-07
+"final-cost" 0.0002269427771255353
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.051241895147057e-07
+"final-cost" 0.0002264798191990347
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.08072154651669e-07
+"final-cost" 0.000225048295973303
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.104029839853485e-07
+"final-cost" 0.0002241438740008502
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.102353780047542e-07
+"final-cost" 0.0002238582122998925
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.099989936547452e-07
+"final-cost" 0.0002235302941119729
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.097008890174737e-07
+"final-cost" 0.0002231247285166929
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.096583334693346e-07
+"final-cost" 0.0002226903366176359
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.097470241918139e-07
+"final-cost" 0.000222211933610394
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.103102516824106e-07
+"final-cost" 0.000221632516151533
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.094131080000584e-07
+"final-cost" 0.0002209044752411578
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.085131837798371e-07
+"final-cost" 0.000220534327075381
+[K"odometry-diff-cost " 7.07775528459014e-07
+[K"final-cost" 0.0002202951577004865
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.063688770597007e-07
+"final-cost" 0.0002198001215925813
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.057623769144617e-07
+"final-cost" 0.0002185960790909195
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.064034149095184e-07
+"final-cost" 0.0002178317330998262
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.065280174300852e-07
+"final-cost" 0.0002175085137184486
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.069874101875026e-07
+"final-cost" 0.0002169469678294223
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.076257157628204e-07
+"final-cost" 0.0002160927524617525
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 7.086263030450642e-07
+"final-cost" 0.0002155176427525104
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.098750131146917e-07
+"final-cost" 0.0002150892300691314
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 7.11613202752492e-07
+"final-cost" 0.0002145869887079781
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.13102063736236e-07
+"final-cost" 0.0002139585893064575
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.149917456332529e-07
+"final-cost" 0.0002134139399158433
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.176306469851598e-07
+"final-cost" 0.0002127835741569195
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.202910487669444e-07
+"final-cost" 0.0002119921828559368
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 7.219551093474763e-07
+"final-cost" 0.0002108062204753187
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.218818616972412e-07
+"final-cost" 0.0002099097507970909
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.210772711110465e-07
+"final-cost" 0.0002092657434889885
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.203949694232382e-07
+"final-cost" 0.0002085772487333914
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 7.197517595033819e-07
+"final-cost" 0.0002077515823402437
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.18783839156857e-07
+"final-cost" 0.0002072210265766024
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.180618079945338e-07
+"final-cost" 0.0002068039193493172
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.181765571085526e-07
+"final-cost" 0.0002063508799293279
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.187342222811071e-07
+"final-cost" 0.0002052892669971326
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.194800823256709e-07
+"final-cost" 0.0002038601906640643
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.199929814041725e-07
+"final-cost" 0.0002029889598481201
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.199825023272213e-07
+"final-cost" 0.0002026092750049209
+[K"odom[K"odom[K"odometry-diff-cost " 7.204283929870676e-07
+"final-cost" 0.0002019728631261344
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.217311494665259e-07
+"final-cost" 0.0002011801655534396
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.231645631077478e-07
+"final-cost" 0.0002005282735749334
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.247530627361894e-07
+"final-cost" 0.0002000990699260105
+[K"odometry-diff-cost " 7.256675334181046e-07
+"final-cost" [K"final-cost" [K"final-cost" 0.000199847252643728
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.267540871801233e-07
+"final-cost" 0.0001994910150316632
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.285513801352221e-07
+"final-cost" 0.0001990410597419316
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.312478622406193e-07
+"final-cost" 0.000198457907477401
+[K"odom[K"odom[K"odometry-diff-cost " 7.356918908307897e-07
+"final-cost" 0.0001976907556810537
+[K"odome[K"odome[K"odometry-diff-cost " 7.389023726227301e-07
+"final-cost" 0.0001970402886670398
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.415601481151104e-07
+"final-cost" 0.0001964030050972371
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.417260713736464e-07
+"final-cost" 0.000196208957860786
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.417902241694073e-07
+"final-cost" 0.0001958912603663179
+[K"odom[K"odom[K"odometry-diff-cost " 7.415607297755964e-07
+"final-cost" 0.0001955185049155562
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.40103022125992e-07
+"final-cost" 0.0001950028182538543
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.393124861103445e-07
+"final-cost" 0.0001945321143858575
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.385609372066661e-07
+"final-cost" 0.0001939196857960673
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.38127873251737e-07
+"final-cost" 0.0001935104111619615
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.375818983515453e-07
+"final-cost" 0.0001931376790322803
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.374031744153065e-07
+"final-cost" 0.0001927377099973729
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.375098494765147e-07
+"final-cost" 0.0001923396358043303
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.383161692607012e-07
+"final-cost" 0.0001915966677305939
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.385498021716874e-07
+"final-cost" 0.0001914068267593253
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.385425507449126e-07
+"final-cost" 0.0001913267199276617
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.386413020012679e-07
+"final-cost" 0.0001911546373766562
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.388682045746908e-07
+"final-cost" 0.0001908990286098903
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.3925668689741e-07
+"final-cost" 0.0001905644212900664
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.400563859985051e-07
+"final-cost" 0.0001902287321293843
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.420383331755113e-07
+"final-cost" 0.0001898265659891697
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.452622181537909e-07
+"final-cost" 0.0001894287213122917
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.471341235385075e-07
+"final-cost" 0.0001890904318666577
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.498747690594818e-07
+"final-cost" 0.0001885236728820504
+[K"o[K"o[K"odometry-diff-cost " 7.524368261907564e-07
+"final-cost" 0.0001880942428003202
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.573311311184577e-07
+"final-cost" 0.0001873628793615456
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.605628997802431e-07
+"final-cost" 0.0001867811578395113
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.605005484167504e-07
+"final-cost" 0.0001866480492969561
+[K"odometry-diff-cost " [K"odometry-diff-cost " [K"odometry-diff-cost " 7.606561505988934e-07
+"final-cost" 0.0001864072988722597
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.607022856898969e-07
+"final-cost" 0.0001861053356729963
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.596111355408856e-07
+"final-cost" 0.0001855448579353699
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 7.587268520898012e-07
+"final-cost" 0.0001850161505633907
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.584115813775989e-07
+"final-cost" 0.0001845978065323926
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.579136397834465e-07
+"final-cost" 0.0001843042993849632
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.566315795931208e-07
+"final-cost" 0.0001838339575444301
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.564533554746635e-07
+"final-cost" 0.000183368540092332
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.572750821045714e-07
+"final-cost" 0.0001829354169701543
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.583137526781502e-07
+"final-cost" 0.0001824949801847907
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.586143092020535e-07
+"final-cost" 0.0001822585974627687
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.588721015779287e-07
+"final-cost" 0.0001820049908504326
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.594538229783438e-07
+"final-cost" 0.0001816044997130496
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.606945707877422e-07
+"final-cost" 0.0001812052055873295
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.627453748765697e-07
+"final-cost" 0.000180875531263995
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.663319193630227e-07
+"final-cost" 0.000180431694461075
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.68166398269537e-07
+"final-cost" 0.0001800821075744655
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.725724956007448e-07
+"final-cost" 0.0001794990787431153
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.770324006984537e-07
+"final-cost" 0.0001788789128625547
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.810859876162352e-07
+"final-cost" 0.0001782384234234018
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.071129222730937e-07
+"final-cost" 0.0001751381030047665
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.070491146163842e-07
+"final-cost" 0.0001750082159156877
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.066113076457317e-07
+"final-cost" 0.0001745600655244852
+[K"odometry-diff-cos[K"odometry-diff-cos[K"odometry-diff-cost " 8.049909845543906e-07
+"final-cost" 0.0001732710241227421
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.036407045392444e-07
+"final-cost" 0.000172463776802216
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 8.028815662129163e-07
+"final-cost" 0.000172020851552082
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.012259867846288e-07
+"final-cost" 0.0001714653058384117
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.000629376201492e-07
+"final-cost" 0.0001709631200643402
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.987798304371726e-07
+"final-cost" 0.0001704328990445044
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.976155906776618e-07
+"final-cost" 0.0001701073945826102
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.962677710354102e-07
+"final-cost" 0.0001697460090422934
+[K"odome[K"odome[K"odometry-diff-cost " 7.948952927164616e-07
+"final-cost" 0.000169353392988543
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.949380854774694e-07
+"final-cost" 0.0001689106994486211
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.95705888527258e-07
+"final-cost" 0.0001686801715297459
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.982591005713644e-07
+"final-cost" 0.0001680238960504207
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.981403834548788e-07
+"final-cost" 0.0001678363520184574
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.977617820381572e-07
+"final-cost" 0.0001675344769701256
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.98097667092846e-07
+"final-cost" 0.0001673109181042701
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.988244241758701e-07
+"final-cost" 0.0001671085355842005
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.005384628288668e-07
+"final-cost" 0.0001668331526466203
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.041048827648053e-07
+"final-cost" 0.0001664559797933049
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.077016109095151e-07
+"final-cost" 0.000166174185910408
+[K"odom[K"odom[K"odometry-diff-cost " 8.104869252852125e-07
+"final-cost" 0.0001659054345781214
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 8.104347494287821e-07
+"final-cost" 0.0001658845677882593
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.099987649908145e-07
+"final-cost" 0.0001658107793014164
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.091728665096338e-07
+"final-cost" 0.0001656911168056585
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.082850271401014e-07
+"final-cost" 0.000165523047281918
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.077935937777737e-07
+"final-cost" 0.0001653296659634618
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.078085167821671e-07
+"final-cost" 0.000165114447745716
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 8.080545003547158e-07
+"final-cost" 0.0001649418508930161
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.088018204281522e-07
+"final-cost" 0.0001645053949631379
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.102196781700034e-07
+"final-cost" 0.0001639037412056499
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.130671655841956e-07
+"final-cost" 0.0001625933300473844
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.135925453568999e-07
+"final-cost" 0.0001621614350627487
+[K"odometr[K"odometr[K"odometry-diff-cost " 8.144412609870182e-07
+"final-cost" 0.0001616701700081129
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 8.150413416401588e-07
+"final-cost" 0.0001610902868856152
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.166713588347543e-07
+"final-cost" 0.0001605555225272902
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 8.194659646867396e-07
+"final-cost" 0.0001600347403660796
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.20602298932235e-07
+"final-cost" 0.0001598579264398383
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.218501658590151e-07
+"final-cost" 0.0001597278899525405
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.268450028284224e-07
+"final-cost" 0.0001591448077023329
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.307281686599051e-07
+"final-cost" 0.0001585837282890301
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.307862345766636e-07
+"final-cost" 0.0001584714469906788
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.306458531476217e-07
+"final-cost" 0.0001583518049160545
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.302326840994857e-07
+"final-cost" 0.000158109453633171
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.293800128821651e-07
+"final-cost" 0.0001578833704892857
+[K"odome[K"odome[K"odometry-diff-cost " 8.289224149093557e-07
+"final-cost" 0.0001577213754000253
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.285162895223667e-07
+"final-cost" 0.0001575266212941308
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.27872266970796e-07
+"final-cost" 0.0001573383299711115
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.268166237169754e-07
+"final-cost" 0.0001571566826938996
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.257720898046118e-07
+"final-cost" 0.0001568421250225475
+[K"odom[K"odom[K"odometry-diff-cost " 8.253230365372306e-07
+"final-cost" 0.0001566017230221465
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.252042329144144e-07
+"final-cost" 0.0001564306714588626
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.251062085189843e-07
+"final-cost" 0.0001562732501194773
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.255003484545815e-07
+"final-cost" 0.0001561191592746818
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.270056611639034e-07
+"final-cost" 0.0001559149019313896
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 8.285059361219187e-07
+"final-cost" 0.0001557330602354839
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.305178102099876e-07
+"final-cost" 0.0001554067510681065
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.313518492905276e-07
+"final-cost" 0.0001553082112639067
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.312835510345796e-07
+"final-cost" 0.0001552542877719436
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.311050033232993e-07
+"final-cost" 0.0001551714209254228
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.30729113879672e-07
+"final-cost" 0.0001549829551972076
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.300552608998179e-07
+"final-cost" 0.0001548352049416007
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.297760343527715e-07
+"final-cost" 0.0001547291310251624
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.30016655437105e-07
+"final-cost" 0.0001545748212148017
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.307346721183133e-07
+"final-cost" 0.0001544063756283835
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.303820637652948e-07
+"final-cost" 0.0001541912553350153
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.299827508312595e-07
+"final-cost" 0.0001535140090751449
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.303095909080967e-07
+"final-cost" 0.0001532737391089388
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 8.305314915545942e-07
+"final-cost" 0.0001531450930754343
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.297389076187213e-07
+"final-cost" 0.0001529643856128737
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.303151690502186e-07
+"final-cost" 0.0001527589252862689
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.316782146069211e-07
+"final-cost" 0.0001525410829268507
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.327746174159769e-07
+"final-cost" 0.0001523072191018506
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 8.347073331239776e-07
+"final-cost" 0.0001516752000876864
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.348675024997827e-07
+"final-cost" 0.0001515388103220984
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.350142662880865e-07
+"final-cost" 0.0001514211334258134
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.348382249900246e-07
+"final-cost" 0.0001512376239572205
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.340385598525373e-07
+"final-cost" 0.0001510132156476684
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.338157411469803e-07
+"final-cost" 0.0001508246637145774
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.34351091535084e-07
+"final-cost" 0.0001505968847664587
+[K"odometry-diff-cost " 8.[K"odometry-diff-cost " 8.[K"odometry-diff-cost " 8.343623173831818e-07
+"final-cost" 0.000150380006974994
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.341636245454049e-07
+"final-cost" 0.000150324152643553
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.340394393723637e-07
+"final-cost" 0.0001502835678123184
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.336724016825998e-07
+"final-cost" 0.0001502104507698004
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.333369542938816e-07
+"final-cost" 0.0001501150706640924
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.331433654944901e-07
+"final-cost" 0.0001499917171761122
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.331301595516366e-07
+"final-cost" 0.0001498781083902244
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.333183554501311e-07
+"final-cost" 0.0001497480564818442
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.334610361117104e-07
+"final-cost" 0.0001495995800498971
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.335760408630245e-07
+"final-cost" 0.0001493171397677161
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 8.337092488474758e-07
+"final-cost" 0.0001490744369715712
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.337481556735119e-07
+"final-cost" 0.0001489908362885061
+[K"odom[K"odom[K"odometry-diff-cost " 8.33711226749143e-07
+"final-cost" 0.0001486412608444941
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.33648439404229e-07
+"final-cost" 0.0001484011294871692
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.339465584889259e-07
+"final-cost" 0.000148239709511964
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.344154264258931e-07
+"final-cost" 0.0001480388215447315
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.351895043545847e-07
+"final-cost" 0.0001478419113449144
+[K"odom[K"odom[K"odometry-diff-cost " 8.361928891546055e-07
+"final-cost" 0.0001464349315564903
+[K"odom[K"odom[K"odometry-diff-cost " 8.362763221552439e-07
+"final-cost" 0.0001458927827711771
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.354269109233858e-07
+"final-cost" 0.0001453725887439258
+[K"odome[K"odome[K"odometry-diff-cost " 8.350494334389124e-07
+"final-cost" 0.0001451174313664956
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.340157562187578e-07
+"final-cost" 0.0001448059057921582
+[K"odometry-diff-cost " 8[K"odometry-diff-cost " 8[K"odometry-diff-cost " 8.331100927106506e-07
+"final-cost" 0.0001445935753068834
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.32780555836958e-07
+"final-cost" 0.0001444705904809009
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.329815098264014e-07
+"final-cost" 0.0001443169323283358
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.337797675167922e-07
+"final-cost" 0.0001441374254420838
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.342082871933633e-07
+"final-cost" 0.000143425238105545
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.341019441127667e-07
+"final-cost" 0.0001433259343999915
+[K"odo[K"odo[K"odometry-diff-cost " 8.340934128069322e-07
+"final-cost" 0.0001431960057118342
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.338918253927163e-07
+"final-cost" 0.0001429981134490813
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.332713241126909e-07
+"final-cost" 0.0001428039888496804
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.325397596633127e-07
+"final-cost" 0.0001425805740917043
+[K"odom[K"odom[K"odometry-diff-cost " 8.324636564224528e-07
+"final-cost" 0.0001423153610090442
+[K"odometr[K"odometr[K"odometry-diff-cost " 8.331430718037347e-07
+"final-cost" 0.0001421358209652104
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.338508063514971e-07
+"final-cost" 0.0001419721600887915
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.334725650754012e-07
+"final-cost" 0.000141797338288748
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.333277631297316e-07
+"final-cost" 0.0001415654442436806
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.322460356390894e-07
+"final-cost" 0.0001412025388220613
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.313056359947648e-07
+"final-cost" 0.0001406079425289544
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.313605639248163e-07
+"final-cost" 0.0001404119914701305
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 8.31341051625627e-07
+"final-cost" 0.0001401637546731256
+[K"odom[K"odom[K"odometry-diff-cost " 8.308123725977194e-07
+"final-cost" 0.0001397306667756366
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.300872633953336e-07
+"final-cost" 0.000139482780377446
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.298758195817539e-07
+"final-cost" 0.0001392810116606429
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.295180324036064e-07
+"final-cost" 0.0001391215955233611
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.283294219576409e-07
+"final-cost" 0.0001388957725582693
+[K"odome[K"odome[K"odometry-diff-cost " 8.286608481118659e-07
+"final-cost" 0.0001386322214901868
+[K"o[K"o[K"odometry-diff-cost " 8.29876516157423e-07
+"final-cost" 0.0001383955480443558
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.307092122429687e-07
+"final-cost" 0.0001380804244446092
+[K"odome[K"odome[K"odometry-diff-cost " 8.313411510868005e-07
+"final-cost" 0.0001377083776146649
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.305473957268167e-07
+"final-cost" 0.0001374202242739681
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.292384527023538e-07
+"final-cost" 0.0001371655968025566
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.280024756217225e-07
+"final-cost" 0.0001369384561932614
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.281661026562574e-07
+"final-cost" 0.0001366992989233301
+[K"odom[K"odom[K"odometry-diff-cost " 8.282377943841324e-07
+"final-cost" 0.0001364903354121875
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 8.273150003430917e-07
+"final-cost" 0.0001363009429419432
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.265019346248468e-07
+"final-cost" 0.0001361085561284725
+[K"odom[K"odom[K"odometry-diff-cost " 8.260410987321349e-07
+"final-cost" 0.0001357892751694908
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.256981663512645e-07
+"final-cost" 0.0001356518665099564
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.256086799706409e-07
+"final-cost" 0.0001356068022068471
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.253198443065124e-07
+"final-cost" 0.0001355039244227216
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.248792437797575e-07
+"final-cost" 0.0001353577953045034
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.250333272337559e-07
+"final-cost" 0.0001351356368945668
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.248439239782461e-07
+"final-cost" 0.0001348828667800374
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.240939266700402e-07
+"final-cost" 0.0001347496319544546
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.238028361544665e-07
+"final-cost" 0.0001346237425098557
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.240217155873108e-07
+"final-cost" 0.0001344399120659845
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.245549920180465e-07
+"final-cost" 0.0001341807668651266
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 8.254530248109268e-07
+"final-cost" 0.0001338798320790571
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.260742367911237e-07
+"final-cost" 0.0001334383651247754
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.260110919513053e-07
+"final-cost" 0.0001334121006446773
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.258308773549482e-07
+"final-cost" 0.0001333530891496858
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.2506517824786e-07
+"final-cost" 0.000133193043673351
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.238449503615407e-07
+"final-cost" 0.0001329446398275017
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.231735329616498e-07
+"final-cost" 0.0001327523430806763
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.231848072314384e-07
+"final-cost" 0.000132528343186329
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.232291965366138e-07
+"final-cost" 0.0001323888166497732
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.226826832730912e-07
+"final-cost" 0.0001322384265378835
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 8.22435559390058e-07
+"final-cost" 0.0001321819550011235
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.223032793946999e-07
+"final-cost" 0.0001321277074307002
+[K"odometry-diff-cost " 8.21852950116061[K"odometry-diff-cost " 8.21852950116061[K"odometry-diff-cost " 8.218529501160613e-07
+"final-cost" 0.0001320250138066808
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.211054768446734e-07
+"final-cost" 0.00013191659824225
+[K"od[K"od[K"odometry-diff-cost " 8.202147031623294e-07
+"final-cost" 0.0001316752424817435
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.19907319979269e-07
+"final-cost" 0.0001312266346200096
+[K"odo[K"odo[K"odometry-diff-cost " 8.191548271284378e-07
+"final-cost" 0.0001308876288823991
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 8.190437889685921e-07
+"final-cost" 0.0001307111412185107
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 8.187555669654381e-07
+"final-cost" 0.0001306047002808821
+[K"od[K"od[K"odometry-diff-cost " 8.175344835095085e-07
+"final-cost" 0.0001303684681928269
+[K"od[K"od[K"odometry-diff-cost " 8.167476701148114e-07
+"final-cost" 0.000130128249903893
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.172369665208511e-07
+"final-cost" 0.0001299407016589237
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.17789257755265e-07
+"final-cost" 0.0001298535652371784
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.180716899125761e-07
+"final-cost" 0.0001297562458893944
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.185084779778628e-07
+"final-cost" 0.0001294792504585517
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.189533302938081e-07
+"final-cost" 0.002599863862806143
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.189138981885506e-07
+"final-cost" 0.0001286721779470544
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.187968611586134e-07
+"final-cost" 0.0001285231840627243
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.18791586025702e-07
+"final-cost" 0.0001283480632951133
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.186764377707167e-07
+"final-cost" 0.0001282447245383592
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.183562693038783e-07
+"final-cost" 0.0001280805364014076
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.168675262624298e-07
+"final-cost" 0.0001278121079195412
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.150966424511776e-07
+"final-cost" 0.0001276496304183975
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 8.139042768428435e-07
+"final-cost" 0.0001275032162039768
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.130347954082478e-07
+"final-cost" 0.0001273495231396756
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.118738169853584e-07
+"final-cost" 0.0001271058831815589
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.11832218431333e-07
+"final-cost" 0.0001270426261769289
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.117542708293806e-07
+"final-cost" 0.000126998477342725
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.116726882384338e-07
+"final-cost" 0.0001269321736493626
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.119460421364489e-07
+"final-cost" 0.0001268664111048156
+[K"odome[K"odome[K"odometry-diff-cost " 8.126418874276539e-07
+"final-cost" 0.0001267484860968937
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.139495219187922e-07
+"final-cost" 0.0001266133948508275
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.142178103750395e-07
+"final-cost" 0.0001265599514144987
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.141824314424969e-07
+"final-cost" 0.0001265388159005088
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.140357553586138e-07
+"final-cost" 0.0001264953410513517
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 8.136705843562446e-07
+"final-cost" 0.0001264399660686155
+[K"odometry-diff-cost " [K"odometry-diff-cost " [K"odometry-diff-cost " 8.132429890744771e-07
+"final-cost" 0.0001263811837588214
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.128455057518922e-07
+"final-cost" 0.0001263105615360271
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.125263991824827e-07
+"final-cost" 0.0001261957023000708
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.113001024497298e-07
+"final-cost" 0.0001257885342150255
+[K"odometr[K"odometr[K"odometry-diff-cost " 8.112134819424599e-07
+"final-cost" 0.0001256765209898069
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.111276328643701e-07
+"final-cost" 0.0001255937113620669
+[K"[K"[K"odometry-diff-cost " 8.110539452908995e-07
+"final-cost" 0.0001255071146725138
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.111781136475067e-07
+"final-cost" 0.0001253932538707474
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.113281145992676e-07
+"final-cost" 0.0001252684564674712
+[K"odometr[K"odometr[K"odometry-diff-cost " 8.115731899162906e-07
+"final-cost" 0.0001251849997390535
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.118259254885298e-07
+"final-cost" 0.0001251288696981319
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.117149270929941e-07
+"final-cost" 0.0001250156364553704
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.109060992927785e-07
+"final-cost" 0.0001246926033289431
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.104478761598711e-07
+"final-cost" 0.0001244690173264995
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.104212552667696e-07
+"final-cost" 0.0001243871265231889
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.10325591081136e-07
+"final-cost" 0.0001242379508893737
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.105623620577992e-07
+"final-cost" 0.0001239989228260532
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.10270033426886e-07
+"final-cost" 0.0001238644800591845
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.095937219083621e-07
+"final-cost" 0.0001237645022226007
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.089306049233732e-07
+"final-cost" 0.0001236121412332634
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 8.084324872763111e-07
+"final-cost" 0.0001233976110241336
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.065131252054885e-07
+"final-cost" 0.0001228505457848951
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.046252171738901e-07
+"final-cost" 0.0001221874986206091
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 8.048244943268355e-07
+"final-cost" 0.0001218064282746689
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.047876742873912e-07
+"final-cost" 0.0001214971594316601
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.050507925946295e-07
+"final-cost" 0.0001213130298737447
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.057179745438953e-07
+"final-cost" 0.0001211766530405812
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.062597607143962e-07
+"final-cost" 0.0001210813239844857
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.064801829762812e-07
+"final-cost" 0.0001210114959115135
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.061128017537683e-07
+"final-cost" 0.0001208764471163769
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.056545809613033e-07
+"final-cost" 0.0001207090082617103
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.047588154098341e-07
+"final-cost" 0.0001200810398771393
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.044324738874696e-07
+"final-cost" 0.0001197463296059748
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 8.041553007668485e-07
+"final-cost" 0.0001195329303620012
+[K"odome[K"odome[K"odometry-diff-cost " 8.038069415025708e-07
+"final-cost" 0.000119397781031377
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.039209921574706e-07
+"final-cost" 0.000119264322652561
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.035615406650157e-07
+"final-cost" 0.0001191562955161046
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.031348653106459e-07
+"final-cost" 0.0001190690973613271
+[K"odom[K"odom[K"odometry-diff-cost " 8.026298995557e-07
+"final-cost" 0.000118949409051239
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.019663358019108e-07
+"final-cost" 0.0001188294519574542
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.01485010684829e-07
+"final-cost" 0.0001187021558246504
+[K"odom[K"odom[K"odometry-diff-cost " 8.011953562598166e-07
+"final-cost" 0.0001185990677555848
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.012287943824877e-07
+"final-cost" 0.0001185662168288608
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 8.011873189642619e-07
+"final-cost" 0.0001185212254114766
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.014536021677984e-07
+"final-cost" 0.0001184379610177574
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.020630960182489e-07
+"final-cost" 0.000118307557156491
+[K"[K"[K"odometry-diff-cost " 8.023937077175454e-07
+"final-cost" 0.0001182006165575304
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 8.024358019306058e-07
+"final-cost" 0.0001181190074250056
+[K"odo[K"odo[K"odometry-diff-cost " 8.023681529953218e-07
+"final-cost" 0.0001180216614922333
+[K"odometr[K"odometr[K"odometry-diff-cost " 8.021922417499113e-07
+"final-cost" 0.000117911993123233
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 8.021124389408355e-07
+"final-cost" 0.0001178734734310505
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.020071848495038e-07
+"final-cost" 0.0001178206201709996
+[K"odometry[K"odometry[K"odometry-diff-cost " 8.014357352610019e-07
+"final-cost" 0.0001177368650321406
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 8.004303311556164e-07
+"final-cost" 0.0001176057861066222
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.996337449290153e-07
+"final-cost" 0.0001174754304822994
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.995015654417296e-07
+"final-cost" 0.0001173237430522067
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.992857270365729e-07
+"final-cost" 0.0001171271040372948
+[K"od[K"od[K"odometry-diff-cost " 7.993257618274846e-07
+"final-cost" 0.0001170285289059804
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.991734777987185e-07
+"final-cost" 0.0001168945093080723
+[K"odometry-diff-cost " [K"odometry-diff-cost " [K"odometry-diff-cost " 7.992166803148033e-07
+"final-cost" 0.00011681986682803
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.995333957045118e-07
+"final-cost" 0.000116746545174715
+[K"[K"[K"odometry-diff-cost " 8.003476277335259e-07
+"final-cost" 0.0001166295643653312
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.009928367562312e-07
+"final-cost" 0.0001165084665801983
+[K"odomet[K"odomet[K"odometry-diff-cost " 8.007012327978049e-07
+"final-cost" 0.0001164350361462147
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.996955698047599e-07
+"final-cost" 0.0001162786311879829
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.996801943946987e-07
+"final-cost" 0.0001162385554493555
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.996785808902377e-07
+"final-cost" 0.0001161878747349238
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.998244475359664e-07
+"final-cost" 0.0001160781718809547
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.994909961966391e-07
+"final-cost" 0.0001159769556764909
+[K"odome[K"odome[K"odometry-diff-cost " 7.985799578398163e-07
+"final-cost" 0.0001158524210147208
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.976584979790214e-07
+"final-cost" 0.0001157370380164219
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.969406415885686e-07
+"final-cost" 0.0001156214299592727
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.959264513248132e-07
+"final-cost" 0.0001152308940307239
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.941504698564675e-07
+"final-cost" 0.0001142208151131646
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.94261955531831e-07
+"final-cost" 0.0001137928850204612
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.945617404182865e-07
+"final-cost" 0.0001135820202083933
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.954027174921875e-07
+"final-cost" 0.0001134021560045163
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.963955166216682e-07
+"final-cost" 0.0001132500425027994
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.967339390178868e-07
+"final-cost" 0.0001131217488515826
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.961957629762978e-07
+"final-cost" 0.0001129627700120033
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.956789888401655e-07
+"final-cost" 0.0001128792616732728
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.951548061664376e-07
+"final-cost" 0.0001127967400834705
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.940619605207225e-07
+"final-cost" 0.0001125581423817741
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.924485855051853e-07
+"final-cost" 0.0001121327748367754
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.924398731837421e-07
+"final-cost" 0.000112086391080369
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.921399110143658e-07
+"final-cost" 0.000111939576093718
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.92064756564145e-07
+"final-cost" 0.0001117651989296553
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.91830405682303e-07
+"final-cost" 0.0001116398488230169
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.919583691576594e-07
+"final-cost" 0.0001115522510020466
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.928098796599967e-07
+"final-cost" 0.0001113906460381363
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.934368795457398e-07
+"final-cost" 0.0001112456782320525
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.938146439663987e-07
+"final-cost" 0.0001111111814174925
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.938030100418212e-07
+"final-cost" 0.0001110269450491151
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.938150023922157e-07
+"final-cost" 0.0001109979341293218
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.937066298806554e-07
+"final-cost" 0.0001109712785642339
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.934858754272491e-07
+"final-cost" 0.0001109036647806041
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 7.930744697126357e-07
+"final-cost" 0.0001108049062061349
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.919989526349273e-07
+"final-cost" 0.0001106123882094427
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.913347198289196e-07
+"final-cost" 0.0001105101895606004
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.908071761903843e-07
+"final-cost" 0.0001103800012431481
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.902475004254314e-07
+"final-cost" 0.0001101602407357072
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.897046510901285e-07
+"final-cost" 0.0001099836072648512
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.895847653872605e-07
+"final-cost" 0.0001098763823444108
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.896242814198401e-07
+"final-cost" 0.0001097487203566992
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.897366953131323e-07
+"final-cost" 0.0001096243592914683
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.901826775419399e-07
+"final-cost" 0.0001095072262506696
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.909058709089483e-07
+"final-cost" 0.0001093570124045536
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.912561512778269e-07
+"final-cost" 0.0001092431738738352
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.915975676874449e-07
+"final-cost" 0.0001091508869866914
+[K"odom[K"odom[K"odometry-diff-cost " 7.914542860383472e-07
+"final-cost" 0.0001090609451103785
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.90806203642266e-07
+"final-cost" 0.0001088943774475263
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.907870502847303e-07
+"final-cost" 0.0001088592195023762
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.909838143835281e-07
+"final-cost" 0.0001087897125616782
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.910708191302379e-07
+"final-cost" 0.0001087223133399941
+[K"odometry-diff-cost " 7.9087723352[K"odometry-diff-cost " 7.9087723352[K"odometry-diff-cost " 7.908772335228596e-07
+"final-cost" 0.0001086037312666851
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.90610233221924e-07
+"final-cost" 0.0001085056571979332
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.89660822852411e-07
+"final-cost" 0.0001083430718925965
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.887539148804196e-07
+"final-cost" 0.0001081958140412233
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.881882571792068e-07
+"final-cost" 0.000108088217222818
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.871907706796122e-07
+"final-cost" 0.0001079138210834969
+[K"odome[K"odome[K"odometry-diff-cost " 7.868272568801869e-07
+"final-cost" 0.0001077839903592056
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.869331938410681e-07
+"final-cost" 0.0001077196808664687
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.872119939681783e-07
+"final-cost" 0.0001076365155552268
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.877369465823357e-07
+"final-cost" 0.0001075176312053342
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.883179503069875e-07
+"final-cost" 0.000107373701470784
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.889002742856121e-07
+"final-cost" 0.0001072284798882833
+[K"odometry-diff-cost[K"odometry-diff-cost[K"odometry-diff-cost " 7.888410766550109e-07
+"final-cost" 0.0001071446190817447
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.888935427627131e-07
+"final-cost" 0.0001070404207936139
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.88660738179675e-07
+"final-cost" 0.0001069496346403851
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.887181980192446e-07
+"final-cost" 0.001348180854191675
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.887028596684757e-07
+"final-cost" 0.0001068078426163778
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.887845330441921e-07
+"final-cost" 0.0001067636147191874
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.888184789096974e-07
+"final-cost" 0.0001066956827235928
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.886220692360484e-07
+"final-cost" 0.0001065970819345173
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.88231323218197e-07
+"final-cost" 0.000106499934969881
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.878891301165834e-07
+"final-cost" 0.000106355679137996
+[K"odome[K"odome[K"odometry-diff-cost " 7.870604741143627e-07
+"final-cost" 0.0001062089656069371
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.864826335735192e-07
+"final-cost" 0.0001061116735913687
+[K"odo[K"odo[K"odometry-diff-cost " 7.857575847314007e-07
+"final-cost" 0.0001059980693043051
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.857365118815084e-07
+"final-cost" 0.00010598183722611
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.857536802395685e-07
+"final-cost" 0.0001059479101833944
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.859300162042779e-07
+"final-cost" 0.0001058379798234667
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.864209531150139e-07
+"final-cost" 0.0001057154715351881
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.867921806742417e-07
+"final-cost" 0.0001056009958639107
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.871825164470153e-07
+"final-cost" 0.0001054936601792529
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.871636712655502e-07
+"final-cost" 0.0001054004584092939
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.869948900444971e-07
+"final-cost" 0.0001053225293479038
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.868381391789562e-07
+"final-cost" 0.00010525018302076
+[K"odom[K"odom[K"odometry-diff-cost " 7.866530168147054e-07
+"final-cost" 0.0001048505067995715
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.865940412645796e-07
+"final-cost" 0.0001047199817572568
+[K"odome[K"odome[K"odometry-diff-cost " 7.864821087057701e-07
+"final-cost" 0.0001045549546012911
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.863407601800353e-07
+"final-cost" 0.000104438036882877
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.863707838938472e-07
+"final-cost" 0.000104369491046742
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.865330542225694e-07
+"final-cost" 0.0001042600872168949
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.861852909124801e-07
+"final-cost" 0.0001041662438484921
+[K"odometry-diff-cost " 7.853328351514779e-07
+"final-c[K"final-c[K"final-cost" 0.0001040418180750535
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.84430546478645e-07
+"final-cost" 0.0001039383995403014
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.834293996275711e-07
+"final-cost" 0.000103769236425585
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.833136853499314e-07
+"final-cost" 0.0001037084798182956
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.825760228185513e-07
+"final-cost" 0.000103360541627165
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.825832106044967e-07
+"final-cost" 0.0001033010192226635
+[K"odome[K"odome[K"odometry-diff-cost " 7.826240028038881e-07
+"final-cost" 0.0001032280836400371
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.825159968453408e-07
+"final-cost" 0.0001031191099091012
+[K"od[K"od[K"odometry-diff-cost " 7.826499141345274e-07
+"final-cost" 0.000103019184834797
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.832919839981332e-07
+"final-cost" 0.0001028709975949703
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 7.840402420202648e-07
+"final-cost" 0.0001027366946621235
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.845576819748754e-07
+"final-cost" 0.0001026485354494038
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.845882813478273e-07
+"final-cost" 0.0001025623882916625
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.845616037581286e-07
+"final-cost" 0.0001025513014034162
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.845177415155189e-07
+"final-cost" 0.0001025294466553779
+[K"odome[K"odome[K"odometry-diff-cost " 7.844167931501022e-07
+"final-cost" 0.0001025086586382671
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.840366437535636e-07
+"final-cost" 0.000102466238742431
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.829754521507296e-07
+"final-cost" 0.0001023276645845185
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.821861396625726e-07
+"final-cost" 0.0001021655943306863
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.817463361029002e-07
+"final-cost" 0.0001020324443726131
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.81842985473244e-07
+"final-cost" 0.0001018879752708823
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.817274515762006e-07
+"final-cost" 0.000101801588891467
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.816275587343577e-07
+"final-cost" 0.0001016878992183966
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.811755294738565e-07
+"final-cost" 0.0001015553202111353
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.812929601575558e-07
+"final-cost" 0.000101425173176965
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.817044177614222e-07
+"final-cost" 0.0001012869028793509
+[K"odome[K"odome[K"odometry-diff-cost " 7.821863207393267e-07
+"final-cost" 0.0001011553030120803
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.8270918152863e-07
+"final-cost" 0.0001010894524735674
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.828215898544146e-07
+"final-cost" 0.0001009670350076572
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.828351055764467e-07
+"final-cost" 0.0001003274543998045
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.830352373905698e-07
+"final-cost" 0.0001001831582135467
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.827764805137869e-07
+"final-cost" 0.0001000660213052493
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.824859156570498e-07
+"final-cost" 9.987216248140594e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.818228004660391e-07
+"final-cost" 9.972429387422566e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.812753684906499e-07
+"final-cost" 9.96408027332939e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.807001379239519e-07
+"final-cost" 9.954656165225629e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.797981802751305e-07
+"final-cost" 9.939897688568106e-05
+[K"odometry-diff-cost " 7.793[K"odometry-diff-cost " 7.793[K"odometry-diff-cost " 7.793939767339095e-07
+"final-cost" 9.925619377487504e-05
+[K"odometry-diff-cost " 7.79287832[K"odometry-diff-cost " 7.79287832[K"odometry-diff-cost " 7.792878323860412e-07
+"final-cost" 9.917274387844919e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.792888208715555e-07
+"final-cost" 9.915931430179774e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.79238044173958e-07
+"final-cost" 9.913400839727073e-05
+[K"o[K"o[K"odometry-diff-cost " 7.79207124931622e-07
+"final-cost" 9.909409921315528e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.791604560755287e-07
+"final-cost" 9.904484563206107e-05
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 7.79029785619091e-07
+"final-cost" 9.896995931030373e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.794432486208532e-07
+"final-cost" 9.881672892545511e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.801894643173582e-07
+"final-cost" 9.868892699469939e-05
+[K"[K"[K"odometry-diff-cost " 7.806624335904607e-07
+"final-cost" 9.860113499667287e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.810918337295396e-07
+"final-cost" 9.845734277749449e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.801044694138015e-07
+"final-cost" 0.001429125868577866
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.800214703130633e-07
+"final-cost" 9.780996619742755e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.800321182402124e-07
+"final-cost" 9.763275522171332e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.796990163458015e-07
+"final-cost" 9.746967285480262e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.795530842673604e-07
+"final-cost" 9.733132065381502e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.788479949455122e-07
+"final-cost" 9.723494604293619e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.783483384124434e-07
+"final-cost" 9.710465647910417e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.78147664689987e-07
+"final-cost" 9.69846854972358e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.770713252870498e-07
+"final-cost" 9.685831552445041e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.765670552399241e-07
+"final-cost" 9.675497550718716e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.75526278784507e-07
+"final-cost" 9.648781070258625e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.754112726461562e-07
+"final-cost" 9.643158622325069e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.755331250492975e-07
+"final-cost" 9.63197201355252e-05
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.758579144878088e-07
+"final-cost" 9.615693893329443e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.760651145003169e-07
+"final-cost" 9.606934040012447e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.764017174739034e-07
+"final-cost" 9.598409867929971e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.766833732491542e-07
+"final-cost" 9.585845279789253e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.767030112817962e-07
+"final-cost" 9.57569813297865e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.77260359426193e-07
+"final-cost" 9.562438047079905e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.775563777367846e-07
+"final-cost" 9.548092072192839e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.773346187319453e-07
+"final-cost" 9.535030404641091e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.773740381453975e-07
+"final-cost" 9.510112300353159e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.777309372336569e-07
+"final-cost" 9.469396723999594e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.775514355276138e-07
+"final-cost" 9.461060242866624e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.771422823071181e-07
+"final-cost" 9.446139445430452e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.771160102421302e-07
+"final-cost" 9.428724012544331e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.771256920123969e-07
+"final-cost" 9.41287150670479e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.764762275554007e-07
+"final-cost" 9.403943365548855e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.757113200330157e-07
+"final-cost" 9.392162506215641e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.750897709756389e-07
+"final-cost" 9.380259392232414e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.743803116301802e-07
+"final-cost" 9.368969664192313e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.739473638076115e-07
+"final-cost" 9.358154973948376e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.734050972034263e-07
+"final-cost" 9.340055565950469e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.711336677210865e-07
+"final-cost" 9.241081048642239e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.715391353010029e-07
+"final-cost" 9.21541866384828e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.720388605249245e-07
+"final-cost" 9.196362650463425e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.720922471038205e-07
+"final-cost" 9.183833880666532e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.719043307415892e-07
+"final-cost" 9.172630318223005e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.721682988880148e-07
+"final-cost" 9.159935041498529e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.724249018496015e-07
+"final-cost" 9.145200927735867e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.731815815579567e-07
+"final-cost" 9.130991163787367e-05
+[K"odometry-diff-c[K"odometry-diff-c[K"odometry-diff-cost " 7.741678124098859e-07
+"final-cost" 9.116191156659006e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.742092767174855e-07
+"final-cost" 9.114144253781519e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.742474995368972e-07
+"final-cost" 9.112338314224043e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.743590846192251e-07
+"final-cost" 9.109147403838873e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.743113250322635e-07
+"final-cost" 9.103334768701191e-05
+[K"od[K"od[K"odometry-diff-cost " 7.738186523740189e-07
+"final-cost" 9.086301198955868e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.731862521128965e-07
+"final-cost" 9.072015758098415e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.724027295294869e-07
+"final-cost" 9.062753006317818e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.71367072161943e-07
+"final-cost" 9.051206442287273e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.702347990124514e-07
+"final-cost" 9.037276181668659e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.692785023496675e-07
+"final-cost" 9.010738162632837e-05
+[K"odometry-diff-cost " 7.690495856690667e-07
+"final-cost" 8.943251640186678e-05[K"final-cost" 8.943251640186678e-05[K"final-cost" 8.943251640186678e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.68677826932298e-07
+"final-cost" 8.929858736616868e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.68571596696716e-07
+"final-cost" 8.918063460825312e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.680651195557491e-07
+"final-cost" 8.895395438610324e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.676244148108177e-07
+"final-cost" 8.881626065608971e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.680305096640823e-07
+"final-cost" 8.869246293120609e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.695385934426599e-07
+"final-cost" 8.853760091141897e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.70477435482577e-07
+"final-cost" 8.844097186463822e-05
+[K"[K"[K"odometry-diff-cost " 7.713212810130639e-07
+"final-cost" 8.825233352295308e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.716147632513748e-07
+"final-cost" 8.821927263048847e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.714451421078046e-07
+"final-cost" 8.818465709827605e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.711034195853718e-07
+"final-cost" 8.814738744906699e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.704332932824958e-07
+"final-cost" 8.808156004823159e-05
+[K"[K"[K"odometry-diff-cost " 7.690961823691132e-07
+"final-cost" 8.792683899440593e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.687726188702254e-07
+"final-cost" 8.776376707506844e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.688246600577854e-07
+"final-cost" 8.764881065736282e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.688753362427609e-07
+"final-cost" 8.740661630158436e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.689269634815115e-07
+"final-cost" 8.732652212001386e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.687429694709041e-07
+"final-cost" 8.728359870618025e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.684893532245405e-07
+"final-cost" 8.720874862344398e-05
+[K"odometry-diff-cost " 7.680757722606655[K"odometry-diff-cost " 7.680757722606655[K"odometry-diff-cost " 7.680757722606655e-07
+"final-cost" 8.710007659426434e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.674097744833386e-07
+"final-cost" 8.695130257994793e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.676238798912278e-07
+"final-cost" 8.684295977285596e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.686498438900956e-07
+"final-cost" 8.668273812031126e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.692016524605662e-07
+"final-cost" 8.660119805162768e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.695591813315483e-07
+"final-cost" 8.654898467669889e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.695554378663932e-07
+"final-cost" 8.639919492390042e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.695053355967878e-07
+"final-cost" 8.635809676813573e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.695105523671858e-07
+"final-cost" 8.634202281914419e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.694011673063416e-07
+"final-cost" 8.631240305492965e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.691938967360687e-07
+"final-cost" 8.625609946820218e-05
+[K"odometry-diff-[K"odometry-diff-[K"odometry-diff-cost " 7.689428893839922e-07
+"final-cost" 8.620855967844686e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.683950926669505e-07
+"final-cost" 8.611569309529719e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.683769672209512e-07
+"final-cost" 8.599816453664627e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.68512353906277e-07
+"final-cost" 8.585934872318683e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.684569065373438e-07
+"final-cost" 8.57229745116893e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.678066085724011e-07
+"final-cost" 8.550509344471295e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.663778070028154e-07
+"final-cost" 8.515839789306915e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.668901685381922e-07
+"final-cost" 8.498991018324761e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.66698984060862e-07
+"final-cost" 8.482211518667966e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.667630538047014e-07
+"final-cost" 8.470709664387267e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.666535955167153e-07
+"final-cost" 8.452814118762791e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.665469250556881e-07
+"final-cost" 8.440986033695474e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.668049104681943e-07
+"final-cost" 8.431211693573505e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.670847501874651e-07
+"final-cost" 8.421247949450749e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.671957300631391e-07
+"final-cost" 8.418787417418389e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.671599971304353e-07
+"final-cost" 8.416794982364952e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.670667501118502e-07
+"final-cost" 8.410429225372347e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.668471828407446e-07
+"final-cost" 8.404274847103936e-05
+[K"odometry-diff-co[K"odometry-diff-co[K"odometry-diff-cost " 7.66717586160311e-07
+"final-cost" 8.394420320445235e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.664227529546585e-07
+"final-cost" 8.381090609214554e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.661872156310368e-07
+"final-cost" 8.370201497646666e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.664440368089234e-07
+"final-cost" 8.355799641238935e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.664480258393135e-07
+"final-cost" 8.342661255477376e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.664126751416456e-07
+"final-cost" 8.341249420841405e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.664385671157427e-07
+"final-cost" 8.337608839724568e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.66399601733984e-07
+"final-cost" 8.331558793633717e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.66270077997762e-07
+"final-cost" 8.324147558405247e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.660127984410839e-07
+"final-cost" 8.31553382213612e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.660552193787595e-07
+"final-cost" 8.305758636149881e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.656720396613877e-07
+"final-cost" 8.296223382734592e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.653002663468376e-07
+"final-cost" 8.284179986220508e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.653121401192215e-07
+"final-cost" 8.277395823458478e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.654868028856337e-07
+"final-cost" 8.269370449862703e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.661915888112145e-07
+"final-cost" 8.257493270150403e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.661588677245485e-07
+"final-cost" 8.236558568989939e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.659043231672692e-07
+"final-cost" 8.226307796580304e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.656500220525549e-07
+"final-cost" 8.217490206585993e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.652617375998891e-07
+"final-cost" 8.211280920568044e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.64579649953334e-07
+"final-cost" 8.201784901024976e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.645095534231291e-07
+"final-cost" 8.192280664855318e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.651112037647053e-07
+"final-cost" 8.179566739117786e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.657154031036156e-07
+"final-cost" 8.17091122458394e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.659443201966441e-07
+"final-cost" 8.159716034341541e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.659602477961457e-07
+"final-cost" 8.157324902017571e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.658891073724329e-07
+"final-cost" 8.155500334511282e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.656507529356887e-07
+"final-cost" 8.152607619187114e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.649709453913684e-07
+"final-cost" 8.146626306545814e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.639047942402982e-07
+"final-cost" 8.13612982771987e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.634061194463518e-07
+"final-cost" 8.126982486296042e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.633966183133684e-07
+"final-cost" 8.114776773777811e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.635377888417313e-07
+"final-cost" 8.107694795162779e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.639749469947235e-07
+"final-cost" 8.099172884475763e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.639863604504135e-07
+"final-cost" 8.098055863747782e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.639843225061889e-07
+"final-cost" 8.096563422243494e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.639206218453401e-07
+"final-cost" 8.091709876282401e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.631901494618145e-07
+"final-cost" 8.080860612982803e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.629451710902874e-07
+"final-cost" 8.069448308660595e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.638082103653195e-07
+"final-cost" 8.058232606681196e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.649545013311748e-07
+"final-cost" 8.047752386865899e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.65187438463523e-07
+"final-cost" 8.039428154291222e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.643422912449851e-07
+"final-cost" 8.011066524741033e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.643068855080136e-07
+"final-cost" 8.007640345934697e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.643665241356057e-07
+"final-cost" 8.001009138105744e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.644556748270351e-07
+"final-cost" 7.992322712889353e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.644836967244459e-07
+"final-cost" 7.987221473259321e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.6429350830532e-07
+"final-cost" 7.982507222298968e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.636983188104998e-07
+"final-cost" 7.974851226706138e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.628920588413156e-07
+"final-cost" 7.963351348532307e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.630710267877801e-07
+"final-cost" 7.951441816488169e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.628256271359983e-07
+"final-cost" 7.940003359238843e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.625686417650395e-07
+"final-cost" 7.932113880109969e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.62378206001081e-07
+"final-cost" 7.920958326094798e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.623720137075708e-07
+"final-cost" 7.91785530737969e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.622649929833717e-07
+"final-cost" 7.913799949881867e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.620520283989752e-07
+"final-cost" 7.907832321489692e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.621706807738281e-07
+"final-cost" 7.901781041867364e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.620975270228787e-07
+"final-cost" 7.890638179903003e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.622362678468325e-07
+"final-cost" 7.881665810959339e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.628430257331599e-07
+"final-cost" 7.872496567163052e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.63242653819218e-07
+"final-cost" 7.863060990270565e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.634204232535475e-07
+"final-cost" 7.859166265740716e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.63392398186079e-07
+"final-cost" 7.856961282802522e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.630084234576429e-07
+"final-cost" 7.852443002054701e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.625589840467365e-07
+"final-cost" 7.845306434378083e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.61978347585537e-07
+"final-cost" 7.828304741670806e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.614266741334068e-07
+"final-cost" 7.818562399403786e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.613443045947727e-07
+"final-cost" 7.809540410705991e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.613821602368741e-07
+"final-cost" 7.799378621007551e-05
+[K"odometry-diff-cost " 7.613696213268596e-07
+"final-cost" [K"final-cost" [K"final-cost" 7.794776549942693e-05
+[K"odometry-diff-cost " 7.61214865[K"odometry-diff-cost " 7.61214865[K"odometry-diff-cost " 7.61214865802311e-07
+"final-cost" 7.791008426212429e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.61000718113018e-07
+"final-cost" 7.785232513104353e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.61134795230726e-07
+"final-cost" 7.778206033157206e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.611252067213441e-07
+"final-cost" 7.769779676794037e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.612402029098609e-07
+"final-cost" 7.758015322913424e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.617652097858771e-07
+"final-cost" 7.749217451605953e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.62185272528749e-07
+"final-cost" 7.743339116649595e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.630632610438224e-07
+"final-cost" 7.729859783171235e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.634177334069658e-07
+"final-cost" 7.717457110410638e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.633035991186189e-07
+"final-cost" 7.713901113896915e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.628466231547879e-07
+"final-cost" 7.708080973839156e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.62345655575574e-07
+"final-cost" 7.701338109448242e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.620318923209103e-07
+"final-cost" 7.694316111036497e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.617313668963267e-07
+"final-cost" 7.690215630051949e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.612857215688819e-07
+"final-cost" 7.682332876974828e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.608427737817817e-07
+"final-cost" 7.670041130700532e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.604807325427704e-07
+"final-cost" 7.659989178003791e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.602021501430183e-07
+"final-cost" 7.651233609252594e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.597924160638005e-07
+"final-cost" 7.64218106795315e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.59815457295497e-07
+"final-cost" 7.640957012417216e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.598135491822926e-07
+"final-cost" 7.638784770855685e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.598200632326417e-07
+"final-cost" 7.634231822374528e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.598388870587205e-07
+"final-cost" 7.629940222568235e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.601316648850431e-07
+"final-cost" 7.622179832850634e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.603794100159935e-07
+"final-cost" 7.61174742656717e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.605343596386248e-07
+"final-cost" 7.602742704695404e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.608176157843015e-07
+"final-cost" 7.595403806699663e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.611637594833813e-07
+"final-cost" 7.587677021365317e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.620274794546739e-07
+"final-cost" 7.573465163460221e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.624779417470601e-07
+"final-cost" 7.526499447403818e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.624069862598568e-07
+"final-cost" 7.514314858259491e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.623204548936368e-07
+"final-cost" 7.501856922127132e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.621103798727118e-07
+"final-cost" 7.48671602020677e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.619292803015761e-07
+"final-cost" 7.479741021238763e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.61485248263756e-07
+"final-cost" 7.47305922481238e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.608878045091865e-07
+"final-cost" 7.465750014540107e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.602190755241997e-07
+"final-cost" 7.458530259898255e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.593553952913021e-07
+"final-cost" 7.44691050884352e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.586126303842576e-07
+"final-cost" 7.434362246786995e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.580811221720093e-07
+"final-cost" 7.426104475283706e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.581707664096477e-07
+"final-cost" 7.423996546722501e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.583404379529136e-07
+"final-cost" 7.418377413306801e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.591043268550327e-07
+"final-cost" 7.401726689322268e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.598129403525177e-07
+"final-cost" 7.39177258072434e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.602693197473564e-07
+"final-cost" 7.383939888402616e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.606680427768581e-07
+"final-cost" 7.372853502631825e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.606525430555145e-07
+"final-cost" 7.370551226170281e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.606128044533902e-07
+"final-cost" 7.368225453412052e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.606298356788985e-07
+"final-cost" 7.36516452466779e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.602903400301352e-07
+"final-cost" 7.359034459341228e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.600490001125726e-07
+"final-cost" 7.354428543395985e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.597185049072061e-07
+"final-cost" 7.348204545858007e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.587994166029769e-07
+"final-cost" 7.336449831118082e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.583955992415196e-07
+"final-cost" 7.328738062876987e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.575161445293463e-07
+"final-cost" 7.319016476589046e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.572173095910154e-07
+"final-cost" 7.309033375982412e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.569297139241336e-07
+"final-cost" 7.29624583126673e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.568511858630006e-07
+"final-cost" 7.294166644340662e-05
+[K"odometry[K"odometry[K"odometry-diff-cost " 7.568000554104082e-07
+"final-cost" 7.287479929723599e-05
+[K"odometry-diff-cost " 7.567766340149967e-07
+"final-cost" 7.27967403[K"final-cost" 7.27967403[K"final-cost" 7.279674031049762e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.571997574111123e-07
+"final-cost" 7.271016537958664e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.575026541852903e-07
+"final-cost" 7.264901127069231e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.576012436152587e-07
+"final-cost" 7.256972846347436e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.581575863025644e-07
+"final-cost" 7.247317790939079e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.587907073733273e-07
+"final-cost" 7.237440754336556e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.591605153176727e-07
+"final-cost" 7.232303394172979e-05
+[K"odome[K"odome[K"odometry-diff-cost " 7.593834003930466e-07
+"final-cost" 7.22804016731517e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.594051289465059e-07
+"final-cost" 7.227203028293506e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.592813951141028e-07
+"final-cost" 7.225470449719934e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.590522299123059e-07
+"final-cost" 7.221456880887665e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.583493131480341e-07
+"final-cost" 7.211913974157204e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.576158836690148e-07
+"final-cost" 7.200233781677192e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.571926611642787e-07
+"final-cost" 7.191434213647652e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.571329269239888e-07
+"final-cost" 7.188943141941582e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.570007260804028e-07
+"final-cost" 7.184918598469304e-05
+[K"odometry-diff-cost " 7.5720694125[K"odometry-diff-cost " 7.5720694125[K"odometry-diff-cost " 7.572069412518625e-07
+"final-cost" 7.17962085798423e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.576223065049641e-07
+"final-cost" 7.169367543705533e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.580216914505007e-07
+"final-cost" 7.154023529798437e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.586353753040913e-07
+"final-cost" 7.137745277727789e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.587193335077894e-07
+"final-cost" 7.136181035709064e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.587434270413743e-07
+"final-cost" 7.134806602909144e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.586341492560513e-07
+"final-cost" 7.132381296261054e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.584325964401275e-07
+"final-cost" 7.124697701841894e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.579038872412461e-07
+"final-cost" 7.110899343261251e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.571313514067179e-07
+"final-cost" 7.09934935628931e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.569304509046074e-07
+"final-cost" 7.092184482598122e-05
+[K"odometry-di[K"odometry-di[K"odometry-diff-cost " 7.570394081880007e-07
+"final-cost" 7.08707483619868e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.569368381150188e-07
+"final-cost" 7.079225918935616e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.564177202093851e-07
+"final-cost" 7.063503749420611e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.551591089122349e-07
+"final-cost" 7.024626090772719e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.552810389416613e-07
+"final-cost" 7.01950545430462e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.551813183142273e-07
+"final-cost" 7.009652850456796e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.551234730111281e-07
+"final-cost" 6.99808803732833e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.555843814181895e-07
+"final-cost" 6.991751506293499e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.559502072051911e-07
+"final-cost" 6.983264319609102e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.566372762383265e-07
+"final-cost" 6.971980212259812e-05
+[K"odo[K"odo[K"odometry-diff-cost " 7.574349051793538e-07
+"final-cost" 6.96364027178294e-05
+[K"[K"[K"odometry-diff-cost " 7.578327933124655e-07
+"final-cost" 6.952851538958201e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.580768764715083e-07
+"final-cost" 6.943377732420018e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.585602446568341e-07
+"final-cost" 6.924658524847514e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.586183110620255e-07
+"final-cost" 6.919549299182848e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.585225347015038e-07
+"final-cost" 6.911260630329801e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.583743837706622e-07
+"final-cost" 6.903891377477309e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.579806269054878e-07
+"final-cost" 6.896205171439005e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.572184673062675e-07
+"final-cost" 6.885270476133269e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.566404815524241e-07
+"final-cost" 6.87898237432713e-05
+[K"odometr[K"odometr[K"odometry-diff-cost " 7.561257658078383e-07
+"final-cost" 6.869952972916616e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.551989363865325e-07
+"final-cost" 6.859648182388787e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.545779113343692e-07
+"final-cost" 6.852461146278154e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.541504428443328e-07
+"final-cost" 22.83409493104312
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.539841239856226e-07
+"final-cost" 6.838925878587947e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.540271471614803e-07
+"final-cost" 6.832908872846891e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.541907354276968e-07
+"final-cost" 6.829249867875988e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.547059821306217e-07
+"final-cost" 6.824627829907455e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.551286024431075e-07
+"final-cost" 6.819370675721414e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.55632185602296e-07
+"final-cost" 6.808776745480834e-05
+[K"odometry-diff[K"odometry-diff[K"odometry-diff-cost " 7.566268232075486e-07
+"final-cost" 6.797063945657245e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.572661754910463e-07
+"final-cost" 6.787177412387718e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.574474176120549e-07
+"final-cost" 6.775812585351671e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.574728330807219e-07
+"final-cost" 6.773323211130265e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.572435287725068e-07
+"final-cost" 6.76522162819853e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.567579060497546e-07
+"final-cost" 6.755975193536087e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.563456384813407e-07
+"final-cost" 6.748470413859423e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.55892237618041e-07
+"final-cost" 6.741235684212814e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.546347595490827e-07
+"final-cost" 6.730011703066155e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.541765895855083e-07
+"final-cost" 6.724749309820307e-05
+[K"odomet[K"odomet[K"odometry-diff-cost " 7.539116353000694e-07
+"final-cost" 6.717692090733374e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.551766445328597e-07
+"final-cost" 529.9601964008085
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.517622029866411e-07
+"final-cost" 6.660217300391821e-05
+[K"odometry-d[K"odometry-d[K"odometry-diff-cost " 7.518312498642918e-07
+"final-cost" 6.644775632283182e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.519970019130233e-07
+"final-cost" 6.634067087066519e-05
+[K"odometry-dif[K"odometry-dif[K"odometry-diff-cost " 7.521280943717359e-07
+"final-cost" 6.629333121019327e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.52373642003037e-07
+"final-cost" 6.622824354555664e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.532802388383256e-07
+"final-cost" 6.615970406873037e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.543666352410664e-07
+"final-cost" 6.608580998377066e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.556624987683143e-07
+"final-cost" 6.599211413165476e-05
+[K"odometry-[K"odometry-[K"odometry-diff-cost " 7.568013245610214e-07
+"final-cost" 6.58853468668277e-05
+[K"odom[K"odom[K"odometry-diff-cost " 7.574145972268083e-07
+"final-cost" 6.577514054259404e-05
 [K

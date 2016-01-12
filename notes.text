@@ -4837,6 +4837,191 @@ choosing the parameters that RANSAC needs.
   trying runs using {5,10,15,20} tubes (subset of the 25) in separate processes
   (no logging that output).
 
+----------------git commit d5cfb09--------------
+
+12 Jan 16
+
+--Current status of last night's runs as of 1042: (email to Jeff)
+	  Full run with 25 tubes: still running (current cost ~1e-4)
+
+	  Run with 20 tubes: still running (current cost ~6e-5)
+
+	  Run with 15 tubes: Finished at 7:13pm (~2h15m run time), final cost
+	  4e-7, xyz points for tubes are bad (all appear to be either behind the
+	  camera or a few cm in front of the camera), all the path deltas were
+	  very small (<1e-4) 
+
+	  Run with 10 tubes: Finished at 11:15pm (~6h15m run time), final cost 
+	  4e-7, xyz points for tubes are bad (similar to the above), path deltas 
+	  are larger (a few on the order of 1e-2)
+
+	  Run with 5 tubes: Finished at 11:49pm (~6h45m run time), final cost
+	  3e-7, xyz point for first run (candle on top of end table) is bad, but
+	  other points might be more reasonable--need to check the videos for
+	  those tubes, path deltas are mostly very small, with a few on the
+	  order of 1e-2.
+
+	  With the very small path deltas that we're getting, I don't think we're
+	  correcting the path error enough, and that is leading to the tube
+	  points being just as bad as they were before we started optimizing the
+	  path as well.
+
+	  Is there another method we can use to try to lessen the effect of the
+	  path drift?  Could optical flow help?  I think there might be some way
+	  to use the observed motion from the camera and compare it to what the
+	  odometry gives...  Need to think about this more.
+
+--Jeff's reply/my reply
+	 On Tue, Jan 12, 2016 at 10:42 AM, Jeffrey Mark Siskind
+	 <qobi@purdue.edu> wrote: 
+
+	 > What units are the path deltas that you reported in your previous
+	 > email? 
+	    xyz deltas are in m, angle deltas are in radians
+
+	 > What is the magnitude of the gradient upon termination?
+	    Not sure since we weren't printing this out.  When we did look at
+ 	    gradients during the single-tube runs yesterday, they were on the
+	    order of 1e-10 or 1e-11 on termination.
+
+	 > What is your scale factor for the contribution of path delta and
+	 > world xyz error to the overall cost function?
+	    The path delta cost is multiplied by 0.01 before being added to the
+	    world xyz cost.  Prior to this both costs are averaged by dividing
+	    each summed cost by the number of elements used to compute it
+	    (number of path points for path, number of boxes in a tube for world
+	    xyz) 
+
+	    Related to this, one thing Dan and I discussed yesterday was trying
+	    to let the length of a tube affect how much influence it has on the
+	    cost--the idea being that a tube with more boxes should have a
+	    bigger influence than a tube with fewer boxes.  This probably could
+	    be achieved by simply not dividing a tube's cost by its number of
+	    boxes. 
+
+	    Another thought I had just now is that we might need to change how
+	    we compute the final cost value.  Right now we take the scaled path
+	    delta cost and add it to the sum of the world xyz costs for each
+	    tube.  I wonder if that is giving too much influence to the world
+	    xyz cost. Could we solve this by simply dividing the sum of world
+	    xyz costs by the number of tubes?
+
+	 > Here is an experiment to try. Do you know (approximate) ground truth
+	 > world xyz of the objects that correspond to the tubes?
+	    Yes, I have a rough measurement of the location for the first tube
+	    in the test segment.  I could probably estimate a few others from 
+	    watching the videos of the tubes.
+
+	 > What if you fix that (i.e. don't optimize that) but just optimize the
+	 > path deltas to see if you can determine the correct path deltas. Then
+	 > if you can, fix those as input and just optimize the ground truth
+	 > world xyz of the objects. I.e. just try to optimize one variable at a
+	 > time. 
+
+	    I'll start setting this up now.
+
+--Jeff reply:
+      xyz deltas are in m, angle deltas are in radians
+
+      	  An xyz delta of 10^-2 is about 1cm which is about the maximum of what
+	  you would expect per frame. 10^-2 radians is about a half of a degree
+	  which is also about the maximum of what you would expect per frame. At
+	  10fps, deltas like these would accumulate very quickly. So if you are
+	  getting path deltas like these it might very well be correctly
+	  estimating the path delta. Even 10^-3 would be quite large and
+	  accumulate quickly so might also be correct. 
+
+   > What is the magnitude of the gradient upon termination?
+      Not sure since we weren't printing this out.
+
+      	  What is was yesterday on the smaller problems is no indication of what
+	  it is o the larger problems. In the future, it would be a good idea to
+	  print this out. You don't need the gradient at every iteration. Only
+	  upon temrination. 
+
+	  Dividing by number of path points, number of boxes, and/or number of
+	  tubes only affects the relative scaling of different terms in your
+	  cost function. The same thing is accomplished with explicit scale
+	  factors for the terms. Making number of path points, number of boxes,
+	  and/or number of tubes part of those scale factors is the same as
+	  making the scale factors problem-specific. If the algorithm is that
+	  sensitive to the scale factors then we are doing something unideal.
+
+    	  Jeff (http://engineering.purdue.edu/~qobi)
+
+--Working on building find-deltas-only with known tube points, then will make
+  find-points-only with fixed odometry (isn't this just like the old
+  find-points-from-lines??) 
+
+--Find-deltas-only works and gives a pretty good optimized track from a known
+  world point.  Then using this track as input to find-points-from-lines gives
+  back the original point to w/in 5cm in each direction
+
+--Agreed with Dan that the weighting on odometry-diff-cost (* 0.01) was too
+  low. Replaced by * 1 instead.
+
+--Added printout of gradient and gradient magnitude to end of optimization in
+  find-deltas-only, find-points-and-deltas.
+
+--Wrote weighted-subtract-pose to allow weighting of the different components of
+  the pose.  The idea is to decrease the weight on the angle components compared
+  to the position components so that the optimization will not make a lot of
+  drastic adjustments to the positions in an effort to account for image
+  movement-->think this might be partially to blame in the backwards-forwards
+  zigzag in the 5-tube optimized path.
+
+
+TO DO's
+-------
+--Going to optimize all 4 corners of box instead of just one--should help
+  forward-backward problem.
+
+--Replace subtract-pose with weighted-subtract-pose (probably only in optimizing
+  functions, not in get-deltas-list-from-world-track-6dof)-->decrease weights on
+  angles over xyz.
+
+--Dump scaling factors (/ len) and (/ (*6 (length odometry)).  Thought about
+  scaling the odometry score up by multiplying by number of tubes, but decided
+  against it b/c it could overweight the odometry score.  MAYBE TRY THIS FIRST
+  IN FIND-DELTAS-ONLY.
+
+--Think about adding more dtrace output to find-points-and-deltas (similar to
+  find-deltas-only)
+
+--Compile find-points-and-deltas, find-points-from-lines, and find-deltas-only
+  into dsci.  Should be able to just copy the fns into toollib-codetection.sc
+  and then recompile dsci.  Compiler should complain if any functions called in
+  those are missing, then can copy those fns in as well.  Rinse and repeat.
+
+--Need to write a visualizing function that takes the boxes and the odometry
+  output from the optimization and displays them on the images--will use this to
+  see whether the optimized box follows the input box in the image.  Should have
+  most of this already written, just need to reverse some operations.
+
+--Need to make sure that the points that are optimized are well-distributed over
+  the image (top/bottom/left/right-->this will have to happen at the
+  proposal/tube generation stage to make sure there are enough proposals-->might
+  also be doable at the stage where we choose which tubes to use in the
+  optimization-->might have an optimizing set (much smaller than full tube set)
+  that covers the image quadrants, use this to optimize track, then use
+  optimized track and old find-points-from-lines to find the world points for
+  tubes that were not in the optimizing set.
+
+
+
+**THOUGHT: **WHAT ABOUT instead of dividing the reduce over
+  point-line-squared-distance by the length of the tube, try instead dividing
+  the outside reduce by the total of the tube lengths--not the same thing!
+  Would this allow longer tubes to have more influence while still scaling to
+  the total number of frames with boxes?
+
+**Thought: find average point-line distance across tubes?  Is the path
+  optimization getting overwhelmed by the tubes?
+
+**Thought: could some visual odometry/visual SLAM method help us correct the IMU
+  odometry error?
+
+
 ***THOUGHT--need to think more about what Jeff said in meeting on 7Jan about
    treating the position (error?) as a low-order polynomial function and then
    using the optimization to estimate the parameters of this function-->how do

@@ -3781,7 +3781,6 @@
       (list camera-world pixel-world))
      #f))
 
-
 (define (aligned-tube-with-score->lines tube-with-score)
  (let* ((tube (first tube-with-score))
 	(camera-offset-matrix *camera-offset-matrix*) ;;PREDEFINED
@@ -3914,7 +3913,7 @@
 		    (robot-deltas-list-and-world-start-3dof->world-track-6dof
 		     deltas-list (first odometry)))
 		   (odometry-diff-cost
-		    (* 0.01
+		    (* 1
 		       (/ (reduce +
 				  (map (lambda (a b) (magnitude-squared
 						      (subtract-pose a b)))
@@ -3945,13 +3944,98 @@
 	      (dtrace "final-cost" (primal* final-cost)))
 	     (set! counter (+ counter 1))
 	     final-cost)))
-	(g (gradient-r f)))
-  (optimize-with-nlopt
-   nlopt:ld-lbfgs 
-   initial-guess
-   (lambda (opt)
-    (nlopt:set-min-objective opt
-			     (lambda (x g?) (vector (f x) (g x))))))))
+	(g (gradient-r f))
+	(opt-output
+	 (optimize-with-nlopt
+	  nlopt:ld-lbfgs 
+	  initial-guess
+	  (lambda (opt)
+	   (nlopt:set-min-objective opt
+				    (lambda (x g?) (vector (f x) (g x))))))))
+  (dtrace "final gradient " (g (x opt-output)))
+  (dtrace "magnitude of gradient " (magnitude (g (x opt-output))))
+  opt-output))
+
+(define (find-deltas-only odometry raw-tubes-with-score known-tube-points)
+ (let* ((num-points (length raw-tubes-with-score))
+	(counter 0)
+	(world-track-6dof (world-track-3dof->world-track-6dof odometry))
+	(initial-deltas (get-deltas-list-in-robot-6dof odometry))
+	;; (initial-guess-points
+	;;  (dtrace "initial-guess-points "
+	;; 	 (map
+	;; 	  (lambda (tube)
+	;; 	   (x (find-point-from-lines
+	;; 	       (dtrace "lines "
+	;; 		       (first
+	;; 			(raw-tube-with-score-and-pose-list-6dof->lines
+	;; 			 tube world-track-6dof)))
+	;; 		       (vector 0 0 0))))
+	;; 	  raw-tubes-with-score)))
+	(tube-lengths
+	 (map (lambda (f) (length (removeq #f (first f))))
+	      raw-tubes-with-score))
+	(initial-guess ;; (vector-append (merge-points initial-guess-points)
+		       ;; 		      (merge-deltas initial-deltas))
+		       (merge-deltas initial-deltas))
+	(f (lambda (x)
+	    (let* (;; (split-vector (split-giant-vector x num-points))
+		   ;; (points-vector (first split-vector))
+		   ;; (points-list (split-points points-vector))
+		   (points-list known-tube-points)
+		   (deltas-vector x);;(second split-vector))
+		   (deltas-list (split-deltas deltas-vector))
+		   (robot-poses-6dof
+		    (robot-deltas-list-and-world-start-3dof->world-track-6dof
+		     deltas-list (first odometry)))
+		   (raw-odometry-diff-cost
+		    (reduce +
+			    (map (lambda (a b) (magnitude-squared
+						(subtract-pose a b)))
+				 deltas-list
+				 initial-deltas)
+			    0))
+		   (odometry-diff-cost (/ raw-odometry-diff-cost
+					  (* 6 (length odometry))))
+		   (point-diff-cost
+		    (reduce +
+			    (map (lambda (tube point len)
+				  (let* ((lines
+					  (first ;;b/c ->lines returns 4 corners
+					   (raw-tube-with-score-and-pose-list-6dof->lines
+					    tube
+					    robot-poses-6dof))))
+				   (/ (reduce +
+					      (map (lambda (l)
+						    (point-line-squared-distance point l))
+						   lines)
+					      0)
+				      len))) 
+				 raw-tubes-with-score
+				 points-list
+				 tube-lengths)
+			    0))
+		    (final-cost (+ odometry-diff-cost
+				   point-diff-cost)))
+	     (when (= (modulo counter 10) 0)
+	      (dtrace "iteration " counter)
+	      (dtrace "raw-odometry-diff-cost " (primal* raw-odometry-diff-cost))
+	      (dtrace "odometry-diff-cost " (primal* odometry-diff-cost))
+	      (dtrace "point-diff-cost " (primal* point-diff-cost))
+	      (dtrace "final-cost " (primal* final-cost)))
+	     (set! counter (+ counter 1))
+	     final-cost)))
+	(g (gradient-r f))
+	(opt-output
+	 (optimize-with-nlopt
+	  nlopt:ld-lbfgs 
+	  initial-guess
+	  (lambda (opt)
+	   (nlopt:set-min-objective opt
+				    (lambda (x g?) (vector (f x) (g x))))))))
+  (dtrace "final gradient " (g (x opt-output)))
+  (dtrace "magnitude of gradient " (magnitude (g (x opt-output))))
+  opt-output))
 
 
 
@@ -4021,6 +4105,18 @@
 	 (angle-minus (vector-ref pose1 4) (vector-ref pose2 4))
 	 (angle-minus (vector-ref pose1 5) (vector-ref pose2 5))))
 
+(define (weighted-subtract-pose pose1 pose2 weights)
+ (vector (* (x weights) (- (x pose1) (x pose2)))
+	 (* (y weights) (- (y pose1) (y pose2)))
+	 (* (z weights) (- (z pose1) (z pose2)))
+	 (* (vector-ref weights 3)
+	    (angle-minus (vector-ref pose1 3) (vector-ref pose2 3)))
+	 (* (vector-ref weights 4)
+	    (angle-minus (vector-ref pose1 4) (vector-ref pose2 4)))
+	 (* (vector-ref weights 5)
+	    (angle-minus (vector-ref pose1 5) (vector-ref pose2 5)))))
+
+
 (define (world-pose-and-robot-delta-6dof->world-pose-6dof world-pose
 							  robot-delta)
  (let* ((w-xyz (subvector world-pose 0 3))
@@ -4060,6 +4156,8 @@
 (define (world-track-3dof->world-track-6dof track-3dof)
  (map (lambda (p) (x-y-theta->6dof p)) track-3dof))
 
+(define (world-track-6dof->world-track-3dof track-6dof)
+ (map (lambda (p) (six-dof->x-y-theta p)) track-6dof))
 
 (define (get-deltas-list-from-world-track-6dof world-track-6dof)
  (let loop ((track world-track-6dof)
