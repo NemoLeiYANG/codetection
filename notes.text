@@ -4970,20 +4970,93 @@ choosing the parameters that RANSAC needs.
   movement-->think this might be partially to blame in the backwards-forwards
   zigzag in the 5-tube optimized path.
 
+----------------git commit 67e9ff4--------------
+
+13 Jan 16
+
+--Killed still-running tests on 20 and 25 tubes on seykhl b/c of hard drive
+  replacement today.  Latest output for 20-tube run: odometry-diff-cost
+  6.697387779457994e-07 final-cost 1.806612417980068e-05.  Latest output for
+  25-tube run: odometry-diff-cost 7.387563728670102e-07 final-cost
+  2.958520810138482e-05 
+
+--Replaced subtract-pose with weighted-subtract-pose (only in optimizing
+  functions, not in get-deltas-list-from-world-track-6dof)-->decrease weights on
+  angles over xyz-->idea is to make the optimizer less likely to make drastic
+  changes to xyz (back-and-forth problem) by making changes to xyz more costly
+  than changes to angles. 
+
+--Copied original find-points-and-deltas to find-points-and-deltas-old.  This
+  version still has scaling factors on odometry and point costs, but uses
+  weighted-subtract-pose.
+
+--Removed scaling factors (/ len) and (/ (*6 (length odometry)) from
+  find-points-and-deltas and find-deltas-only.  Thought about scaling the
+  odometry score up by multiplying by number of tubes, but decided against it
+  b/c it could overweight the odometry score.  **THOUGHT: try the odometry
+  scale-up if things don't work as expected**
+
+--Verified that removing scaling factors doesn't change output significantly in
+  find-points-and-deltas and not at all in find-deltas-only.  Only change is in
+  the final value of the cost function.
+
+--Wrote visualize-two-tracks to take original odometry and optimized path deltas
+  and plot them side-by-side
+
+--Implemented optimization of all 4 corners of box.  Results are different, but
+  not much better.  For test-segment, first tube (top-left corner ground truth
+  is ~ #(-0.02 3.85 0.8)
+  Old method (top-left corner only): 
+      #(0.02559066362036297 0.5949865979067857 0.2265010279536986)
+  New method (all corners):
+      #(0.02119356092161943 1.113704968472089 0.3149214437995508)
+      #(0.05592208048940997 1.0905847252409 0.3097494718417824)
+      #(0.02255761214293257 1.042843167952684 0.267710012469166)
+      #(0.05426763414797994 1.018035048313843 0.2632562501238425)
+  Also, the optimized track from the new one is much different from the old
+  one--and I think the old one is probably better.  See images at
+  ./source/new-sentence-codetection/20160113-1-tube-{1,4}-point{s}-track.{eps,fig}. 
+  Drifting in the route (fwd/bkwd/loops) still seems to be there.
+
+--Thinking about coplanarity constraint and how to encode it into the model.
+  Can write a function that takes 4 points and computes
+  (x3-x1)·[(x2-x1)x(x4-x3)].  If that = 0, then the 4 points are coplanar.  But
+  if that is nonzero, what does the value represent?  Could be simpler to take
+  the 4 points, measure the 4 distances from each point to the plane made from
+  the other 3, and then square each and find the mean.
+
+--Started new run with {5,10,15} tubes with new 4-point optimization at ~1720.
+  Can check results against plots from yesterday to see if they're any better.
+
 
 TO DO's
 -------
---Going to optimize all 4 corners of box instead of just one--should help
-  forward-backward problem.
 
---Replace subtract-pose with weighted-subtract-pose (probably only in optimizing
-  functions, not in get-deltas-list-from-world-track-6dof)-->decrease weights on
-  angles over xyz.
+--Constraints to enforce on box points during optimization: (**HOW EXACTLY DO I
+  ENCODE AND ENFORCE THESE??)
+  -coplanar -- how to compute?? **SEE BULLET ABOVE**
+  -rectangle
+  -perpendicular to camera axis
+  -axis aligned
+  -prior on width & height (size limits), bias against
+  -prior on world position
+    -not behind camera
+    -not outside floorplan
 
---Dump scaling factors (/ len) and (/ (*6 (length odometry)).  Thought about
-  scaling the odometry score up by multiplying by number of tubes, but decided
-  against it b/c it could overweight the odometry score.  MAYBE TRY THIS FIRST
-  IN FIND-DELTAS-ONLY.
+**multiple points from same rectangle linearly dependent???
+**Is assuming a rectangle in image plane will be a rectangle in world plane
+  invalid??
+**When robot is viewing the same object from multiple angles, there is no
+  guarantee that the box corners will project to the same world point--that is
+  almost certainly not true
+**problem seems ill-posed-->how to fix it??
+
+**THOUGHT** Why not try running some sort of fast feature detector on JUST the
+  contents of the tube boxes??
+
+**correspondences between boxes no good-->points probably are not on object and
+  certainly don't correspond to same world point.
+**Jeff suggests limiting to objects that are on ground...how will this help?
 
 --Think about adding more dtrace output to find-points-and-deltas (similar to
   find-deltas-only)

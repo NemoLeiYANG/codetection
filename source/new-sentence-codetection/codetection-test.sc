@@ -3882,7 +3882,113 @@
 			     (lambda (x g?) (vector (f x) (g x))))))))
 
 
+(define (visualize-two-tracks odometry deltas)
+ ;;this takes original odometry and optimized path deltas and plots both
+ (start-matlab!)
+ (let* ((deltas-list (split-deltas deltas))
+	(track-6dof
+	 (robot-deltas-list-and-world-start-3dof->world-track-6dof
+	  deltas-list (first odometry)))
+	(track-3dof (world-track-6dof->world-track-3dof track-6dof)))
+  (scheme->matlab! "odometry" odometry)
+  (scheme->matlab! "track" track-3dof)
+  (matlab "figure")
+  (matlab "plot(odometry(:,1),odometry(:,2),'bo-')")
+  (matlab "hold on")
+  (matlab "plot(track(:,1),track(:,2),'rd-')")
+  (matlab "xlabel('World X (m)')")
+  (matlab "ylabel('World Y (m)')")
+  (matlab "legend('odometry','optimized track')")
+  (matlab "hold off")))
+ 
+
 (define (find-points-and-deltas odometry raw-tubes-with-score)
+ (let* ((num-points (length raw-tubes-with-score))
+	(counter 0)
+	(world-track-6dof (world-track-3dof->world-track-6dof odometry))
+	(initial-deltas (get-deltas-list-in-robot-6dof odometry))
+	(initial-guess-points
+	 (dtrace "initial-guess-points "
+		 (join
+		  (map
+		   (lambda (tube)
+		    (map ;;this map gets all 4 corner points, not just top-left
+		     (lambda (l)
+		      (x (find-point-from-lines l (vector 0 0 0))))
+		     (raw-tube-with-score-and-pose-list-6dof->lines
+		      tube world-track-6dof)))
+		   raw-tubes-with-score))))
+	(tube-lengths
+	 (map (lambda (f) (length (removeq #f (first f))))
+	      raw-tubes-with-score))
+	(initial-guess (merge-giant-vector (merge-points initial-guess-points)
+					   (merge-deltas initial-deltas)))
+	(weights (vector 1 1 1 0.5 0.5 0.5)) ;;weights for weighted-subtract-pose
+	(f (lambda (x)
+	    (let* ((split-vector (split-giant-vector-four-points x num-points))
+		   (points-vector (first split-vector))
+		   (points-list (split-points points-vector))
+		   (deltas-vector (second split-vector))
+		   (deltas-list (split-deltas deltas-vector))
+		   (robot-poses-6dof
+		    (robot-deltas-list-and-world-start-3dof->world-track-6dof
+		     deltas-list (first odometry)))
+		   (odometry-diff-cost
+		    (* 1
+		       ;;(/
+		       (reduce +
+			       (map (lambda (a b)
+				     (magnitude-squared
+				      (weighted-subtract-pose a b weights)))
+				    deltas-list
+				    initial-deltas)
+			       0)
+		       ;;(* 6 (length odometry)))
+		       ))
+		   (final-cost
+		    (+ odometry-diff-cost
+		       (reduce
+			+
+;;			(dtrace "foo "
+			(map (lambda (tube)
+			      (let* ((all-lines
+				      (raw-tube-with-score-and-pose-list-6dof->lines
+				       tube
+				       robot-poses-6dof)))
+			       (reduce
+				+
+				(map (lambda (line point)
+				      (reduce +
+					      (map (lambda (l)
+						    (point-line-squared-distance point l))
+						   line)
+					      0))
+				     all-lines
+				     points-list)
+				0)))
+			     raw-tubes-with-score)
+;;			);;for dtrace
+			0))))
+	     (when (= (modulo counter 100) 0)
+	      (dtrace "odometry-diff-cost " (primal* odometry-diff-cost))
+	      (dtrace "final-cost" (primal* final-cost)))
+	     (set! counter (+ counter 1))
+	     final-cost)))
+	(g (gradient-r f))
+	(opt-output
+	 (optimize-with-nlopt
+	  nlopt:ld-lbfgs 
+	  initial-guess
+	  (lambda (opt)
+	   (nlopt:set-min-objective opt
+				    (lambda (x g?) (vector (f x) (g x))))))))
+  (dtrace "final gradient " (g (x opt-output)))
+  (dtrace "magnitude of gradient " (magnitude (g (x opt-output))))
+  opt-output))
+
+(define (find-points-and-deltas-old odometry raw-tubes-with-score)
+ ;;OLD VERSION--before update to using 4 box points instead of 1
+ ;;also has weighting factors on odometry and point costs
  (let* ((num-points (length raw-tubes-with-score))
 	(counter 0)
 	(world-track-6dof (world-track-3dof->world-track-6dof odometry))
@@ -3903,6 +4009,7 @@
 	      raw-tubes-with-score))
 	(initial-guess (vector-append (merge-points initial-guess-points)
 				      (merge-deltas initial-deltas)))
+	(weights (vector 1 1 1 0.5 0.5 0.5)) ;;weights for weighted-subtract-pose
 	(f (lambda (x)
 	    (let* ((split-vector (split-giant-vector x num-points))
 		   (points-vector (first split-vector))
@@ -3915,30 +4022,33 @@
 		   (odometry-diff-cost
 		    (* 1
 		       (/ (reduce +
-				  (map (lambda (a b) (magnitude-squared
-						      (subtract-pose a b)))
+				  (map (lambda (a b)
+					(magnitude-squared
+					 (weighted-subtract-pose a b weights)))
 				       deltas-list
 				       initial-deltas)
 				  0)
 			  (* 6 (length odometry)))))
-		   (final-cost (+ odometry-diff-cost
-				  (reduce +
-					  (map (lambda (tube point len)
-						(let* ((lines
-							(first ;;b/c ->lines returns 4 corners
-							 (raw-tube-with-score-and-pose-list-6dof->lines
-							  tube
-							  robot-poses-6dof))))
-						 (/ (reduce +
-							    (map (lambda (l)
-								  (point-line-squared-distance point l))
-								 lines)
-							    0)
-						    len)))
-					       raw-tubes-with-score
-					       points-list
-					       tube-lengths)				  
-					  0))))
+		   (final-cost
+		    (+ odometry-diff-cost
+		       (reduce
+			+
+			(map (lambda (tube point len)
+			      (let* ((lines
+				      (first ;;b/c ->lines returns 4 corners
+				       (raw-tube-with-score-and-pose-list-6dof->lines
+					tube
+					robot-poses-6dof))))
+			       (/ (reduce +
+					  (map (lambda (l)
+						(point-line-squared-distance point l))
+					       lines)
+					  0)
+				  len)))
+			     raw-tubes-with-score
+			     points-list
+			     tube-lengths)				  
+			0))))
 	     (when (= (modulo counter 100) 0)
 	      (dtrace "odometry-diff-cost " (primal* odometry-diff-cost))
 	      (dtrace "final-cost" (primal* final-cost)))
@@ -3957,6 +4067,7 @@
   opt-output))
 
 (define (find-deltas-only odometry raw-tubes-with-score known-tube-points)
+ ;;THIS VERSION ONLY USES A SINGLE POINT PER BOX, NOT ALL 4 CORNERS
  (let* ((num-points (length raw-tubes-with-score))
 	(counter 0)
 	(world-track-6dof (world-track-3dof->world-track-6dof odometry))
@@ -3978,6 +4089,7 @@
 	(initial-guess ;; (vector-append (merge-points initial-guess-points)
 		       ;; 		      (merge-deltas initial-deltas))
 		       (merge-deltas initial-deltas))
+	(weights (vector 1 1 1 0.5 0.5 0.5)) ;;weights for weighted-subtract-pose
 	(f (lambda (x)
 	    (let* (;; (split-vector (split-giant-vector x num-points))
 		   ;; (points-vector (first split-vector))
@@ -3990,33 +4102,39 @@
 		     deltas-list (first odometry)))
 		   (raw-odometry-diff-cost
 		    (reduce +
-			    (map (lambda (a b) (magnitude-squared
-						(subtract-pose a b)))
+			    (map (lambda (a b)
+				  (magnitude-squared
+				   (weighted-subtract-pose a b weights)))
 				 deltas-list
 				 initial-deltas)
 			    0))
-		   (odometry-diff-cost (/ raw-odometry-diff-cost
-					  (* 6 (length odometry))))
+		   (odometry-diff-cost
+		    ;; (/ raw-odometry-diff-cost
+		    ;; 	  (* 6 (length odometry)))
+		    raw-odometry-diff-cost)
 		   (point-diff-cost
-		    (reduce +
-			    (map (lambda (tube point len)
-				  (let* ((lines
-					  (first ;;b/c ->lines returns 4 corners
-					   (raw-tube-with-score-and-pose-list-6dof->lines
-					    tube
-					    robot-poses-6dof))))
-				   (/ (reduce +
-					      (map (lambda (l)
-						    (point-line-squared-distance point l))
-						   lines)
-					      0)
-				      len))) 
-				 raw-tubes-with-score
-				 points-list
-				 tube-lengths)
-			    0))
-		    (final-cost (+ odometry-diff-cost
-				   point-diff-cost)))
+		    (reduce
+		     +
+		     (map (lambda (tube point len)
+			   (let* ((lines
+				   (first ;;b/c ->lines returns 4 corners
+				    (raw-tube-with-score-and-pose-list-6dof->lines
+				     tube
+				     robot-poses-6dof))))
+			   ;; (/
+			    (reduce +
+				    (map (lambda (l)
+					  (point-line-squared-distance point l))
+					 lines)
+				    0)
+			    ;;len)
+			    )) 
+			  raw-tubes-with-score
+			  points-list
+			  tube-lengths)
+		     0))
+		   (final-cost (+ odometry-diff-cost
+				  point-diff-cost)))
 	     (when (= (modulo counter 10) 0)
 	      (dtrace "iteration " counter)
 	      (dtrace "raw-odometry-diff-cost " (primal* raw-odometry-diff-cost))
@@ -4216,6 +4334,12 @@
  (let ((n (vector-length giant-vector)))
   (list (subvector giant-vector 0 (* 3 num-points))
 	(subvector giant-vector (* 3 num-points) n))))
+
+(define (split-giant-vector-four-points giant-vector num-points)
+ (let ((n (vector-length giant-vector)))
+  (list (subvector giant-vector 0 (* 3 (* 4 num-points)))
+	(subvector giant-vector (* 3 (* 4 num-points)) n))))
+
 
 (define (find-6dof-poses-list-from-deltas-vector-and-initial-pose deltas-vector
 								  initial-pose)

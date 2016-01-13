@@ -1,0 +1,30 @@
+  * *shell*              17875  Shell:run	  ~/codetection/
+.   notes.text          263014  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+  * *scheme*           2131086  Inferior Scheme:
+    codetection-test.s: 151813  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc
+    scheme-working-buf: 798067  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-8jan16.txt
+    optimization-test-1: 75094  Text		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/optimization-test-11jan16-15tubes.txt
+    optimization-test-: 102876  Text		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/optimization-test-11jan16-10tubes.txt
+    rendering-code.sc    71852  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/rendering-code.sc
+    rover-projection.sc  12629  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/rover-projection.sc
+    toollib-matlab.sc    12100  Scheme		  ~/darpa-collaboration/ideas/toollib-matlab.sc
+    optimization-test-: 130708  Text		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/optimization-test-11jan16-05tubes.txt
+    toollib-multi-proce: 11819  Scheme		  ~/darpa-collaboration/ideas/toollib-multi-process.sc
+  * *scratch*              720  Lisp Interaction
+    toollib-nlopt.sc     10510  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/imitate/tool/toollib-nlopt.sc
+    toollib-robot.sc     83430  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/imitate/tool/toollib-robot.sc
+    toollib-perspective: 13873  Scheme		  ~/imitate/tool/toollib-perspective-projection.sc
+    toollib-misc.sc|to: 113601  Scheme		  ~/imitate/tool/toollib-misc.sc
+    toollib-misc.sc|ide: 44479  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/ideas/toollib-misc.sc
+    learning.sc          66413  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/learning.sc
+  * *shell*<3>             278  Shell:run	  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/
+    toollib-codetection: 19140  Scheme		  ~/codetection/source/new-sentence-codetection/toollib-codetection.sc
+    open-files-8jan15.tx: 2435  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/open-files-8jan15.txt
+    idealib-stuff.sc    215317  Scheme		  ~/darpa-collaboration/ideas/idealib-stuff.sc
+    viterbi-new.sc        5949  Scheme		  ~/codetection/source/new-sentence-codetection/viterbi-new.sc
+    QobiScheme-AD.sc    295402  Scheme		  ~/QobiScheme/source/QobiScheme-AD.sc
+    track.sc             10803  Scheme		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/track.sc
+    junk.sc               1152  Scheme		  ~/codetection/source/new-sentence-codetection/junk.sc
+ %  toollib-perspective: 19422  Scheme		  /home/dpbarret/imitate/tool/toollib-perspective-projection.sc
+  * *shell*<2>             260  Shell:run	  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/
+  * *Messages*            3181  Fundamental
