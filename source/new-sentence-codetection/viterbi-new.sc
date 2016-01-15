@@ -142,7 +142,7 @@
 	(ltl (/ (- (x world-bottom-left) (x camera-world))
 		 (- (x top-left-pixel-world) (x camera-world))))
 	(world-top-left (v+ camera-world (k*v ltl dxyztl))))
-(dtrace "bottom-left bottom-tight top-left"
+(dtrace "bottom-left bottom-right top-left"
 	(list world-bottom-left world-bottom-right world-top-left))))
 
 

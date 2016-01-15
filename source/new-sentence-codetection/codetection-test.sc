@@ -8,7 +8,6 @@
 ;;for my-transform->parameters
 ;;(load "/home/sbroniko/imitate/tool/toollib-misc.sc");;can't load right, so copied into rover-projection.sc
 
-
 ;; (define-command
 ;;  (main (at-most-one
 ;; 	("video" video? (video-path "video-path" string-argument "")))
@@ -155,26 +154,74 @@
 		      frame-poses))))))))
 
 (define (get-poses-that-match-frames datapath)
- (let* ((cam-timing (read-camera-timing
+ (let* ((cam-timing (read-camera-timing-new
 		     (format #f "~a/camera_front.txt" datapath)))
 	(timing-file (if (file-exists? (format #f "~a/imu-log-with-estimates.txt"
 					       datapath))
 			 (format #f "~a/imu-log-with-estimates.txt" datapath)
 			 (format #f "~a/imu-log.txt" datapath)))
 	(poses-with-timing (read-robot-estimated-pose-from-log-file timing-file)))
+;;  (dtrace "length cam-timing" (length cam-timing))
+;;  (dtrace "length poses-with-timing" (length poses-with-timing))
   (let loop ((cam-timing cam-timing)
 	     (poses poses-with-timing)
 	     (previous-pose #f)
 	     (frame-poses '()))
    (if (or (null? poses) (null? cam-timing))
-       (reverse frame-poses) ;; done
+       (begin
+;;	(dtrace "length cam-timing" (length cam-timing))
+;;	(dtrace "length poses " (length poses))
+	(if (and (null? poses) (not (null? cam-timing)))
+	    (reverse (cons (second previous-pose) frame-poses))
+	    (reverse frame-poses))) ;; done
        (if previous-pose
 	   (if (< (abs (- (first previous-pose) (first cam-timing)))
 		  (abs (- (first (first poses)) (first cam-timing))))
 	       (loop (rest cam-timing)
 		     (rest poses)
 		     (first poses)
-		     (cons (second (first poses)) frame-poses))
+		     (cons (second previous-pose) frame-poses))
+	       (loop cam-timing
+		     (rest poses)
+		     (first poses)
+		     frame-poses))
+	   (loop cam-timing
+		 (rest poses)
+		 (first poses)
+		 frame-poses))))))
+
+(define (get-corrected-poses-that-match-frames datapath)
+ (let* ((cam-timing (read-camera-timing-new
+		     (format #f "~a/camera_front.txt" datapath)))
+	(timing-file (if (file-exists? (format #f "~a/imu-log-with-estimates.txt"
+					       datapath))
+			 (format #f "~a/imu-log-with-estimates.txt" datapath)
+			 (format #f "~a/imu-log.txt" datapath)))
+	(poses-with-timing
+	 (correct-theta-drift (read-robot-estimated-pose-from-log-file timing-file))))
+;;  (dtrace "length cam-timing" (length cam-timing))
+;;  (dtrace "length poses-with-timing" (length poses-with-timing))
+  (let loop ((cam-timing cam-timing)
+	     (poses poses-with-timing)
+	     (previous-pose #f)
+	     (frame-poses '()))
+   (if (or (null? poses) (null? cam-timing))  ;;done
+       (begin
+;;	(dtrace "length cam-timing" (length cam-timing))
+;;	(dtrace "length poses " (length poses))
+	(if (and (null? poses) (not (null? cam-timing)))
+	    (reverse (cons (second previous-pose) frame-poses))
+	    (reverse  frame-poses)))
+       (if previous-pose
+	   (if (< (abs (- (first previous-pose) (first cam-timing)))
+		  (abs (- (first (first poses)) (first cam-timing))))
+	       (begin
+;;		(dtrace "first cam-timing" (first cam-timing))
+;;		(dtrace "first poses" (first poses))
+		(loop (rest cam-timing)
+		      (rest poses)
+		      (first poses)
+		      (cons (second (first poses)) frame-poses)))
 	       (loop cam-timing
 		     (rest poses)
 		     (first poses)
@@ -3849,6 +3896,100 @@
 				      camera-offset-matrix camera-intrinsics))
     br-corners pose-list-6dof))))
 
+(define (raw-tube-with-score-and-pose-list->world-corners-list raw-tube-with-score
+							       pose-list) ;;(3dof)
+ (let* ((tube (if (< (length pose-list) (length (first raw-tube-with-score)))
+		  (sublist (first raw-tube-with-score) 0 (length pose-list))
+		  (first raw-tube-with-score)))
+	(camera-offset-matrix *camera-offset-matrix*) ;;PREDEFINED
+	(camera-intrinsics *camera-k-matrix*) ;;PREDEFINED
+	(height 0)) ;;ASSUMPTION FOR OBJECTS ON GROUND
+  (map (lambda (box pose)
+	(if box
+	    (box-vector-at-height-and-pose->world-corners box height pose
+							  camera-intrinsics
+							  camera-offset-matrix)
+	    #f)) ;;to keep #f for no-box frames
+       tube
+       pose-list)))
+
+(define (world-corners-list->world-xywh-list world-corners)
+ (map (lambda (l)
+       (if l
+	   (vector  (/ (+ (x (first l)) (x (second l))) 2);;world x
+	            (/ (+ (y (first l)) (y (second l))) 2);;world y
+	            (distance (subvector (first l) 0 2)
+			      (subvector (second l) 0 2));;world width
+	            (z (first l))) ;;world height
+	   #f)) world-corners))
+
+(define (world-xywh-list->world-mean-and-variance world-xywh)
+ (let* ((xvals (removeq #f (map (lambda (l) (if l (x l))) world-xywh)))
+	(yvals (removeq #f (map (lambda (l) (if l (y l))) world-xywh)))
+	(wvals (removeq #f (map (lambda (l) (if l (z l))) world-xywh)))
+	(hvals (removeq #f (map (lambda (l) (if l (vector-ref l 3))) world-xywh))))
+  (list (vector (list-mean xvals) (list-mean yvals)
+		(list-mean wvals) (list-mean hvals))
+	(vector (list-variance xvals) (list-variance yvals)
+		(list-variance wvals) (list-variance hvals)))))
+
+(define (find-world-means-and-variances path subdir)
+ (let* ((pose-list (get-corrected-poses-that-match-frames path))
+	(tubes-file (format #f "~a/~a/nms-tubes.sc" path subdir))
+	(tubes-list (read-object-from-file tubes-file)))
+  (map (lambda (tube)
+	(world-xywh-list->world-mean-and-variance
+	 (world-corners-list->world-xywh-list
+	  (raw-tube-with-score-and-pose-list->world-corners-list tube pose-list))))
+       tubes-list)))
+
+(define (find-and-save-world-means-and-variances-house-test)
+ (let* ((dir-list
+	 (system-output
+	  "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/floor*/"))
+	(subdir "20160105-rerun-test")
+	(outfile-name "world-means-and-variances.sc"))
+  (for-each (lambda (dir)
+	     (write-object-to-file
+	      (find-world-means-and-variances dir subdir)
+	      (format #f "~a/~a/~a" dir subdir outfile-name))
+	     (dtrace (format #f "saved ~a/~a/~a" dir subdir outfile-name) #f) )
+	    dir-list)))
+
+(define (filter-world-means-and-variances wmv-list)
+ (let* ((world-width-threshold 0.01) ;;1cm HARDCODED
+	(world-height-threshold 0.01) ;;1cm HARDCODED
+	;;add other thresholds (on variances??) here
+	)
+  (map (lambda (l)
+	(if (or ;;add variance conditions here
+	     (< (z (first l)) world-width-threshold)
+	     (< (vector-ref (first l) 3) world-height-threshold))
+	    #f
+	    l))  wmv-list)))
+
+(define (render-multiple-filtered-tubes path subdir)
+ (let* ((wmv-list (find-world-means-and-variances path subdir))
+	(filtered-wmv-list (filter-world-means-and-variances wmv-list))
+	(tubes-file (format #f "~a/~a/nms-tubes.sc" path subdir))
+	(tubes-list (read-object-from-file tubes-file))
+	(tubes-without-scores (map first tubes-list)))
+  ;;similar to render-one-tube, loop through video one time
+    ;;at each frame:
+       ;;map over tubes-without-scores and filtered-wmv-list
+         ;;if filtered-wmv-list for that tube is #f, do nothing
+         ;;else if tube at that frame is #f, do nothing
+         ;;else draw box at that frame in that tube
+       ;;save frame
+ #f))
+
+(define (render-unfiltered-tubes path subdir)
+ ;;similar to above, but doesn't filter tubes
+ #f)
+
+
+	     
+
 ;;------optimization stuff
 
 ;;will need to get rid of tubes with < 2 frames at some point (where?)
@@ -3900,7 +4041,29 @@
   (matlab "ylabel('World Y (m)')")
   (matlab "legend('odometry','optimized track')")
   (matlab "hold off")))
- 
+
+(define (correct-theta-drift poses-with-timing)
+ ;;this applies a correction for theta drift to the FULL odometry with timing
+ (let* ((initial-theta (z (second (first poses-with-timing))))
+	(still-track
+	 (remove-if-not
+	  (lambda (p) (and (= 0 (x (second p))) (= 0 (y (second p)))))
+	  (rest poses-with-timing)))
+	(simple-correction (/ (- (z (second (last still-track))) initial-theta)
+			      (length still-track)))
+	;;this correction just takes final delta and divides by number of stationary
+	;;poses--could also use a more thorough measure, like:
+	(theta-deltas (map (lambda (q) (- (z (second q)) initial-theta)) still-track))
+	(other-correction
+	 (list-mean (map-indexed (lambda (r i) (/ r (+ i 1))) theta-deltas))))
+  ;;(dtrace "simple-correction " simple-correction)
+  (map-indexed
+   (lambda (p i)
+    ;;(dtrace "i " i)
+    ;;(dtrace "theta " (z (second p)))
+    (list (first p) (v- (second p) (k*v i (vector 0 0 simple-correction)))))
+   poses-with-timing)))
+
 
 (define (find-points-and-deltas odometry raw-tubes-with-score)
  (let* ((num-points (length raw-tubes-with-score))

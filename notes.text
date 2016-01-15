@@ -5028,81 +5028,74 @@ choosing the parameters that RANSAC needs.
 --Started new run with {5,10,15} tubes with new 4-point optimization at ~1720.
   Can check results against plots from yesterday to see if they're any better.
 
+----------------git commit 4527bcb--------------
+
+14 Jan 16
+
+--5-tube run ran for ~6 minutes.  Results saved in
+  ./source/new-sentence-codetection/20160113-5-tubes.sc 
+
+--The other 2 runs (10, 15 tubes) finished within 30 minutes and had garbage
+  results (points inside camera).  Not sure it's useful to plot the tracks.
+
+--Wrote correct-theta-drift and get-corrected-poses-that-match-frames to attempt
+  to null out the drift in theta by looking at how theta changes during the
+  initial period of the track when the robot is sitting still.
+
+--Abandoning the idea of trying to find the points in 3D space.  Instead just
+  operate on the assumption of objects being on the ground.  Then can reuse old
+  code to find location for every box and compute mean location and variance
+  over a tube.  Idea is that on-the-ground objects will have low variance, while
+  not-on-the-ground objects will have higher variance.  Can also use the object
+  location projecting behind the camera or outside the floor plan boundaries if
+  necessary. 
+
+--Wrote box-vector-at-height-and-pose->world-corners to take vector from tube
+  along with height (always assumed 0) and pose to get world coordinates
+  (top-left and bottom-right, same as tube boxes).  Fn is in rover-projection.sc
+
+--In codetection-test.sc, wrote
+  raw-tube-with-score-and-pose-list->world-corners-list,
+  world-corners-list->world-xywh-list, and
+  world-xywh-list->world-mean-and-variance to go from a raw-tube-with-score to
+  world means and variances for x,y,w,h for that tube.
+
+--Wrote find-world-means-and-variances to map across all tubes in a run.
+
+--Noticed difference in thetas with paths found from get-paths... and
+   get-corrected-paths..., but not necessary to fix since the first frame-pose
+   is not necessarily the first actual pose, so the thetas WILL be different.
+
+--Fixed a couple of problems with differences in tube/pose/timing lengths in
+  raw-tube-with-score-and-pose-list->world-corners-list and
+  get-poses.../get-corrected-poses... 
+
+--Wrote find-and-save-world-means-and-variances-house-test and got results for
+  all 27 runs.
+
+--Wrote filter-world-means-and-variances to get rid of boxes that are < 1cm in
+  world width or height.  Can change that threshold, also should probably add
+  threshold for variances (what to set them at?)
+
+--Working on render-multiple-filtered-tubes.  Will have same general structure
+  as render-one-tube, but will go through filtered-wmvs and tubes at each frame
+  to render the appropriate boxes. **LOOK AT mapping first and rest on
+  tubes-without-scores.  Will also probably have to write
+  render-unfiltered-tubes to render all tubes for comparison (could get ugly
+  with a lot of tubes--maybe only 1 px thick for each)
+
+
+**3 questions from Jeff**
+1. Can we separate objects on the ground from those not on the ground with
+   reasonably low false positives and false negatives?
+2. What is the variance (distance for 1 std dev (sqrt var)) for objects on
+   ground?  (remember--can filter this)
+3. Are the world xy coordinates for the objects on the ground reasonable?
+
 
 TO DO's
 -------
 
---Constraints to enforce on box points during optimization: (**HOW EXACTLY DO I
-  ENCODE AND ENFORCE THESE??)
-  -coplanar -- how to compute?? **SEE BULLET ABOVE**
-  -rectangle
-  -perpendicular to camera axis
-  -axis aligned
-  -prior on width & height (size limits), bias against
-  -prior on world position
-    -not behind camera
-    -not outside floorplan
-
-**multiple points from same rectangle linearly dependent???
-**Is assuming a rectangle in image plane will be a rectangle in world plane
-  invalid??
-**When robot is viewing the same object from multiple angles, there is no
-  guarantee that the box corners will project to the same world point--that is
-  almost certainly not true
-**problem seems ill-posed-->how to fix it??
-
-**THOUGHT** Why not try running some sort of fast feature detector on JUST the
-  contents of the tube boxes??
-
-**correspondences between boxes no good-->points probably are not on object and
-  certainly don't correspond to same world point.
-**Jeff suggests limiting to objects that are on ground...how will this help?
-
---Think about adding more dtrace output to find-points-and-deltas (similar to
-  find-deltas-only)
-
---Compile find-points-and-deltas, find-points-from-lines, and find-deltas-only
-  into dsci.  Should be able to just copy the fns into toollib-codetection.sc
-  and then recompile dsci.  Compiler should complain if any functions called in
-  those are missing, then can copy those fns in as well.  Rinse and repeat.
-
---Need to write a visualizing function that takes the boxes and the odometry
-  output from the optimization and displays them on the images--will use this to
-  see whether the optimized box follows the input box in the image.  Should have
-  most of this already written, just need to reverse some operations.
-
---Need to make sure that the points that are optimized are well-distributed over
-  the image (top/bottom/left/right-->this will have to happen at the
-  proposal/tube generation stage to make sure there are enough proposals-->might
-  also be doable at the stage where we choose which tubes to use in the
-  optimization-->might have an optimizing set (much smaller than full tube set)
-  that covers the image quadrants, use this to optimize track, then use
-  optimized track and old find-points-from-lines to find the world points for
-  tubes that were not in the optimizing set.
-
-
-
-**THOUGHT: **WHAT ABOUT instead of dividing the reduce over
-  point-line-squared-distance by the length of the tube, try instead dividing
-  the outside reduce by the total of the tube lengths--not the same thing!
-  Would this allow longer tubes to have more influence while still scaling to
-  the total number of frames with boxes?
-
-**Thought: find average point-line distance across tubes?  Is the path
-  optimization getting overwhelmed by the tubes?
-
-**Thought: could some visual odometry/visual SLAM method help us correct the IMU
-  odometry error?
-
-
-***THOUGHT--need to think more about what Jeff said in meeting on 7Jan about
-   treating the position (error?) as a low-order polynomial function and then
-   using the optimization to estimate the parameters of this function-->how do
-   we do this??
-
-**QUESTION: With new method of estimating 6DOF parameters for robot motion, do I
-  need a new method of computing position that takes into account ALL of
-  (x,y,z,theta,phi,psi)?? ***DONE****
 
 **THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
 
@@ -5171,6 +5164,83 @@ The screenlog.n.cleaned file will now contain a hardcopy of the cat output and w
       --What happens if number of post-NMS tubes is less than num-tubes?  Can we
       deal with that?
 
+
+
+***OLD NOTES from optimization of box xyz locations and path points (abandoned)
+
+*********PROBLEMS!------------------
+**multiple points from same rectangle linearly dependent???
+**Is assuming a rectangle in image plane will be a rectangle in world plane
+  invalid??
+**When robot is viewing the same object from multiple angles, there is no
+  guarantee that the box corners will project to the same world point--that is
+  almost certainly not true
+**problem seems ill-posed-->how to fix it??
+
+**THOUGHT** Why not try running some sort of fast feature detector on JUST the
+  contents of the tube boxes??
+
+**correspondences between boxes no good-->points probably are not on object and
+  certainly don't correspond to same world point.
+**Jeff suggests limiting to objects that are on ground...how will this help?
+********-----------------
+
+--Constraints to enforce on box points during optimization: (**HOW EXACTLY DO I
+  ENCODE AND ENFORCE THESE??)
+  -coplanar -- how to compute?? 
+   Thinking about coplanarity constraint and how to encode it into the model.
+   Can write a function that takes 4 points and computes
+   (x3-x1)·[(x2-x1)x(x4-x3)].  If that = 0, then the 4 points are coplanar.  But
+   if that is nonzero, what does the value represent?  Could be simpler to take
+   the 4 points, measure the 4 distances from each point to the plane made from
+   the other 3, and then square each and find the mean.
+  -rectangle
+  -perpendicular to camera axis
+  -axis aligned
+  -prior on width & height (size limits), bias against
+  -prior on world position
+    -not behind camera
+    -not outside floorplan
+
+--Think about adding more dtrace output to find-points-and-deltas (similar to
+  find-deltas-only)
+
+--Compile find-points-and-deltas, find-points-from-lines, and find-deltas-only
+  into dsci.  Should be able to just copy the fns into toollib-codetection.sc
+  and then recompile dsci.  Compiler should complain if any functions called in
+  those are missing, then can copy those fns in as well.  Rinse and repeat.
+
+--Need to write a visualizing function that takes the boxes and the odometry
+  output from the optimization and displays them on the images--will use this to
+  see whether the optimized box follows the input box in the image.  Should have
+  most of this already written, just need to reverse some operations.
+
+--Need to make sure that the points that are optimized are well-distributed over
+  the image (top/bottom/left/right-->this will have to happen at the
+  proposal/tube generation stage to make sure there are enough proposals-->might
+  also be doable at the stage where we choose which tubes to use in the
+  optimization-->might have an optimizing set (much smaller than full tube set)
+  that covers the image quadrants, use this to optimize track, then use
+  optimized track and old find-points-from-lines to find the world points for
+  tubes that were not in the optimizing set.
+
+**THOUGHT: **WHAT ABOUT instead of dividing the reduce over
+  point-line-squared-distance by the length of the tube, try instead dividing
+  the outside reduce by the total of the tube lengths--not the same thing!
+  Would this allow longer tubes to have more influence while still scaling to
+  the total number of frames with boxes?
+
+**Thought: find average point-line distance across tubes?  Is the path
+  optimization getting overwhelmed by the tubes?
+
+**Thought: could some visual odometry/visual SLAM method help us correct the IMU
+  odometry error?
+
+***THOUGHT--need to think more about what Jeff said in meeting on 7Jan about
+   treating the position (error?) as a low-order polynomial function and then
+   using the optimization to estimate the parameters of this function-->how do
+   we do this??
+***END OLD NOTES***
 
 **OLD NOTES FROM BEFORE XMAS**
        --NEW PLAN:
