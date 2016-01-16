@@ -5084,7 +5084,6 @@ choosing the parameters that RANSAC needs.
   render-unfiltered-tubes to render all tubes for comparison (could get ugly
   with a lot of tubes--maybe only 1 px thick for each)
 
-
 **3 questions from Jeff**
 1. Can we separate objects on the ground from those not on the ground with
    reasonably low false positives and false negatives?
@@ -5092,10 +5091,140 @@ choosing the parameters that RANSAC needs.
    ground?  (remember--can filter this)
 3. Are the world xy coordinates for the objects on the ground reasonable?
 
+----------------git commit b968917--------------
+
+15 Jan 16
+
+--Wrote render-unfiltered-tubes to draw all boxes from all tubes in cyan, 1px
+  wide.
+
+--Wrote render-multiple-filtered-tubes and render-filtered-tubes-house-test.
+  All ran fine, ~40 min to do all 27 videos.
+
+--Based on feedback from Jeff, changing filter-world-means-and-variances to not
+  worry about world width and height, instead use variance.
+
+--Made changes to get-medianflow-tube... to make sure that bogus boxes #(1 1 1
+  1) don't get tracked.
+
+--Made changes to get_proposals_edgeboxes.m to remove any proposals that are <
+  10 px wide or tall.
+
+--Wrote filter-tubes-by-length that gives a list of #t/#f based on tube
+  length. Currently have thresh set at > 5.
+
+--In talking with Dan, realized that having an absolute threshold on variance
+  might not be a good idea.  Variance of an object's position should be lower
+  when the variance of the robot's position is lower.
+
+--Implemented world-xywhs-and-poses->world-mean-variance-robot to add a third
+  vector to the old world-mean-and-variance output.  Third vector is (rxm rym
+  rpv bpv) where (rxm,rym) is the mean robot position, rpv is the variance of
+  the distance between each robot position and the mean robot position, and bpv
+  is the variance of the distance between each box position and the mean box
+  position.  Then using the ratio of bpv/rpv to figure out if a box is
+  good-->the idea is that if a box is a good box on the ground, its position
+  variance will be lower than position variance of the robot over the frames of
+  that tube.  Currently have the ratio set in
+  filter-world-means-variances-robots that if ratio > 0.5, box is bad.  Trying
+  this alone first.
+
+--Looking at a few of the filtered outputs, seeing that I might want to raise
+  the ratio to let more boxes through--or may want to generate more proposals to
+  generate more tubes (lower the proposal or tube nms threshold).  Getting rid
+  of ~90% of unfiltered proposals.  Eliminate almost all above-ground boxes.  A
+  few still slip through though.
+
+--Email to group:
+	Just finished revamping how my filtering works.
+
+	For each tube, in addition to computing the mean and variance of world
+	(x,y,w,h) for the possible object represented by that tube, I also
+	compute the mean world xy position of the robot over the poses that
+	comprise that tube.  I then compute the distance between each robot pose
+	and the mean robot position, then take the variance of that set, call
+	this RPV.  I also compute the distance between the world location of
+	each proposal box in the tube and the mean position for that tube, then
+	take the variance of that set, call this BPV.
+
+	I then filter on 2 things only:
+
+	  1. Reject tubes that are 5 or fewer frames long, since the variances
+	  here can be artificially low due to few samples.
+
+	  2.  I take the ratio of BPV to RPV.  The thinking is that if a tube is
+	  on the ground on an object, it will have a significantly lower
+	  position variance than the position variance of the robot over the
+	  same time.  I currently have the threshold for BPV/RPV set at 0.5
+	  (i.e., ratios >= 0.5 get rejected).
+
+
+        I do no filtering as I had done before, neither on variance of world
+	x,y,w,h for each tube, nor on the mean world width or height.
+
+	You can see from the videos that ~85-90% of the unfiltered boxes are
+	getting rejected by this new filter.  A few above-the-ground boxes make
+	it through, but most of them do not.  The few that do make it through
+	all seem to have a negative world height (as expected--represents back
+	projection to a location behind the camera), so I could filter on that
+	if we can find a principled reason to do so.
+
+	My gut reaction is that this filtering is pretty good.  There are a few
+	places I noticed where I thought there should have been a tube on a
+	certain object when there wasn't, but when I went back to the original
+	unfiltered tubes video, I saw that there usually was either no tube
+	there or the tube on that object wasn't fully on the ground, and thus
+	got filtered.
+
+	Dan and I watched a few videos together and discussed that it might be
+	helpful to let more boxes through (to solve the issue above) by doing
+	one or more of the following: raising the BPV/RPV ratio threshold,
+	raising the IoU thresholds for proposal and tube NMS, or generating more
+	tubes/proposals per video.
+
+	Videos are in:
+	/net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/FOO/20160105-rerun-test/output-{filtered,unfiltered}-*.avi
+	Where FOO is one of
+	{floorplan-0-sentence-0
+	 floorplan-0-sentence-1
+	 floorplan-0-sentence-2
+	 floorplan-0-sentence-3
+ 	 floorplan-0-sentence-4
+ 	 floorplan-0-sentence-5
+	 floorplan-0-sentence-6
+	 floorplan-0-sentence-7
+	 floorplan-1-sentence-0
+	 floorplan-1-sentence-3
+	 floorplan-1-sentence-4
+ 	 floorplan-1-sentence-5
+	 floorplan-2-sentence-0
+	 floorplan-2-sentence-1
+	 floorplan-2-sentence-2
+	 floorplan-2-sentence-3
+	 floorplan-2-sentence-4
+	 floorplan-3-sentence-1
+	 floorplan-3-sentence-2
+	 floorplan-3-sentence-4
+	 floorplan-4-sentence-1
+	 floorplan-4-sentence-3
+	 floorplan-4-sentence-5
+	 floorplan-5-sentence-1
+	 floorplan-5-sentence-2
+	 floorplan-5-sentence-3
+	 floorplan-5-sentence-4}
+	Note that the number after filtered or unfiltered in the file name is
+	the number of tubes rendered in that video.  So by comparing the
+	filtered and unfiltered numbers, you can make a quick estimate of the
+	percentage of tubes filtered out.
+
+
 
 TO DO's
 -------
 
+ * compute distance of 1 std dev for (x,y,w,h) for boxes on the ground
+ * look at boxes accepted vs. boxes rejected--reasonable?
+ * are xy coordinates reasonable?
 
 **THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
 

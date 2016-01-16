@@ -12,6 +12,11 @@ function bbs = get_proposals_edgeboxes(frames,num_proposals)
         %fprintf(fh,'start iteration %d\n',t);
         img = frames(:,:,:,t);
         temp_boxes = edgeBoxes(img,model); %proposals
+        %remove proposals that are < 10px wide or tall
+        cond1 = temp_boxes(:,3) < 10;
+        temp_boxes(cond1,:) = [];
+        cond2 = temp_boxes(:,4) < 10;
+        temp_boxes(cond2,:) = [];
         [numrows,~] = size(temp_boxes);
         tempbbs = zeros(num_proposals,5);
         if (numrows >= num_proposals)
