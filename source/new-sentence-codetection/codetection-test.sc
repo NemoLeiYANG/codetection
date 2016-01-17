@@ -3969,6 +3969,18 @@
 	(vector (list-variance xvals) (list-variance yvals)
 		(list-variance wvals) (list-variance hvals)))))
 
+(define (world-xywh-list->world-mean-and-distances world-xywh)
+ (let* ((xvals (removeq #f (map (lambda (l) (if l (x l))) world-xywh)))
+	(xm (list-mean xvals))
+	(yvals (removeq #f (map (lambda (l) (if l (y l))) world-xywh)))
+	(ym (list-mean yvals))
+	(box-dist 
+	 (map (lambda (a b) (distance (vector a b) (vector xm ym))) xvals yvals)))
+  (list xm ym box-dist)))
+
+
+
+	
 (define (world-xywhs-and-poses->world-mean-variance-robot world-xywh
 							  pose-list)
  ;;output should be (#(xm ym wm hm) #(xv yv wv hv) #(rxm rym rpv bpv))
@@ -4104,6 +4116,220 @@
 (define (filter-tubes-by-length tubes-without-scores length-thresh)
  (map (lambda (t) (if (> (length (removeq #f t)) length-thresh) #t #f))
       tubes-without-scores))
+
+(define (find-abc-and-filter path subdir)
+ (let* ((wmvr (read-object-from-file
+	       (format #f "~a/~a/world-means-variances-robots.sc" path subdir)))
+	(tubes-no-scores (map first (read-object-from-file
+				     (format #f "~a/~a/nms-tubes.sc" path subdir))))
+	(A (length wmvr))
+	(length-thresh 5)
+	(length-filter (filter-tubes-by-length tubes-no-scores length-thresh))
+	(summed-variances
+	 (map (lambda (l) (+ (x (second l)) (y (second l)))) wmvr))
+	(var-thresh 0.25)
+	(var-length-filter
+	 (map (lambda (v l) (if (and (< v var-thresh) l)
+				v
+				#f))
+	      summed-variances
+	      length-filter))
+	(B (length (removeq #f var-length-filter)))
+	(C (list-mean (removeq #f var-length-filter))))
+  (list (vector A (vector B C))
+	var-length-filter)))
+
+(define (find-def-and-filter path subdir)
+ (let* ((wmvr (read-object-from-file
+	       (format #f "~a/~a/world-means-variances-robots.sc" path subdir)))
+	(tubes-with-scores (read-object-from-file
+			    (format #f "~a/~a/nms-tubes.sc" path subdir)))
+	(tubes-no-scores (map first tubes-with-scores))
+	(length-thresh 5)
+	(length-filter (filter-tubes-by-length tubes-no-scores length-thresh))
+	(pose-list (get-corrected-poses-that-match-frames path))
+	(world-xywh-lists
+	 (map (lambda (t)
+	       (world-corners-list->world-xywh-list
+		(raw-tube-with-score-and-pose-list->world-corners-list t pose-list)))
+	      tubes-with-scores))
+	(distance-lists
+	 (map third
+	      (map (lambda (l)
+		    (world-xywh-list->world-mean-and-distances l))
+		   world-xywh-lists)))
+	(distance-means
+	 (map (lambda (l) (list-mean l)) distance-lists))
+	(distance-thresh 0.50) ;;50cm
+	(first-distance-filter
+	 (map (lambda (l)
+	       (map (lambda (d) (if (< d distance-thresh) d #f)) l))
+	      distance-lists))
+	(final-distance-filter
+	 (map (lambda (l) (if (= (length l) (length (removeq #f l)))
+			      (list-mean l)
+			      #f))
+	      first-distance-filter))
+	(output-filter
+	 (map (lambda (l1 l2) (if (and l1 l2) l2 #f))
+	      length-filter final-distance-filter))
+	(D (length (removeq #f output-filter)))
+	(E (list-mean
+	    (removeq #f (map (lambda (f d) (if f d #f))
+			     output-filter distance-means))))
+	(F  (list-variance
+	    (removeq #f (map (lambda (f d) (if f d #f))
+			     output-filter distance-means)))))
+  (list (vector (vector D E F))
+  	output-filter)))
+
+(define (find-abcdef path subdir)
+ (let* ((abc (first (find-abc-and-filter path subdir)))
+	(def (first (find-def-and-filter path subdir))))
+  (vector-append abc def)))
+
+(define (render-b-tubes path subdir)
+ (let* ((render-filter (second (find-abc-and-filter path subdir)))
+	(num-tubes (length (removeq #f render-filter)))
+	(outfile-name (format #f "~a/~a/output-B-~a-tubes.avi" path subdir
+			      (number->padded-string-of-length num-tubes 4)))
+	(tubes-file (format #f "~a/~a/nms-tubes.sc" path subdir))
+	(tubes-list (read-object-from-file tubes-file))
+	(tubes-without-scores (map first tubes-list))
+	(video-pathname (format #f "~a/video_front.avi" path))
+	(temp-path (format #f "~a/~a/tmp" path subdir))
+	(fps (third (video-info (load-darpa-video video-pathname))))
+	(frames (video->frames 1 video-pathname))
+	(color-cyan (vector 0 255 255))
+	(color-blue (vector 0 0 255))
+	(wmvr (read-object-from-file
+	       (format #f "~a/~a/world-means-variances-robots.sc" path subdir))))
+  (rm temp-path)
+  (rm outfile-name)
+  (mkdir-p temp-path)
+  (let loop ((images frames)
+	     (boxes-to-draw (map first tubes-without-scores))
+	     (remaining-boxes (map rest tubes-without-scores))
+	     (n 0))
+   (if (or (null? images) (null? boxes-to-draw)) 
+       #f ;;done
+       (let ((image (first images)))
+	(map (lambda (b f g)
+	      ;;this does the drawing of boxes
+	      (if (and b f g) 
+		  (let* ((x-val (x b))
+			 (y-val (y b))
+			 (w-val (- (z b) x-val))
+			 (h-val (- (vector-ref b 3) y-val))
+			 (world-means (first f))
+			 (w-x (x world-means))
+			 (w-y (y world-means))
+			 (w-var g))
+		   (imlib:draw-rectangle image x-val y-val w-val h-val color-blue 3)
+		   (imlib:text-draw2 image x-val (vector-ref b 3)
+		   		     (format #f "x:~a y:~a var:~a"
+					     (number->string-with-n-decimal-places
+					      w-x 2)
+					     (number->string-with-n-decimal-places
+					      w-y 2)
+					     (number->string-with-n-decimal-places
+					      w-var 2))
+				     color-cyan;;color-blue
+				     10))))
+	     boxes-to-draw
+	     wmvr
+	     render-filter)
+	(imlib:save image (format #f "~a/img-~a.png" temp-path
+				  (number->padded-string-of-length n 5)))
+	(imlib:free-image-and-decache image)
+	(loop (rest images)
+	      ;;boxes-to-draw
+	      (if (null? (first remaining-boxes))
+		  '()
+		  (map first remaining-boxes))
+	      ;;remaining-boxes
+	      (if (null? (first remaining-boxes))
+		  '()
+		  (map rest remaining-boxes))
+	      (+ n 1)))))
+  (system (format #f
+		  "ffmpeg -loglevel 0 -framerate ~a -i ~a/img-0%04d.png -b 4096k -r ~a ~a >/dev/null 2>&1"
+		  fps temp-path fps outfile-name))
+  (display (format #f "saved ~a" outfile-name))
+  (newline)
+  (rm temp-path)))
+
+(define (render-d-tubes path subdir)
+ (let* ((render-filter (second (find-def-and-filter path subdir)))
+	(num-tubes (length (removeq #f render-filter)))
+	(outfile-name (format #f "~a/~a/output-D-~a-tubes.avi" path subdir
+			      (number->padded-string-of-length num-tubes 4)))
+	(tubes-file (format #f "~a/~a/nms-tubes.sc" path subdir))
+	(tubes-list (read-object-from-file tubes-file))
+	(tubes-without-scores (map first tubes-list))
+	(video-pathname (format #f "~a/video_front.avi" path))
+	(temp-path (format #f "~a/~a/tmp" path subdir))
+	(fps (third (video-info (load-darpa-video video-pathname))))
+	(frames (video->frames 1 video-pathname))
+	(color-cyan (vector 0 255 255))
+	(color-blue (vector 0 0 255))
+	(wmvr (read-object-from-file
+	       (format #f "~a/~a/world-means-variances-robots.sc" path subdir))))
+  (rm temp-path)
+  (rm outfile-name)
+  (mkdir-p temp-path)
+  (let loop ((images frames)
+	     (boxes-to-draw (map first tubes-without-scores))
+	     (remaining-boxes (map rest tubes-without-scores))
+	     (n 0))
+   (if (or (null? images) (null? boxes-to-draw)) 
+       #f ;;done
+       (let ((image (first images)))
+	(map (lambda (b f g)
+	      ;;this does the drawing of boxes
+	      (if (and b f g) 
+		  (let* ((x-val (x b))
+			 (y-val (y b))
+			 (w-val (- (z b) x-val))
+			 (h-val (- (vector-ref b 3) y-val))
+			 (world-means (first f))
+			 (w-x (x world-means))
+			 (w-y (y world-means))
+			 (w-var g))
+		   (imlib:draw-rectangle image x-val y-val w-val h-val color-blue 3)
+		   (imlib:text-draw2 image x-val (vector-ref b 3)
+		   		     (format #f "x:~a y:~a d-mean:~a"
+					     (number->string-with-n-decimal-places
+					      w-x 2)
+					     (number->string-with-n-decimal-places
+					      w-y 2)
+					     (number->string-with-n-decimal-places
+					      w-var 2))
+				     color-cyan;;color-blue
+				     10))))
+	     boxes-to-draw
+	     wmvr
+	     render-filter)
+	(imlib:save image (format #f "~a/img-~a.png" temp-path
+				  (number->padded-string-of-length n 5)))
+	(imlib:free-image-and-decache image)
+	(loop (rest images)
+	      ;;boxes-to-draw
+	      (if (null? (first remaining-boxes))
+		  '()
+		  (map first remaining-boxes))
+	      ;;remaining-boxes
+	      (if (null? (first remaining-boxes))
+		  '()
+		  (map rest remaining-boxes))
+	      (+ n 1)))))
+  (system (format #f
+		  "ffmpeg -loglevel 0 -framerate ~a -i ~a/img-0%04d.png -b 4096k -r ~a ~a >/dev/null 2>&1"
+		  fps temp-path fps outfile-name))
+  (display (format #f "saved ~a" outfile-name))
+  (newline)
+  (rm temp-path)))
+  
   
 (define (render-multiple-filtered-tubes path subdir)
  (let* ((wmv-list ;;(find-world-means-and-variances path subdir))
@@ -4266,7 +4492,20 @@
 	     (render-unfiltered-tubes dir subdir)
 	     (render-multiple-filtered-tubes dir subdir))
 	    dir-list)))
-	     
+
+(define (render-b-d-tubes-house-test)
+ (let* ((dir-list
+	 (system-output
+	  "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/floor*"))
+	(subdir "20160105-rerun-test"))
+  (for-each (lambda (dir)
+	     (render-b-tubes dir subdir)
+	     (render-d-tubes dir subdir)
+	     (display
+	      (format #f "rendered B and D tubes for ~a/~a" dir subdir))
+	     (newline))
+	    dir-list)))
+
 
 ;;------optimization stuff
 

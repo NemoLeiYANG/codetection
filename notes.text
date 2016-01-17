@@ -5217,6 +5217,136 @@ choosing the parameters that RANSAC needs.
 	filtered and unfiltered numbers, you can make a quick estimate of the
 	percentage of tubes filtered out.
 
+----------------git commit f71724e--------------
+
+17 Jan 16
+
+--Email from Jeff:
+   On Sat, Jan 16, 2016 at 4:23 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
+   > A ratio of 0.5 does not constitute a significantly lower variance. With that
+   > ratio, your model allows an error in world-position estimates of objects as
+   > large as 2m if the robot travels 4m. That is untenable. We need object
+   > position estimates within about 50cm. And the robot is naturally going to
+   > travel a few meters at a time.
+   >
+   > Your model does not make sense. I understand your motive that low variance for
+   > short tubes would result from lack of measurement. But the whole idea that
+   > a tube corresponds to a single stationary object should imply that the variance
+   > in measurement of its position should not be dependent on robot motion or the
+   > length of the tube. It should be dependent on the noise in the process.
+   >
+   > But separate from this
+   >
+   >  1. There is no need for a tight filter to filter out tubes. Neither tubes
+   >     that are flawed in some way nor tubes that aren't on the ground. You are
+   >     never going to pair down the set of tubes in an accurate fashion with an
+   >     simple filter like the one that you are using. All we really need to know
+   >     at this point is whether we get a good position estimate. The whole reason
+   >     for computing the variance is that high variance, for whatever reason,
+   >     even if you excuse it due to high robot motion, means that you simply
+   >     don't know what the world position is. And such a tube can't be
+   >     used. Because we need an accurate world position to implement the
+   >     sentential semantics. If the variance is high, you know your position
+   >     estimate is unreliable. But if the variance is low, you don't know that
+   >     your position estimate is reliable. For that, you need to compare it to
+   >     ground truth. At this point you haven't answered the question of whether
+   >     your position estimates are reliable. And your filtering process doesn't
+   >     help answer that question. So we are making no progress towards
+   >     constructing the graphical model.
+   >
+   >  2. No matter whether you filter tubes, how you filter tubes, how good that
+   >     process is, and how many are left, you still will never reduce it down to
+   >     one tube that is always correct. So you are still going to need a
+   >     graphical model. Haonan's work shows that a graphical model can reliably
+   >     select the single correct tube from a set of hundreds of such. So unless
+   >     Haonan's experience doesn't apply to our problem, there is no merit in
+   >     trying to filter a few tubes out of a set of 25.
+   >
+   > In short:
+   >
+   >  a. Tell me the variance on tubes. Unless it is generally less than about
+   >     50cm, our position estimates won't allow us to construct a reliable
+   >     graphical model.
+   >  b. Tell me how accurate the tube positions are. Unless it is generally
+   >     correct to within about 50cm, we also won't be able to construct a
+   >     reliable graphical model.
+   >  c. If we do get position estimates that satisfy (a) and (b), the most
+   >     important thing to do is construct the graphical model. Don't waste your
+   >     time with filters unless it becomes necessary to solve the graphical model.
+   >
+   >     Jeff (http://engineering.purdue.edu/~qobi)
+
+--Wrote find-abc-and-filter, world-xywh-list->world-mean-and-distances,
+  find-def-and-filter, find-abcdef, render-b-tubes, render-d-tubes, and
+  render-b-d-tubes-house-test to compute all the data mentioned in my response
+  to Jeff below.
+
+--My response to Jeff: 
+  On Sun, Jan 17, 2016 at 4:44 PM, Scott Bronikowski <sbroniko@purdue.edu> wrote:
+  > Understand all.  In response to your questions:
+  >
+  >> In short:
+  >>
+  >>  a. Tell me the variance on tubes. Unless it is generally less than about
+  >>     50cm, our position estimates won't allow us to construct a reliable
+  >>     graphical model.
+  >
+  > I can give you the variance in world x, y, width, and height for every
+  > tube (~300-600 per video in the set of 27 videos from my house), but I
+  > don't know how much that will really tell us.  We know there are going
+  > to be tubes that are garbage, so finding the mean values for these
+  > variances will also likely not tell us much.
+  >
+  > In order to make some sense of all this data, I'm giving you the following:
+  > For each video in the set:
+  >
+  > #(A #(B C) #(D E F))
+  >
+  > Where:
+  >
+  >   A = total number of raw tubes generated for that video
+  >
+  >   B = number of tubes that meet the following two criteria:
+  >        1. Tube length > 5 frames
+  >        2. Sum of the variance in the world x and world y are < 0.25
+  >            (since the variance is already a squared distance quantity,
+  >             var-x + var-y < 0.25 should represent a 1-sigma radius of 50cm)
+  >      This should represent the set of tubes that are potentially useful to us.
+  >
+  >   C = The mean of the summed variances (var-x + var-y) of the tubes in B
+  >
+  >   As a check on B and C, I also compute the following:
+  >
+  >   D = number of tubes that meet the following criteria:
+  >        1. Tube length > 5 frames
+  >        2. All frames in the tube have a distance from the mean location
+  >           of the tube < 50 cm.
+  >    This set should be smaller than B, since D requires all boxes to be
+  >    within 50cm
+  >
+  >   E = For each tube in D, take the mean of the distances computed
+  >         for D.2, then compute the mean for all tubes in D
+  >
+  >   F = For each tube in D, take the variance of the distances computed
+  >         for D.2, then compute the mean for all tubes in D
+  >
+  > This data is in the attached floorplan-tube-data.sc
+  >
+  >>  b. Tell me how accurate the tube positions are. Unless it is generally
+  >>     correct to within about 50cm, we also won't be able to construct a
+  >>     reliable graphical model.
+  >
+  > For this I need to watch each video, since 1) I don't have ground
+  > truth measurements to every possible object in my house and 2) without
+  > looking at the tube, I can't tell if the tube is on object.
+  >
+  > I'm rendering the B and D sets for each video now.  I've only looked
+  > at the first few, but from what I can see, the tubes that are on
+  > objects located on the ground plane have a reasonably accurate world
+  > location, but the tubes that are on objects above the ground plane do
+  > not.  I will look more closely at the tubes once the videos finish
+  > rendering.
+
 
 
 TO DO's
