@@ -1,0 +1,10 @@
+first 
+    run ./setup.sh in codetection root directory
+
+then
+    darpa-wrap ./codetection -videos videos-house-test.sc complete -with-sentence
+
+with randomize turned off (default), the output score should be 
+"MAP with Belief Propagation -15.9923"
+
+with the output video is in /tmp/buffer/tracked.mp4

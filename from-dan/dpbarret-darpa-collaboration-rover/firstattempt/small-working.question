@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuestionForm xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionForm.xsd">
+  <Overview>
+    <Text> $video Determine the maximum number of simultaneously visible people and horses in this video.</Text>
+    <Application>
+      <Flash>
+	<FlashMovieURL>
+	http://upplysingaoflun.ecn.purdue.edu/~dpbarret/Unforgiven-6-000516-000534.swf
+	</FlashMovieURL>
+	<Width> 300 </Width>
+	<Height> 300 </Height>
+      </Flash>
+    </Application>
+  </Overview> 
+  <Question>
+    <QuestionIdentifier>video1people</QuestionIdentifier>
+    <QuestionContent>
+      <Text> What is the maximum number of people visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question> 
+</QuestionForm>

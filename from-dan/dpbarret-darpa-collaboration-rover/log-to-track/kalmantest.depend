@@ -1,0 +1,1103 @@
+# depslib dependency file v1.0
+1296243657 source:c:\c_files\477\code\kalmantest\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+
+1296418838 source:c:\c_files\477\code\kalmantest\kalmantestv1.2 (added acceleration)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+
+1296782100 source:c:\c_files\477\code\kalmantest\kalmantestv1.3 (different update rates)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1297454445 source:c:\c_files\477\code\kalmantest\kalmantestv1.4 (added control system)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296952626 source:c:\c_files\477\code\kalmantest\kalmantestv1.4 (added control system)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296952626 c:\c_files\477\code\kalmantest\kalmantestv1.4 (added control system)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296952626 source:c:\c_files\477\code\kalmantest\kalmantestv1.5 (added obstacle detection)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296952626 c:\c_files\477\code\kalmantest\kalmantestv1.5 (added obstacle detection)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1297470628 source:c:\c_files\477\code\kalmantest\kalmantestv1.5 (added obstacle detection)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296952626 source:c:\c_files\477\code\kalmantest\kalmantestv1.6 (integrating with d lite)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296952626 c:\c_files\477\code\kalmantest\kalmantestv1.6 (integrating with d lite)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1297581831 source:c:\c_files\477\code\kalmantest\kalmantestv1.6 (integrating with d lite)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+
+1194299648 source:c:\c_files\477\code\kalmantest\kalmantestv1.6 (integrating with d lite)\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1194299656 c:\c_files\477\code\kalmantest\kalmantestv1.6 (integrating with d lite)\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1296952626 source:c:\c_files\477\code\kalmantest\kalmantestv1.7 (using googleearth image)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296952626 c:\c_files\477\code\kalmantest\kalmantestv1.7 (using googleearth image)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1194299648 source:c:\c_files\477\code\kalmantest\kalmantestv1.7 (using googleearth image)\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1194299656 c:\c_files\477\code\kalmantest\kalmantestv1.7 (using googleearth image)\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1297731459 source:c:\c_files\477\code\kalmantest\kalmantestv1.7 (using googleearth image)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+
+1290794946 c:\c_files\477\code\kalmantest\kalmantestv1.7 (using googleearth image)\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1296952626 source:c:\c_files\477\code\kalmantest\kalmantestv1.8 (improving control system)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296952626 c:\c_files\477\code\kalmantest\kalmantestv1.8 (improving control system)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1297832544 source:c:\c_files\477\code\kalmantest\kalmantestv1.8 (improving control system)\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1297832658 c:\c_files\477\code\kalmantest\kalmantestv1.8 (improving control system)\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1297832100 source:c:\c_files\477\code\kalmantest\kalmantestv1.8 (improving control system)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+
+1290794946 c:\c_files\477\code\kalmantest\kalmantestv1.8 (improving control system)\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1296952626 source:c:\c_files\477\code\kalmantest\kalmantestv1.9 (using real gps data)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296952626 c:\c_files\477\code\kalmantest\kalmantestv1.9 (using real gps data)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1297832544 source:c:\c_files\477\code\kalmantest\kalmantestv1.9 (using real gps data)\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1297832658 c:\c_files\477\code\kalmantest\kalmantestv1.9 (using real gps data)\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1297636844 source:c:\c_files\477\code\kalmantest\kalmantestv1.9 (using real gps data)\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1297637146 c:\c_files\477\code\kalmantest\kalmantestv1.9 (using real gps data)\mgpsinfo.h
+
+1298174210 source:c:\c_files\477\code\kalmantest\kalmantestv1.9 (using real gps data)\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1297637424 c:\c_files\477\code\kalmantest\kalmantestv1.9 (using real gps data)\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1296956226 source:c:\c_files\477\code\kalmantest\kalmantestv1.10 (right-click waypoints)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296956226 c:\c_files\477\code\kalmantest\kalmantestv1.10 (right-click waypoints)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1297640444 source:c:\c_files\477\code\kalmantest\kalmantestv1.10 (right-click waypoints)\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1297640746 c:\c_files\477\code\kalmantest\kalmantestv1.10 (right-click waypoints)\mgpsinfo.h
+
+1298177810 source:c:\c_files\477\code\kalmantest\kalmantestv1.10 (right-click waypoints)\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1297641024 c:\c_files\477\code\kalmantest\kalmantestv1.10 (right-click waypoints)\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1297836144 source:c:\c_files\477\code\kalmantest\kalmantestv1.10 (right-click waypoints)\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1297836258 c:\c_files\477\code\kalmantest\kalmantestv1.10 (right-click waypoints)\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1300570563 source:c:\c_files\477\code\kalmantest\kalmantestv1.10 (right-click waypoints)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1290798546 c:\c_files\477\code\kalmantest\kalmantestv1.10 (right-click waypoints)\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1296956226 source:c:\c_files\477\code\kalmantest\kalmantestv1.12 (communicating over serial port)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296956226 c:\c_files\477\code\kalmantest\kalmantestv1.12 (communicating over serial port)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1297640444 source:c:\c_files\477\code\kalmantest\kalmantestv1.12 (communicating over serial port)\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1297640746 c:\c_files\477\code\kalmantest\kalmantestv1.12 (communicating over serial port)\mgpsinfo.h
+
+1298177810 source:c:\c_files\477\code\kalmantest\kalmantestv1.12 (communicating over serial port)\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1297641024 c:\c_files\477\code\kalmantest\kalmantestv1.12 (communicating over serial port)\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1297836144 source:c:\c_files\477\code\kalmantest\kalmantestv1.12 (communicating over serial port)\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1297836258 c:\c_files\477\code\kalmantest\kalmantestv1.12 (communicating over serial port)\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1301011901 source:c:\c_files\477\code\kalmantest\kalmantestv1.12 (communicating over serial port)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1290798546 c:\c_files\477\code\kalmantest\kalmantestv1.12 (communicating over serial port)\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1296956226 source:c:\c_files\477\code\kalmantest\kalmantestv1.13 (talking to microcontrollers)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296956226 c:\c_files\477\code\kalmantest\kalmantestv1.13 (talking to microcontrollers)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1297640444 source:c:\c_files\477\code\kalmantest\kalmantestv1.13 (talking to microcontrollers)\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1297640746 c:\c_files\477\code\kalmantest\kalmantestv1.13 (talking to microcontrollers)\mgpsinfo.h
+
+1298177810 source:c:\c_files\477\code\kalmantest\kalmantestv1.13 (talking to microcontrollers)\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1297641024 c:\c_files\477\code\kalmantest\kalmantestv1.13 (talking to microcontrollers)\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1297836144 source:c:\c_files\477\code\kalmantest\kalmantestv1.13 (talking to microcontrollers)\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1297836258 c:\c_files\477\code\kalmantest\kalmantestv1.13 (talking to microcontrollers)\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1302043941 source:c:\c_files\477\code\kalmantest\kalmantestv1.13 (talking to microcontrollers)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1290798546 c:\c_files\477\code\kalmantest\kalmantestv1.13 (talking to microcontrollers)\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1296956226 source:c:\c_files\477\code\kalmantest\kalmantestv2.00 (object-oriented)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296956226 c:\c_files\477\code\kalmantest\kalmantestv2.00 (object-oriented)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1297640444 source:c:\c_files\477\code\kalmantest\kalmantestv2.00 (object-oriented)\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1297640746 c:\c_files\477\code\kalmantest\kalmantestv2.00 (object-oriented)\mgpsinfo.h
+
+1298177810 source:c:\c_files\477\code\kalmantest\kalmantestv2.00 (object-oriented)\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1297641024 c:\c_files\477\code\kalmantest\kalmantestv2.00 (object-oriented)\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1297836144 source:c:\c_files\477\code\kalmantest\kalmantestv2.00 (object-oriented)\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1297836258 c:\c_files\477\code\kalmantest\kalmantestv2.00 (object-oriented)\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1302571614 source:c:\c_files\477\code\kalmantest\kalmantestv2.00 (object-oriented)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1290798546 c:\c_files\477\code\kalmantest\kalmantestv2.00 (object-oriented)\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1296956226 source:c:\c_files\477\code\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1296956226 c:\c_files\477\code\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1297640444 source:c:\c_files\477\code\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1297640746 c:\c_files\477\code\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\mgpsinfo.h
+
+1298177810 source:c:\c_files\477\code\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1297641024 c:\c_files\477\code\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1302754954 source:c:\c_files\477\code\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1297836258 c:\c_files\477\code\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1302757680 source:c:\c_files\477\code\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1290798546 c:\c_files\477\code\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\mgpsinfo.h
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1271373845 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.2 (dynamic measurement-matrices)\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.3 (debugged communication )\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.3 (debugged communication )\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.3 (debugged communication )\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.3 (debugged communication )\mgpsinfo.h
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.3 (debugged communication )\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.3 (debugged communication )\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.3 (debugged communication )\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.3 (debugged communication )\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1271732820 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.3 (debugged communication )\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.3 (debugged communication )\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.4 (merging with camera code )\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.4 (merging with camera code )\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.4 (merging with camera code )\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.4 (merging with camera code )\mgpsinfo.h
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.4 (merging with camera code )\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.4 (merging with camera code )\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.4 (merging with camera code )\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.4 (merging with camera code )\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1271960637 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.4 (merging with camera code )\camera_main.cpp
+	<windows.h>
+	<stdio.h>
+	<ctype.h>
+	"opencv2/video/tracking.hpp"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/highgui/highgui.hpp"
+
+1272141568 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.4 (merging with camera code )\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.4 (merging with camera code )\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1271960637 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\copy of kalmantestv2.5 (merging with camera code )\camera_main.cpp
+	<windows.h>
+	<stdio.h>
+	<ctype.h>
+	"opencv2/video/tracking.hpp"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/highgui/highgui.hpp"
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\copy of kalmantestv2.5 (merging with camera code )\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\copy of kalmantestv2.5 (merging with camera code )\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\copy of kalmantestv2.5 (merging with camera code )\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\copy of kalmantestv2.5 (merging with camera code )\mgpsinfo.h
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\copy of kalmantestv2.5 (merging with camera code )\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\copy of kalmantestv2.5 (merging with camera code )\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\copy of kalmantestv2.5 (merging with camera code )\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\copy of kalmantestv2.5 (merging with camera code )\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1272224556 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\copy of kalmantestv2.5 (merging with camera code )\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\copy of kalmantestv2.5 (merging with camera code )\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1272389149 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.5 (merging with camera code_improved following )\camera_main.cpp
+	<windows.h>
+	<stdio.h>
+	<ctype.h>
+	"opencv2/video/tracking.hpp"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/highgui/highgui.hpp"
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.5 (merging with camera code_improved following )\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.5 (merging with camera code_improved following )\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.5 (merging with camera code_improved following )\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.5 (merging with camera code_improved following )\mgpsinfo.h
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.5 (merging with camera code_improved following )\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.5 (merging with camera code_improved following )\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.5 (merging with camera code_improved following )\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.5 (merging with camera code_improved following )\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1272391393 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.5 (merging with camera code_improved following )\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.5 (merging with camera code_improved following )\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1272389149 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.6 (merging with camera code_improved following+gps waypoint )\camera_main.cpp
+	<windows.h>
+	<stdio.h>
+	<ctype.h>
+	"opencv2/video/tracking.hpp"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/highgui/highgui.hpp"
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.6 (merging with camera code_improved following+gps waypoint )\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.6 (merging with camera code_improved following+gps waypoint )\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.6 (merging with camera code_improved following+gps waypoint )\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.6 (merging with camera code_improved following+gps waypoint )\mgpsinfo.h
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.6 (merging with camera code_improved following+gps waypoint )\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.6 (merging with camera code_improved following+gps waypoint )\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.6 (merging with camera code_improved following+gps waypoint )\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.6 (merging with camera code_improved following+gps waypoint )\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1272486004 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.6 (merging with camera code_improved following+gps waypoint )\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.6 (merging with camera code_improved following+gps waypoint )\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1272499422 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.7 (display obstacles)\camera_main.cpp
+	<windows.h>
+	<stdio.h>
+	<ctype.h>
+	"opencv2/video/tracking.hpp"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/highgui/highgui.hpp"
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.7 (display obstacles)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.7 (display obstacles)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.7 (display obstacles)\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.7 (display obstacles)\mgpsinfo.h
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.7 (display obstacles)\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.7 (display obstacles)\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.7 (display obstacles)\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.7 (display obstacles)\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1272499129 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.7 (display obstacles)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.7 (display obstacles)\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+
+1272588065 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.8 (pathfinding)\camera_main.cpp
+	<windows.h>
+	<stdio.h>
+	<ctype.h>
+	"opencv2/video/tracking.hpp"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/highgui/highgui.hpp"
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.8 (pathfinding)\control_system.c
+	"control_system.h"
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.8 (pathfinding)\control_system.h
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.8 (pathfinding)\mgpsinfo.cpp
+	"mGPSInfo.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.8 (pathfinding)\mgpsinfo.h
+
+1271367719 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.8 (pathfinding)\mnmeaparser.cpp
+	"mNMEAParser.h"
+
+1271367719 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.8 (pathfinding)\mnmeaparser.h
+	"mGPSInfo.h"
+	<string.h>
+	<stdio.h>
+	<ctype.h>
+	<stdlib.h>
+
+1271367718 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.8 (pathfinding)\dstar.cpp
+	"Dstar.h"
+	<stdio.h>
+	<OpenGL/gl.h>
+	<GL/gl.h>
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.8 (pathfinding)\dstar.h
+	<math.h>
+	<stack>
+	<queue>
+	<list>
+	<ext/hash_map>
+
+1272587790 source:c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.8 (pathfinding)\main.cpp
+	"opencv2/video/tracking.hpp"
+	"opencv2/highgui/highgui.hpp"
+	<stdio.h>
+	<time.h>
+	"Dstar.h"
+	"cv.h"
+	"mGPSInfo.h"
+	"mNMEAParser.h"
+
+1271367718 c:\documents and settings\admin\desktop\kalmantest\kalmantest\kalmantestv2.8 (pathfinding)\cv.h
+	"opencv2/core/core_c.h"
+	"opencv2/core/core.hpp"
+	"opencv2/imgproc/imgproc_c.h"
+	"opencv2/imgproc/imgproc.hpp"
+	"opencv2/video/tracking.hpp"
+	"opencv2/features2d/features2d.hpp"
+	"opencv2/flann/flann.hpp"
+	"opencv2/calib3d/calib3d.hpp"
+	"opencv2/objdetect/objdetect.hpp"
+	"opencv2/legacy/compat.hpp"
+	"opencv2/core/internal.hpp"
+

@@ -1,0 +1,7033 @@
+
+/* SCHEME->C */
+
+#include <objects.h>
+
+void parser__init();
+DEFCSTRING( t16253, "/tmp/videos-sentences.txt" );
+DEFSTATICTSCP( c16222 );
+DEFCSTRING( t16254, "~a~a" );
+DEFSTATICTSCP( c16217 );
+DEFCSTRING( t16255, "<mark><strong>~a</strong></mark>" );
+DEFSTATICTSCP( c16214 );
+DEFCSTRING( t16256, "~a ~a" );
+DEFSTATICTSCP( c16213 );
+DEFCSTRING( t16257, "videos-house.sc" );
+DEFSTATICTSCP( c16109 );
+DEFCSTRING( t16258, "videos-house-amt-~a.sc" );
+DEFSTATICTSCP( c16058 );
+DEFSTATICTSCP( c15923 );
+DEFSTATICTSCP( t16259 );
+DEFCSTRING( t16260, "missing-objects.sc" );
+DEFSTATICTSCP( c15843 );
+DEFCSTRING( t16261, "videos.txt" );
+DEFSTATICTSCP( c15842 );
+DEFCSTRING( t16262, "predicate-table-k3-abbr.sc" );
+DEFSTATICTSCP( c15829 );
+DEFCSTRING( t16263, "videos-~a-amt-~a.sc" );
+DEFSTATICTSCP( c15822 );
+DEFCSTRING( t16264, "/net/zhineng/aux/yu239/~a/~a.avi" );
+DEFSTATICTSCP( c15821 );
+DEFCSTRING( t16265, "~a/house/videos-house.sc" );
+DEFSTATICTSCP( c15575 );
+DEFSTATICTSCP( c15383 );
+DEFCSTRING( t16266, "sentences-ispelled.txt" );
+DEFSTATICTSCP( c15285 );
+DEFCSTRING( t16267, "amt-videos.txt" );
+DEFSTATICTSCP( c15284 );
+DEFCSTRING( t16268, "sentences.txt.dry" );
+DEFSTATICTSCP( c15283 );
+DEFCSTRING( t16269, "x~a" );
+DEFSTATICTSCP( c15127 );
+DEFCSTRING( t16270, 
+            "/home/yu239/darpa-collaboration/sentence-codetection/videos-fil\
+es" );
+DEFSTATICTSCP( c15037 );
+DEFSTATICTSCP( c15036 );
+DEFSTATICTSCP( t16271 );
+DEFSTATICTSCP( t16272 );
+DEFSTATICTSCP( t16273 );
+DEFSTATICTSCP( t16274 );
+DEFSTATICTSCP( t16275 );
+DEFSTATICTSCP( c15035 );
+DEFSTATICTSCP( c15034 );
+DEFSTATICTSCP( c15033 );
+DEFSTATICTSCP( c15032 );
+DEFSTATICTSCP( c15031 );
+DEFSTATICTSCP( c15030 );
+DEFSTATICTSCP( c15026 );
+DEFSTATICTSCP( c15022 );
+DEFSTATICTSCP( c15018 );
+DEFSTATICTSCP( c15014 );
+DEFSTATICTSCP( c15010 );
+DEFSTATICTSCP( c15006 );
+DEFSTATICTSCP( c15002 );
+DEFSTATICTSCP( c14991 );
+DEFSTATICTSCP( t16276 );
+DEFSTATICTSCP( t16277 );
+DEFSTATICTSCP( c14990 );
+DEFSTATICTSCP( c14989 );
+DEFSTATICTSCP( c14988 );
+DEFSTATICTSCP( t16278 );
+DEFSTATICTSCP( c14987 );
+DEFSTATICTSCP( c14986 );
+DEFSTATICTSCP( t16279 );
+DEFSTATICTSCP( c14985 );
+DEFSTATICTSCP( t16280 );
+DEFSTATICTSCP( c14984 );
+DEFSTATICTSCP( c14983 );
+DEFSTATICTSCP( c14982 );
+DEFSTATICTSCP( c14981 );
+DEFSTATICTSCP( t16281 );
+DEFSTATICTSCP( t16282 );
+DEFSTATICTSCP( c14980 );
+DEFSTATICTSCP( t16283 );
+DEFSTATICTSCP( t16284 );
+DEFSTATICTSCP( c14979 );
+DEFSTATICTSCP( c14978 );
+DEFSTATICTSCP( t16285 );
+DEFSTATICTSCP( t16286 );
+DEFSTATICTSCP( c14977 );
+DEFSTATICTSCP( c14976 );
+DEFSTATICTSCP( c14975 );
+DEFSTATICTSCP( t16287 );
+DEFSTATICTSCP( c14974 );
+DEFSTATICTSCP( t16288 );
+DEFSTATICTSCP( c14973 );
+DEFSTATICTSCP( c14972 );
+DEFSTATICTSCP( t16289 );
+DEFSTATICTSCP( t16290 );
+DEFSTATICTSCP( t16291 );
+DEFSTATICTSCP( c14971 );
+DEFSTATICTSCP( t16292 );
+DEFSTATICTSCP( c14970 );
+DEFSTATICTSCP( c14969 );
+DEFSTATICTSCP( c14968 );
+DEFSTATICTSCP( c14967 );
+DEFSTATICTSCP( t16293 );
+DEFSTATICTSCP( c14966 );
+DEFSTATICTSCP( t16294 );
+DEFSTATICTSCP( c14965 );
+DEFSTATICTSCP( t16295 );
+DEFSTATICTSCP( c14964 );
+DEFSTATICTSCP( t16296 );
+DEFSTATICTSCP( c14963 );
+DEFSTATICTSCP( t16297 );
+DEFSTATICTSCP( c14962 );
+DEFSTATICTSCP( t16298 );
+DEFSTATICTSCP( c14961 );
+DEFSTATICTSCP( c14960 );
+DEFSTATICTSCP( t16299 );
+DEFSTATICTSCP( c14959 );
+DEFSTATICTSCP( t16300 );
+DEFSTATICTSCP( c14958 );
+DEFSTATICTSCP( c14957 );
+DEFSTATICTSCP( c14956 );
+DEFSTATICTSCP( c14955 );
+DEFSTATICTSCP( t16301 );
+DEFSTATICTSCP( c14954 );
+DEFCSTRING( t16302, "wrong object" );
+DEFSTATICTSCP( c14761 );
+DEFCSTRING( t16303, "wrong predicate" );
+DEFSTATICTSCP( c14683 );
+DEFCSTRING( t16304, "~a~%" );
+DEFSTATICTSCP( c14682 );
+DEFSTATICTSCP( c14184 );
+DEFSTATICTSCP( c14135 );
+DEFCSTRING( t16305, "Failed parse~%  sentence: ~a~%" );
+DEFSTATICTSCP( c13852 );
+DEFSTATICTSCP( c13843 );
+DEFSTATICTSCP( c13818 );
+DEFSTATICTSCP( c13716 );
+DEFCSTRING( t16306, "head-noun: noun not pund in parse:~%~a~%" );
+DEFSTATICTSCP( c13702 );
+DEFSTATICTSCP( c13629 );
+DEFCSTRING( t16307, "-" );
+DEFSTATICTSCP( c13072 );
+DEFCSTRING( t16308, "Argument is not a SYMBOL: ~s" );
+DEFSTATICTSCP( c13067 );
+DEFSTATICTSCP( c13066 );
+DEFCSTRING( t16309, " " );
+DEFSTATICTSCP( c12989 );
+DEFCSTRING( t16310, "Production rule: NT (terminals* U NT*)" );
+DEFSTATICTSCP( c12986 );
+DEFCSTRING( t16311, "zipper: cannot ascend negative levels" );
+DEFSTATICTSCP( c12861 );
+DEFCSTRING( t16312, "zipper: cannot ascend any further" );
+DEFSTATICTSCP( c12774 );
+DEFCSTRING( t16313, "zipper: cannot descend to out-of-bounds index" );
+DEFSTATICTSCP( c12752 );
+DEFCSTRING( t16314, "SET-ZIPPER-THREAD! error" );
+DEFSTATICTSCP( c12729 );
+DEFCSTRING( t16315, "ZIPPER-THREAD error" );
+DEFSTATICTSCP( c12715 );
+DEFCSTRING( t16316, "LOCAL-SET-ZIPPER-THREAD! error" );
+DEFSTATICTSCP( c12712 );
+DEFCSTRING( t16317, "SET-ZIPPER-TREE! error" );
+DEFSTATICTSCP( c12697 );
+DEFCSTRING( t16318, "ZIPPER-TREE error" );
+DEFSTATICTSCP( c12683 );
+DEFCSTRING( t16319, "LOCAL-SET-ZIPPER-TREE! error" );
+DEFSTATICTSCP( c12680 );
+DEFSTATICTSCP( c12616 );
+DEFCSTRING( t16320, "SET-CFG-RULES! error" );
+DEFSTATICTSCP( c12534 );
+DEFCSTRING( t16321, "CFG-RULES error" );
+DEFSTATICTSCP( c12520 );
+DEFCSTRING( t16322, "LOCAL-SET-CFG-RULES! error" );
+DEFSTATICTSCP( c12517 );
+DEFSTATICTSCP( c12464 );
+DEFCSTRING( t16323, "SET-PRODUCTION-RULE-RHS! error" );
+DEFSTATICTSCP( c12437 );
+DEFCSTRING( t16324, "PRODUCTION-RULE-RHS error" );
+DEFSTATICTSCP( c12423 );
+DEFCSTRING( t16325, "LOCAL-SET-PRODUCTION-RULE-RHS! error" );
+DEFSTATICTSCP( c12420 );
+DEFCSTRING( t16326, "SET-PRODUCTION-RULE-LHS! error" );
+DEFSTATICTSCP( c12405 );
+DEFCSTRING( t16327, "PRODUCTION-RULE-LHS error" );
+DEFSTATICTSCP( c12391 );
+DEFCSTRING( t16328, "LOCAL-SET-PRODUCTION-RULE-LHS! error" );
+DEFSTATICTSCP( c12388 );
+DEFSTATICTSCP( c12379 );
+DEFSTATICTSCP( c12369 );
+DEFSTATICTSCP( c12319 );
+DEFCSTRING( t16329, "Index is not in bounds: ~s" );
+DEFSTATICTSCP( c12318 );
+DEFCSTRING( t16330, "Argument is not an INTEGER: ~s" );
+DEFSTATICTSCP( c12314 );
+DEFCSTRING( t16331, "Argument is not a VECTOR: ~s" );
+DEFSTATICTSCP( c12311 );
+DEFSTATICTSCP( c12310 );
+DEFSTATICTSCP( c12298 );
+DEFSTATICTSCP( t16332 );
+DEFSTATICTSCP( t16333 );
+DEFSTATICTSCP( t16334 );
+DEFSTATICTSCP( t16335 );
+DEFSTATICTSCP( t16336 );
+DEFSTATICTSCP( c12297 );
+DEFSTATICTSCP( t16337 );
+DEFSTATICTSCP( t16338 );
+DEFSTATICTSCP( t16339 );
+DEFSTATICTSCP( t16340 );
+DEFSTATICTSCP( t16341 );
+DEFSTATICTSCP( t16342 );
+DEFSTATICTSCP( t16343 );
+DEFSTATICTSCP( t16344 );
+DEFSTATICTSCP( t16345 );
+DEFSTATICTSCP( t16346 );
+DEFSTATICTSCP( t16347 );
+DEFSTATICTSCP( t16348 );
+DEFSTATICTSCP( t16349 );
+DEFSTATICTSCP( c12296 );
+DEFSTATICTSCP( t16350 );
+DEFSTATICTSCP( t16351 );
+DEFSTATICTSCP( t16352 );
+DEFSTATICTSCP( t16353 );
+DEFSTATICTSCP( t16354 );
+DEFSTATICTSCP( t16355 );
+DEFSTATICTSCP( t16356 );
+DEFSTATICTSCP( t16357 );
+DEFSTATICTSCP( t16358 );
+DEFSTATICTSCP( t16359 );
+DEFSTATICTSCP( t16360 );
+DEFSTATICTSCP( t16361 );
+DEFSTATICTSCP( t16362 );
+DEFSTATICTSCP( t16363 );
+DEFSTATICTSCP( t16364 );
+DEFSTATICTSCP( t16365 );
+DEFSTATICTSCP( t16366 );
+DEFSTATICTSCP( t16367 );
+DEFSTATICTSCP( t16368 );
+DEFSTATICTSCP( t16369 );
+DEFSTATICTSCP( t16370 );
+DEFSTATICTSCP( t16371 );
+DEFSTATICTSCP( t16372 );
+DEFSTATICTSCP( t16373 );
+DEFSTATICTSCP( t16374 );
+DEFSTATICTSCP( t16375 );
+DEFSTATICTSCP( t16376 );
+DEFSTATICTSCP( t16377 );
+DEFCSTRING( t16378, "Argument not a PAIR: ~s" );
+DEFSTATICTSCP( c12273 );
+DEFSTATICTSCP( c12272 );
+DEFSTATICTSCP( c12230 );
+DEFSTATICTSCP( t16379 );
+DEFSTATICTSCP( t16380 );
+DEFSTATICTSCP( t16381 );
+DEFSTATICTSCP( t16382 );
+DEFSTATICTSCP( t16383 );
+DEFSTATICTSCP( t16384 );
+DEFSTATICTSCP( t16385 );
+DEFSTATICTSCP( t16386 );
+DEFSTATICTSCP( t16387 );
+DEFSTATICTSCP( t16388 );
+DEFSTATICTSCP( t16389 );
+DEFSTATICTSCP( t16390 );
+DEFSTATICTSCP( t16391 );
+DEFSTATICTSCP( t16392 );
+DEFSTATICTSCP( t16393 );
+DEFSTATICTSCP( t16394 );
+DEFSTATICTSCP( t16395 );
+DEFSTATICTSCP( t16396 );
+DEFSTATICTSCP( t16397 );
+DEFSTATICTSCP( t16398 );
+
+static void  init_constants()
+{
+        TSCP  X1;
+
+        c16222 = CSTRING_TSCP( t16253 );
+        CONSTANTEXP( ADR( c16222 ) );
+        c16217 = CSTRING_TSCP( t16254 );
+        CONSTANTEXP( ADR( c16217 ) );
+        c16214 = CSTRING_TSCP( t16255 );
+        CONSTANTEXP( ADR( c16214 ) );
+        c16213 = CSTRING_TSCP( t16256 );
+        CONSTANTEXP( ADR( c16213 ) );
+        c16109 = CSTRING_TSCP( t16257 );
+        CONSTANTEXP( ADR( c16109 ) );
+        c16058 = CSTRING_TSCP( t16258 );
+        CONSTANTEXP( ADR( c16058 ) );
+        c15923 = EMPTYLIST;
+        c15923 = CONS( _TSCP( 0 ), c15923 );
+        t16259 = STRINGTOSYMBOL( CSTRING_TSCP( "PERSON" ) );
+        c15923 = CONS( t16259, c15923 );
+        c15923 = LISTTOVECTOR( c15923 );
+        CONSTANTEXP( ADR( c15923 ) );
+        c15843 = CSTRING_TSCP( t16260 );
+        CONSTANTEXP( ADR( c15843 ) );
+        c15842 = CSTRING_TSCP( t16261 );
+        CONSTANTEXP( ADR( c15842 ) );
+        c15829 = CSTRING_TSCP( t16262 );
+        CONSTANTEXP( ADR( c15829 ) );
+        c15822 = CSTRING_TSCP( t16263 );
+        CONSTANTEXP( ADR( c15822 ) );
+        c15821 = CSTRING_TSCP( t16264 );
+        CONSTANTEXP( ADR( c15821 ) );
+        c15575 = CSTRING_TSCP( t16265 );
+        CONSTANTEXP( ADR( c15575 ) );
+        c15383 = STRINGTOSYMBOL( CSTRING_TSCP( "-~->" ) );
+        CONSTANTEXP( ADR( c15383 ) );
+        c15285 = CSTRING_TSCP( t16266 );
+        CONSTANTEXP( ADR( c15285 ) );
+        c15284 = CSTRING_TSCP( t16267 );
+        CONSTANTEXP( ADR( c15284 ) );
+        c15283 = CSTRING_TSCP( t16268 );
+        CONSTANTEXP( ADR( c15283 ) );
+        c15127 = CSTRING_TSCP( t16269 );
+        CONSTANTEXP( ADR( c15127 ) );
+        c15037 = CSTRING_TSCP( t16270 );
+        CONSTANTEXP( ADR( c15037 ) );
+        c15036 = EMPTYLIST;
+        t16271 = STRINGTOSYMBOL( CSTRING_TSCP( "SOURCE" ) );
+        c15036 = CONS( t16271, c15036 );
+        t16272 = STRINGTOSYMBOL( CSTRING_TSCP( "GOAL" ) );
+        c15036 = CONS( t16272, c15036 );
+        t16273 = STRINGTOSYMBOL( CSTRING_TSCP( "REFERENT" ) );
+        c15036 = CONS( t16273, c15036 );
+        t16274 = STRINGTOSYMBOL( CSTRING_TSCP( "PATIENT" ) );
+        c15036 = CONS( t16274, c15036 );
+        t16275 = STRINGTOSYMBOL( CSTRING_TSCP( "AGENT" ) );
+        c15036 = CONS( t16275, c15036 );
+        CONSTANTEXP( ADR( c15036 ) );
+        c15035 = STRINGTOSYMBOL( CSTRING_TSCP( "REFERENT" ) );
+        CONSTANTEXP( ADR( c15035 ) );
+        c15034 = STRINGTOSYMBOL( CSTRING_TSCP( "GOAL" ) );
+        CONSTANTEXP( ADR( c15034 ) );
+        c15033 = STRINGTOSYMBOL( CSTRING_TSCP( "SOURCE" ) );
+        CONSTANTEXP( ADR( c15033 ) );
+        c15032 = STRINGTOSYMBOL( CSTRING_TSCP( "PATIENT" ) );
+        CONSTANTEXP( ADR( c15032 ) );
+        c15031 = STRINGTOSYMBOL( CSTRING_TSCP( "AGENT" ) );
+        CONSTANTEXP( ADR( c15031 ) );
+        c15030 = STRINGTOSYMBOL( CSTRING_TSCP( "AWAY-FROM" ) );
+        CONSTANTEXP( ADR( c15030 ) );
+        c15026 = STRINGTOSYMBOL( CSTRING_TSCP( "TOWARDS" ) );
+        CONSTANTEXP( ADR( c15026 ) );
+        c15022 = STRINGTOSYMBOL( CSTRING_TSCP( "APPROACHED" ) );
+        CONSTANTEXP( ADR( c15022 ) );
+        c15018 = STRINGTOSYMBOL( CSTRING_TSCP( "CARRIED" ) );
+        CONSTANTEXP( ADR( c15018 ) );
+        c15014 = STRINGTOSYMBOL( CSTRING_TSCP( "PUT-DOWN" ) );
+        CONSTANTEXP( ADR( c15014 ) );
+        c15010 = STRINGTOSYMBOL( CSTRING_TSCP( "PICKED-UP" ) );
+        CONSTANTEXP( ADR( c15010 ) );
+        c15006 = STRINGTOSYMBOL( CSTRING_TSCP( "TO-THE-RIGHT-OF" ) );
+        CONSTANTEXP( ADR( c15006 ) );
+        c15002 = STRINGTOSYMBOL( CSTRING_TSCP( "TO-THE-LEFT-OF" ) );
+        CONSTANTEXP( ADR( c15002 ) );
+        c14991 = EMPTYLIST;
+        t16276 = STRINGTOSYMBOL( CSTRING_TSCP( "FROM" ) );
+        c14991 = CONS( t16276, c14991 );
+        t16277 = STRINGTOSYMBOL( CSTRING_TSCP( "AWAY" ) );
+        c14991 = CONS( t16277, c14991 );
+        CONSTANTEXP( ADR( c14991 ) );
+        c14990 = EMPTYLIST;
+        c14990 = CONS( c15026, c14990 );
+        CONSTANTEXP( ADR( c14990 ) );
+        c14989 = STRINGTOSYMBOL( CSTRING_TSCP( "PM" ) );
+        CONSTANTEXP( ADR( c14989 ) );
+        c14988 = EMPTYLIST;
+        t16278 = STRINGTOSYMBOL( CSTRING_TSCP( "NP" ) );
+        c14988 = CONS( t16278, c14988 );
+        c14988 = CONS( c14989, c14988 );
+        CONSTANTEXP( ADR( c14988 ) );
+        c14987 = STRINGTOSYMBOL( CSTRING_TSCP( "PPM" ) );
+        CONSTANTEXP( ADR( c14987 ) );
+        c14986 = EMPTYLIST;
+        t16279 = STRINGTOSYMBOL( CSTRING_TSCP( "SLOWLY" ) );
+        c14986 = CONS( t16279, c14986 );
+        CONSTANTEXP( ADR( c14986 ) );
+        c14985 = EMPTYLIST;
+        t16280 = STRINGTOSYMBOL( CSTRING_TSCP( "QUICKLY" ) );
+        c14985 = CONS( t16280, c14985 );
+        CONSTANTEXP( ADR( c14985 ) );
+        c14984 = STRINGTOSYMBOL( CSTRING_TSCP( "ADV" ) );
+        CONSTANTEXP( ADR( c14984 ) );
+        c14983 = EMPTYLIST;
+        c14983 = CONS( c15022, c14983 );
+        CONSTANTEXP( ADR( c14983 ) );
+        c14982 = EMPTYLIST;
+        c14982 = CONS( c15018, c14982 );
+        CONSTANTEXP( ADR( c14982 ) );
+        c14981 = EMPTYLIST;
+        t16281 = STRINGTOSYMBOL( CSTRING_TSCP( "DOWN" ) );
+        c14981 = CONS( t16281, c14981 );
+        t16282 = STRINGTOSYMBOL( CSTRING_TSCP( "PUT" ) );
+        c14981 = CONS( t16282, c14981 );
+        CONSTANTEXP( ADR( c14981 ) );
+        c14980 = EMPTYLIST;
+        t16283 = STRINGTOSYMBOL( CSTRING_TSCP( "UP" ) );
+        c14980 = CONS( t16283, c14980 );
+        t16284 = STRINGTOSYMBOL( CSTRING_TSCP( "PICKED" ) );
+        c14980 = CONS( t16284, c14980 );
+        CONSTANTEXP( ADR( c14980 ) );
+        c14979 = STRINGTOSYMBOL( CSTRING_TSCP( "TV" ) );
+        CONSTANTEXP( ADR( c14979 ) );
+        c14978 = EMPTYLIST;
+        c14978 = CONS( t16278, c14978 );
+        t16285 = STRINGTOSYMBOL( CSTRING_TSCP( "P" ) );
+        c14978 = CONS( t16285, c14978 );
+        c14978 = CONS( t16278, c14978 );
+        t16286 = STRINGTOSYMBOL( CSTRING_TSCP( "DTV" ) );
+        c14978 = CONS( t16286, c14978 );
+        X1 = EMPTYLIST;
+        X1 = CONS( c14984, X1 );
+        c14978 = CONS( X1, c14978 );
+        CONSTANTEXP( ADR( c14978 ) );
+        c14977 = EMPTYLIST;
+        X1 = EMPTYLIST;
+        X1 = CONS( c14987, X1 );
+        c14977 = CONS( X1, c14977 );
+        X1 = EMPTYLIST;
+        X1 = CONS( c14984, X1 );
+        c14977 = CONS( X1, c14977 );
+        c14977 = CONS( t16278, c14977 );
+        c14977 = CONS( c14979, c14977 );
+        CONSTANTEXP( ADR( c14977 ) );
+        c14976 = STRINGTOSYMBOL( CSTRING_TSCP( "VP" ) );
+        CONSTANTEXP( ADR( c14976 ) );
+        c14975 = EMPTYLIST;
+        t16287 = STRINGTOSYMBOL( CSTRING_TSCP( "TO" ) );
+        c14975 = CONS( t16287, c14975 );
+        CONSTANTEXP( ADR( c14975 ) );
+        c14974 = EMPTYLIST;
+        t16288 = STRINGTOSYMBOL( CSTRING_TSCP( "WITH" ) );
+        c14974 = CONS( t16288, c14974 );
+        CONSTANTEXP( ADR( c14974 ) );
+        c14973 = STRINGTOSYMBOL( CSTRING_TSCP( "P" ) );
+        CONSTANTEXP( ADR( c14973 ) );
+        c14972 = EMPTYLIST;
+        t16289 = STRINGTOSYMBOL( CSTRING_TSCP( "OF" ) );
+        c14972 = CONS( t16289, c14972 );
+        t16290 = STRINGTOSYMBOL( CSTRING_TSCP( "RIGHT" ) );
+        c14972 = CONS( t16290, c14972 );
+        t16291 = STRINGTOSYMBOL( CSTRING_TSCP( "THE" ) );
+        c14972 = CONS( t16291, c14972 );
+        c14972 = CONS( t16287, c14972 );
+        CONSTANTEXP( ADR( c14972 ) );
+        c14971 = EMPTYLIST;
+        c14971 = CONS( t16289, c14971 );
+        t16292 = STRINGTOSYMBOL( CSTRING_TSCP( "LEFT" ) );
+        c14971 = CONS( t16292, c14971 );
+        c14971 = CONS( t16291, c14971 );
+        c14971 = CONS( t16287, c14971 );
+        CONSTANTEXP( ADR( c14971 ) );
+        c14970 = STRINGTOSYMBOL( CSTRING_TSCP( "PL" ) );
+        CONSTANTEXP( ADR( c14970 ) );
+        c14969 = EMPTYLIST;
+        c14969 = CONS( t16278, c14969 );
+        c14969 = CONS( c14970, c14969 );
+        CONSTANTEXP( ADR( c14969 ) );
+        c14968 = STRINGTOSYMBOL( CSTRING_TSCP( "PP" ) );
+        CONSTANTEXP( ADR( c14968 ) );
+        c14967 = EMPTYLIST;
+        t16293 = STRINGTOSYMBOL( CSTRING_TSCP( "OBJECT" ) );
+        c14967 = CONS( t16293, c14967 );
+        CONSTANTEXP( ADR( c14967 ) );
+        c14966 = EMPTYLIST;
+        t16294 = STRINGTOSYMBOL( CSTRING_TSCP( "STOOL" ) );
+        c14966 = CONS( t16294, c14966 );
+        CONSTANTEXP( ADR( c14966 ) );
+        c14965 = EMPTYLIST;
+        t16295 = STRINGTOSYMBOL( CSTRING_TSCP( "TRAFFIC-CONE" ) );
+        c14965 = CONS( t16295, c14965 );
+        CONSTANTEXP( ADR( c14965 ) );
+        c14964 = EMPTYLIST;
+        t16296 = STRINGTOSYMBOL( CSTRING_TSCP( "CHAIR" ) );
+        c14964 = CONS( t16296, c14964 );
+        CONSTANTEXP( ADR( c14964 ) );
+        c14963 = EMPTYLIST;
+        t16297 = STRINGTOSYMBOL( CSTRING_TSCP( "TRASH-CAN" ) );
+        c14963 = CONS( t16297, c14963 );
+        CONSTANTEXP( ADR( c14963 ) );
+        c14962 = EMPTYLIST;
+        t16298 = STRINGTOSYMBOL( CSTRING_TSCP( "BACKPACK" ) );
+        c14962 = CONS( t16298, c14962 );
+        CONSTANTEXP( ADR( c14962 ) );
+        c14961 = EMPTYLIST;
+        c14961 = CONS( t16259, c14961 );
+        CONSTANTEXP( ADR( c14961 ) );
+        c14960 = EMPTYLIST;
+        t16299 = STRINGTOSYMBOL( CSTRING_TSCP( "RED" ) );
+        c14960 = CONS( t16299, c14960 );
+        CONSTANTEXP( ADR( c14960 ) );
+        c14959 = EMPTYLIST;
+        t16300 = STRINGTOSYMBOL( CSTRING_TSCP( "BLUE" ) );
+        c14959 = CONS( t16300, c14959 );
+        CONSTANTEXP( ADR( c14959 ) );
+        c14958 = STRINGTOSYMBOL( CSTRING_TSCP( "A" ) );
+        CONSTANTEXP( ADR( c14958 ) );
+        c14957 = EMPTYLIST;
+        c14957 = CONS( t16291, c14957 );
+        CONSTANTEXP( ADR( c14957 ) );
+        c14956 = STRINGTOSYMBOL( CSTRING_TSCP( "D" ) );
+        CONSTANTEXP( ADR( c14956 ) );
+        c14955 = EMPTYLIST;
+        X1 = EMPTYLIST;
+        X1 = CONS( c14968, X1 );
+        c14955 = CONS( X1, c14955 );
+        t16301 = STRINGTOSYMBOL( CSTRING_TSCP( "N" ) );
+        c14955 = CONS( t16301, c14955 );
+        X1 = EMPTYLIST;
+        X1 = CONS( c14958, X1 );
+        c14955 = CONS( X1, c14955 );
+        c14955 = CONS( c14956, c14955 );
+        CONSTANTEXP( ADR( c14955 ) );
+        c14954 = EMPTYLIST;
+        c14954 = CONS( c14976, c14954 );
+        c14954 = CONS( t16278, c14954 );
+        CONSTANTEXP( ADR( c14954 ) );
+        c14761 = CSTRING_TSCP( t16302 );
+        CONSTANTEXP( ADR( c14761 ) );
+        c14683 = CSTRING_TSCP( t16303 );
+        CONSTANTEXP( ADR( c14683 ) );
+        c14682 = CSTRING_TSCP( t16304 );
+        CONSTANTEXP( ADR( c14682 ) );
+        c14184 = STRINGTOSYMBOL( CSTRING_TSCP( "PERSON" ) );
+        CONSTANTEXP( ADR( c14184 ) );
+        c14135 = EMPTYLIST;
+        c14135 = CONS( c14958, c14135 );
+        c14135 = CONS( c14984, c14135 );
+        c14135 = CONS( c14956, c14135 );
+        c14135 = CONS( t16301, c14135 );
+        CONSTANTEXP( ADR( c14135 ) );
+        c13852 = CSTRING_TSCP( t16305 );
+        CONSTANTEXP( ADR( c13852 ) );
+        c13843 = STRINGTOSYMBOL( CSTRING_TSCP( "NP" ) );
+        CONSTANTEXP( ADR( c13843 ) );
+        c13818 = STRINGTOSYMBOL( CSTRING_TSCP( "THING" ) );
+        CONSTANTEXP( ADR( c13818 ) );
+        c13716 = STRINGTOSYMBOL( CSTRING_TSCP( "N" ) );
+        CONSTANTEXP( ADR( c13716 ) );
+        c13702 = CSTRING_TSCP( t16306 );
+        CONSTANTEXP( ADR( c13702 ) );
+        c13629 = STRINGTOSYMBOL( CSTRING_TSCP( "S" ) );
+        CONSTANTEXP( ADR( c13629 ) );
+        c13072 = CSTRING_TSCP( t16307 );
+        CONSTANTEXP( ADR( c13072 ) );
+        c13067 = CSTRING_TSCP( t16308 );
+        CONSTANTEXP( ADR( c13067 ) );
+        c13066 = STRINGTOSYMBOL( CSTRING_TSCP( "SYMBOL->STRING" ) );
+        CONSTANTEXP( ADR( c13066 ) );
+        c12989 = CSTRING_TSCP( t16309 );
+        CONSTANTEXP( ADR( c12989 ) );
+        c12986 = CSTRING_TSCP( t16310 );
+        CONSTANTEXP( ADR( c12986 ) );
+        c12861 = CSTRING_TSCP( t16311 );
+        CONSTANTEXP( ADR( c12861 ) );
+        c12774 = CSTRING_TSCP( t16312 );
+        CONSTANTEXP( ADR( c12774 ) );
+        c12752 = CSTRING_TSCP( t16313 );
+        CONSTANTEXP( ADR( c12752 ) );
+        c12729 = CSTRING_TSCP( t16314 );
+        CONSTANTEXP( ADR( c12729 ) );
+        c12715 = CSTRING_TSCP( t16315 );
+        CONSTANTEXP( ADR( c12715 ) );
+        c12712 = CSTRING_TSCP( t16316 );
+        CONSTANTEXP( ADR( c12712 ) );
+        c12697 = CSTRING_TSCP( t16317 );
+        CONSTANTEXP( ADR( c12697 ) );
+        c12683 = CSTRING_TSCP( t16318 );
+        CONSTANTEXP( ADR( c12683 ) );
+        c12680 = CSTRING_TSCP( t16319 );
+        CONSTANTEXP( ADR( c12680 ) );
+        c12616 = STRINGTOSYMBOL( CSTRING_TSCP( "ZIPPER" ) );
+        CONSTANTEXP( ADR( c12616 ) );
+        c12534 = CSTRING_TSCP( t16320 );
+        CONSTANTEXP( ADR( c12534 ) );
+        c12520 = CSTRING_TSCP( t16321 );
+        CONSTANTEXP( ADR( c12520 ) );
+        c12517 = CSTRING_TSCP( t16322 );
+        CONSTANTEXP( ADR( c12517 ) );
+        c12464 = STRINGTOSYMBOL( CSTRING_TSCP( "CFG" ) );
+        CONSTANTEXP( ADR( c12464 ) );
+        c12437 = CSTRING_TSCP( t16323 );
+        CONSTANTEXP( ADR( c12437 ) );
+        c12423 = CSTRING_TSCP( t16324 );
+        CONSTANTEXP( ADR( c12423 ) );
+        c12420 = CSTRING_TSCP( t16325 );
+        CONSTANTEXP( ADR( c12420 ) );
+        c12405 = CSTRING_TSCP( t16326 );
+        CONSTANTEXP( ADR( c12405 ) );
+        c12391 = CSTRING_TSCP( t16327 );
+        CONSTANTEXP( ADR( c12391 ) );
+        c12388 = CSTRING_TSCP( t16328 );
+        CONSTANTEXP( ADR( c12388 ) );
+        c12379 = STRINGTOSYMBOL( CSTRING_TSCP( "VECTOR-REF" ) );
+        CONSTANTEXP( ADR( c12379 ) );
+        c12369 = STRINGTOSYMBOL( CSTRING_TSCP( "VECTOR-LENGTH" ) );
+        CONSTANTEXP( ADR( c12369 ) );
+        c12319 = STRINGTOSYMBOL( CSTRING_TSCP( "PRODUCTION-RULE" ) );
+        CONSTANTEXP( ADR( c12319 ) );
+        c12318 = CSTRING_TSCP( t16329 );
+        CONSTANTEXP( ADR( c12318 ) );
+        c12314 = CSTRING_TSCP( t16330 );
+        CONSTANTEXP( ADR( c12314 ) );
+        c12311 = CSTRING_TSCP( t16331 );
+        CONSTANTEXP( ADR( c12311 ) );
+        c12310 = STRINGTOSYMBOL( CSTRING_TSCP( "VECTOR-SET!" ) );
+        CONSTANTEXP( ADR( c12310 ) );
+        c12298 = EMPTYLIST;
+        t16332 = STRINGTOSYMBOL( CSTRING_TSCP( "CEREAL" ) );
+        c12298 = CONS( t16332, c12298 );
+        t16333 = STRINGTOSYMBOL( CSTRING_TSCP( "JAR" ) );
+        c12298 = CONS( t16333, c12298 );
+        t16334 = STRINGTOSYMBOL( CSTRING_TSCP( "MICROWAVE" ) );
+        c12298 = CONS( t16334, c12298 );
+        t16335 = STRINGTOSYMBOL( CSTRING_TSCP( "CUP" ) );
+        c12298 = CONS( t16335, c12298 );
+        t16336 = STRINGTOSYMBOL( CSTRING_TSCP( "BOWL" ) );
+        c12298 = CONS( t16336, c12298 );
+        CONSTANTEXP( ADR( c12298 ) );
+        c12297 = EMPTYLIST;
+        t16337 = STRINGTOSYMBOL( CSTRING_TSCP( "BUCKET" ) );
+        c12297 = CONS( t16337, c12297 );
+        t16338 = STRINGTOSYMBOL( CSTRING_TSCP( "GAS-CAN" ) );
+        c12297 = CONS( t16338, c12297 );
+        t16339 = STRINGTOSYMBOL( CSTRING_TSCP( "WATERING-POT" ) );
+        c12297 = CONS( t16339, c12297 );
+        t16340 = STRINGTOSYMBOL( CSTRING_TSCP( "BOX" ) );
+        c12297 = CONS( t16340, c12297 );
+        t16341 = STRINGTOSYMBOL( CSTRING_TSCP( "COOLER" ) );
+        c12297 = CONS( t16341, c12297 );
+        c12297 = CONS( t16335, c12297 );
+        t16342 = STRINGTOSYMBOL( CSTRING_TSCP( "JUICE" ) );
+        c12297 = CONS( t16342, c12297 );
+        t16343 = STRINGTOSYMBOL( CSTRING_TSCP( "MILK" ) );
+        c12297 = CONS( t16343, c12297 );
+        t16344 = STRINGTOSYMBOL( CSTRING_TSCP( "KETCHUP" ) );
+        c12297 = CONS( t16344, c12297 );
+        t16345 = STRINGTOSYMBOL( CSTRING_TSCP( "COFFEE" ) );
+        c12297 = CONS( t16345, c12297 );
+        t16346 = STRINGTOSYMBOL( CSTRING_TSCP( "CLEANER" ) );
+        c12297 = CONS( t16346, c12297 );
+        t16347 = STRINGTOSYMBOL( CSTRING_TSCP( "PINEAPPLE" ) );
+        c12297 = CONS( t16347, c12297 );
+        t16348 = STRINGTOSYMBOL( CSTRING_TSCP( "SQUASH" ) );
+        c12297 = CONS( t16348, c12297 );
+        t16349 = STRINGTOSYMBOL( CSTRING_TSCP( "CABBAGE" ) );
+        c12297 = CONS( t16349, c12297 );
+        c12297 = CONS( t16336, c12297 );
+        CONSTANTEXP( ADR( c12297 ) );
+        c12296 = EMPTYLIST;
+        t16350 = STRINGTOSYMBOL( CSTRING_TSCP( "VR" ) );
+        c12296 = CONS( t16350, c12296 );
+        t16351 = STRINGTOSYMBOL( CSTRING_TSCP( "CR" ) );
+        c12296 = CONS( t16351, c12296 );
+        t16352 = STRINGTOSYMBOL( CSTRING_TSCP( "CL" ) );
+        c12296 = CONS( t16352, c12296 );
+        t16353 = STRINGTOSYMBOL( CSTRING_TSCP( "AA" ) );
+        c12296 = CONS( t16353, c12296 );
+        t16354 = STRINGTOSYMBOL( CSTRING_TSCP( "RT" ) );
+        c12296 = CONS( t16354, c12296 );
+        t16355 = STRINGTOSYMBOL( CSTRING_TSCP( "MV" ) );
+        c12296 = CONS( t16355, c12296 );
+        t16356 = STRINGTOSYMBOL( CSTRING_TSCP( "A2" ) );
+        c12296 = CONS( t16356, c12296 );
+        t16357 = STRINGTOSYMBOL( CSTRING_TSCP( "A1" ) );
+        c12296 = CONS( t16357, c12296 );
+        t16358 = STRINGTOSYMBOL( CSTRING_TSCP( "B2" ) );
+        c12296 = CONS( t16358, c12296 );
+        t16359 = STRINGTOSYMBOL( CSTRING_TSCP( "B1" ) );
+        c12296 = CONS( t16359, c12296 );
+        t16360 = STRINGTOSYMBOL( CSTRING_TSCP( "I2" ) );
+        c12296 = CONS( t16360, c12296 );
+        t16361 = STRINGTOSYMBOL( CSTRING_TSCP( "I1" ) );
+        c12296 = CONS( t16361, c12296 );
+        t16362 = STRINGTOSYMBOL( CSTRING_TSCP( "N2" ) );
+        c12296 = CONS( t16362, c12296 );
+        t16363 = STRINGTOSYMBOL( CSTRING_TSCP( "N1" ) );
+        c12296 = CONS( t16363, c12296 );
+        t16364 = STRINGTOSYMBOL( CSTRING_TSCP( "T2" ) );
+        c12296 = CONS( t16364, c12296 );
+        t16365 = STRINGTOSYMBOL( CSTRING_TSCP( "T1" ) );
+        c12296 = CONS( t16365, c12296 );
+        t16366 = STRINGTOSYMBOL( CSTRING_TSCP( "R2" ) );
+        c12296 = CONS( t16366, c12296 );
+        t16367 = STRINGTOSYMBOL( CSTRING_TSCP( "R1" ) );
+        c12296 = CONS( t16367, c12296 );
+        t16368 = STRINGTOSYMBOL( CSTRING_TSCP( "L2" ) );
+        c12296 = CONS( t16368, c12296 );
+        t16369 = STRINGTOSYMBOL( CSTRING_TSCP( "L1" ) );
+        c12296 = CONS( t16369, c12296 );
+        t16370 = STRINGTOSYMBOL( CSTRING_TSCP( "AW" ) );
+        c12296 = CONS( t16370, c12296 );
+        t16371 = STRINGTOSYMBOL( CSTRING_TSCP( "TW" ) );
+        c12296 = CONS( t16371, c12296 );
+        t16372 = STRINGTOSYMBOL( CSTRING_TSCP( "AP" ) );
+        c12296 = CONS( t16372, c12296 );
+        t16373 = STRINGTOSYMBOL( CSTRING_TSCP( "C" ) );
+        c12296 = CONS( t16373, c12296 );
+        t16374 = STRINGTOSYMBOL( CSTRING_TSCP( "PD" ) );
+        c12296 = CONS( t16374, c12296 );
+        t16375 = STRINGTOSYMBOL( CSTRING_TSCP( "PK" ) );
+        c12296 = CONS( t16375, c12296 );
+        t16376 = STRINGTOSYMBOL( CSTRING_TSCP( "R" ) );
+        c12296 = CONS( t16376, c12296 );
+        t16377 = STRINGTOSYMBOL( CSTRING_TSCP( "L" ) );
+        c12296 = CONS( t16377, c12296 );
+        CONSTANTEXP( ADR( c12296 ) );
+        c12273 = CSTRING_TSCP( t16378 );
+        CONSTANTEXP( ADR( c12273 ) );
+        c12272 = STRINGTOSYMBOL( CSTRING_TSCP( "SET-CDR!" ) );
+        CONSTANTEXP( ADR( c12272 ) );
+        c12230 = EMPTYLIST;
+        t16379 = STRINGTOSYMBOL( CSTRING_TSCP( "VERTICAL" ) );
+        c12230 = CONS( t16379, c12230 );
+        t16380 = STRINGTOSYMBOL( CSTRING_TSCP( "CARRIED-RIGHTWARDS" ) );
+        c12230 = CONS( t16380, c12230 );
+        t16381 = STRINGTOSYMBOL( CSTRING_TSCP( "CARRIED-LEFTWARDS" ) );
+        c12230 = CONS( t16381, c12230 );
+        t16382 = STRINGTOSYMBOL( CSTRING_TSCP( "ABOVE-ANY" ) );
+        c12230 = CONS( t16382, c12230 );
+        t16383 = STRINGTOSYMBOL( CSTRING_TSCP( "ROTATED" ) );
+        c12230 = CONS( t16383, c12230 );
+        t16384 = STRINGTOSYMBOL( CSTRING_TSCP( "MOVED" ) );
+        c12230 = CONS( t16384, c12230 );
+        t16385 = STRINGTOSYMBOL( CSTRING_TSCP( "ABOVE-END" ) );
+        c12230 = CONS( t16385, c12230 );
+        t16386 = STRINGTOSYMBOL( CSTRING_TSCP( "ABOVE-START" ) );
+        c12230 = CONS( t16386, c12230 );
+        t16387 = STRINGTOSYMBOL( CSTRING_TSCP( "BELOW-END" ) );
+        c12230 = CONS( t16387, c12230 );
+        t16388 = STRINGTOSYMBOL( CSTRING_TSCP( "BELOW-START" ) );
+        c12230 = CONS( t16388, c12230 );
+        t16389 = STRINGTOSYMBOL( CSTRING_TSCP( "IN-END" ) );
+        c12230 = CONS( t16389, c12230 );
+        t16390 = STRINGTOSYMBOL( CSTRING_TSCP( "IN-START" ) );
+        c12230 = CONS( t16390, c12230 );
+        t16391 = STRINGTOSYMBOL( CSTRING_TSCP( "NEAR-END" ) );
+        c12230 = CONS( t16391, c12230 );
+        t16392 = STRINGTOSYMBOL( CSTRING_TSCP( "NEAR-START" ) );
+        c12230 = CONS( t16392, c12230 );
+        t16393 = STRINGTOSYMBOL( CSTRING_TSCP( "ON-TOP-OF-END" ) );
+        c12230 = CONS( t16393, c12230 );
+        t16394 = STRINGTOSYMBOL( CSTRING_TSCP( "ON-TOP-OF-START" ) );
+        c12230 = CONS( t16394, c12230 );
+        t16395 = STRINGTOSYMBOL( CSTRING_TSCP( "TO-THE-RIGHT-OF-END" ) );
+        c12230 = CONS( t16395, c12230 );
+        t16396 = STRINGTOSYMBOL( CSTRING_TSCP( "TO-THE-RIGHT-OF-START" ) );
+        c12230 = CONS( t16396, c12230 );
+        t16397 = STRINGTOSYMBOL( CSTRING_TSCP( "TO-THE-LEFT-OF-END" ) );
+        c12230 = CONS( t16397, c12230 );
+        t16398 = STRINGTOSYMBOL( CSTRING_TSCP( "TO-THE-LEFT-OF-START" ) );
+        c12230 = CONS( t16398, c12230 );
+        c12230 = CONS( c15030, c12230 );
+        c12230 = CONS( c15026, c12230 );
+        c12230 = CONS( c15022, c12230 );
+        c12230 = CONS( c15018, c12230 );
+        c12230 = CONS( c15014, c12230 );
+        c12230 = CONS( c15010, c12230 );
+        c12230 = CONS( c15006, c12230 );
+        c12230 = CONS( c15002, c12230 );
+        CONSTANTEXP( ADR( c12230 ) );
+}
+
+DEFTSCP( parser_er_2d1_2d0_a1598498_v );
+DEFCSTRING( t16399, "gensym-parser-1-0" );
+
+TSCP  parser_er_2d1_2d0_a1598498(  )
+{
+        PUSHSTACKTRACE( t16399 );
+        POPSTACKTRACE( 0 );}
+  #include<stddef.h>
+int gensym_parser_2_0(){ return 1;gensym_parser_2_0( );
+}
+
+DEFTSCP( parser_er_2d3_2d0_db99d7f8_v );
+DEFCSTRING( t16401, "gensym-parser-3-0" );
+
+TSCP  parser_er_2d3_2d0_db99d7f8(  )
+{
+        PUSHSTACKTRACE( t16401 );
+        POPSTACKTRACE( 0 );}
+  #include<stdlib.h>
+int gensym_parser_4_0(){ return 1;gensym_parser_4_0( );
+}
+
+DEFTSCP( parser_er_2d5_2d0_54d92258_v );
+DEFCSTRING( t16403, "gensym-parser-5-0" );
+
+TSCP  parser_er_2d5_2d0_54d92258(  )
+{
+        PUSHSTACKTRACE( t16403 );
+        POPSTACKTRACE( 0 );}
+  #include<string.h>
+int gensym_parser_6_0(){ return 1;gensym_parser_6_0( );
+}
+
+DEFTSCP( parser_2dnames_2a_b6d78203_v );
+DEFCSTRING( t16405, "*PREDICATE-NAMES*" );
+DEFTSCP( parser_2dnames_2a_e0d5f98d_v );
+DEFCSTRING( t16406, "*PREDICATE-FULL-NAMES*" );
+EXTERNTSCPP( sc_cons, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( sc_cons_v );
+EXTERNTSCPP( scrt1__24__car_2derror, XAL1( TSCP ) );
+EXTERNTSCP( scrt1__24__car_2derror_v );
+EXTERNTSCPP( scdebug_error, XAL3( TSCP, TSCP, TSCP ) );
+EXTERNTSCP( scdebug_error_v );
+DEFTSCP( parser__2aobjects_2dhouse_2a_v );
+DEFCSTRING( t16430, "*OBJECTS-HOUSE*" );
+DEFTSCP( parser__2aobjects_2dcad_2a_v );
+DEFCSTRING( t16431, "*OBJECTS-CAD*" );
+DEFTSCP( parser_ion_2drule_1c30c837_v );
+DEFCSTRING( t16432, "MAKE-PRODUCTION-RULE" );
+EXTERNTSCPP( sc_make_2dvector, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( sc_make_2dvector_v );
+
+TSCP  parser_ion_2drule_1c30c837( l12300, r12301 )
+        TSCP  l12300, r12301;
+{
+        TSCP  X1;
+
+        PUSHSTACKTRACE( t16432 );
+        X1 = sc_make_2dvector( _TSCP( 12 ), EMPTYLIST );
+        if  ( AND( EQ( TSCPTAG( X1 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( X1 ), VECTORTAG ) ) )  goto L16436;
+        scdebug_error( c12310, 
+                       c12311, CONS( X1, EMPTYLIST ) );
+L16436:
+        if  ( EQ( TSCPTAG( _TSCP( 0 ) ), FIXNUMTAG ) )  goto L16438;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 0 ), EMPTYLIST ) );
+L16438:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 0 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( X1 ) ) ) )  goto L16440;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 0 ), EMPTYLIST ) );
+L16440:
+        SETGEN( VECTOR_ELEMENT( X1, _TSCP( 0 ) ), c12319 );
+        if  ( EQ( TSCPTAG( _TSCP( 4 ) ), FIXNUMTAG ) )  goto L16443;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16443:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 4 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( X1 ) ) ) )  goto L16445;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16445:
+        SETGEN( VECTOR_ELEMENT( X1, _TSCP( 4 ) ), l12300 );
+        if  ( EQ( TSCPTAG( _TSCP( 8 ) ), FIXNUMTAG ) )  goto L16448;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 8 ), EMPTYLIST ) );
+L16448:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 8 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( X1 ) ) ) )  goto L16450;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 8 ), EMPTYLIST ) );
+L16450:
+        SETGEN( VECTOR_ELEMENT( X1, _TSCP( 8 ) ), r12301 );
+        POPSTACKTRACE( X1 );
+}
+
+DEFTSCP( parser_production_2drule_3f_v );
+DEFCSTRING( t16452, "PRODUCTION-RULE?" );
+EXTERNTSCPP( scrt2__3d_2dtwo, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt2__3d_2dtwo_v );
+
+TSCP  parser_production_2drule_3f( o12346 )
+        TSCP  o12346;
+{
+        TSCP  X2, X1;
+
+        PUSHSTACKTRACE( t16452 );
+        if  ( NOT( AND( EQ( TSCPTAG( o12346 ), EXTENDEDTAG ), 
+                        EQ( TSCP_EXTENDEDTAG( o12346 ), 
+                            VECTORTAG ) ) ) )  goto L16454;
+        X2 = C_FIXED( VECTOR_LENGTH( o12346 ) );
+        if  ( BITAND( BITOR( _S2CINT( X2 ), 
+                             _S2CINT( _TSCP( 12 ) ) ), 
+                      3 ) )  goto L16458;
+        X1 = BOOLEAN( EQ( _S2CUINT( X2 ), 
+                          _S2CUINT( _TSCP( 12 ) ) ) );
+        goto L16459;
+L16458:
+        X1 = scrt2__3d_2dtwo( X2, _TSCP( 12 ) );
+L16459:
+        if  ( FALSE( X1 ) )  goto L16461;
+        if  ( EQ( TSCPTAG( _TSCP( 0 ) ), FIXNUMTAG ) )  goto L16464;
+        scdebug_error( c12379, 
+                       c12314, CONS( _TSCP( 0 ), EMPTYLIST ) );
+L16464:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 0 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( o12346 ) ) ) )  goto L16466;
+        scdebug_error( c12379, 
+                       c12318, CONS( _TSCP( 0 ), EMPTYLIST ) );
+L16466:
+        X2 = VECTOR_ELEMENT( o12346, _TSCP( 0 ) );
+        POPSTACKTRACE( BOOLEAN( EQ( _S2CUINT( X2 ), 
+                                    _S2CUINT( c12319 ) ) ) );
+L16461:
+        POPSTACKTRACE( X1 );
+L16454:
+        POPSTACKTRACE( FALSEVALUE );
+}
+
+DEFTSCP( parser_e_2dlhs_21_58027dcd_v );
+DEFCSTRING( t16468, "LOCAL-SET-PRODUCTION-RULE-LHS!" );
+EXTERNTSCPP( qobischeme_panic, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_panic_v );
+EXTERNTSCPP( obischeme_r_2dset_21_3e0bb247, 
+             XAL3( TSCP, TSCP, TSCP ) );
+EXTERNTSCP( obischeme_r_2dset_21_3e0bb247_v );
+
+TSCP  parser_e_2dlhs_21_58027dcd( t12386, o12387 )
+        TSCP  t12386, o12387;
+{
+        PUSHSTACKTRACE( t16468 );
+        if  ( TRUE( parser_production_2drule_3f( t12386 ) ) )  goto L16470;
+        qobischeme_panic( c12388, EMPTYLIST );
+L16470:
+        POPSTACKTRACE( obischeme_r_2dset_21_3e0bb247( t12386, 
+                                                      _TSCP( 4 ), 
+                                                      o12387 ) );
+}
+
+DEFTSCP( parser_rule_2dlhs_2a1135cc_v );
+DEFCSTRING( t16472, "PRODUCTION-RULE-LHS" );
+
+TSCP  parser_rule_2dlhs_2a1135cc( t12390 )
+        TSCP  t12390;
+{
+        PUSHSTACKTRACE( t16472 );
+        if  ( TRUE( parser_production_2drule_3f( t12390 ) ) )  goto L16474;
+        qobischeme_panic( c12391, EMPTYLIST );
+L16474:
+        if  ( AND( EQ( TSCPTAG( t12390 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( t12390 ), VECTORTAG ) )
+            )  goto L16477;
+        scdebug_error( c12379, 
+                       c12311, CONS( t12390, EMPTYLIST ) );
+L16477:
+        if  ( EQ( TSCPTAG( _TSCP( 4 ) ), FIXNUMTAG ) )  goto L16479;
+        scdebug_error( c12379, 
+                       c12314, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16479:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 4 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( t12390 ) ) ) )  goto L16481;
+        scdebug_error( c12379, 
+                       c12318, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16481:
+        POPSTACKTRACE( VECTOR_ELEMENT( t12390, _TSCP( 4 ) ) );
+}
+
+DEFTSCP( parser_e_2dlhs_21_5a079f5_v );
+DEFCSTRING( t16483, "SET-PRODUCTION-RULE-LHS!" );
+
+TSCP  parser_e_2dlhs_21_5a079f5( t12403, o12404 )
+        TSCP  t12403, o12404;
+{
+        PUSHSTACKTRACE( t16483 );
+        if  ( TRUE( parser_production_2drule_3f( t12403 ) ) )  goto L16485;
+        qobischeme_panic( c12405, EMPTYLIST );
+L16485:
+        if  ( AND( EQ( TSCPTAG( t12403 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( t12403 ), VECTORTAG ) )
+            )  goto L16488;
+        scdebug_error( c12310, 
+                       c12311, CONS( t12403, EMPTYLIST ) );
+L16488:
+        if  ( EQ( TSCPTAG( _TSCP( 4 ) ), FIXNUMTAG ) )  goto L16490;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16490:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 4 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( t12403 ) ) ) )  goto L16492;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16492:
+        POPSTACKTRACE( SETGEN( VECTOR_ELEMENT( t12403, _TSCP( 4 ) ), 
+                               o12404 ) );
+}
+
+DEFTSCP( parser_e_2drhs_21_61de1e26_v );
+DEFCSTRING( t16494, "LOCAL-SET-PRODUCTION-RULE-RHS!" );
+
+TSCP  parser_e_2drhs_21_61de1e26( t12418, o12419 )
+        TSCP  t12418, o12419;
+{
+        PUSHSTACKTRACE( t16494 );
+        if  ( TRUE( parser_production_2drule_3f( t12418 ) ) )  goto L16496;
+        qobischeme_panic( c12420, EMPTYLIST );
+L16496:
+        POPSTACKTRACE( obischeme_r_2dset_21_3e0bb247( t12418, 
+                                                      _TSCP( 8 ), 
+                                                      o12419 ) );
+}
+
+DEFTSCP( parser_rule_2drhs_3ca9bbb6_v );
+DEFCSTRING( t16498, "PRODUCTION-RULE-RHS" );
+
+TSCP  parser_rule_2drhs_3ca9bbb6( t12422 )
+        TSCP  t12422;
+{
+        PUSHSTACKTRACE( t16498 );
+        if  ( TRUE( parser_production_2drule_3f( t12422 ) ) )  goto L16500;
+        qobischeme_panic( c12423, EMPTYLIST );
+L16500:
+        if  ( AND( EQ( TSCPTAG( t12422 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( t12422 ), VECTORTAG ) )
+            )  goto L16503;
+        scdebug_error( c12379, 
+                       c12311, CONS( t12422, EMPTYLIST ) );
+L16503:
+        if  ( EQ( TSCPTAG( _TSCP( 8 ) ), FIXNUMTAG ) )  goto L16505;
+        scdebug_error( c12379, 
+                       c12314, CONS( _TSCP( 8 ), EMPTYLIST ) );
+L16505:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 8 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( t12422 ) ) ) )  goto L16507;
+        scdebug_error( c12379, 
+                       c12318, CONS( _TSCP( 8 ), EMPTYLIST ) );
+L16507:
+        POPSTACKTRACE( VECTOR_ELEMENT( t12422, _TSCP( 8 ) ) );
+}
+
+DEFTSCP( parser_e_2drhs_21_3c7c1a1e_v );
+DEFCSTRING( t16509, "SET-PRODUCTION-RULE-RHS!" );
+
+TSCP  parser_e_2drhs_21_3c7c1a1e( t12435, o12436 )
+        TSCP  t12435, o12436;
+{
+        PUSHSTACKTRACE( t16509 );
+        if  ( TRUE( parser_production_2drule_3f( t12435 ) ) )  goto L16511;
+        qobischeme_panic( c12437, EMPTYLIST );
+L16511:
+        if  ( AND( EQ( TSCPTAG( t12435 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( t12435 ), VECTORTAG ) )
+            )  goto L16514;
+        scdebug_error( c12310, 
+                       c12311, CONS( t12435, EMPTYLIST ) );
+L16514:
+        if  ( EQ( TSCPTAG( _TSCP( 8 ) ), FIXNUMTAG ) )  goto L16516;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 8 ), EMPTYLIST ) );
+L16516:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 8 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( t12435 ) ) ) )  goto L16518;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 8 ), EMPTYLIST ) );
+L16518:
+        POPSTACKTRACE( SETGEN( VECTOR_ELEMENT( t12435, _TSCP( 8 ) ), 
+                               o12436 ) );
+}
+
+DEFTSCP( parser_make_2dcfg_v );
+DEFCSTRING( t16520, "MAKE-CFG" );
+
+TSCP  parser_make_2dcfg( r12450 )
+        TSCP  r12450;
+{
+        TSCP  X1;
+
+        PUSHSTACKTRACE( t16520 );
+        X1 = sc_make_2dvector( _TSCP( 8 ), EMPTYLIST );
+        if  ( AND( EQ( TSCPTAG( X1 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( X1 ), VECTORTAG ) ) )  goto L16524;
+        scdebug_error( c12310, 
+                       c12311, CONS( X1, EMPTYLIST ) );
+L16524:
+        if  ( EQ( TSCPTAG( _TSCP( 0 ) ), FIXNUMTAG ) )  goto L16526;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 0 ), EMPTYLIST ) );
+L16526:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 0 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( X1 ) ) ) )  goto L16528;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 0 ), EMPTYLIST ) );
+L16528:
+        SETGEN( VECTOR_ELEMENT( X1, _TSCP( 0 ) ), c12464 );
+        if  ( EQ( TSCPTAG( _TSCP( 4 ) ), FIXNUMTAG ) )  goto L16531;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16531:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 4 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( X1 ) ) ) )  goto L16533;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16533:
+        SETGEN( VECTOR_ELEMENT( X1, _TSCP( 4 ) ), r12450 );
+        POPSTACKTRACE( X1 );
+}
+
+DEFTSCP( parser_cfg_3f_v );
+DEFCSTRING( t16535, "CFG?" );
+
+TSCP  parser_cfg_3f( o12477 )
+        TSCP  o12477;
+{
+        TSCP  X2, X1;
+
+        PUSHSTACKTRACE( t16535 );
+        if  ( NOT( AND( EQ( TSCPTAG( o12477 ), EXTENDEDTAG ), 
+                        EQ( TSCP_EXTENDEDTAG( o12477 ), 
+                            VECTORTAG ) ) ) )  goto L16537;
+        X2 = C_FIXED( VECTOR_LENGTH( o12477 ) );
+        if  ( BITAND( BITOR( _S2CINT( X2 ), 
+                             _S2CINT( _TSCP( 8 ) ) ), 
+                      3 ) )  goto L16541;
+        X1 = BOOLEAN( EQ( _S2CUINT( X2 ), 
+                          _S2CUINT( _TSCP( 8 ) ) ) );
+        goto L16542;
+L16541:
+        X1 = scrt2__3d_2dtwo( X2, _TSCP( 8 ) );
+L16542:
+        if  ( FALSE( X1 ) )  goto L16544;
+        if  ( EQ( TSCPTAG( _TSCP( 0 ) ), FIXNUMTAG ) )  goto L16547;
+        scdebug_error( c12379, 
+                       c12314, CONS( _TSCP( 0 ), EMPTYLIST ) );
+L16547:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 0 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( o12477 ) ) ) )  goto L16549;
+        scdebug_error( c12379, 
+                       c12318, CONS( _TSCP( 0 ), EMPTYLIST ) );
+L16549:
+        X2 = VECTOR_ELEMENT( o12477, _TSCP( 0 ) );
+        POPSTACKTRACE( BOOLEAN( EQ( _S2CUINT( X2 ), 
+                                    _S2CUINT( c12464 ) ) ) );
+L16544:
+        POPSTACKTRACE( X1 );
+L16537:
+        POPSTACKTRACE( FALSEVALUE );
+}
+
+DEFTSCP( parser_2drules_21_8770e3d9_v );
+DEFCSTRING( t16551, "LOCAL-SET-CFG-RULES!" );
+
+TSCP  parser_2drules_21_8770e3d9( t12515, o12516 )
+        TSCP  t12515, o12516;
+{
+        PUSHSTACKTRACE( t16551 );
+        if  ( TRUE( parser_cfg_3f( t12515 ) ) )  goto L16553;
+        qobischeme_panic( c12517, EMPTYLIST );
+L16553:
+        POPSTACKTRACE( obischeme_r_2dset_21_3e0bb247( t12515, 
+                                                      _TSCP( 4 ), 
+                                                      o12516 ) );
+}
+
+DEFTSCP( parser_cfg_2drules_v );
+DEFCSTRING( t16555, "CFG-RULES" );
+
+TSCP  parser_cfg_2drules( t12519 )
+        TSCP  t12519;
+{
+        PUSHSTACKTRACE( t16555 );
+        if  ( TRUE( parser_cfg_3f( t12519 ) ) )  goto L16557;
+        qobischeme_panic( c12520, EMPTYLIST );
+L16557:
+        if  ( AND( EQ( TSCPTAG( t12519 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( t12519 ), VECTORTAG ) )
+            )  goto L16560;
+        scdebug_error( c12379, 
+                       c12311, CONS( t12519, EMPTYLIST ) );
+L16560:
+        if  ( EQ( TSCPTAG( _TSCP( 4 ) ), FIXNUMTAG ) )  goto L16562;
+        scdebug_error( c12379, 
+                       c12314, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16562:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 4 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( t12519 ) ) ) )  goto L16564;
+        scdebug_error( c12379, 
+                       c12318, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16564:
+        POPSTACKTRACE( VECTOR_ELEMENT( t12519, _TSCP( 4 ) ) );
+}
+
+DEFTSCP( parser_set_2dcfg_2drules_21_v );
+DEFCSTRING( t16566, "SET-CFG-RULES!" );
+
+TSCP  parser_set_2dcfg_2drules_21( t12532, o12533 )
+        TSCP  t12532, o12533;
+{
+        PUSHSTACKTRACE( t16566 );
+        if  ( TRUE( parser_cfg_3f( t12532 ) ) )  goto L16568;
+        qobischeme_panic( c12534, EMPTYLIST );
+L16568:
+        if  ( AND( EQ( TSCPTAG( t12532 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( t12532 ), VECTORTAG ) )
+            )  goto L16571;
+        scdebug_error( c12310, 
+                       c12311, CONS( t12532, EMPTYLIST ) );
+L16571:
+        if  ( EQ( TSCPTAG( _TSCP( 4 ) ), FIXNUMTAG ) )  goto L16573;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16573:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 4 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( t12532 ) ) ) )  goto L16575;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16575:
+        POPSTACKTRACE( SETGEN( VECTOR_ELEMENT( t12532, _TSCP( 4 ) ), 
+                               o12533 ) );
+}
+
+DEFTSCP( parser_p_2dlhs_v );
+DEFCSTRING( t16577, "P-LHS" );
+DEFTSCP( parser_p_2drhs_v );
+DEFCSTRING( t16578, "P-RHS" );
+DEFTSCP( parser_p_2dleaf_3f_v );
+DEFCSTRING( t16579, "P-LEAF?" );
+EXTERNTSCPP( qobischeme_every, XAL3( TSCP, TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_every_v );
+EXTERNTSCPP( scrt2_symbol_3f, XAL1( TSCP ) );
+EXTERNTSCP( scrt2_symbol_3f_v );
+
+TSCP  parser_p_2dleaf_3f( l12547 )
+        TSCP  l12547;
+{
+        PUSHSTACKTRACE( t16579 );
+        POPSTACKTRACE( qobischeme_every( scrt2_symbol_3f_v, 
+                                         l12547, EMPTYLIST ) );
+}
+
+DEFTSCP( parser_ip_2dleaf_3f_v );
+DEFCSTRING( t16581, "IP-LEAF?" );
+EXTERNTSCPP( parser_drop_2duntil, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( parser_drop_2duntil_v );
+EXTERNTSCPP( scrt4_vector_3f, XAL1( TSCP ) );
+EXTERNTSCP( scrt4_vector_3f_v );
+EXTERNTSCPP( parser_take_2duntil, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( parser_take_2duntil_v );
+
+TSCP  parser_ip_2dleaf_3f( l12549 )
+        TSCP  l12549;
+{
+        TSCP  X3, X2, X1;
+
+        PUSHSTACKTRACE( t16581 );
+        X1 = parser_drop_2duntil( scrt4_vector_3f_v, l12549 );
+        X2 = parser_take_2duntil( scrt4_vector_3f_v, l12549 );
+        X3 = qobischeme_every( scrt2_symbol_3f_v, X2, EMPTYLIST );
+        if  ( FALSE( X3 ) )  goto L16585;
+        POPSTACKTRACE( qobischeme_every( scrt4_vector_3f_v, 
+                                         X1, EMPTYLIST ) );
+L16585:
+        POPSTACKTRACE( X3 );
+}
+
+DEFTSCP( parser_index_2dleaves_v );
+DEFCSTRING( t16587, "INDEX-LEAVES" );
+EXTERNTSCPP( scrt1_append_2dtwo, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt1_append_2dtwo_v );
+EXTERNTSCPP( scrt4_list_2d_3evector, XAL1( TSCP ) );
+EXTERNTSCP( scrt4_list_2d_3evector_v );
+EXTERNTSCP( qobischeme_fail_v );
+EXTERNTSCPP( qobischeme_set_2dfail_21, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_set_2dfail_21_v );
+
+TSCP  parser_l12571( c16599 )
+        TSCP  c16599;
+{
+        TSCP  X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l12571 [inside INDEX-LEAVES]" );
+        X1 = DISPLAY( 5 );
+        DISPLAY( 5 ) = CLOSURE_VAR( c16599, 0 );
+        X2 = DISPLAY( 4 );
+        DISPLAY( 4 ) = CLOSURE_VAR( c16599, 1 );
+        qobischeme_set_2dfail_21( DISPLAY( 5 ) );
+        X4 = DISPLAY( 4 );
+        X4 = UNKNOWNCALL( X4, 1 );
+        X3 = VIA( PROCEDURE_CODE( X4 ) )( FALSEVALUE, 
+                                          PROCEDURE_CLOSURE( X4 ) );
+        DISPLAY( 5 ) = X1;
+        DISPLAY( 4 ) = X2;
+        POPSTACKTRACE( X3 );
+}
+
+EXTERNTSCPP( obischeme__2dbetween_97a3111a, 
+             XAL2( TSCP, TSCP ) );
+EXTERNTSCP( obischeme__2dbetween_97a3111a_v );
+EXTERNTSCPP( scrt1_length, XAL1( TSCP ) );
+EXTERNTSCP( scrt1_length_v );
+EXTERNTSCPP( scrt1__24__cdr_2derror, XAL1( TSCP ) );
+EXTERNTSCP( scrt1__24__cdr_2derror_v );
+EXTERNTSCPP( parser_index_2dleaves, 
+             XAL3( TSCP, TSCP, TSCP ) );
+EXTERNTSCP( parser_index_2dleaves_v );
+EXTERNTSCPP( scrt1_list_2dref, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt1_list_2dref_v );
+
+TSCP  parser_l12567( r12568, c16596 )
+        TSCP  r12568, c16596;
+{
+        TSCP  X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD4 = DISPLAY( 4 );
+        TSCP  SD5 = DISPLAY( 5 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( "parser_l12567 [inside INDEX-LEAVES]" );
+        X1 = DISPLAY( 2 );
+        DISPLAY( 2 ) = CLOSURE_VAR( c16596, 0 );
+        X2 = DISPLAY( 1 );
+        DISPLAY( 1 ) = CLOSURE_VAR( c16596, 1 );
+        X3 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c16596, 2 );
+        X4 = DISPLAY( 3 );
+        DISPLAY( 3 ) = CLOSURE_VAR( c16596, 3 );
+        DISPLAY( 4 ) = r12568;
+        DISPLAY( 5 ) = qobischeme_fail_v;
+        X6 = MAKEPROCEDURE( 0, 
+                            0, 
+                            parser_l12571, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         2, 
+                                         DISPLAY( 5 ), 
+                                         DISPLAY( 4 ) ) );
+        qobischeme_set_2dfail_21( X6 );
+        X11 = DISPLAY( 0 );
+        if  ( EQ( TSCPTAG( X11 ), PAIRTAG ) )  goto L16602;
+        scrt1__24__cdr_2derror( X11 );
+L16602:
+        X10 = PAIR_CDR( X11 );
+        X9 = scrt1_length( X10 );
+        X8 = obischeme__2dbetween_97a3111a( _TSCP( 4 ), X9 );
+        X9 = scrt1_list_2dref( DISPLAY( 0 ), X8 );
+        X10 = sc_cons( X8, DISPLAY( 2 ) );
+        X7 = parser_index_2dleaves( X9, DISPLAY( 1 ), X10 );
+        X6 = sc_cons( X7, PAIR_CAR( DISPLAY( 3 ) ) );
+        SETGEN( PAIR_CAR( DISPLAY( 3 ) ), X6 );
+        X6 = qobischeme_fail_v;
+        X6 = UNKNOWNCALL( X6, 0 );
+        X5 = VIA( PROCEDURE_CODE( X6 ) )( PROCEDURE_CLOSURE( X6 ) );
+        DISPLAY( 2 ) = X1;
+        DISPLAY( 1 ) = X2;
+        DISPLAY( 0 ) = X3;
+        DISPLAY( 3 ) = X4;
+        SDVAL = X5;
+        DISPLAY( 4 ) = SD4;
+        DISPLAY( 5 ) = SD5;
+        POPSTACKTRACE( SDVAL );
+}
+
+EXTERNTSCP( sc_ntinuation_1af38b9f_v );
+EXTERNTSCPP( scrt1_reverse, XAL1( TSCP ) );
+EXTERNTSCP( scrt1_reverse_v );
+
+TSCP  parser_index_2dleaves( t12558, l12559, p12560 )
+        TSCP  t12558, l12559, p12560;
+{
+        TSCP  X4, X3, X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SD1 = DISPLAY( 1 );
+        TSCP  SD2 = DISPLAY( 2 );
+        TSCP  SD3 = DISPLAY( 3 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t16587 );
+        DISPLAY( 0 ) = t12558;
+        DISPLAY( 1 ) = l12559;
+        DISPLAY( 2 ) = p12560;
+        X1 = DISPLAY( 1 );
+        X1 = UNKNOWNCALL( X1, 1 );
+        if  ( FALSE( VIA( PROCEDURE_CODE( X1 ) )( DISPLAY( 0 ), 
+                                                  PROCEDURE_CLOSURE( X1 ) ) )
+            )  goto L16589;
+        X3 = scrt4_list_2d_3evector( DISPLAY( 2 ) );
+        X2 = sc_cons( X3, EMPTYLIST );
+        X1 = X2;
+        SDVAL = scrt1_append_2dtwo( DISPLAY( 0 ), X1 );
+        DISPLAY( 0 ) = SD0;
+        DISPLAY( 1 ) = SD1;
+        DISPLAY( 2 ) = SD2;
+        DISPLAY( 3 ) = SD3;
+        POPSTACKTRACE( SDVAL );
+L16589:
+        X2 = DISPLAY( 0 );
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L16593;
+        scrt1__24__car_2derror( X2 );
+L16593:
+        X1 = PAIR_CAR( X2 );
+        DISPLAY( 3 ) = EMPTYLIST;
+        DISPLAY( 3 ) = CONS( DISPLAY( 3 ), EMPTYLIST );
+        X4 = MAKEPROCEDURE( 1, 
+                            0, 
+                            parser_l12567, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         4, 
+                                         DISPLAY( 2 ), 
+                                         DISPLAY( 1 ), 
+                                         DISPLAY( 0 ), 
+                                         DISPLAY( 3 ) ) );
+        X3 = sc_ntinuation_1af38b9f_v;
+        X3 = UNKNOWNCALL( X3, 1 );
+        VIA( PROCEDURE_CODE( X3 ) )( X4, PROCEDURE_CLOSURE( X3 ) );
+        X2 = scrt1_reverse( PAIR_CAR( DISPLAY( 3 ) ) );
+        SDVAL = sc_cons( X1, X2 );
+        DISPLAY( 0 ) = SD0;
+        DISPLAY( 1 ) = SD1;
+        DISPLAY( 2 ) = SD2;
+        DISPLAY( 3 ) = SD3;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser_tree_2d_3eleaves_v );
+DEFCSTRING( t16605, "TREE->LEAVES" );
+
+TSCP  parser_l12597( c16616 )
+        TSCP  c16616;
+{
+        TSCP  X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l12597 [inside TREE->LEAVES]" );
+        X1 = DISPLAY( 5 );
+        DISPLAY( 5 ) = CLOSURE_VAR( c16616, 0 );
+        X2 = DISPLAY( 4 );
+        DISPLAY( 4 ) = CLOSURE_VAR( c16616, 1 );
+        qobischeme_set_2dfail_21( DISPLAY( 5 ) );
+        X4 = DISPLAY( 4 );
+        X4 = UNKNOWNCALL( X4, 1 );
+        X3 = VIA( PROCEDURE_CODE( X4 ) )( FALSEVALUE, 
+                                          PROCEDURE_CLOSURE( X4 ) );
+        DISPLAY( 5 ) = X1;
+        DISPLAY( 4 ) = X2;
+        POPSTACKTRACE( X3 );
+}
+
+EXTERNTSCPP( qobischeme_a_2dmember_2dof, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_a_2dmember_2dof_v );
+EXTERNTSCPP( scrt1_list_3f, XAL1( TSCP ) );
+EXTERNTSCP( scrt1_list_3f_v );
+EXTERNTSCPP( parser_l12588, XAL1( TSCP ) );
+
+TSCP  parser_l12593( r12594, c16613 )
+        TSCP  r12594, c16613;
+{
+        TSCP  X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD4 = DISPLAY( 4 );
+        TSCP  SD5 = DISPLAY( 5 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( "parser_l12593 [inside TREE->LEAVES]" );
+        X1 = DISPLAY( 2 );
+        DISPLAY( 2 ) = CLOSURE_VAR( c16613, 0 );
+        X2 = DISPLAY( 1 );
+        DISPLAY( 1 ) = CLOSURE_VAR( c16613, 1 );
+        X3 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c16613, 2 );
+        X4 = DISPLAY( 3 );
+        DISPLAY( 3 ) = CLOSURE_VAR( c16613, 3 );
+        DISPLAY( 4 ) = r12594;
+        DISPLAY( 5 ) = qobischeme_fail_v;
+        X6 = MAKEPROCEDURE( 0, 
+                            0, 
+                            parser_l12597, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         2, 
+                                         DISPLAY( 5 ), 
+                                         DISPLAY( 4 ) ) );
+        qobischeme_set_2dfail_21( X6 );
+        X8 = qobischeme_a_2dmember_2dof( DISPLAY( 2 ) );
+        if  ( FALSE( scrt1_list_3f( X8 ) ) )  goto L16619;
+        X9 = DISPLAY( 0 );
+        X9 = UNKNOWNCALL( X9, 1 );
+        if  ( FALSE( VIA( PROCEDURE_CODE( X9 ) )( X8, 
+                                                  PROCEDURE_CLOSURE( X9 ) ) )
+            )  goto L16621;
+        X9 = sc_cons( X8, PAIR_CAR( DISPLAY( 1 ) ) );
+        X7 = SETGEN( PAIR_CAR( DISPLAY( 1 ) ), X9 );
+        goto L16620;
+L16621:
+        X7 = parser_l12588( X8 );
+        goto L16620;
+L16619:
+        X9 = qobischeme_fail_v;
+        X9 = UNKNOWNCALL( X9, 0 );
+        X7 = VIA( PROCEDURE_CODE( X9 ) )( PROCEDURE_CLOSURE( X9 ) );
+L16620:
+        X6 = sc_cons( X7, PAIR_CAR( DISPLAY( 3 ) ) );
+        SETGEN( PAIR_CAR( DISPLAY( 3 ) ), X6 );
+        X6 = qobischeme_fail_v;
+        X6 = UNKNOWNCALL( X6, 0 );
+        X5 = VIA( PROCEDURE_CODE( X6 ) )( PROCEDURE_CLOSURE( X6 ) );
+        DISPLAY( 2 ) = X1;
+        DISPLAY( 1 ) = X2;
+        DISPLAY( 0 ) = X3;
+        DISPLAY( 3 ) = X4;
+        SDVAL = X5;
+        DISPLAY( 4 ) = SD4;
+        DISPLAY( 5 ) = SD5;
+        POPSTACKTRACE( SDVAL );
+}
+
+TSCP  parser_l12588( t12590 )
+        TSCP  t12590;
+{
+        TSCP  X2, X1;
+        TSCP  SD2 = DISPLAY( 2 );
+        TSCP  SD3 = DISPLAY( 3 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( "LOOP [inside TREE->LEAVES]" );
+        DISPLAY( 2 ) = t12590;
+        DISPLAY( 3 ) = EMPTYLIST;
+        DISPLAY( 3 ) = CONS( DISPLAY( 3 ), EMPTYLIST );
+        X2 = MAKEPROCEDURE( 1, 
+                            0, 
+                            parser_l12593, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         4, 
+                                         DISPLAY( 2 ), 
+                                         DISPLAY( 1 ), 
+                                         DISPLAY( 0 ), 
+                                         DISPLAY( 3 ) ) );
+        X1 = sc_ntinuation_1af38b9f_v;
+        X1 = UNKNOWNCALL( X1, 1 );
+        VIA( PROCEDURE_CODE( X1 ) )( X2, PROCEDURE_CLOSURE( X1 ) );
+        SDVAL = scrt1_reverse( PAIR_CAR( DISPLAY( 3 ) ) );
+        DISPLAY( 2 ) = SD2;
+        DISPLAY( 3 ) = SD3;
+        POPSTACKTRACE( SDVAL );
+}
+
+TSCP  parser_tree_2d_3eleaves( t12581, l12582 )
+        TSCP  t12581, l12582;
+{
+        TSCP  X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SD1 = DISPLAY( 1 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t16605 );
+        DISPLAY( 0 ) = l12582;
+        DISPLAY( 1 ) = EMPTYLIST;
+        DISPLAY( 1 ) = CONS( DISPLAY( 1 ), EMPTYLIST );
+        X1 = DISPLAY( 0 );
+        X1 = UNKNOWNCALL( X1, 1 );
+        if  ( FALSE( VIA( PROCEDURE_CODE( X1 ) )( t12581, 
+                                                  PROCEDURE_CLOSURE( X1 ) ) )
+            )  goto L16608;
+        X1 = sc_cons( t12581, PAIR_CAR( DISPLAY( 1 ) ) );
+        SETGEN( PAIR_CAR( DISPLAY( 1 ) ), X1 );
+        goto L16609;
+L16608:
+        parser_l12588( t12581 );
+L16609:
+        SDVAL = scrt1_reverse( PAIR_CAR( DISPLAY( 1 ) ) );
+        DISPLAY( 0 ) = SD0;
+        DISPLAY( 1 ) = SD1;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser_make_2dzipper_v );
+DEFCSTRING( t16623, "MAKE-ZIPPER" );
+
+TSCP  parser_make_2dzipper( t12601, t12602 )
+        TSCP  t12601, t12602;
+{
+        TSCP  X1;
+
+        PUSHSTACKTRACE( t16623 );
+        X1 = sc_make_2dvector( _TSCP( 12 ), EMPTYLIST );
+        if  ( AND( EQ( TSCPTAG( X1 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( X1 ), VECTORTAG ) ) )  goto L16627;
+        scdebug_error( c12310, 
+                       c12311, CONS( X1, EMPTYLIST ) );
+L16627:
+        if  ( EQ( TSCPTAG( _TSCP( 0 ) ), FIXNUMTAG ) )  goto L16629;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 0 ), EMPTYLIST ) );
+L16629:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 0 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( X1 ) ) ) )  goto L16631;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 0 ), EMPTYLIST ) );
+L16631:
+        SETGEN( VECTOR_ELEMENT( X1, _TSCP( 0 ) ), c12616 );
+        if  ( EQ( TSCPTAG( _TSCP( 4 ) ), FIXNUMTAG ) )  goto L16634;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16634:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 4 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( X1 ) ) ) )  goto L16636;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16636:
+        SETGEN( VECTOR_ELEMENT( X1, _TSCP( 4 ) ), t12601 );
+        if  ( EQ( TSCPTAG( _TSCP( 8 ) ), FIXNUMTAG ) )  goto L16639;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 8 ), EMPTYLIST ) );
+L16639:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 8 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( X1 ) ) ) )  goto L16641;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 8 ), EMPTYLIST ) );
+L16641:
+        SETGEN( VECTOR_ELEMENT( X1, _TSCP( 8 ) ), t12602 );
+        POPSTACKTRACE( X1 );
+}
+
+DEFTSCP( parser_zipper_3f_v );
+DEFCSTRING( t16643, "ZIPPER?" );
+
+TSCP  parser_zipper_3f( o12640 )
+        TSCP  o12640;
+{
+        TSCP  X2, X1;
+
+        PUSHSTACKTRACE( t16643 );
+        if  ( NOT( AND( EQ( TSCPTAG( o12640 ), EXTENDEDTAG ), 
+                        EQ( TSCP_EXTENDEDTAG( o12640 ), 
+                            VECTORTAG ) ) ) )  goto L16645;
+        X2 = C_FIXED( VECTOR_LENGTH( o12640 ) );
+        if  ( BITAND( BITOR( _S2CINT( X2 ), 
+                             _S2CINT( _TSCP( 12 ) ) ), 
+                      3 ) )  goto L16649;
+        X1 = BOOLEAN( EQ( _S2CUINT( X2 ), 
+                          _S2CUINT( _TSCP( 12 ) ) ) );
+        goto L16650;
+L16649:
+        X1 = scrt2__3d_2dtwo( X2, _TSCP( 12 ) );
+L16650:
+        if  ( FALSE( X1 ) )  goto L16652;
+        if  ( EQ( TSCPTAG( _TSCP( 0 ) ), FIXNUMTAG ) )  goto L16655;
+        scdebug_error( c12379, 
+                       c12314, CONS( _TSCP( 0 ), EMPTYLIST ) );
+L16655:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 0 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( o12640 ) ) ) )  goto L16657;
+        scdebug_error( c12379, 
+                       c12318, CONS( _TSCP( 0 ), EMPTYLIST ) );
+L16657:
+        X2 = VECTOR_ELEMENT( o12640, _TSCP( 0 ) );
+        POPSTACKTRACE( BOOLEAN( EQ( _S2CUINT( X2 ), 
+                                    _S2CUINT( c12616 ) ) ) );
+L16652:
+        POPSTACKTRACE( X1 );
+L16645:
+        POPSTACKTRACE( FALSEVALUE );
+}
+
+DEFTSCP( parser__2dtree_21_51090c7_v );
+DEFCSTRING( t16659, "LOCAL-SET-ZIPPER-TREE!" );
+
+TSCP  parser__2dtree_21_51090c7( t12678, o12679 )
+        TSCP  t12678, o12679;
+{
+        PUSHSTACKTRACE( t16659 );
+        if  ( TRUE( parser_zipper_3f( t12678 ) ) )  goto L16661;
+        qobischeme_panic( c12680, EMPTYLIST );
+L16661:
+        POPSTACKTRACE( obischeme_r_2dset_21_3e0bb247( t12678, 
+                                                      _TSCP( 4 ), 
+                                                      o12679 ) );
+}
+
+DEFTSCP( parser_zipper_2dtree_v );
+DEFCSTRING( t16663, "ZIPPER-TREE" );
+
+TSCP  parser_zipper_2dtree( t12682 )
+        TSCP  t12682;
+{
+        PUSHSTACKTRACE( t16663 );
+        if  ( TRUE( parser_zipper_3f( t12682 ) ) )  goto L16665;
+        qobischeme_panic( c12683, EMPTYLIST );
+L16665:
+        if  ( AND( EQ( TSCPTAG( t12682 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( t12682 ), VECTORTAG ) )
+            )  goto L16668;
+        scdebug_error( c12379, 
+                       c12311, CONS( t12682, EMPTYLIST ) );
+L16668:
+        if  ( EQ( TSCPTAG( _TSCP( 4 ) ), FIXNUMTAG ) )  goto L16670;
+        scdebug_error( c12379, 
+                       c12314, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16670:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 4 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( t12682 ) ) ) )  goto L16672;
+        scdebug_error( c12379, 
+                       c12318, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16672:
+        POPSTACKTRACE( VECTOR_ELEMENT( t12682, _TSCP( 4 ) ) );
+}
+
+DEFTSCP( parser_set_2dzipper_2dtree_21_v );
+DEFCSTRING( t16674, "SET-ZIPPER-TREE!" );
+
+TSCP  parser_set_2dzipper_2dtree_21( t12695, o12696 )
+        TSCP  t12695, o12696;
+{
+        PUSHSTACKTRACE( t16674 );
+        if  ( TRUE( parser_zipper_3f( t12695 ) ) )  goto L16676;
+        qobischeme_panic( c12697, EMPTYLIST );
+L16676:
+        if  ( AND( EQ( TSCPTAG( t12695 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( t12695 ), VECTORTAG ) )
+            )  goto L16679;
+        scdebug_error( c12310, 
+                       c12311, CONS( t12695, EMPTYLIST ) );
+L16679:
+        if  ( EQ( TSCPTAG( _TSCP( 4 ) ), FIXNUMTAG ) )  goto L16681;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16681:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 4 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( t12695 ) ) ) )  goto L16683;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 4 ), EMPTYLIST ) );
+L16683:
+        POPSTACKTRACE( SETGEN( VECTOR_ELEMENT( t12695, _TSCP( 4 ) ), 
+                               o12696 ) );
+}
+
+DEFTSCP( parser_dthread_21_3526bc86_v );
+DEFCSTRING( t16685, "LOCAL-SET-ZIPPER-THREAD!" );
+
+TSCP  parser_dthread_21_3526bc86( t12710, o12711 )
+        TSCP  t12710, o12711;
+{
+        PUSHSTACKTRACE( t16685 );
+        if  ( TRUE( parser_zipper_3f( t12710 ) ) )  goto L16687;
+        qobischeme_panic( c12712, EMPTYLIST );
+L16687:
+        POPSTACKTRACE( obischeme_r_2dset_21_3e0bb247( t12710, 
+                                                      _TSCP( 8 ), 
+                                                      o12711 ) );
+}
+
+DEFTSCP( parser_zipper_2dthread_v );
+DEFCSTRING( t16689, "ZIPPER-THREAD" );
+
+TSCP  parser_zipper_2dthread( t12714 )
+        TSCP  t12714;
+{
+        PUSHSTACKTRACE( t16689 );
+        if  ( TRUE( parser_zipper_3f( t12714 ) ) )  goto L16691;
+        qobischeme_panic( c12715, EMPTYLIST );
+L16691:
+        if  ( AND( EQ( TSCPTAG( t12714 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( t12714 ), VECTORTAG ) )
+            )  goto L16694;
+        scdebug_error( c12379, 
+                       c12311, CONS( t12714, EMPTYLIST ) );
+L16694:
+        if  ( EQ( TSCPTAG( _TSCP( 8 ) ), FIXNUMTAG ) )  goto L16696;
+        scdebug_error( c12379, 
+                       c12314, CONS( _TSCP( 8 ), EMPTYLIST ) );
+L16696:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 8 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( t12714 ) ) ) )  goto L16698;
+        scdebug_error( c12379, 
+                       c12318, CONS( _TSCP( 8 ), EMPTYLIST ) );
+L16698:
+        POPSTACKTRACE( VECTOR_ELEMENT( t12714, _TSCP( 8 ) ) );
+}
+
+DEFTSCP( parser_dthread_21_4891c5f5_v );
+DEFCSTRING( t16700, "SET-ZIPPER-THREAD!" );
+
+TSCP  parser_dthread_21_4891c5f5( t12727, o12728 )
+        TSCP  t12727, o12728;
+{
+        PUSHSTACKTRACE( t16700 );
+        if  ( TRUE( parser_zipper_3f( t12727 ) ) )  goto L16702;
+        qobischeme_panic( c12729, EMPTYLIST );
+L16702:
+        if  ( AND( EQ( TSCPTAG( t12727 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( t12727 ), VECTORTAG ) )
+            )  goto L16705;
+        scdebug_error( c12310, 
+                       c12311, CONS( t12727, EMPTYLIST ) );
+L16705:
+        if  ( EQ( TSCPTAG( _TSCP( 8 ) ), FIXNUMTAG ) )  goto L16707;
+        scdebug_error( c12310, 
+                       c12314, CONS( _TSCP( 8 ), EMPTYLIST ) );
+L16707:
+        if  ( LT( _S2CUINT( FIXED_C( _TSCP( 8 ) ) ), 
+                  _S2CUINT( VECTOR_LENGTH( t12727 ) ) ) )  goto L16709;
+        scdebug_error( c12310, 
+                       c12318, CONS( _TSCP( 8 ), EMPTYLIST ) );
+L16709:
+        POPSTACKTRACE( SETGEN( VECTOR_ELEMENT( t12727, _TSCP( 8 ) ), 
+                               o12728 ) );
+}
+
+DEFTSCP( parser_zipper_3ainitialize_v );
+DEFCSTRING( t16711, "ZIPPER:INITIALIZE" );
+
+TSCP  parser_zipper_3ainitialize( t12742 )
+        TSCP  t12742;
+{
+        PUSHSTACKTRACE( t16711 );
+        POPSTACKTRACE( parser_make_2dzipper( t12742, EMPTYLIST ) );
+}
+
+DEFTSCP( parser_zipper_3adescend_v );
+DEFCSTRING( t16713, "ZIPPER:DESCEND" );
+EXTERNTSCPP( scrt2__3c_3d, XAL3( TSCP, TSCP, TSCP ) );
+EXTERNTSCP( scrt2__3c_3d_v );
+EXTERNTSCPP( scrt2__2d_2dtwo, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt2__2d_2dtwo_v );
+EXTERNTSCPP( qobischeme_map_2dindexed, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_map_2dindexed_v );
+
+TSCP  parser_l12755( e12756, j12757, c16721 )
+        TSCP  e12756, j12757, c16721;
+{
+        TSCP  X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l12755 [inside ZIPPER:DESCEND]" );
+        X1 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c16721, 0 );
+        X3 = DISPLAY( 0 );
+        if  ( BITAND( BITOR( _S2CINT( X3 ), 
+                             _S2CINT( j12757 ) ), 
+                      3 ) )  goto L16724;
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( j12757 ) ) )  goto L16726;
+        X2 = FALSEVALUE;
+        goto L16729;
+L16726:
+        X2 = e12756;
+        goto L16729;
+L16724:
+        if  ( FALSE( scrt2__3d_2dtwo( X3, j12757 ) ) )  goto L16728;
+        X2 = FALSEVALUE;
+        goto L16729;
+L16728:
+        X2 = e12756;
+L16729:
+        DISPLAY( 0 ) = X1;
+        POPSTACKTRACE( X2 );
+}
+
+TSCP  parser_zipper_3adescend( z12744, i12745 )
+        TSCP  z12744, i12745;
+{
+        TSCP  X5, X4, X3, X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t16713 );
+        DISPLAY( 0 ) = i12745;
+        X2 = parser_zipper_2dtree( z12744 );
+        X1 = scrt1_length( X2 );
+        if  ( BITAND( BITOR( _S2CINT( X1 ), 
+                             _S2CINT( _TSCP( 4 ) ) ), 
+                      3 ) )  goto L16718;
+        X2 = _TSCP( IDIFFERENCE( _S2CINT( X1 ), 
+                                 _S2CINT( _TSCP( 4 ) ) ) );
+        goto L16719;
+L16718:
+        X2 = scrt2__2d_2dtwo( X1, _TSCP( 4 ) );
+L16719:
+        if  ( TRUE( scrt2__3c_3d( _TSCP( 0 ), 
+                                  DISPLAY( 0 ), 
+                                  CONS( X2, EMPTYLIST ) ) ) )  goto L16715;
+        qobischeme_panic( c12752, EMPTYLIST );
+L16715:
+        X2 = parser_zipper_2dtree( z12744 );
+        X1 = scrt1_list_2dref( X2, DISPLAY( 0 ) );
+        X4 = MAKEPROCEDURE( 2, 
+                            0, 
+                            parser_l12755, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         1, DISPLAY( 0 ) ) );
+        X5 = parser_zipper_2dtree( z12744 );
+        X3 = qobischeme_map_2dindexed( X4, X5 );
+        X4 = parser_zipper_2dthread( z12744 );
+        X2 = sc_cons( X3, X4 );
+        SDVAL = parser_make_2dzipper( X1, X2 );
+        DISPLAY( 0 ) = SD0;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser_zipper_3aascend_v );
+DEFCSTRING( t16730, "ZIPPER:ASCEND" );
+
+TSCP  parser_zipper_3aascend( z12768 )
+        TSCP  z12768;
+{
+        TSCP  X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t16730 );
+        X1 = parser_zipper_2dthread( z12768 );
+        if  ( NEQ( _S2CUINT( X1 ), _S2CUINT( EMPTYLIST ) ) )  goto L16732;
+        qobischeme_panic( c12774, EMPTYLIST );
+L16732:
+        X3 = parser_zipper_2dthread( z12768 );
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L16735;
+        scrt1__24__car_2derror( X3 );
+L16735:
+        X2 = PAIR_CAR( X3 );
+        X3 = X2;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L16739:
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L16740;
+        X1 = X4;
+        goto L16750;
+L16740:
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L16743;
+        scrt1__24__car_2derror( X3 );
+L16743:
+        X8 = PAIR_CAR( X3 );
+        if  ( FALSE( X8 ) )  goto L16746;
+        X7 = X8;
+        goto L16747;
+L16746:
+        X7 = parser_zipper_2dtree( z12768 );
+L16747:
+        X6 = sc_cons( X7, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L16749;
+        X7 = PAIR_CDR( X3 );
+        X5 = X6;
+        X4 = X6;
+        X3 = X7;
+        GOBACK( L16739 );
+L16749:
+        X7 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L16754;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L16754:
+        X5 = SETGEN( PAIR_CDR( X5 ), X6 );
+        X3 = X7;
+        GOBACK( L16739 );
+L16750:
+        X3 = parser_zipper_2dthread( z12768 );
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L16757;
+        scrt1__24__cdr_2derror( X3 );
+L16757:
+        X2 = PAIR_CDR( X3 );
+        POPSTACKTRACE( parser_make_2dzipper( X1, X2 ) );
+}
+
+DEFTSCP( parser_zipper_3adescend_2dseq_v );
+DEFCSTRING( t16759, "ZIPPER:DESCEND-SEQ" );
+
+TSCP  parser_zipper_3adescend_2dseq( z12828, s12829 )
+        TSCP  z12828, s12829;
+{
+        TSCP  X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t16759 );
+        X1 = z12828;
+        X2 = s12829;
+L16762:
+        if  ( EQ( _S2CUINT( X2 ), _S2CUINT( EMPTYLIST ) ) )  goto L16763;
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L16766;
+        scrt1__24__car_2derror( X2 );
+L16766:
+        X4 = PAIR_CAR( X2 );
+        X3 = parser_zipper_3adescend( z12828, X4 );
+        X2 = PAIR_CDR( X2 );
+        X1 = X3;
+        GOBACK( L16762 );
+L16763:
+        POPSTACKTRACE( X1 );
+}
+
+DEFTSCP( parser_zipper_3aascend_2dn_v );
+DEFCSTRING( t16769, "ZIPPER:ASCEND-N" );
+EXTERNTSCPP( scrt2__3c_3d_2dtwo, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt2__3c_3d_2dtwo_v );
+
+TSCP  parser_zipper_3aascend_2dn( z12853, n12854 )
+        TSCP  z12853, n12854;
+{
+        PUSHSTACKTRACE( t16769 );
+L16770:
+        if  ( BITAND( BITOR( _S2CINT( _TSCP( 0 ) ), 
+                             _S2CINT( n12854 ) ), 
+                      3 ) )  goto L16772;
+        if  ( GT( _S2CINT( _TSCP( 0 ) ), _S2CINT( n12854 ) ) )  goto L16776;
+        goto L16779;
+L16772:
+        if  ( TRUE( scrt2__3c_3d_2dtwo( _TSCP( 0 ), n12854 ) )
+            )  goto L16779;
+L16776:
+        qobischeme_panic( c12861, EMPTYLIST );
+L16779:
+        if  ( EQ( _S2CUINT( n12854 ), 
+                  _S2CUINT( _TSCP( 0 ) ) ) )  goto L16780;
+        if  ( NEQ( _S2CUINT( n12854 ), 
+                   _S2CUINT( _TSCP( 4 ) ) ) )  goto L16782;
+        POPSTACKTRACE( parser_zipper_3aascend( z12853 ) );
+L16782:
+        if  ( BITAND( BITOR( _S2CINT( n12854 ), 
+                             _S2CINT( _TSCP( 4 ) ) ), 
+                      3 ) )  goto L16784;
+        n12854 = _TSCP( IDIFFERENCE( _S2CINT( n12854 ), 
+                                     _S2CINT( _TSCP( 4 ) ) ) );
+        GOBACK( L16770 );
+L16784:
+        n12854 = scrt2__2d_2dtwo( n12854, _TSCP( 4 ) );
+        GOBACK( L16770 );
+L16780:
+        POPSTACKTRACE( z12853 );
+}
+
+DEFTSCP( parser_dascend_3f_a569356c_v );
+DEFCSTRING( t16786, "ZIPPER:CAN-ASCEND?" );
+
+TSCP  parser_dascend_3f_a569356c( z12877 )
+        TSCP  z12877;
+{
+        TSCP  X1;
+
+        PUSHSTACKTRACE( t16786 );
+        X1 = parser_zipper_2dthread( z12877 );
+        POPSTACKTRACE( BOOLEAN( NEQ( _S2CUINT( X1 ), 
+                                     _S2CUINT( EMPTYLIST ) ) ) );
+}
+
+DEFTSCP( parser_descend_3f_47b47812_v );
+DEFCSTRING( t16788, "ZIPPER:CAN-DESCEND?" );
+EXTERNTSCPP( qobischeme_some, XAL3( TSCP, TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_some_v );
+
+TSCP  parser_descend_3f_47b47812( z12884 )
+        TSCP  z12884;
+{
+        TSCP  X1;
+
+        PUSHSTACKTRACE( t16788 );
+        X1 = parser_zipper_2dtree( z12884 );
+        POPSTACKTRACE( qobischeme_some( scrt1_list_3f_v, 
+                                        X1, EMPTYLIST ) );
+}
+
+DEFTSCP( parser_nd_2duntil_c0c74215_v );
+DEFCSTRING( t16790, "ZIPPER:ASCEND-UNTIL" );
+
+TSCP  parser_nd_2duntil_c0c74215( z12886, p12887 )
+        TSCP  z12886, p12887;
+{
+        TSCP  X2, X1;
+
+        PUSHSTACKTRACE( t16790 );
+        X1 = z12886;
+L16793:
+        X2 = p12887;
+        X2 = UNKNOWNCALL( X2, 1 );
+        if  ( TRUE( VIA( PROCEDURE_CODE( X2 ) )( X1, 
+                                                 PROCEDURE_CLOSURE( X2 ) ) )
+            )  goto L16794;
+        X1 = parser_zipper_3aascend( z12886 );
+        GOBACK( L16793 );
+L16794:
+        POPSTACKTRACE( X1 );
+}
+
+DEFTSCP( parser_d_2dheight_3e6cd194_v );
+DEFCSTRING( t16796, "ZIPPER:ASCEND-HEIGHT" );
+
+TSCP  parser_d_2dheight_3e6cd194( z12895 )
+        TSCP  z12895;
+{
+        TSCP  X1;
+
+        PUSHSTACKTRACE( t16796 );
+        X1 = parser_zipper_2dthread( z12895 );
+        POPSTACKTRACE( scrt1_length( X1 ) );
+}
+
+DEFTSCP( parser_create_2dcfg_v );
+DEFCSTRING( t16798, "CREATE-CFG" );
+
+TSCP  parser_create_2dcfg( r12897 )
+        TSCP  r12897;
+{
+        TSCP  X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t16798 );
+        X3 = r12897;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L16804:
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L16805;
+        X2 = X4;
+        goto L16812;
+L16805:
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L16808;
+        scrt1__24__car_2derror( X3 );
+L16808:
+        X8 = PAIR_CAR( X3 );
+        X7 = parser_rule_2dlhs_2a1135cc( X8 );
+        X6 = sc_cons( X7, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L16811;
+        X7 = PAIR_CDR( X3 );
+        X5 = X6;
+        X4 = X6;
+        X3 = X7;
+        GOBACK( L16804 );
+L16811:
+        X7 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L16816;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L16816:
+        X5 = SETGEN( PAIR_CDR( X5 ), X6 );
+        X3 = X7;
+        GOBACK( L16804 );
+L16812:
+        if  ( FALSE( qobischeme_some( scrt1_list_3f_v, 
+                                      X2, EMPTYLIST ) ) )  goto L16800;
+        X1 = FALSEVALUE;
+        goto L16801;
+L16800:
+        X1 = TRUEVALUE;
+L16801:
+        if  ( FALSE( X1 ) )  goto L16840;
+        X3 = r12897;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L16826:
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L16827;
+        X2 = X4;
+        goto L16834;
+L16827:
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L16830;
+        scrt1__24__car_2derror( X3 );
+L16830:
+        X8 = PAIR_CAR( X3 );
+        X7 = parser_rule_2dlhs_2a1135cc( X8 );
+        X6 = sc_cons( X7, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L16833;
+        X7 = PAIR_CDR( X3 );
+        X5 = X6;
+        X4 = X6;
+        X3 = X7;
+        GOBACK( L16826 );
+L16833:
+        X7 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L16838;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L16838:
+        X5 = SETGEN( PAIR_CDR( X5 ), X6 );
+        X3 = X7;
+        GOBACK( L16826 );
+L16834:
+        if  ( FALSE( qobischeme_every( scrt1_list_3f_v, 
+                                       X2, EMPTYLIST ) ) )  goto L16841;
+L16840:
+        qobischeme_panic( c12986, EMPTYLIST );
+L16841:
+        POPSTACKTRACE( parser_make_2dcfg( r12897 ) );
+}
+
+DEFTSCP( parser_unwords_v );
+DEFCSTRING( t16842, "UNWORDS" );
+EXTERNTSCPP( parser_string_2djoin, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( parser_string_2djoin_v );
+
+TSCP  parser_unwords( l12988 )
+        TSCP  l12988;
+{
+        PUSHSTACKTRACE( t16842 );
+        POPSTACKTRACE( parser_string_2djoin( c12989, l12988 ) );
+}
+
+DEFTSCP( parser_string_2djoin_v );
+DEFCSTRING( t16844, "STRING-JOIN" );
+EXTERNTSCPP( toollib_2dmatlab_foldl, 
+             XAL3( TSCP, TSCP, TSCP ) );
+EXTERNTSCP( toollib_2dmatlab_foldl_v );
+EXTERNTSCPP( scrt3_string_2dappend, XAL1( TSCP ) );
+EXTERNTSCP( scrt3_string_2dappend_v );
+
+TSCP  parser_l12998( a12999, b13000, c16848 )
+        TSCP  a12999, b13000, c16848;
+{
+        TSCP  X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l12998 [inside STRING-JOIN]" );
+        X1 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c16848, 0 );
+        X3 = CONS( b13000, EMPTYLIST );
+        X3 = CONS( DISPLAY( 0 ), X3 );
+        X2 = scrt3_string_2dappend( CONS( a12999, X3 ) );
+        DISPLAY( 0 ) = X1;
+        POPSTACKTRACE( X2 );
+}
+
+EXTERNTSCP( sc_emptystring );
+
+TSCP  parser_string_2djoin( d12991, l12992 )
+        TSCP  d12991, l12992;
+{
+        TSCP  X3, X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t16844 );
+        DISPLAY( 0 ) = d12991;
+        if  ( EQ( _S2CUINT( l12992 ), 
+                  _S2CUINT( EMPTYLIST ) ) )  goto L16846;
+        X1 = MAKEPROCEDURE( 2, 
+                            0, 
+                            parser_l12998, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         1, DISPLAY( 0 ) ) );
+        if  ( EQ( TSCPTAG( l12992 ), PAIRTAG ) )  goto L16851;
+        scrt1__24__cdr_2derror( l12992 );
+L16851:
+        X2 = PAIR_CDR( l12992 );
+        X3 = PAIR_CAR( l12992 );
+        SDVAL = toollib_2dmatlab_foldl( X1, X2, X3 );
+        DISPLAY( 0 ) = SD0;
+        POPSTACKTRACE( SDVAL );
+L16846:
+        SDVAL = sc_emptystring;
+        DISPLAY( 0 ) = SD0;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser_lexicalize_v );
+DEFCSTRING( t16854, "LEXICALIZE" );
+EXTERNTSCPP( parser_ence_2dany_b386187b, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( parser_ence_2dany_b386187b_v );
+EXTERNTSCPP( scrt2_symbol_2d_3estring, XAL1( TSCP ) );
+EXTERNTSCP( scrt2_symbol_2d_3estring_v );
+EXTERNTSCPP( sc_string_2d_3esymbol, XAL1( TSCP ) );
+EXTERNTSCP( sc_string_2d_3esymbol_v );
+EXTERNTSCPP( qobischeme_rest, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_rest_v );
+
+TSCP  parser_lexicalize( e13010, c13011, s13012 )
+        TSCP  e13010, c13011, s13012;
+{
+        TSCP  X17, 
+              X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t16854 );
+        X5 = e13010;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L16858:
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L16859;
+        X4 = X6;
+        goto L16866;
+L16859:
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L16862;
+        scrt1__24__car_2derror( X5 );
+L16862:
+        X10 = PAIR_CAR( X5 );
+        X9 = scrt2_symbol_2d_3estring( X10 );
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L16865;
+        X9 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X9;
+        GOBACK( L16858 );
+L16865:
+        X9 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L16870;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L16870:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X9;
+        GOBACK( L16858 );
+L16866:
+        X3 = parser_unwords( X4 );
+        X2 = parser_ence_2dany_b386187b( X3, c13011 );
+        X1 = parser_tree_2d_3eleaves( X2, parser_p_2dleaf_3f_v );
+        X2 = X1;
+        X3 = EMPTYLIST;
+        X4 = EMPTYLIST;
+L16874:
+        if  ( EQ( _S2CUINT( X2 ), _S2CUINT( EMPTYLIST ) ) )  goto L16875;
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L16878;
+        scrt1__24__car_2derror( X2 );
+L16878:
+        X7 = PAIR_CAR( X2 );
+        if  ( NEQ( _S2CUINT( s13012 ), 
+                   _S2CUINT( EMPTYLIST ) ) )  goto L16881;
+        X9 = c13072;
+        goto L16882;
+L16881:
+        if  ( EQ( TSCPTAG( s13012 ), PAIRTAG ) )  goto L16884;
+        scrt1__24__car_2derror( s13012 );
+L16884:
+        X10 = PAIR_CAR( s13012 );
+        if  ( AND( EQ( TSCPTAG( X10 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( X10 ), SYMBOLTAG ) )
+            )  goto L16887;
+        scdebug_error( c13066, 
+                       c13067, CONS( X10, EMPTYLIST ) );
+L16887:
+        X9 = SYMBOL_NAME( X10 );
+L16882:
+        X11 = qobischeme_rest( X7 );
+        X12 = X11;
+        X13 = EMPTYLIST;
+        X14 = EMPTYLIST;
+L16891:
+        if  ( NEQ( _S2CUINT( X12 ), _S2CUINT( EMPTYLIST ) ) )  goto L16892;
+        X10 = X13;
+        goto L16899;
+L16892:
+        if  ( EQ( TSCPTAG( X12 ), PAIRTAG ) )  goto L16895;
+        scrt1__24__car_2derror( X12 );
+L16895:
+        X17 = PAIR_CAR( X12 );
+        X16 = scrt2_symbol_2d_3estring( X17 );
+        X15 = sc_cons( X16, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X13 ), _S2CUINT( EMPTYLIST ) ) )  goto L16898;
+        X16 = PAIR_CDR( X12 );
+        X14 = X15;
+        X13 = X15;
+        X12 = X16;
+        GOBACK( L16891 );
+L16898:
+        X16 = PAIR_CDR( X12 );
+        if  ( EQ( TSCPTAG( X14 ), PAIRTAG ) )  goto L16903;
+        scdebug_error( c12272, 
+                       c12273, CONS( X14, EMPTYLIST ) );
+L16903:
+        X14 = SETGEN( PAIR_CDR( X14 ), X15 );
+        X12 = X16;
+        GOBACK( L16891 );
+L16899:
+        X8 = parser_string_2djoin( X9, X10 );
+        X6 = sc_string_2d_3esymbol( X8 );
+        X5 = sc_cons( X6, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L16906;
+        X6 = PAIR_CDR( X2 );
+        X4 = X5;
+        X3 = X5;
+        X2 = X6;
+        GOBACK( L16874 );
+L16906:
+        X6 = PAIR_CDR( X2 );
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L16911;
+        scdebug_error( c12272, 
+                       c12273, CONS( X4, EMPTYLIST ) );
+L16911:
+        X4 = SETGEN( PAIR_CDR( X4 ), X5 );
+        X2 = X6;
+        GOBACK( L16874 );
+L16875:
+        POPSTACKTRACE( X3 );
+}
+
+DEFTSCP( parser_cfg_3aa_2dvalid_2drhs_v );
+DEFCSTRING( t16913, "CFG:A-VALID-RHS" );
+EXTERNTSCPP( scrt1_remove, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt1_remove_v );
+EXTERNTSCPP( nlib_2dsc_stic_2dmap_a3e1700b, 
+             XAL2( TSCP, TSCP ) );
+EXTERNTSCP( nlib_2dsc_stic_2dmap_a3e1700b_v );
+EXTERNTSCPP( qobischeme_a_2dboolean, XAL0(  ) );
+EXTERNTSCP( qobischeme_a_2dboolean_v );
+
+TSCP  parser_l13159( r13160, c16915 )
+        TSCP  r13160, c16915;
+{
+        PUSHSTACKTRACE( "parser_l13159 [inside CFG:A-VALID-RHS]" );
+        if  ( FALSE( scrt1_list_3f( r13160 ) ) )  goto L16917;
+        if  ( TRUE( qobischeme_a_2dboolean(  ) ) )  goto L16919;
+        if  ( EQ( TSCPTAG( r13160 ), PAIRTAG ) )  goto L16922;
+        scrt1__24__car_2derror( r13160 );
+L16922:
+        POPSTACKTRACE( PAIR_CAR( r13160 ) );
+L16919:
+        POPSTACKTRACE( FALSEVALUE );
+L16917:
+        POPSTACKTRACE( r13160 );
+}
+
+TSCP  parser_cfg_3aa_2dvalid_2drhs( r13158 )
+        TSCP  r13158;
+{
+        TSCP  X2, X1;
+
+        PUSHSTACKTRACE( t16913 );
+        X2 = MAKEPROCEDURE( 1, 0, parser_l13159, EMPTYLIST );
+        X1 = nlib_2dsc_stic_2dmap_a3e1700b( X2, r13158 );
+        POPSTACKTRACE( scrt1_remove( FALSEVALUE, X1 ) );
+}
+
+DEFTSCP( parser_cfg_3apossible_2drules_v );
+DEFCSTRING( t16924, "CFG:POSSIBLE-RULES" );
+EXTERNTSCPP( qobischeme_remove_2dif_2dnot, 
+             XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_remove_2dif_2dnot_v );
+EXTERNTSCPP( scrt1_equal_3f, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt1_equal_3f_v );
+
+TSCP  parser_l13168( r13169, c16926 )
+        TSCP  r13169, c16926;
+{
+        TSCP  X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l13168 [inside CFG:POSSIBLE-RULES]" );
+        X1 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c16926, 0 );
+        X4 = parser_p_2dlhs_v;
+        X4 = UNKNOWNCALL( X4, 1 );
+        X3 = VIA( PROCEDURE_CODE( X4 ) )( r13169, 
+                                          PROCEDURE_CLOSURE( X4 ) );
+        X2 = scrt1_equal_3f( X3, DISPLAY( 0 ) );
+        DISPLAY( 0 ) = X1;
+        POPSTACKTRACE( X2 );
+}
+
+TSCP  parser_cfg_3apossible_2drules( l13166, r13167 )
+        TSCP  l13166, r13167;
+{
+        TSCP  X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t16924 );
+        DISPLAY( 0 ) = l13166;
+        X1 = MAKEPROCEDURE( 1, 
+                            0, 
+                            parser_l13168, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         1, DISPLAY( 0 ) ) );
+        SDVAL = qobischeme_remove_2dif_2dnot( X1, r13167 );
+        DISPLAY( 0 ) = SD0;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser_cfg_3aterminals_v );
+DEFCSTRING( t16928, "CFG:TERMINALS" );
+EXTERNTSCPP( qobischeme_set_2ddifference, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_set_2ddifference_v );
+EXTERNTSCPP( nlib_2dsc_flatten_2a_dee05d56, XAL1( TSCP ) );
+EXTERNTSCP( nlib_2dsc_flatten_2a_dee05d56_v );
+
+TSCP  parser_cfg_3aterminals( c13171 )
+        TSCP  c13171;
+{
+        TSCP  X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t16928 );
+        X3 = parser_cfg_2drules( c13171 );
+        X4 = parser_p_2drhs_v;
+        X5 = X3;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L16932:
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L16933;
+        X2 = X6;
+        goto L16940;
+L16933:
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L16936;
+        scrt1__24__car_2derror( X5 );
+L16936:
+        X11 = PAIR_CAR( X5 );
+        X10 = X4;
+        X10 = UNKNOWNCALL( X10, 1 );
+        X9 = VIA( PROCEDURE_CODE( X10 ) )( X11, 
+                                           PROCEDURE_CLOSURE( X10 ) );
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L16939;
+        X9 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X9;
+        GOBACK( L16932 );
+L16939:
+        X9 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L16944;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L16944:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X9;
+        GOBACK( L16932 );
+L16940:
+        X1 = nlib_2dsc_flatten_2a_dee05d56( X2 );
+        X3 = parser_cfg_2drules( c13171 );
+        X4 = parser_p_2dlhs_v;
+        X5 = X3;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L16948:
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L16949;
+        X2 = X6;
+        goto L16956;
+L16949:
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L16952;
+        scrt1__24__car_2derror( X5 );
+L16952:
+        X11 = PAIR_CAR( X5 );
+        X10 = X4;
+        X10 = UNKNOWNCALL( X10, 1 );
+        X9 = VIA( PROCEDURE_CODE( X10 ) )( X11, 
+                                           PROCEDURE_CLOSURE( X10 ) );
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L16955;
+        X9 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X9;
+        GOBACK( L16948 );
+L16955:
+        X9 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L16960;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L16960:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X9;
+        GOBACK( L16948 );
+L16956:
+        POPSTACKTRACE( qobischeme_set_2ddifference( X1, X2 ) );
+}
+
+DEFTSCP( parser_cfg_3anon_2dterminals_v );
+DEFCSTRING( t16962, "CFG:NON-TERMINALS" );
+EXTERNTSCPP( obischeme_duplicates_bbb15811, XAL1( TSCP ) );
+EXTERNTSCP( obischeme_duplicates_bbb15811_v );
+
+TSCP  parser_cfg_3anon_2dterminals( c13257 )
+        TSCP  c13257;
+{
+        TSCP  X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t16962 );
+        X2 = parser_cfg_2drules( c13257 );
+        X3 = parser_p_2dlhs_v;
+        X4 = X2;
+        X5 = EMPTYLIST;
+        X6 = EMPTYLIST;
+L16966:
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L16967;
+        X1 = X5;
+        goto L16974;
+L16967:
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L16970;
+        scrt1__24__car_2derror( X4 );
+L16970:
+        X10 = PAIR_CAR( X4 );
+        X9 = X3;
+        X9 = UNKNOWNCALL( X9, 1 );
+        X8 = VIA( PROCEDURE_CODE( X9 ) )( X10, 
+                                          PROCEDURE_CLOSURE( X9 ) );
+        X7 = sc_cons( X8, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L16973;
+        X8 = PAIR_CDR( X4 );
+        X6 = X7;
+        X5 = X7;
+        X4 = X8;
+        GOBACK( L16966 );
+L16973:
+        X8 = PAIR_CDR( X4 );
+        if  ( EQ( TSCPTAG( X6 ), PAIRTAG ) )  goto L16978;
+        scdebug_error( c12272, 
+                       c12273, CONS( X6, EMPTYLIST ) );
+L16978:
+        X6 = SETGEN( PAIR_CDR( X6 ), X7 );
+        X4 = X8;
+        GOBACK( L16966 );
+L16974:
+        POPSTACKTRACE( obischeme_duplicates_bbb15811( X1 ) );
+}
+
+DEFTSCP( parser_erminal_3f_904c897a_v );
+DEFCSTRING( t16980, "CFG:NON-TERMINAL?" );
+EXTERNTSCPP( scrt1_member, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt1_member_v );
+
+TSCP  parser_erminal_3f_904c897a( s13301, c13302 )
+        TSCP  s13301, c13302;
+{
+        TSCP  X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t16980 );
+        X2 = parser_cfg_2drules( c13302 );
+        X3 = parser_p_2dlhs_v;
+        X4 = X2;
+        X5 = EMPTYLIST;
+        X6 = EMPTYLIST;
+L16984:
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L16985;
+        X1 = X5;
+        goto L16992;
+L16985:
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L16988;
+        scrt1__24__car_2derror( X4 );
+L16988:
+        X10 = PAIR_CAR( X4 );
+        X9 = X3;
+        X9 = UNKNOWNCALL( X9, 1 );
+        X8 = VIA( PROCEDURE_CODE( X9 ) )( X10, 
+                                          PROCEDURE_CLOSURE( X9 ) );
+        X7 = sc_cons( X8, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L16991;
+        X8 = PAIR_CDR( X4 );
+        X6 = X7;
+        X5 = X7;
+        X4 = X8;
+        GOBACK( L16984 );
+L16991:
+        X8 = PAIR_CDR( X4 );
+        if  ( EQ( TSCPTAG( X6 ), PAIRTAG ) )  goto L16996;
+        scdebug_error( c12272, 
+                       c12273, CONS( X6, EMPTYLIST ) );
+L16996:
+        X6 = SETGEN( PAIR_CDR( X6 ), X7 );
+        X4 = X8;
+        GOBACK( L16984 );
+L16992:
+        POPSTACKTRACE( scrt1_member( s13301, X1 ) );
+}
+
+DEFTSCP( parser_categories_26669611_v );
+DEFCSTRING( t16998, "CFG:TERMINAL-CATEGORIES" );
+EXTERNTSCPP( qobischeme_removeq, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_removeq_v );
+
+TSCP  parser_l13394( t13395, c17011 )
+        TSCP  t13395, c17011;
+{
+        TSCP  X2, X1;
+
+        PUSHSTACKTRACE( "parser_l13394 [inside CFG:TERMINAL-CATEGORIES]" );
+        X1 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c17011, 0 );
+        X2 = parser_erminal_3f_904c897a( t13395, DISPLAY( 0 ) );
+        DISPLAY( 0 ) = X1;
+        POPSTACKTRACE( X2 );
+}
+
+TSCP  parser_categories_26669611( c13346 )
+        TSCP  c13346;
+{
+        TSCP  X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t16998 );
+        DISPLAY( 0 ) = c13346;
+        X3 = parser_cfg_2drules( DISPLAY( 0 ) );
+        X4 = X3;
+        X5 = EMPTYLIST;
+        X6 = EMPTYLIST;
+L17002:
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17003;
+        X2 = X5;
+        goto L17018;
+L17003:
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17006;
+        scrt1__24__car_2derror( X4 );
+L17006:
+        X9 = PAIR_CAR( X4 );
+        X11 = MAKEPROCEDURE( 1, 
+                             0, 
+                             parser_l13394, 
+                             MAKECLOSURE( EMPTYLIST, 
+                                          1, DISPLAY( 0 ) ) );
+        X13 = parser_p_2drhs_v;
+        X13 = UNKNOWNCALL( X13, 1 );
+        X12 = VIA( PROCEDURE_CODE( X13 ) )( X9, 
+                                            PROCEDURE_CLOSURE( X13 ) );
+        if  ( FALSE( qobischeme_some( X11, X12, EMPTYLIST ) )
+            )  goto L17009;
+        X10 = FALSEVALUE;
+        goto L17010;
+L17009:
+        X10 = TRUEVALUE;
+L17010:
+        if  ( FALSE( X10 ) )  goto L17014;
+        X11 = parser_p_2dlhs_v;
+        X11 = UNKNOWNCALL( X11, 1 );
+        X8 = VIA( PROCEDURE_CODE( X11 ) )( X9, 
+                                           PROCEDURE_CLOSURE( X11 ) );
+        goto L17015;
+L17014:
+        X8 = X10;
+L17015:
+        X7 = sc_cons( X8, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17017;
+        X8 = PAIR_CDR( X4 );
+        X6 = X7;
+        X5 = X7;
+        X4 = X8;
+        GOBACK( L17002 );
+L17017:
+        X8 = PAIR_CDR( X4 );
+        if  ( EQ( TSCPTAG( X6 ), PAIRTAG ) )  goto L17022;
+        scdebug_error( c12272, 
+                       c12273, CONS( X6, EMPTYLIST ) );
+L17022:
+        X6 = SETGEN( PAIR_CDR( X6 ), X7 );
+        X4 = X8;
+        GOBACK( L17002 );
+L17018:
+        X1 = qobischeme_removeq( FALSEVALUE, X2 );
+        SDVAL = obischeme_duplicates_bbb15811( X1 );
+        DISPLAY( 0 ) = SD0;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser_ence_2dany_b386187b_v );
+DEFCSTRING( t17024, "SENTENCE:PARSE-SENTENCE-ANY" );
+EXTERNTSCPP( parser_2dsentence_57035f5c, 
+             XAL3( TSCP, TSCP, TSCP ) );
+EXTERNTSCP( parser_2dsentence_57035f5c_v );
+
+TSCP  parser_l13400( r13401, c17026 )
+        TSCP  r13401, c17026;
+{
+        TSCP  X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l13400 [inside SENTENCE:PARSE-SENTENCE-ANY]" );
+        X1 = DISPLAY( 1 );
+        DISPLAY( 1 ) = CLOSURE_VAR( c17026, 0 );
+        X2 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c17026, 1 );
+        X4 = parser_cfg_3anon_2dterminals( DISPLAY( 1 ) );
+        X5 = X4;
+L17030:
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17031;
+        X3 = FALSEVALUE;
+        goto L17032;
+L17031:
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17035;
+        scrt1__24__car_2derror( X5 );
+L17035:
+        X6 = PAIR_CAR( X5 );
+        X7 = parser_2dsentence_57035f5c( DISPLAY( 0 ), 
+                                         DISPLAY( 1 ), 
+                                         CONS( X6, EMPTYLIST ) );
+        if  ( FALSE( X7 ) )  goto L17039;
+        X8 = r13401;
+        X8 = UNKNOWNCALL( X8, 1 );
+        VIA( PROCEDURE_CODE( X8 ) )( X7, PROCEDURE_CLOSURE( X8 ) );
+L17039:
+        X5 = PAIR_CDR( X5 );
+        GOBACK( L17030 );
+L17032:
+        DISPLAY( 1 ) = X1;
+        DISPLAY( 0 ) = X2;
+        POPSTACKTRACE( X3 );
+}
+
+TSCP  parser_ence_2dany_b386187b( s13398, c13399 )
+        TSCP  s13398, c13399;
+{
+        TSCP  X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SD1 = DISPLAY( 1 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t17024 );
+        DISPLAY( 0 ) = s13398;
+        DISPLAY( 1 ) = c13399;
+        X2 = MAKEPROCEDURE( 1, 
+                            0, 
+                            parser_l13400, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         2, 
+                                         DISPLAY( 1 ), 
+                                         DISPLAY( 0 ) ) );
+        X1 = sc_ntinuation_1af38b9f_v;
+        X1 = UNKNOWNCALL( X1, 1 );
+        SDVAL = VIA( PROCEDURE_CODE( X1 ) )( X2, 
+                                             PROCEDURE_CLOSURE( X1 ) );
+        DISPLAY( 0 ) = SD0;
+        DISPLAY( 1 ) = SD1;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser_2dsentence_57035f5c_v );
+DEFCSTRING( t17042, "SENTENCE:PARSE-SENTENCE" );
+EXTERNTSCPP( qobischeme_fields, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_fields_v );
+EXTERNTSCPP( qobischeme_string_2dupcase, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_string_2dupcase_v );
+EXTERNTSCPP( qobischeme_intersection, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_intersection_v );
+
+TSCP  parser_n13433( p13480, c17061 )
+        TSCP  p13480, c17061;
+{
+        TSCP  X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "NUM-TERMINALS [inside SENTENCE:PARSE-SENTENCE]" );
+        X1 = DISPLAY( 2 );
+        DISPLAY( 2 ) = CLOSURE_VAR( c17061, 0 );
+        X4 = nlib_2dsc_flatten_2a_dee05d56( p13480 );
+        X3 = qobischeme_intersection( X4, 
+                                      PAIR_CAR( DISPLAY( 2 ) ) );
+        X2 = scrt1_length( X3 );
+        DISPLAY( 2 ) = X1;
+        POPSTACKTRACE( X2 );
+}
+
+EXTERNTSCPP( qobischeme_find_2dif, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_find_2dif_v );
+
+TSCP  parser_l13488( p13489, c17063 )
+        TSCP  p13489, c17063;
+{
+        TSCP  X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l13488 [inside SENTENCE:PARSE-SENTENCE]" );
+        X1 = DISPLAY( 3 );
+        DISPLAY( 3 ) = CLOSURE_VAR( c17063, 0 );
+        X2 = DISPLAY( 2 );
+        DISPLAY( 2 ) = CLOSURE_VAR( c17063, 1 );
+        X5 = nlib_2dsc_flatten_2a_dee05d56( p13489 );
+        X4 = qobischeme_intersection( X5, 
+                                      PAIR_CAR( DISPLAY( 2 ) ) );
+        X3 = scrt1_equal_3f( X4, PAIR_CAR( DISPLAY( 3 ) ) );
+        DISPLAY( 3 ) = X1;
+        DISPLAY( 2 ) = X2;
+        POPSTACKTRACE( X3 );
+}
+
+TSCP  parser_l13615( r13616, c17065 )
+        TSCP  r13616, c17065;
+{
+        TSCP  X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l13615 [inside SENTENCE:PARSE-SENTENCE]" );
+        X1 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c17065, 0 );
+        X4 = parser_p_2dlhs_v;
+        X4 = UNKNOWNCALL( X4, 1 );
+        X3 = VIA( PROCEDURE_CODE( X4 ) )( r13616, 
+                                          PROCEDURE_CLOSURE( X4 ) );
+        if  ( NEQ( _S2CUINT( DISPLAY( 0 ) ), 
+                   _S2CUINT( EMPTYLIST ) ) )  goto L17067;
+        X4 = c13629;
+        goto L17068;
+L17067:
+        X5 = DISPLAY( 0 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17070;
+        scrt1__24__car_2derror( X5 );
+L17070:
+        X4 = PAIR_CAR( X5 );
+L17068:
+        X2 = BOOLEAN( EQ( _S2CUINT( X3 ), _S2CUINT( X4 ) ) );
+        DISPLAY( 0 ) = X1;
+        POPSTACKTRACE( X2 );
+}
+
+EXTERNTSCPP( codetectionlib_2dsc_take, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( codetectionlib_2dsc_take_v );
+EXTERNTSCPP( nlib_2dsc_sublist_3f_9e75a600, 
+             XAL2( TSCP, TSCP ) );
+EXTERNTSCP( nlib_2dsc_sublist_3f_9e75a600_v );
+
+TSCP  parser_l13550( c17100 )
+        TSCP  c17100;
+{
+        TSCP  X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l13550 [inside SENTENCE:PARSE-SENTENCE]" );
+        X1 = DISPLAY( 10 );
+        DISPLAY( 10 ) = CLOSURE_VAR( c17100, 0 );
+        X2 = DISPLAY( 9 );
+        DISPLAY( 9 ) = CLOSURE_VAR( c17100, 1 );
+        qobischeme_set_2dfail_21( DISPLAY( 10 ) );
+        X4 = DISPLAY( 9 );
+        X4 = UNKNOWNCALL( X4, 1 );
+        X3 = VIA( PROCEDURE_CODE( X4 ) )( FALSEVALUE, 
+                                          PROCEDURE_CLOSURE( X4 ) );
+        DISPLAY( 10 ) = X1;
+        DISPLAY( 9 ) = X2;
+        POPSTACKTRACE( X3 );
+}
+
+EXTERNTSCPP( parser_l13539, XAL3( TSCP, TSCP, TSCP ) );
+
+TSCP  parser_l13568( c17114 )
+        TSCP  c17114;
+{
+        TSCP  X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l13568 [inside SENTENCE:PARSE-SENTENCE]" );
+        X1 = DISPLAY( 12 );
+        DISPLAY( 12 ) = CLOSURE_VAR( c17114, 0 );
+        X2 = DISPLAY( 11 );
+        DISPLAY( 11 ) = CLOSURE_VAR( c17114, 1 );
+        X3 = DISPLAY( 7 );
+        DISPLAY( 7 ) = CLOSURE_VAR( c17114, 2 );
+        qobischeme_set_2dfail_21( DISPLAY( 12 ) );
+        X5 = DISPLAY( 11 );
+        SETGEN( PAIR_CAR( DISPLAY( 7 ) ), X5 );
+        X5 = qobischeme_fail_v;
+        X5 = UNKNOWNCALL( X5, 0 );
+        X4 = VIA( PROCEDURE_CODE( X5 ) )( PROCEDURE_CLOSURE( X5 ) );
+        DISPLAY( 12 ) = X1;
+        DISPLAY( 11 ) = X2;
+        DISPLAY( 7 ) = X3;
+        POPSTACKTRACE( X4 );
+}
+
+EXTERNTSCPP( codetectionlib_2dsc_drop, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( codetectionlib_2dsc_drop_v );
+
+TSCP  parser_l13586( c17125 )
+        TSCP  c17125;
+{
+        TSCP  X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l13586 [inside SENTENCE:PARSE-SENTENCE]" );
+        X1 = DISPLAY( 12 );
+        DISPLAY( 12 ) = CLOSURE_VAR( c17125, 0 );
+        X2 = DISPLAY( 11 );
+        DISPLAY( 11 ) = CLOSURE_VAR( c17125, 1 );
+        X3 = DISPLAY( 6 );
+        DISPLAY( 6 ) = CLOSURE_VAR( c17125, 2 );
+        qobischeme_set_2dfail_21( DISPLAY( 12 ) );
+        X5 = DISPLAY( 11 );
+        SETGEN( PAIR_CAR( DISPLAY( 6 ) ), X5 );
+        X5 = qobischeme_fail_v;
+        X5 = UNKNOWNCALL( X5, 0 );
+        X4 = VIA( PROCEDURE_CODE( X5 ) )( PROCEDURE_CLOSURE( X5 ) );
+        DISPLAY( 12 ) = X1;
+        DISPLAY( 11 ) = X2;
+        DISPLAY( 6 ) = X3;
+        POPSTACKTRACE( X4 );
+}
+
+TSCP  parser_l13592( c17130 )
+        TSCP  c17130;
+{
+        TSCP  X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l13592 [inside SENTENCE:PARSE-SENTENCE]" );
+        X1 = DISPLAY( 12 );
+        DISPLAY( 12 ) = CLOSURE_VAR( c17130, 0 );
+        X2 = DISPLAY( 11 );
+        DISPLAY( 11 ) = CLOSURE_VAR( c17130, 1 );
+        X3 = DISPLAY( 7 );
+        DISPLAY( 7 ) = CLOSURE_VAR( c17130, 2 );
+        qobischeme_set_2dfail_21( DISPLAY( 12 ) );
+        X5 = DISPLAY( 11 );
+        SETGEN( PAIR_CAR( DISPLAY( 7 ) ), X5 );
+        X5 = qobischeme_fail_v;
+        X5 = UNKNOWNCALL( X5, 0 );
+        X4 = VIA( PROCEDURE_CODE( X5 ) )( PROCEDURE_CLOSURE( X5 ) );
+        DISPLAY( 12 ) = X1;
+        DISPLAY( 11 ) = X2;
+        DISPLAY( 7 ) = X3;
+        POPSTACKTRACE( X4 );
+}
+
+TSCP  parser_l13551( r13552, c17102 )
+        TSCP  r13552, c17102;
+{
+        TSCP  X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD11 = DISPLAY( 11 );
+        TSCP  SD12 = DISPLAY( 12 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( "parser_l13551 [inside SENTENCE:PARSE-SENTENCE]" );
+        X1 = DISPLAY( 1 );
+        DISPLAY( 1 ) = CLOSURE_VAR( c17102, 0 );
+        X2 = DISPLAY( 7 );
+        DISPLAY( 7 ) = CLOSURE_VAR( c17102, 1 );
+        X3 = DISPLAY( 4 );
+        DISPLAY( 4 ) = CLOSURE_VAR( c17102, 2 );
+        X4 = DISPLAY( 6 );
+        DISPLAY( 6 ) = CLOSURE_VAR( c17102, 3 );
+        X6 = parser_cfg_3apossible_2drules( r13552, 
+                                            PAIR_CAR( DISPLAY( 1 ) ) );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L17105;
+        X8 = qobischeme_fail_v;
+        X8 = UNKNOWNCALL( X8, 0 );
+        X7 = VIA( PROCEDURE_CODE( X8 ) )( PROCEDURE_CLOSURE( X8 ) );
+        goto L17106;
+L17105:
+        X8 = qobischeme_a_2dmember_2dof( X6 );
+        X7 = parser_l13539( X8, 
+                            PAIR_CAR( DISPLAY( 6 ) ), 
+                            PAIR_CAR( DISPLAY( 7 ) ) );
+L17106:
+        if  ( NEQ( _S2CUINT( X7 ), _S2CUINT( EMPTYLIST ) ) )  goto L17108;
+        X8 = qobischeme_fail_v;
+        X8 = UNKNOWNCALL( X8, 0 );
+        X5 = VIA( PROCEDURE_CODE( X8 ) )( PROCEDURE_CLOSURE( X8 ) );
+        goto L17109;
+L17108:
+        DISPLAY( 11 ) = PAIR_CAR( DISPLAY( 7 ) );
+        DISPLAY( 12 ) = qobischeme_fail_v;
+        X8 = MAKEPROCEDURE( 0, 
+                            0, 
+                            parser_l13568, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         3, 
+                                         DISPLAY( 12 ), 
+                                         DISPLAY( 11 ), 
+                                         DISPLAY( 7 ) ) );
+        qobischeme_set_2dfail_21( X8 );
+        X10 = scrt1_length( PAIR_CAR( DISPLAY( 6 ) ) );
+        X11 = parser_n13433( X7, 
+                             PROCEDURE_CLOSURE( PAIR_CAR( DISPLAY( 4 ) ) ) );
+        if  ( BITAND( BITOR( _S2CINT( X11 ), 
+                             _S2CINT( X10 ) ), 
+                      3 ) )  goto L17117;
+        X9 = _TSCP( IDIFFERENCE( _S2CINT( X11 ), 
+                                 _S2CINT( X10 ) ) );
+        goto L17118;
+L17117:
+        X9 = scrt2__2d_2dtwo( X11, X10 );
+L17118:
+        X8 = codetectionlib_2dsc_drop( X9, 
+                                       PAIR_CAR( DISPLAY( 7 ) ) );
+        SETGEN( PAIR_CAR( DISPLAY( 7 ) ), X8 );
+        if  ( EQ( _S2CUINT( PAIR_CAR( DISPLAY( 7 ) ) ), 
+                  _S2CUINT( EMPTYLIST ) ) )  goto L17119;
+        DISPLAY( 11 ) = PAIR_CAR( DISPLAY( 6 ) );
+        DISPLAY( 12 ) = qobischeme_fail_v;
+        X8 = MAKEPROCEDURE( 0, 
+                            0, 
+                            parser_l13586, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         3, 
+                                         DISPLAY( 12 ), 
+                                         DISPLAY( 11 ), 
+                                         DISPLAY( 6 ) ) );
+        qobischeme_set_2dfail_21( X8 );
+        X8 = codetectionlib_2dsc_take( _TSCP( 4 ), 
+                                       PAIR_CAR( DISPLAY( 7 ) ) );
+        SETGEN( PAIR_CAR( DISPLAY( 6 ) ), X8 );
+        DISPLAY( 11 ) = PAIR_CAR( DISPLAY( 7 ) );
+        DISPLAY( 12 ) = qobischeme_fail_v;
+        X8 = MAKEPROCEDURE( 0, 
+                            0, 
+                            parser_l13592, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         3, 
+                                         DISPLAY( 12 ), 
+                                         DISPLAY( 11 ), 
+                                         DISPLAY( 7 ) ) );
+        qobischeme_set_2dfail_21( X8 );
+        X9 = PAIR_CAR( DISPLAY( 7 ) );
+        if  ( EQ( TSCPTAG( X9 ), PAIRTAG ) )  goto L17133;
+        scrt1__24__cdr_2derror( X9 );
+L17133:
+        X8 = PAIR_CDR( X9 );
+        SETGEN( PAIR_CAR( DISPLAY( 7 ) ), X8 );
+L17119:
+        X5 = X7;
+L17109:
+        DISPLAY( 1 ) = X1;
+        DISPLAY( 7 ) = X2;
+        DISPLAY( 4 ) = X3;
+        DISPLAY( 6 ) = X4;
+        SDVAL = X5;
+        DISPLAY( 11 ) = SD11;
+        DISPLAY( 12 ) = SD12;
+        POPSTACKTRACE( SDVAL );
+}
+
+TSCP  parser_l13546( r13547, c17097 )
+        TSCP  r13547, c17097;
+{
+        TSCP  X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD9 = DISPLAY( 9 );
+        TSCP  SD10 = DISPLAY( 10 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( "parser_l13546 [inside SENTENCE:PARSE-SENTENCE]" );
+        X1 = DISPLAY( 1 );
+        DISPLAY( 1 ) = CLOSURE_VAR( c17097, 0 );
+        X2 = DISPLAY( 7 );
+        DISPLAY( 7 ) = CLOSURE_VAR( c17097, 1 );
+        X3 = DISPLAY( 4 );
+        DISPLAY( 4 ) = CLOSURE_VAR( c17097, 2 );
+        X4 = DISPLAY( 6 );
+        DISPLAY( 6 ) = CLOSURE_VAR( c17097, 3 );
+        X5 = DISPLAY( 5 );
+        DISPLAY( 5 ) = CLOSURE_VAR( c17097, 4 );
+        X6 = DISPLAY( 8 );
+        DISPLAY( 8 ) = CLOSURE_VAR( c17097, 5 );
+        DISPLAY( 9 ) = r13547;
+        DISPLAY( 10 ) = qobischeme_fail_v;
+        X8 = MAKEPROCEDURE( 0, 
+                            0, 
+                            parser_l13550, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         2, 
+                                         DISPLAY( 10 ), 
+                                         DISPLAY( 9 ) ) );
+        qobischeme_set_2dfail_21( X8 );
+        X11 = parser_p_2dlhs_v;
+        X11 = UNKNOWNCALL( X11, 1 );
+        X10 = VIA( PROCEDURE_CODE( X11 ) )( DISPLAY( 5 ), 
+                                            PROCEDURE_CLOSURE( X11 ) );
+        X12 = MAKEPROCEDURE( 1, 
+                             0, 
+                             parser_l13551, 
+                             MAKECLOSURE( EMPTYLIST, 
+                                          4, 
+                                          DISPLAY( 1 ), 
+                                          DISPLAY( 7 ), 
+                                          DISPLAY( 4 ), 
+                                          DISPLAY( 6 ) ) );
+        X15 = parser_p_2drhs_v;
+        X15 = UNKNOWNCALL( X15, 1 );
+        X14 = VIA( PROCEDURE_CODE( X15 ) )( DISPLAY( 5 ), 
+                                            PROCEDURE_CLOSURE( X15 ) );
+        X13 = parser_cfg_3aa_2dvalid_2drhs( X14 );
+        X11 = nlib_2dsc_stic_2dmap_a3e1700b( X12, X13 );
+        X9 = sc_cons( X10, X11 );
+        X8 = sc_cons( X9, PAIR_CAR( DISPLAY( 8 ) ) );
+        SETGEN( PAIR_CAR( DISPLAY( 8 ) ), X8 );
+        X8 = qobischeme_fail_v;
+        X8 = UNKNOWNCALL( X8, 0 );
+        X7 = VIA( PROCEDURE_CODE( X8 ) )( PROCEDURE_CLOSURE( X8 ) );
+        DISPLAY( 1 ) = X1;
+        DISPLAY( 7 ) = X2;
+        DISPLAY( 4 ) = X3;
+        DISPLAY( 6 ) = X4;
+        DISPLAY( 5 ) = X5;
+        DISPLAY( 8 ) = X6;
+        SDVAL = X7;
+        DISPLAY( 9 ) = SD9;
+        DISPLAY( 10 ) = SD10;
+        POPSTACKTRACE( SDVAL );
+}
+
+EXTERNTSCPP( codetectionlib_2dsc_maximump, 
+             XAL2( TSCP, TSCP ) );
+EXTERNTSCP( codetectionlib_2dsc_maximump_v );
+
+TSCP  parser_l13539( r13541, s13542, t13543 )
+        TSCP  r13541, s13542, t13543;
+{
+        TSCP  X3, X2, X1;
+        TSCP  SD5 = DISPLAY( 5 );
+        TSCP  SD6 = DISPLAY( 6 );
+        TSCP  SD7 = DISPLAY( 7 );
+        TSCP  SD8 = DISPLAY( 8 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( "LOOP [inside SENTENCE:PARSE-SENTENCE]" );
+        DISPLAY( 5 ) = r13541;
+        DISPLAY( 6 ) = s13542;
+        DISPLAY( 7 ) = t13543;
+L17086:
+        DISPLAY( 6 ) = CONS( DISPLAY( 6 ), EMPTYLIST );
+        DISPLAY( 7 ) = CONS( DISPLAY( 7 ), EMPTYLIST );
+        X2 = parser_p_2drhs_v;
+        X2 = UNKNOWNCALL( X2, 1 );
+        X1 = VIA( PROCEDURE_CODE( X2 ) )( DISPLAY( 5 ), 
+                                          PROCEDURE_CLOSURE( X2 ) );
+        if  ( FALSE( scrt1_equal_3f( X1, 
+                                     PAIR_CAR( DISPLAY( 6 ) ) ) )
+            )  goto L17087;
+        X2 = parser_p_2dlhs_v;
+        X2 = UNKNOWNCALL( X2, 1 );
+        X1 = VIA( PROCEDURE_CODE( X2 ) )( DISPLAY( 5 ), 
+                                          PROCEDURE_CLOSURE( X2 ) );
+        SDVAL = sc_cons( X1, PAIR_CAR( DISPLAY( 6 ) ) );
+        DISPLAY( 5 ) = SD5;
+        DISPLAY( 6 ) = SD6;
+        DISPLAY( 7 ) = SD7;
+        DISPLAY( 8 ) = SD8;
+        POPSTACKTRACE( SDVAL );
+L17087:
+        X2 = parser_p_2drhs_v;
+        X2 = UNKNOWNCALL( X2, 1 );
+        X1 = VIA( PROCEDURE_CODE( X2 ) )( DISPLAY( 5 ), 
+                                          PROCEDURE_CLOSURE( X2 ) );
+        if  ( FALSE( nlib_2dsc_sublist_3f_9e75a600( X1, 
+                                                    PAIR_CAR( DISPLAY( 6 ) ) ) )
+            )  goto L17089;
+        if  ( EQ( _S2CUINT( PAIR_CAR( DISPLAY( 7 ) ) ), 
+                  _S2CUINT( EMPTYLIST ) ) )  goto L17091;
+        X2 = codetectionlib_2dsc_take( _TSCP( 4 ), 
+                                       PAIR_CAR( DISPLAY( 7 ) ) );
+        X1 = scrt1_append_2dtwo( PAIR_CAR( DISPLAY( 6 ) ), 
+                                 X2 );
+        X2 = PAIR_CAR( DISPLAY( 7 ) );
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L17094;
+        scrt1__24__cdr_2derror( X2 );
+L17094:
+        DISPLAY( 7 ) = PAIR_CDR( X2 );
+        DISPLAY( 6 ) = X1;
+        GOBACK( L17086 );
+L17091:
+        SDVAL = EMPTYLIST;
+        DISPLAY( 5 ) = SD5;
+        DISPLAY( 6 ) = SD6;
+        DISPLAY( 7 ) = SD7;
+        DISPLAY( 8 ) = SD8;
+        POPSTACKTRACE( SDVAL );
+L17089:
+        DISPLAY( 8 ) = EMPTYLIST;
+        DISPLAY( 8 ) = CONS( DISPLAY( 8 ), EMPTYLIST );
+        X3 = MAKEPROCEDURE( 1, 
+                            0, 
+                            parser_l13546, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         6, 
+                                         DISPLAY( 1 ), 
+                                         DISPLAY( 7 ), 
+                                         DISPLAY( 4 ), 
+                                         DISPLAY( 6 ), 
+                                         DISPLAY( 5 ), 
+                                         DISPLAY( 8 ) ) );
+        X2 = sc_ntinuation_1af38b9f_v;
+        X2 = UNKNOWNCALL( X2, 1 );
+        VIA( PROCEDURE_CODE( X2 ) )( X3, PROCEDURE_CLOSURE( X2 ) );
+        X1 = scrt1_reverse( PAIR_CAR( DISPLAY( 8 ) ) );
+        if  ( EQ( _S2CUINT( X1 ), _S2CUINT( EMPTYLIST ) ) )  goto L17136;
+        SDVAL = codetectionlib_2dsc_maximump( X1, 
+                                              PAIR_CAR( DISPLAY( 4 ) ) );
+        DISPLAY( 5 ) = SD5;
+        DISPLAY( 6 ) = SD6;
+        DISPLAY( 7 ) = SD7;
+        DISPLAY( 8 ) = SD8;
+        POPSTACKTRACE( SDVAL );
+L17136:
+        SDVAL = EMPTYLIST;
+        DISPLAY( 5 ) = SD5;
+        DISPLAY( 6 ) = SD6;
+        DISPLAY( 7 ) = SD7;
+        DISPLAY( 8 ) = SD8;
+        POPSTACKTRACE( SDVAL );
+}
+
+TSCP  parser_2dsentence_57035f5c( s13428, c13429, s13430 )
+        TSCP  s13428, c13429, s13430;
+{
+        TSCP  X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SD1 = DISPLAY( 1 );
+        TSCP  SD2 = DISPLAY( 2 );
+        TSCP  SD3 = DISPLAY( 3 );
+        TSCP  SD4 = DISPLAY( 4 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t17042 );
+        DISPLAY( 0 ) = s13430;
+        DISPLAY( 1 ) = _TSCP( 0 );
+        DISPLAY( 2 ) = _TSCP( 0 );
+        DISPLAY( 3 ) = _TSCP( 0 );
+        DISPLAY( 4 ) = _TSCP( 0 );
+        DISPLAY( 4 ) = CONS( DISPLAY( 4 ), EMPTYLIST );
+        DISPLAY( 3 ) = CONS( DISPLAY( 3 ), EMPTYLIST );
+        DISPLAY( 2 ) = CONS( DISPLAY( 2 ), EMPTYLIST );
+        DISPLAY( 1 ) = CONS( DISPLAY( 1 ), EMPTYLIST );
+        X1 = parser_cfg_2drules( c13429 );
+        SETGEN( PAIR_CAR( DISPLAY( 1 ) ), X1 );
+        X1 = parser_cfg_3aterminals( c13429 );
+        SETGEN( PAIR_CAR( DISPLAY( 2 ) ), X1 );
+        X3 = qobischeme_string_2dupcase( s13428 );
+        X2 = qobischeme_fields( X3 );
+        X3 = X2;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L17047:
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17048;
+        X1 = X4;
+        goto L17055;
+L17048:
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L17051;
+        scrt1__24__car_2derror( X3 );
+L17051:
+        X8 = PAIR_CAR( X3 );
+        X7 = sc_string_2d_3esymbol( X8 );
+        X6 = sc_cons( X7, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17054;
+        X7 = PAIR_CDR( X3 );
+        X5 = X6;
+        X4 = X6;
+        X3 = X7;
+        GOBACK( L17047 );
+L17054:
+        X7 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17059;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L17059:
+        X5 = SETGEN( PAIR_CDR( X5 ), X6 );
+        X3 = X7;
+        GOBACK( L17047 );
+L17055:
+        SETGEN( PAIR_CAR( DISPLAY( 3 ) ), X1 );
+        X1 = MAKEPROCEDURE( 1, 
+                            0, 
+                            parser_n13433, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         1, DISPLAY( 2 ) ) );
+        SETGEN( PAIR_CAR( DISPLAY( 4 ) ), X1 );
+        X1 = MAKEPROCEDURE( 1, 
+                            0, 
+                            parser_l13488, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         2, 
+                                         DISPLAY( 3 ), 
+                                         DISPLAY( 2 ) ) );
+        X4 = MAKEPROCEDURE( 1, 
+                            0, 
+                            parser_l13615, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         1, DISPLAY( 0 ) ) );
+        X3 = qobischeme_remove_2dif_2dnot( X4, 
+                                           PAIR_CAR( DISPLAY( 1 ) ) );
+        X4 = X3;
+        X5 = EMPTYLIST;
+        X6 = EMPTYLIST;
+L17074:
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17075;
+        X2 = X5;
+        goto L17140;
+L17075:
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17078;
+        scrt1__24__car_2derror( X4 );
+L17078:
+        X9 = PAIR_CAR( X4 );
+        X11 = PAIR_CAR( DISPLAY( 3 ) );
+        if  ( EQ( TSCPTAG( X11 ), PAIRTAG ) )  goto L17082;
+        scrt1__24__cdr_2derror( X11 );
+L17082:
+        X10 = PAIR_CDR( X11 );
+        X11 = codetectionlib_2dsc_take( _TSCP( 4 ), 
+                                        PAIR_CAR( DISPLAY( 3 ) ) );
+        X8 = parser_l13539( X9, X11, X10 );
+        X7 = sc_cons( X8, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17139;
+        X8 = PAIR_CDR( X4 );
+        X6 = X7;
+        X5 = X7;
+        X4 = X8;
+        GOBACK( L17074 );
+L17139:
+        X8 = PAIR_CDR( X4 );
+        if  ( EQ( TSCPTAG( X6 ), PAIRTAG ) )  goto L17144;
+        scdebug_error( c12272, 
+                       c12273, CONS( X6, EMPTYLIST ) );
+L17144:
+        X6 = SETGEN( PAIR_CDR( X6 ), X7 );
+        X4 = X8;
+        GOBACK( L17074 );
+L17140:
+        SDVAL = qobischeme_find_2dif( X1, X2 );
+        DISPLAY( 0 ) = SD0;
+        DISPLAY( 1 ) = SD1;
+        DISPLAY( 2 ) = SD2;
+        DISPLAY( 3 ) = SD3;
+        DISPLAY( 4 ) = SD4;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser_drop_2duntil_v );
+DEFCSTRING( t17146, "DROP-UNTIL" );
+
+TSCP  parser_drop_2duntil( p13631, l13632 )
+        TSCP  p13631, l13632;
+{
+        TSCP  X3, X2, X1;
+
+        PUSHSTACKTRACE( t17146 );
+        X1 = l13632;
+L17149:
+        if  ( EQ( _S2CUINT( X1 ), _S2CUINT( EMPTYLIST ) ) )  goto L17150;
+        if  ( EQ( TSCPTAG( X1 ), PAIRTAG ) )  goto L17155;
+        scrt1__24__car_2derror( X1 );
+L17155:
+        X3 = PAIR_CAR( X1 );
+        X2 = p13631;
+        X2 = UNKNOWNCALL( X2, 1 );
+        if  ( TRUE( VIA( PROCEDURE_CODE( X2 ) )( X3, 
+                                                 PROCEDURE_CLOSURE( X2 ) ) )
+            )  goto L17152;
+        X1 = PAIR_CDR( X1 );
+        GOBACK( L17149 );
+L17152:
+        POPSTACKTRACE( X1 );
+L17150:
+        POPSTACKTRACE( X1 );
+}
+
+DEFTSCP( parser_take_2duntil_v );
+DEFCSTRING( t17158, "TAKE-UNTIL" );
+
+TSCP  parser_take_2duntil( p13657, l13658 )
+        TSCP  p13657, l13658;
+{
+        TSCP  X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t17158 );
+        X2 = l13658;
+        X1 = EMPTYLIST;
+L17161:
+        X3 = BOOLEAN( EQ( _S2CUINT( X2 ), 
+                          _S2CUINT( EMPTYLIST ) ) );
+        if  ( TRUE( X3 ) )  goto L17166;
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L17170;
+        scrt1__24__car_2derror( X2 );
+L17170:
+        X5 = PAIR_CAR( X2 );
+        X4 = p13657;
+        X4 = UNKNOWNCALL( X4, 1 );
+        if  ( TRUE( VIA( PROCEDURE_CODE( X4 ) )( X5, 
+                                                 PROCEDURE_CLOSURE( X4 ) ) )
+            )  goto L17166;
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L17173;
+        scrt1__24__cdr_2derror( X2 );
+L17173:
+        X4 = PAIR_CDR( X2 );
+        X5 = PAIR_CAR( X2 );
+        X1 = sc_cons( X5, X1 );
+        X2 = X4;
+        GOBACK( L17161 );
+L17166:
+        POPSTACKTRACE( scrt1_reverse( X1 ) );
+}
+
+DEFTSCP( parser_ssignments_d92ed835_v );
+DEFCSTRING( t17176, "THETA-ROLE-ASSIGNMENTS" );
+
+TSCP  parser_l13762( t13763, c17180 )
+        TSCP  t13763, c17180;
+{
+        TSCP  X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l13762 [inside THETA-ROLE-ASSIGNMENTS]" );
+        X1 = DISPLAY( 3 );
+        DISPLAY( 3 ) = CLOSURE_VAR( c17180, 0 );
+        if  ( EQ( TSCPTAG( t13763 ), PAIRTAG ) )  goto L17183;
+        scrt1__24__car_2derror( t13763 );
+L17183:
+        X3 = PAIR_CAR( t13763 );
+        X2 = BOOLEAN( EQ( _S2CUINT( X3 ), 
+                          _S2CUINT( DISPLAY( 3 ) ) ) );
+        DISPLAY( 3 ) = X1;
+        POPSTACKTRACE( X2 );
+}
+
+TSCP  parser_l13707( e13708, c17194 )
+        TSCP  e13708, c17194;
+{
+        TSCP  X1;
+
+        PUSHSTACKTRACE( "parser_l13707 [inside THETA-ROLE-ASSIGNMENTS]" );
+        if  ( EQ( TSCPTAG( e13708 ), PAIRTAG ) )  goto L17197;
+        scrt1__24__car_2derror( e13708 );
+L17197:
+        X1 = PAIR_CAR( e13708 );
+        POPSTACKTRACE( BOOLEAN( EQ( _S2CUINT( X1 ), 
+                                    _S2CUINT( c13716 ) ) ) );
+}
+
+EXTERNTSCPP( scrt1_cons_2a, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt1_cons_2a_v );
+EXTERNTSCPP( scrt4_vector_2d_3elist, XAL1( TSCP ) );
+EXTERNTSCP( scrt4_vector_2d_3elist_v );
+EXTERNTSCPP( qobischeme_last, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_last_v );
+
+TSCP  parser_g13694( z13718, c13719 )
+        TSCP  z13718, c13719;
+{
+        TSCP  X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD3 = DISPLAY( 3 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( "GET-NOUN-TERMS [inside THETA-ROLE-ASSIGNMENTS]" );
+        DISPLAY( 3 ) = c13719;
+        X2 = MAKEPROCEDURE( 1, 
+                            0, 
+                            parser_l13762, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         1, DISPLAY( 3 ) ) );
+        X4 = parser_zipper_2dtree( z13718 );
+        X3 = qobischeme_rest( X4 );
+        X1 = qobischeme_remove_2dif_2dnot( X2, X3 );
+        X2 = X1;
+        X3 = EMPTYLIST;
+        X4 = EMPTYLIST;
+L17187:
+        if  ( EQ( _S2CUINT( X2 ), _S2CUINT( EMPTYLIST ) ) )  goto L17188;
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L17191;
+        scrt1__24__car_2derror( X2 );
+L17191:
+        X7 = PAIR_CAR( X2 );
+        X9 = MAKEPROCEDURE( 1, 0, parser_l13707, EMPTYLIST );
+        X10 = parser_tree_2d_3eleaves( X7, parser_ip_2dleaf_3f_v );
+        X8 = qobischeme_find_2dif( X9, X10 );
+        if  ( TRUE( X8 ) )  goto L17200;
+        qobischeme_panic( c13702, CONS( X7, EMPTYLIST ) );
+L17200:
+        X13 = qobischeme_rest( X8 );
+        X12 = parser_take_2duntil( scrt4_vector_3f_v, X13 );
+        X11 = parser_lexicalize( X12, 
+                                 DISPLAY( 0 ), EMPTYLIST );
+        if  ( EQ( TSCPTAG( X11 ), PAIRTAG ) )  goto L17203;
+        scrt1__24__car_2derror( X11 );
+L17203:
+        X10 = PAIR_CAR( X11 );
+        X11 = CONS( EMPTYLIST, EMPTYLIST );
+        X12 = qobischeme_last( X8 );
+        X9 = scrt1_cons_2a( X10, 
+                            CONS( scrt4_vector_2d_3elist( X12 ), 
+                                  X11 ) );
+        X6 = scrt4_list_2d_3evector( X9 );
+        X5 = sc_cons( X6, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17206;
+        X6 = PAIR_CDR( X2 );
+        X4 = X5;
+        X3 = X5;
+        X2 = X6;
+        GOBACK( L17187 );
+L17206:
+        X6 = PAIR_CDR( X2 );
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17211;
+        scdebug_error( c12272, 
+                       c12273, CONS( X4, EMPTYLIST ) );
+L17211:
+        X4 = SETGEN( PAIR_CDR( X4 ), X5 );
+        X2 = X6;
+        GOBACK( L17187 );
+L17188:
+        SDVAL = X3;
+        DISPLAY( 3 ) = SD3;
+        POPSTACKTRACE( SDVAL );
+}
+
+TSCP  parser_l13787( c17263 )
+        TSCP  c17263;
+{
+        TSCP  X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l13787 [inside THETA-ROLE-ASSIGNMENTS]" );
+        X1 = DISPLAY( 6 );
+        DISPLAY( 6 ) = CLOSURE_VAR( c17263, 0 );
+        X2 = DISPLAY( 5 );
+        DISPLAY( 5 ) = CLOSURE_VAR( c17263, 1 );
+        qobischeme_set_2dfail_21( DISPLAY( 6 ) );
+        X4 = DISPLAY( 5 );
+        X4 = UNKNOWNCALL( X4, 1 );
+        X3 = VIA( PROCEDURE_CODE( X4 ) )( FALSEVALUE, 
+                                          PROCEDURE_CLOSURE( X4 ) );
+        DISPLAY( 6 ) = X1;
+        DISPLAY( 5 ) = X2;
+        POPSTACKTRACE( X3 );
+}
+
+EXTERNTSCPP( parser_a13693, XAL1( TSCP ) );
+
+TSCP  parser_l13783( r13784, c17260 )
+        TSCP  r13784, c17260;
+{
+        TSCP  X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD5 = DISPLAY( 5 );
+        TSCP  SD6 = DISPLAY( 6 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( "parser_l13783 [inside THETA-ROLE-ASSIGNMENTS]" );
+        X1 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c17260, 0 );
+        X2 = DISPLAY( 1 );
+        DISPLAY( 1 ) = CLOSURE_VAR( c17260, 1 );
+        X3 = DISPLAY( 2 );
+        DISPLAY( 2 ) = CLOSURE_VAR( c17260, 2 );
+        X4 = DISPLAY( 3 );
+        DISPLAY( 3 ) = CLOSURE_VAR( c17260, 3 );
+        X5 = DISPLAY( 4 );
+        DISPLAY( 4 ) = CLOSURE_VAR( c17260, 4 );
+        DISPLAY( 5 ) = r13784;
+        DISPLAY( 6 ) = qobischeme_fail_v;
+        X7 = MAKEPROCEDURE( 0, 
+                            0, 
+                            parser_l13787, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         2, 
+                                         DISPLAY( 6 ), 
+                                         DISPLAY( 5 ) ) );
+        qobischeme_set_2dfail_21( X7 );
+        X13 = parser_zipper_2dtree( DISPLAY( 3 ) );
+        X12 = scrt1_length( X13 );
+        if  ( BITAND( BITOR( _S2CINT( X12 ), 
+                             _S2CINT( _TSCP( 4 ) ) ), 
+                      3 ) )  goto L17266;
+        X11 = _TSCP( IDIFFERENCE( _S2CINT( X12 ), 
+                                  _S2CINT( _TSCP( 4 ) ) ) );
+        goto L17267;
+L17266:
+        X11 = scrt2__2d_2dtwo( X12, _TSCP( 4 ) );
+L17267:
+        X10 = obischeme__2dbetween_97a3111a( _TSCP( 4 ), X11 );
+        X9 = parser_zipper_3adescend( DISPLAY( 3 ), X10 );
+        X8 = parser_a13693( X9 );
+        X7 = sc_cons( X8, PAIR_CAR( DISPLAY( 4 ) ) );
+        SETGEN( PAIR_CAR( DISPLAY( 4 ) ), X7 );
+        X7 = qobischeme_fail_v;
+        X7 = UNKNOWNCALL( X7, 0 );
+        X6 = VIA( PROCEDURE_CODE( X7 ) )( PROCEDURE_CLOSURE( X7 ) );
+        DISPLAY( 0 ) = X1;
+        DISPLAY( 1 ) = X2;
+        DISPLAY( 2 ) = X3;
+        DISPLAY( 3 ) = X4;
+        DISPLAY( 4 ) = X5;
+        SDVAL = X6;
+        DISPLAY( 5 ) = SD5;
+        DISPLAY( 6 ) = SD6;
+        POPSTACKTRACE( SDVAL );
+}
+
+TSCP  parser_a13693( z13772 )
+        TSCP  z13772;
+{
+        TSCP  X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD3 = DISPLAY( 3 );
+        TSCP  SD4 = DISPLAY( 4 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( "ASSIGN-ROLES [inside THETA-ROLE-ASSIGNMENTS]" );
+        DISPLAY( 3 ) = z13772;
+        X2 = parser_zipper_2dtree( DISPLAY( 3 ) );
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L17217;
+        scrt1__24__car_2derror( X2 );
+L17217:
+        X1 = PAIR_CAR( X2 );
+        if  ( FALSE( scrt1_member( X1, 
+                                   PAIR_CAR( DISPLAY( 2 ) ) ) )
+            )  goto L17214;
+        X5 = parser_zipper_2dtree( DISPLAY( 3 ) );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17220;
+        scrt1__24__cdr_2derror( X5 );
+L17220:
+        X4 = PAIR_CDR( X5 );
+        X3 = parser_take_2duntil( scrt4_vector_3f_v, X4 );
+        X2 = parser_lexicalize( X3, DISPLAY( 0 ), EMPTYLIST );
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L17223;
+        scrt1__24__car_2derror( X2 );
+L17223:
+        X1 = PAIR_CAR( X2 );
+        X5 = parser_zipper_2dtree( DISPLAY( 3 ) );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17227;
+        scrt1__24__car_2derror( X5 );
+L17227:
+        X4 = PAIR_CAR( X5 );
+        X5 = sc_cons( X1, EMPTYLIST );
+        X3 = sc_cons( X4, X5 );
+        X2 = X3;
+        X4 = DISPLAY( 3 );
+        X7 = DISPLAY( 1 );
+        X7 = UNKNOWNCALL( X7, 1 );
+        X6 = VIA( PROCEDURE_CODE( X7 ) )( X1, 
+                                          PROCEDURE_CLOSURE( X7 ) );
+        X5 = scrt1_length( X6 );
+        X6 = X4;
+        X7 = EMPTYLIST;
+        X8 = X5;
+L17232:
+        if  ( BITAND( BITOR( _S2CINT( X8 ), 
+                             _S2CINT( _TSCP( 0 ) ) ), 
+                      3 ) )  goto L17234;
+        if  ( LTE( _S2CINT( X8 ), _S2CINT( _TSCP( 0 ) ) ) )  goto L17238;
+        goto L17239;
+L17234:
+        if  ( TRUE( scrt2__3c_3d_2dtwo( X8, _TSCP( 0 ) ) ) )  goto L17238;
+L17239:
+        if  ( FALSE( parser_dascend_3f_a569356c( X6 ) ) )  goto L17243;
+        X9 = parser_zipper_3aascend( X6 );
+        X10 = parser_g13694( X9, c13716 );
+        X11 = parser_g13694( X9, c13843 );
+        X13 = scrt1_append_2dtwo( X11, X7 );
+        X12 = scrt1_append_2dtwo( X10, X13 );
+        X13 = scrt1_length( X11 );
+        X15 = scrt1_length( X10 );
+        if  ( BITAND( BITOR( _S2CINT( X8 ), _S2CINT( X15 ) ), 
+                      3 ) )  goto L17249;
+        X14 = _TSCP( IDIFFERENCE( _S2CINT( X8 ), 
+                                  _S2CINT( X15 ) ) );
+        goto L17250;
+L17249:
+        X14 = scrt2__2d_2dtwo( X8, X15 );
+L17250:
+        if  ( BITAND( BITOR( _S2CINT( X14 ), 
+                             _S2CINT( X13 ) ), 
+                      3 ) )  goto L17252;
+        X8 = _TSCP( IDIFFERENCE( _S2CINT( X14 ), 
+                                 _S2CINT( X13 ) ) );
+        goto L17253;
+L17252:
+        X8 = scrt2__2d_2dtwo( X14, X13 );
+L17253:
+        X7 = X12;
+        X6 = X9;
+        GOBACK( L17232 );
+L17243:
+        X12 = CONS( EMPTYLIST, EMPTYLIST );
+        X11 = scrt1_cons_2a( c13818, 
+                             CONS( scrt1_cons_2a( X8, 
+                                                  CONS( EMPTYLIST, 
+                                                        EMPTYLIST ) ), 
+                                   X12 ) );
+        X10 = scrt4_list_2d_3evector( X11 );
+        X9 = sc_cons( X10, X7 );
+        if  ( BITAND( BITOR( _S2CINT( X8 ), 
+                             _S2CINT( _TSCP( 4 ) ) ), 
+                      3 ) )  goto L17254;
+        X8 = _TSCP( IDIFFERENCE( _S2CINT( X8 ), 
+                                 _S2CINT( _TSCP( 4 ) ) ) );
+        goto L17255;
+L17254:
+        X8 = scrt2__2d_2dtwo( X8, _TSCP( 4 ) );
+L17255:
+        X7 = X9;
+        GOBACK( L17232 );
+L17238:
+        X11 = DISPLAY( 1 );
+        X11 = UNKNOWNCALL( X11, 1 );
+        X10 = VIA( PROCEDURE_CODE( X11 ) )( X1, 
+                                            PROCEDURE_CLOSURE( X11 ) );
+        X9 = scrt1_length( X10 );
+        X3 = codetectionlib_2dsc_take( X9, X7 );
+        SDVAL = scrt1_append_2dtwo( X2, X3 );
+        DISPLAY( 3 ) = SD3;
+        DISPLAY( 4 ) = SD4;
+        POPSTACKTRACE( SDVAL );
+L17214:
+        X2 = parser_zipper_2dtree( DISPLAY( 3 ) );
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L17257;
+        scrt1__24__car_2derror( X2 );
+L17257:
+        X1 = PAIR_CAR( X2 );
+        DISPLAY( 4 ) = EMPTYLIST;
+        DISPLAY( 4 ) = CONS( DISPLAY( 4 ), EMPTYLIST );
+        X4 = MAKEPROCEDURE( 1, 
+                            0, 
+                            parser_l13783, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         5, 
+                                         DISPLAY( 0 ), 
+                                         DISPLAY( 1 ), 
+                                         DISPLAY( 2 ), 
+                                         DISPLAY( 3 ), 
+                                         DISPLAY( 4 ) ) );
+        X3 = sc_ntinuation_1af38b9f_v;
+        X3 = UNKNOWNCALL( X3, 1 );
+        VIA( PROCEDURE_CODE( X3 ) )( X4, PROCEDURE_CLOSURE( X3 ) );
+        X2 = scrt1_reverse( PAIR_CAR( DISPLAY( 4 ) ) );
+        SDVAL = sc_cons( X1, X2 );
+        DISPLAY( 3 ) = SD3;
+        DISPLAY( 4 ) = SD4;
+        POPSTACKTRACE( SDVAL );
+}
+
+TSCP  parser_ssignments_d92ed835( s13689, c13690, s13691 )
+        TSCP  s13689, c13690, s13691;
+{
+        TSCP  X4, X3, X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SD1 = DISPLAY( 1 );
+        TSCP  SD2 = DISPLAY( 2 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t17176 );
+        DISPLAY( 0 ) = c13690;
+        DISPLAY( 1 ) = s13691;
+        X1 = _TSCP( 0 );
+        DISPLAY( 2 ) = _TSCP( 0 );
+        DISPLAY( 2 ) = CONS( DISPLAY( 2 ), EMPTYLIST );
+        X1 = CONS( X1, EMPTYLIST );
+        X2 = parser_ence_2dany_b386187b( s13689, DISPLAY( 0 ) );
+        SETGEN( PAIR_CAR( X1 ), X2 );
+        X2 = parser_categories_26669611( DISPLAY( 0 ) );
+        SETGEN( PAIR_CAR( DISPLAY( 2 ) ), X2 );
+        if  ( TRUE( PAIR_CAR( X1 ) ) )  goto L17268;
+        qobischeme_panic( c13852, CONS( s13689, EMPTYLIST ) );
+L17268:
+        X4 = parser_index_2dleaves( PAIR_CAR( X1 ), 
+                                    parser_p_2dleaf_3f_v, EMPTYLIST );
+        X3 = parser_zipper_3ainitialize( X4 );
+        X2 = parser_a13693( X3 );
+        SDVAL = parser_tree_2d_3eleaves( X2, parser_ip_2dleaf_3f_v );
+        DISPLAY( 0 ) = SD0;
+        DISPLAY( 1 ) = SD1;
+        DISPLAY( 2 ) = SD2;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser_cal_2dsort_71a513bc_v );
+DEFCSTRING( t17270, "MY-TOPOLOGICAL-SORT" );
+EXTERNTSCPP( qobischeme_second, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_second_v );
+
+TSCP  parser_l13989( e13990, c17280 )
+        TSCP  e13990, c17280;
+{
+        TSCP  X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l13989 [inside MY-TOPOLOGICAL-SORT]" );
+        X1 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c17280, 0 );
+        X3 = qobischeme_second( e13990 );
+        X2 = scrt1_equal_3f( DISPLAY( 0 ), X3 );
+        DISPLAY( 0 ) = X1;
+        POPSTACKTRACE( X2 );
+}
+
+EXTERNTSCPP( qobischeme_position, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_position_v );
+EXTERNTSCPP( qobischeme_list_2dremove, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_list_2dremove_v );
+EXTERNTSCPP( qobischeme_count, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_count_v );
+
+TSCP  parser_cal_2dsort_71a513bc( n13854, e13855 )
+        TSCP  n13854, e13855;
+{
+        TSCP  X20, 
+              X19, 
+              X18, 
+              X17, 
+              X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t17270 );
+        X2 = n13854;
+        X3 = EMPTYLIST;
+        X4 = EMPTYLIST;
+L17273:
+        if  ( NEQ( _S2CUINT( X2 ), _S2CUINT( EMPTYLIST ) ) )  goto L17274;
+        X1 = X3;
+        goto L17284;
+L17274:
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L17277;
+        scrt1__24__car_2derror( X2 );
+L17277:
+        DISPLAY( 0 ) = PAIR_CAR( X2 );
+        X8 = MAKEPROCEDURE( 1, 
+                            0, 
+                            parser_l13989, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         1, DISPLAY( 0 ) ) );
+        X7 = qobischeme_remove_2dif_2dnot( X8, e13855 );
+        X6 = scrt1_length( X7 );
+        X5 = sc_cons( X6, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17283;
+        X6 = PAIR_CDR( X2 );
+        X4 = X5;
+        X3 = X5;
+        X2 = X6;
+        GOBACK( L17273 );
+L17283:
+        X6 = PAIR_CDR( X2 );
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17288;
+        scdebug_error( c12272, 
+                       c12273, CONS( X4, EMPTYLIST ) );
+L17288:
+        X4 = SETGEN( PAIR_CDR( X4 ), X5 );
+        X2 = X6;
+        GOBACK( L17273 );
+L17284:
+        X2 = X1;
+        X3 = n13854;
+        X4 = EMPTYLIST;
+L17292:
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17293;
+        SDVAL = scrt1_reverse( X4 );
+        DISPLAY( 0 ) = SD0;
+        POPSTACKTRACE( SDVAL );
+L17293:
+        X5 = qobischeme_position( _TSCP( 0 ), X2 );
+        X6 = scrt1_list_2dref( X3, X5 );
+        X9 = X2;
+        X10 = X3;
+        X11 = EMPTYLIST;
+        X12 = EMPTYLIST;
+L17298:
+        if  ( NEQ( _S2CUINT( X9 ), _S2CUINT( EMPTYLIST ) ) )  goto L17299;
+        X8 = X11;
+        goto L17314;
+L17299:
+        if  ( EQ( TSCPTAG( X10 ), PAIRTAG ) )  goto L17302;
+        scrt1__24__car_2derror( X10 );
+L17302:
+        X15 = PAIR_CAR( X10 );
+        if  ( EQ( TSCPTAG( X9 ), PAIRTAG ) )  goto L17305;
+        scrt1__24__car_2derror( X9 );
+L17305:
+        X16 = PAIR_CAR( X9 );
+        X20 = sc_cons( X15, EMPTYLIST );
+        X19 = sc_cons( X6, X20 );
+        X18 = X19;
+        X17 = qobischeme_count( X18, e13855 );
+        if  ( BITAND( BITOR( _S2CINT( X16 ), 
+                             _S2CINT( X17 ) ), 
+                      3 ) )  goto L17310;
+        X14 = _TSCP( IDIFFERENCE( _S2CINT( X16 ), 
+                                  _S2CINT( X17 ) ) );
+        goto L17311;
+L17310:
+        X14 = scrt2__2d_2dtwo( X16, X17 );
+L17311:
+        X13 = sc_cons( X14, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X11 ), _S2CUINT( EMPTYLIST ) ) )  goto L17313;
+        X14 = PAIR_CDR( X9 );
+        X15 = PAIR_CDR( X10 );
+        X12 = X13;
+        X11 = X13;
+        X10 = X15;
+        X9 = X14;
+        GOBACK( L17298 );
+L17313:
+        X14 = PAIR_CDR( X9 );
+        X15 = PAIR_CDR( X10 );
+        if  ( EQ( TSCPTAG( X12 ), PAIRTAG ) )  goto L17320;
+        scdebug_error( c12272, 
+                       c12273, CONS( X12, EMPTYLIST ) );
+L17320:
+        X12 = SETGEN( PAIR_CDR( X12 ), X13 );
+        X10 = X15;
+        X9 = X14;
+        GOBACK( L17298 );
+L17314:
+        X7 = qobischeme_list_2dremove( X8, X5 );
+        X8 = scrt1_remove( X6, X3 );
+        X4 = sc_cons( X6, X4 );
+        X3 = X8;
+        X2 = X7;
+        GOBACK( L17292 );
+}
+
+DEFTSCP( parser_predicates_fa16644b_v );
+DEFCSTRING( t17322, "SENTENCE->PREDICATES" );
+EXTERNTSCPP( qobischeme_first, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_first_v );
+
+TSCP  parser_l14178( r14179, c17325 )
+        TSCP  r14179, c17325;
+{
+        TSCP  X2, X1;
+
+        PUSHSTACKTRACE( "parser_l14178 [inside SENTENCE->PREDICATES]" );
+        X2 = qobischeme_first( r14179 );
+        X1 = scrt1_equal_3f( c13716, X2 );
+        if  ( FALSE( X1 ) )  goto L17328;
+        X2 = qobischeme_second( r14179 );
+        if  ( TRUE( scrt1_equal_3f( c14184, X2 ) ) )  goto L17330;
+        POPSTACKTRACE( TRUEVALUE );
+L17330:
+        POPSTACKTRACE( FALSEVALUE );
+L17328:
+        POPSTACKTRACE( X1 );
+}
+
+EXTERNTSCPP( qobischeme_third, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_third_v );
+EXTERNTSCPP( qobischeme_remove_2dif, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_remove_2dif_v );
+
+TSCP  parser_l14133( r14134, c17349 )
+        TSCP  r14134, c17349;
+{
+        TSCP  X1;
+
+        PUSHSTACKTRACE( "parser_l14133 [inside SENTENCE->PREDICATES]" );
+        X1 = qobischeme_first( r14134 );
+        POPSTACKTRACE( scrt1_member( X1, c14135 ) );
+}
+
+EXTERNTSCPP( qobischeme_x, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_x_v );
+
+TSCP  parser_predicates_fa16644b( s13992, c13993, s13994 )
+        TSCP  s13992, c13993, s13994;
+{
+        TSCP  X22, 
+              X21, 
+              X20, 
+              X19, 
+              X18, 
+              X17, 
+              X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t17322 );
+        X1 = parser_ssignments_d92ed835( s13992, c13993, s13994 );
+        X4 = MAKEPROCEDURE( 1, 0, parser_l14178, EMPTYLIST );
+        X3 = qobischeme_remove_2dif_2dnot( X4, X1 );
+        X4 = X3;
+        X5 = EMPTYLIST;
+        X6 = EMPTYLIST;
+L17334:
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17335;
+        X2 = X5;
+        goto L17342;
+L17335:
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17338;
+        scrt1__24__car_2derror( X4 );
+L17338:
+        X9 = PAIR_CAR( X4 );
+        X8 = qobischeme_third( X9 );
+        X7 = sc_cons( X8, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17341;
+        X8 = PAIR_CDR( X4 );
+        X6 = X7;
+        X5 = X7;
+        X4 = X8;
+        GOBACK( L17334 );
+L17341:
+        X8 = PAIR_CDR( X4 );
+        if  ( EQ( TSCPTAG( X6 ), PAIRTAG ) )  goto L17346;
+        scdebug_error( c12272, 
+                       c12273, CONS( X6, EMPTYLIST ) );
+L17346:
+        X6 = SETGEN( PAIR_CDR( X6 ), X7 );
+        X4 = X8;
+        GOBACK( L17334 );
+L17342:
+        X5 = MAKEPROCEDURE( 1, 0, parser_l14133, EMPTYLIST );
+        X4 = qobischeme_remove_2dif( X5, X1 );
+        X5 = X4;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L17353:
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17354;
+        X3 = X6;
+        goto L17361;
+L17354:
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17357;
+        scrt1__24__car_2derror( X5 );
+L17357:
+        X10 = PAIR_CAR( X5 );
+        X9 = qobischeme_rest( X10 );
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L17360;
+        X9 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X9;
+        GOBACK( L17353 );
+L17360:
+        X9 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L17365;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L17365:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X9;
+        GOBACK( L17353 );
+L17361:
+        X4 = X3;
+        X5 = EMPTYLIST;
+        X6 = EMPTYLIST;
+L17369:
+        if  ( EQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17370;
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17373;
+        scrt1__24__car_2derror( X4 );
+L17373:
+        X9 = PAIR_CAR( X4 );
+        X10 = qobischeme_first( X9 );
+        X12 = qobischeme_rest( X9 );
+        X13 = X12;
+        X14 = EMPTYLIST;
+        X15 = EMPTYLIST;
+L17378:
+        if  ( NEQ( _S2CUINT( X13 ), _S2CUINT( EMPTYLIST ) ) )  goto L17379;
+        X11 = X14;
+        goto L17390;
+L17379:
+        if  ( EQ( TSCPTAG( X13 ), PAIRTAG ) )  goto L17382;
+        scrt1__24__car_2derror( X13 );
+L17382:
+        X18 = PAIR_CAR( X13 );
+        if  ( FALSE( qobischeme_position( X18, X2 ) ) )  goto L17385;
+        X20 = qobischeme_x( X18 );
+        X22 = qobischeme_position( X18, X2 );
+        X21 = sc_cons( X22, EMPTYLIST );
+        X19 = sc_cons( X20, X21 );
+        X17 = X19;
+        goto L17386;
+L17385:
+        X17 = FALSEVALUE;
+L17386:
+        X16 = sc_cons( X17, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X14 ), _S2CUINT( EMPTYLIST ) ) )  goto L17389;
+        X17 = PAIR_CDR( X13 );
+        X15 = X16;
+        X14 = X16;
+        X13 = X17;
+        GOBACK( L17378 );
+L17389:
+        X17 = PAIR_CDR( X13 );
+        if  ( EQ( TSCPTAG( X15 ), PAIRTAG ) )  goto L17394;
+        scdebug_error( c12272, 
+                       c12273, CONS( X15, EMPTYLIST ) );
+L17394:
+        X15 = SETGEN( PAIR_CDR( X15 ), X16 );
+        X13 = X17;
+        GOBACK( L17378 );
+L17390:
+        X8 = sc_cons( X10, X11 );
+        X7 = sc_cons( X8, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17397;
+        X8 = PAIR_CDR( X4 );
+        X6 = X7;
+        X5 = X7;
+        X4 = X8;
+        GOBACK( L17369 );
+L17397:
+        X8 = PAIR_CDR( X4 );
+        if  ( EQ( TSCPTAG( X6 ), PAIRTAG ) )  goto L17402;
+        scdebug_error( c12272, 
+                       c12273, CONS( X6, EMPTYLIST ) );
+L17402:
+        X6 = SETGEN( PAIR_CDR( X6 ), X7 );
+        X4 = X8;
+        GOBACK( L17369 );
+L17370:
+        POPSTACKTRACE( X5 );
+}
+
+DEFTSCP( parser__2dobjects_57413bd6_v );
+DEFCSTRING( t17404, "SENTENCES->UNIVERSAL-PREDICATES-AND-OBJECTS" );
+EXTERNTSCP( parser_s_3acfg_2a_b68c7090_v );
+EXTERNTSCPP( parser_mantics_2a_e96a1876, XAL1( TSCP ) );
+EXTERNTSCP( parser_mantics_2a_e96a1876_v );
+EXTERNTSCPP( codetectionlib_2dsc_join, XAL1( TSCP ) );
+EXTERNTSCP( codetectionlib_2dsc_join_v );
+
+TSCP  parser_l14294( p14295, n14296, c17422 )
+        TSCP  p14295, n14296, c17422;
+{
+        TSCP  X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l14294 [inside SENTENCES->UNIVERSAL-PREDICAT\
+ES-AND-OBJECTS]" );
+        X5 = p14295;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L17426:
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17427;
+        X4 = X6;
+        goto L17434;
+L17427:
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17430;
+        scrt1__24__car_2derror( X5 );
+L17430:
+        X10 = PAIR_CAR( X5 );
+        X9 = qobischeme_rest( X10 );
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L17433;
+        X9 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X9;
+        GOBACK( L17426 );
+L17433:
+        X9 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L17438;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L17438:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X9;
+        GOBACK( L17426 );
+L17434:
+        X3 = codetectionlib_2dsc_join( X4 );
+        X4 = X3;
+        X5 = EMPTYLIST;
+        X6 = EMPTYLIST;
+L17442:
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17443;
+        X2 = X5;
+        goto L17452;
+L17443:
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17446;
+        scrt1__24__car_2derror( X4 );
+L17446:
+        X9 = PAIR_CAR( X4 );
+        X11 = sc_cons( X9, EMPTYLIST );
+        X10 = sc_cons( n14296, X11 );
+        X8 = X10;
+        X7 = sc_cons( X8, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17451;
+        X8 = PAIR_CDR( X4 );
+        X6 = X7;
+        X5 = X7;
+        X4 = X8;
+        GOBACK( L17442 );
+L17451:
+        X8 = PAIR_CDR( X4 );
+        if  ( EQ( TSCPTAG( X6 ), PAIRTAG ) )  goto L17456;
+        scdebug_error( c12272, 
+                       c12273, CONS( X6, EMPTYLIST ) );
+L17456:
+        X6 = SETGEN( PAIR_CDR( X6 ), X7 );
+        X4 = X8;
+        GOBACK( L17442 );
+L17452:
+        X1 = obischeme_duplicates_bbb15811( X2 );
+        POPSTACKTRACE( qobischeme_remove_2dif_2dnot( qobischeme_second_v, 
+                                                     X1 ) );
+}
+
+TSCP  parser_l14193( p14194, n14195, c17459 )
+        TSCP  p14194, n14195, c17459;
+{
+        TSCP  X20, 
+              X19, 
+              X18, 
+              X17, 
+              X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l14193 [inside SENTENCES->UNIVERSAL-PREDICAT\
+ES-AND-OBJECTS]" );
+        X1 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c17459, 0 );
+        X3 = p14194;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L17462:
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17463;
+        X2 = X4;
+        goto L17492;
+L17463:
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L17466;
+        scrt1__24__car_2derror( X3 );
+L17466:
+        X8 = PAIR_CAR( X3 );
+        X10 = qobischeme_first( X8 );
+        X9 = qobischeme_position( X10, parser_2dnames_2a_b6d78203_v );
+        X11 = qobischeme_rest( X8 );
+        X12 = X11;
+        X13 = EMPTYLIST;
+        X14 = EMPTYLIST;
+L17471:
+        if  ( NEQ( _S2CUINT( X12 ), _S2CUINT( EMPTYLIST ) ) )  goto L17472;
+        X10 = X13;
+        goto L17484;
+L17472:
+        if  ( EQ( TSCPTAG( X12 ), PAIRTAG ) )  goto L17475;
+        scrt1__24__car_2derror( X12 );
+L17475:
+        X17 = PAIR_CAR( X12 );
+        X20 = sc_cons( X17, EMPTYLIST );
+        X19 = sc_cons( n14195, X20 );
+        X18 = X19;
+        if  ( FALSE( qobischeme_position( X18, DISPLAY( 0 ) ) )
+            )  goto L17478;
+        X20 = sc_cons( X17, EMPTYLIST );
+        X19 = sc_cons( n14195, X20 );
+        X18 = X19;
+        X16 = qobischeme_position( X18, DISPLAY( 0 ) );
+        goto L17479;
+L17478:
+        X16 = _TSCP( -4 );
+L17479:
+        X15 = sc_cons( X16, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X13 ), _S2CUINT( EMPTYLIST ) ) )  goto L17483;
+        X16 = PAIR_CDR( X12 );
+        X14 = X15;
+        X13 = X15;
+        X12 = X16;
+        GOBACK( L17471 );
+L17483:
+        X16 = PAIR_CDR( X12 );
+        if  ( EQ( TSCPTAG( X14 ), PAIRTAG ) )  goto L17488;
+        scdebug_error( c12272, 
+                       c12273, CONS( X14, EMPTYLIST ) );
+L17488:
+        X14 = SETGEN( PAIR_CDR( X14 ), X15 );
+        X12 = X16;
+        GOBACK( L17471 );
+L17484:
+        X7 = sc_cons( X9, X10 );
+        X6 = sc_cons( X7, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17491;
+        X7 = PAIR_CDR( X3 );
+        X5 = X6;
+        X4 = X6;
+        X3 = X7;
+        GOBACK( L17462 );
+L17491:
+        X7 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17496;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L17496:
+        X5 = SETGEN( PAIR_CDR( X5 ), X6 );
+        X3 = X7;
+        GOBACK( L17462 );
+L17492:
+        DISPLAY( 0 ) = X1;
+        POPSTACKTRACE( X2 );
+}
+
+TSCP  parser_l14289( o14290, i14291, c17498 )
+        TSCP  o14290, i14291, c17498;
+{
+        TSCP  X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l14289 [inside SENTENCES->UNIVERSAL-PREDICAT\
+ES-AND-OBJECTS]" );
+        X4 = qobischeme_second( o14290 );
+        X3 = qobischeme_first( X4 );
+        X5 = qobischeme_first( o14290 );
+        X4 = sc_cons( X5, EMPTYLIST );
+        X2 = sc_cons( X3, X4 );
+        X1 = sc_cons( i14291, X2 );
+        POPSTACKTRACE( X1 );
+}
+
+TSCP  parser__2dobjects_57413bd6( s14186 )
+        TSCP  s14186;
+{
+        TSCP  X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t17404 );
+        X2 = s14186;
+        X3 = EMPTYLIST;
+        X4 = EMPTYLIST;
+L17407:
+        if  ( NEQ( _S2CUINT( X2 ), _S2CUINT( EMPTYLIST ) ) )  goto L17408;
+        X1 = X3;
+        goto L17415;
+L17408:
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L17411;
+        scrt1__24__car_2derror( X2 );
+L17411:
+        X7 = PAIR_CAR( X2 );
+        X6 = parser_predicates_fa16644b( X7, 
+                                         parser_s_3acfg_2a_b68c7090_v, 
+                                         parser_mantics_2a_e96a1876_v );
+        X5 = sc_cons( X6, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17414;
+        X6 = PAIR_CDR( X2 );
+        X4 = X5;
+        X3 = X5;
+        X2 = X6;
+        GOBACK( L17407 );
+L17414:
+        X6 = PAIR_CDR( X2 );
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17419;
+        scdebug_error( c12272, 
+                       c12273, CONS( X4, EMPTYLIST ) );
+L17419:
+        X4 = SETGEN( PAIR_CDR( X4 ), X5 );
+        X2 = X6;
+        GOBACK( L17407 );
+L17415:
+        X3 = MAKEPROCEDURE( 2, 0, parser_l14294, EMPTYLIST );
+        X2 = qobischeme_map_2dindexed( X3, X1 );
+        DISPLAY( 0 ) = codetectionlib_2dsc_join( X2 );
+        X5 = MAKEPROCEDURE( 2, 
+                            0, 
+                            parser_l14193, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         1, DISPLAY( 0 ) ) );
+        X4 = qobischeme_map_2dindexed( X5, X1 );
+        X3 = codetectionlib_2dsc_join( X4 );
+        X6 = MAKEPROCEDURE( 2, 0, parser_l14289, EMPTYLIST );
+        X5 = qobischeme_map_2dindexed( X6, DISPLAY( 0 ) );
+        X4 = sc_cons( X5, EMPTYLIST );
+        X2 = sc_cons( X3, X4 );
+        SDVAL = X2;
+        DISPLAY( 0 ) = SD0;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser_predicates_4ae5d9b8_v );
+DEFCSTRING( t17502, "THETA-ROLES->PREDICATES" );
+
+TSCP  parser_l14569( o14570, c17504 )
+        TSCP  o14570, c17504;
+{
+        TSCP  X1;
+
+        PUSHSTACKTRACE( "parser_l14569 [inside THETA-ROLES->PREDICATES]" );
+        X1 = qobischeme_x( o14570 );
+        POPSTACKTRACE( scrt1_equal_3f( c14184, X1 ) );
+}
+
+TSCP  parser_l14615( r14616, c17506 )
+        TSCP  r14616, c17506;
+{
+        TSCP  X1;
+
+        PUSHSTACKTRACE( "parser_l14615 [inside THETA-ROLES->PREDICATES]" );
+        X1 = qobischeme_first( r14616 );
+        POPSTACKTRACE( scrt1_member( X1, c14135 ) );
+}
+
+TSCP  parser_l14567( r14568, c17525 )
+        TSCP  r14568, c17525;
+{
+        TSCP  X1;
+
+        PUSHSTACKTRACE( "parser_l14567 [inside THETA-ROLES->PREDICATES]" );
+        X1 = qobischeme_first( r14568 );
+        POPSTACKTRACE( scrt1_member( X1, c14135 ) );
+}
+
+TSCP  parser_predicates_4ae5d9b8( t14430 )
+        TSCP  t14430;
+{
+        TSCP  X21, 
+              X20, 
+              X19, 
+              X18, 
+              X17, 
+              X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t17502 );
+        X2 = MAKEPROCEDURE( 1, 0, parser_l14569, EMPTYLIST );
+        X7 = MAKEPROCEDURE( 1, 0, parser_l14615, EMPTYLIST );
+        X6 = qobischeme_remove_2dif( X7, t14430 );
+        X7 = X6;
+        X8 = EMPTYLIST;
+        X9 = EMPTYLIST;
+L17510:
+        if  ( NEQ( _S2CUINT( X7 ), _S2CUINT( EMPTYLIST ) ) )  goto L17511;
+        X5 = X8;
+        goto L17518;
+L17511:
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L17514;
+        scrt1__24__car_2derror( X7 );
+L17514:
+        X12 = PAIR_CAR( X7 );
+        X11 = codetectionlib_2dsc_drop( _TSCP( 8 ), X12 );
+        X10 = sc_cons( X11, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X8 ), _S2CUINT( EMPTYLIST ) ) )  goto L17517;
+        X11 = PAIR_CDR( X7 );
+        X9 = X10;
+        X8 = X10;
+        X7 = X11;
+        GOBACK( L17510 );
+L17517:
+        X11 = PAIR_CDR( X7 );
+        if  ( EQ( TSCPTAG( X9 ), PAIRTAG ) )  goto L17522;
+        scdebug_error( c12272, 
+                       c12273, CONS( X9, EMPTYLIST ) );
+L17522:
+        X9 = SETGEN( PAIR_CDR( X9 ), X10 );
+        X7 = X11;
+        GOBACK( L17510 );
+L17518:
+        X4 = codetectionlib_2dsc_join( X5 );
+        X3 = obischeme_duplicates_bbb15811( X4 );
+        X1 = qobischeme_remove_2dif( X2, X3 );
+        X4 = MAKEPROCEDURE( 1, 0, parser_l14567, EMPTYLIST );
+        X3 = qobischeme_remove_2dif( X4, t14430 );
+        X4 = X3;
+        X5 = EMPTYLIST;
+        X6 = EMPTYLIST;
+L17529:
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17530;
+        X2 = X5;
+        goto L17537;
+L17530:
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17533;
+        scrt1__24__car_2derror( X4 );
+L17533:
+        X9 = PAIR_CAR( X4 );
+        X8 = qobischeme_rest( X9 );
+        X7 = sc_cons( X8, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17536;
+        X8 = PAIR_CDR( X4 );
+        X6 = X7;
+        X5 = X7;
+        X4 = X8;
+        GOBACK( L17529 );
+L17536:
+        X8 = PAIR_CDR( X4 );
+        if  ( EQ( TSCPTAG( X6 ), PAIRTAG ) )  goto L17541;
+        scdebug_error( c12272, 
+                       c12273, CONS( X6, EMPTYLIST ) );
+L17541:
+        X6 = SETGEN( PAIR_CDR( X6 ), X7 );
+        X4 = X8;
+        GOBACK( L17529 );
+L17537:
+        X3 = X2;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L17545:
+        if  ( EQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17546;
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L17549;
+        scrt1__24__car_2derror( X3 );
+L17549:
+        X8 = PAIR_CAR( X3 );
+        X9 = qobischeme_first( X8 );
+        X11 = qobischeme_rest( X8 );
+        X12 = X11;
+        X13 = EMPTYLIST;
+        X14 = EMPTYLIST;
+L17554:
+        if  ( NEQ( _S2CUINT( X12 ), _S2CUINT( EMPTYLIST ) ) )  goto L17555;
+        X10 = X13;
+        goto L17566;
+L17555:
+        if  ( EQ( TSCPTAG( X12 ), PAIRTAG ) )  goto L17558;
+        scrt1__24__car_2derror( X12 );
+L17558:
+        X17 = PAIR_CAR( X12 );
+        if  ( FALSE( qobischeme_position( X17, X1 ) ) )  goto L17561;
+        X19 = qobischeme_x( X17 );
+        X21 = qobischeme_position( X17, X1 );
+        X20 = sc_cons( X21, EMPTYLIST );
+        X18 = sc_cons( X19, X20 );
+        X16 = X18;
+        goto L17562;
+L17561:
+        X16 = FALSEVALUE;
+L17562:
+        X15 = sc_cons( X16, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X13 ), _S2CUINT( EMPTYLIST ) ) )  goto L17565;
+        X16 = PAIR_CDR( X12 );
+        X14 = X15;
+        X13 = X15;
+        X12 = X16;
+        GOBACK( L17554 );
+L17565:
+        X16 = PAIR_CDR( X12 );
+        if  ( EQ( TSCPTAG( X14 ), PAIRTAG ) )  goto L17570;
+        scdebug_error( c12272, 
+                       c12273, CONS( X14, EMPTYLIST ) );
+L17570:
+        X14 = SETGEN( PAIR_CDR( X14 ), X15 );
+        X12 = X16;
+        GOBACK( L17554 );
+L17566:
+        X7 = sc_cons( X9, X10 );
+        X6 = sc_cons( X7, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17573;
+        X7 = PAIR_CDR( X3 );
+        X5 = X6;
+        X4 = X6;
+        X3 = X7;
+        GOBACK( L17545 );
+L17573:
+        X7 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17578;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L17578:
+        X5 = SETGEN( PAIR_CDR( X5 ), X6 );
+        X3 = X7;
+        GOBACK( L17545 );
+L17546:
+        POPSTACKTRACE( X4 );
+}
+
+DEFTSCP( parser__2dobjects_dc2331e6_v );
+DEFCSTRING( t17580, "THETA-ROLES->UNIVERSAL-PREDICATES-AND-OBJECTS" );
+
+TSCP  parser_l14906( p14907, c17600 )
+        TSCP  p14907, c17600;
+{
+        PUSHSTACKTRACE( "parser_l14906 [inside THETA-ROLES->UNIVERSAL-PREDIC\
+ATES-AND-OBJECTS]" );
+        POPSTACKTRACE( scrt1_member( FALSEVALUE, p14907 ) );
+}
+
+TSCP  parser_l14853( p14854, n14855, c17598 )
+        TSCP  p14854, n14855, c17598;
+{
+        TSCP  X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l14853 [inside THETA-ROLES->UNIVERSAL-PREDIC\
+ATES-AND-OBJECTS]" );
+        X2 = MAKEPROCEDURE( 1, 0, parser_l14906, EMPTYLIST );
+        X1 = qobischeme_remove_2dif( X2, p14854 );
+        X2 = X1;
+        X3 = EMPTYLIST;
+        X4 = EMPTYLIST;
+L17604:
+        if  ( EQ( _S2CUINT( X2 ), _S2CUINT( EMPTYLIST ) ) )  goto L17605;
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L17608;
+        scrt1__24__car_2derror( X2 );
+L17608:
+        X7 = PAIR_CAR( X2 );
+        X12 = qobischeme_second( X7 );
+        X11 = sc_cons( X12, EMPTYLIST );
+        X10 = sc_cons( n14855, X11 );
+        X9 = X10;
+        X14 = qobischeme_third( X7 );
+        X13 = sc_cons( X14, EMPTYLIST );
+        X12 = sc_cons( n14855, X13 );
+        X11 = X12;
+        X10 = sc_cons( X11, EMPTYLIST );
+        X8 = sc_cons( X9, X10 );
+        X6 = X8;
+        X5 = sc_cons( X6, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17615;
+        X6 = PAIR_CDR( X2 );
+        X4 = X5;
+        X3 = X5;
+        X2 = X6;
+        GOBACK( L17604 );
+L17615:
+        X6 = PAIR_CDR( X2 );
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17620;
+        scdebug_error( c12272, 
+                       c12273, CONS( X4, EMPTYLIST ) );
+L17620:
+        X4 = SETGEN( PAIR_CDR( X4 ), X5 );
+        X2 = X6;
+        GOBACK( L17604 );
+L17605:
+        POPSTACKTRACE( X3 );
+}
+
+TSCP  parser_l14762( p14763, n14764, c17623 )
+        TSCP  p14763, n14764, c17623;
+{
+        TSCP  X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l14762 [inside THETA-ROLES->UNIVERSAL-PREDIC\
+ATES-AND-OBJECTS]" );
+        X5 = p14763;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L17627:
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17628;
+        X4 = X6;
+        goto L17635;
+L17628:
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17631;
+        scrt1__24__car_2derror( X5 );
+L17631:
+        X10 = PAIR_CAR( X5 );
+        X9 = qobischeme_rest( X10 );
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L17634;
+        X9 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X9;
+        GOBACK( L17627 );
+L17634:
+        X9 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L17639;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L17639:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X9;
+        GOBACK( L17627 );
+L17635:
+        X3 = codetectionlib_2dsc_join( X4 );
+        X4 = X3;
+        X5 = EMPTYLIST;
+        X6 = EMPTYLIST;
+L17643:
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17644;
+        X2 = X5;
+        goto L17653;
+L17644:
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17647;
+        scrt1__24__car_2derror( X4 );
+L17647:
+        X9 = PAIR_CAR( X4 );
+        X11 = sc_cons( X9, EMPTYLIST );
+        X10 = sc_cons( n14764, X11 );
+        X8 = X10;
+        X7 = sc_cons( X8, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17652;
+        X8 = PAIR_CDR( X4 );
+        X6 = X7;
+        X5 = X7;
+        X4 = X8;
+        GOBACK( L17643 );
+L17652:
+        X8 = PAIR_CDR( X4 );
+        if  ( EQ( TSCPTAG( X6 ), PAIRTAG ) )  goto L17657;
+        scdebug_error( c12272, 
+                       c12273, CONS( X6, EMPTYLIST ) );
+L17657:
+        X6 = SETGEN( PAIR_CDR( X6 ), X7 );
+        X4 = X8;
+        GOBACK( L17643 );
+L17653:
+        X1 = obischeme_duplicates_bbb15811( X2 );
+        POPSTACKTRACE( qobischeme_remove_2dif_2dnot( qobischeme_second_v, 
+                                                     X1 ) );
+}
+
+EXTERNTSCPP( scrt6_format, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt6_format_v );
+
+TSCP  parser_l14632( p14633, n14634, c17676 )
+        TSCP  p14633, n14634, c17676;
+{
+        TSCP  X20, 
+              X19, 
+              X18, 
+              X17, 
+              X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l14632 [inside THETA-ROLES->UNIVERSAL-PREDIC\
+ATES-AND-OBJECTS]" );
+        X1 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c17676, 0 );
+        X3 = p14633;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L17679:
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17680;
+        X2 = X4;
+        goto L17713;
+L17680:
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L17683;
+        scrt1__24__car_2derror( X3 );
+L17683:
+        X8 = PAIR_CAR( X3 );
+        X11 = qobischeme_first( X8 );
+        X10 = qobischeme_position( X11, parser_2dnames_2a_b6d78203_v );
+        if  ( FALSE( X10 ) )  goto L17687;
+        X9 = X10;
+        goto L17688;
+L17687:
+        X11 = CONS( qobischeme_first( X8 ), EMPTYLIST );
+        scrt6_format( TRUEVALUE, CONS( c14682, X11 ) );
+        X9 = qobischeme_panic( c14683, EMPTYLIST );
+L17688:
+        X11 = qobischeme_rest( X8 );
+        X12 = X11;
+        X13 = EMPTYLIST;
+        X14 = EMPTYLIST;
+L17692:
+        if  ( NEQ( _S2CUINT( X12 ), _S2CUINT( EMPTYLIST ) ) )  goto L17693;
+        X10 = X13;
+        goto L17705;
+L17693:
+        if  ( EQ( TSCPTAG( X12 ), PAIRTAG ) )  goto L17696;
+        scrt1__24__car_2derror( X12 );
+L17696:
+        X17 = PAIR_CAR( X12 );
+        X20 = sc_cons( X17, EMPTYLIST );
+        X19 = sc_cons( n14634, X20 );
+        X18 = X19;
+        if  ( FALSE( qobischeme_position( X18, DISPLAY( 0 ) ) )
+            )  goto L17699;
+        X20 = sc_cons( X17, EMPTYLIST );
+        X19 = sc_cons( n14634, X20 );
+        X18 = X19;
+        X16 = qobischeme_position( X18, DISPLAY( 0 ) );
+        goto L17700;
+L17699:
+        X16 = _TSCP( -4 );
+L17700:
+        X15 = sc_cons( X16, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X13 ), _S2CUINT( EMPTYLIST ) ) )  goto L17704;
+        X16 = PAIR_CDR( X12 );
+        X14 = X15;
+        X13 = X15;
+        X12 = X16;
+        GOBACK( L17692 );
+L17704:
+        X16 = PAIR_CDR( X12 );
+        if  ( EQ( TSCPTAG( X14 ), PAIRTAG ) )  goto L17709;
+        scdebug_error( c12272, 
+                       c12273, CONS( X14, EMPTYLIST ) );
+L17709:
+        X14 = SETGEN( PAIR_CDR( X14 ), X15 );
+        X12 = X16;
+        GOBACK( L17692 );
+L17705:
+        X7 = sc_cons( X9, X10 );
+        X6 = sc_cons( X7, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17712;
+        X7 = PAIR_CDR( X3 );
+        X5 = X6;
+        X4 = X6;
+        X3 = X7;
+        GOBACK( L17679 );
+L17712:
+        X7 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17717;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L17717:
+        X5 = SETGEN( PAIR_CDR( X5 ), X6 );
+        X3 = X7;
+        GOBACK( L17679 );
+L17713:
+        DISPLAY( 0 ) = X1;
+        POPSTACKTRACE( X2 );
+}
+
+TSCP  parser_l14732( o14733, i14734, c17719 )
+        TSCP  o14733, i14734, c17719;
+{
+        TSCP  X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l14732 [inside THETA-ROLES->UNIVERSAL-PREDIC\
+ATES-AND-OBJECTS]" );
+        X4 = qobischeme_second( o14733 );
+        X3 = qobischeme_first( X4 );
+        X5 = qobischeme_first( o14733 );
+        X4 = sc_cons( X5, EMPTYLIST );
+        X2 = sc_cons( X3, X4 );
+        X1 = sc_cons( i14734, X2 );
+        POPSTACKTRACE( X1 );
+}
+
+TSCP  parser__2dobjects_dc2331e6( t14618, o14619 )
+        TSCP  t14618, o14619;
+{
+        TSCP  X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t17580 );
+        X2 = t14618;
+        X3 = EMPTYLIST;
+        X4 = EMPTYLIST;
+L17583:
+        if  ( NEQ( _S2CUINT( X2 ), _S2CUINT( EMPTYLIST ) ) )  goto L17584;
+        X1 = X3;
+        goto L17591;
+L17584:
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L17587;
+        scrt1__24__car_2derror( X2 );
+L17587:
+        X7 = PAIR_CAR( X2 );
+        X6 = parser_predicates_4ae5d9b8( X7 );
+        X5 = sc_cons( X6, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17590;
+        X6 = PAIR_CDR( X2 );
+        X4 = X5;
+        X3 = X5;
+        X2 = X6;
+        GOBACK( L17583 );
+L17590:
+        X6 = PAIR_CDR( X2 );
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17595;
+        scdebug_error( c12272, 
+                       c12273, CONS( X4, EMPTYLIST ) );
+L17595:
+        X4 = SETGEN( PAIR_CDR( X4 ), X5 );
+        X2 = X6;
+        GOBACK( L17583 );
+L17591:
+        X4 = MAKEPROCEDURE( 2, 0, parser_l14853, EMPTYLIST );
+        X3 = qobischeme_map_2dindexed( X4, X1 );
+        X2 = codetectionlib_2dsc_join( X3 );
+        X5 = MAKEPROCEDURE( 2, 0, parser_l14762, EMPTYLIST );
+        X4 = qobischeme_map_2dindexed( X5, X1 );
+        X3 = codetectionlib_2dsc_join( X4 );
+        DISPLAY( 0 ) = parser_cal_2dsort_71a513bc( X3, X2 );
+        X5 = DISPLAY( 0 );
+        X6 = X5;
+L17663:
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L17664;
+        X4 = FALSEVALUE;
+        goto L17665;
+L17664:
+        if  ( EQ( TSCPTAG( X6 ), PAIRTAG ) )  goto L17668;
+        scrt1__24__car_2derror( X6 );
+L17668:
+        X7 = PAIR_CAR( X6 );
+        X9 = qobischeme_second( X7 );
+        X8 = qobischeme_first( X9 );
+        if  ( TRUE( scrt1_member( X8, o14619 ) ) )  goto L17671;
+        X9 = qobischeme_second( X7 );
+        X8 = CONS( qobischeme_first( X9 ), EMPTYLIST );
+        scrt6_format( TRUEVALUE, CONS( c14682, X8 ) );
+        qobischeme_panic( c14761, EMPTYLIST );
+L17671:
+        X6 = PAIR_CDR( X6 );
+        GOBACK( L17663 );
+L17665:
+        X8 = MAKEPROCEDURE( 2, 
+                            0, 
+                            parser_l14632, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         1, DISPLAY( 0 ) ) );
+        X7 = qobischeme_map_2dindexed( X8, X1 );
+        X6 = codetectionlib_2dsc_join( X7 );
+        X9 = MAKEPROCEDURE( 2, 0, parser_l14732, EMPTYLIST );
+        X8 = qobischeme_map_2dindexed( X9, DISPLAY( 0 ) );
+        X7 = sc_cons( X8, EMPTYLIST );
+        X5 = sc_cons( X6, X7 );
+        SDVAL = X5;
+        DISPLAY( 0 ) = SD0;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser_s_3acfg_2a_b68c7090_v );
+DEFCSTRING( t17723, "*NEW4-CORPUS:CFG*" );
+DEFTSCP( parser_mantics_2a_e96a1876_v );
+DEFCSTRING( t17725, "*NEW4-CORPUS:SEMANTICS*" );
+
+TSCP  parser_mantics_2a_e96a1876( l14994 )
+        TSCP  l14994;
+{
+        TSCP  X2, X1;
+
+        PUSHSTACKTRACE( t17725 );
+        if  ( NEQ( _S2CUINT( l14994 ), _S2CUINT( c15002 ) ) )  goto L17727;
+        X2 = CONS( EMPTYLIST, EMPTYLIST );
+        X2 = CONS( c15034, X2 );
+        X1 = scrt1_cons_2a( c15031, CONS( c15032, X2 ) );
+        X2 = CONS( EMPTYLIST, EMPTYLIST );
+        POPSTACKTRACE( scrt1_cons_2a( X1, 
+                                      CONS( scrt1_cons_2a( c15035, 
+                                                           CONS( EMPTYLIST, 
+                                                                 EMPTYLIST ) ), 
+                                            X2 ) ) );
+L17727:
+        if  ( NEQ( _S2CUINT( l14994 ), _S2CUINT( c15006 ) ) )  goto L17729;
+        X2 = CONS( EMPTYLIST, EMPTYLIST );
+        X2 = CONS( c15034, X2 );
+        X1 = scrt1_cons_2a( c15031, CONS( c15032, X2 ) );
+        X2 = CONS( EMPTYLIST, EMPTYLIST );
+        POPSTACKTRACE( scrt1_cons_2a( X1, 
+                                      CONS( scrt1_cons_2a( c15035, 
+                                                           CONS( EMPTYLIST, 
+                                                                 EMPTYLIST ) ), 
+                                            X2 ) ) );
+L17729:
+        if  ( NEQ( _S2CUINT( l14994 ), _S2CUINT( c15010 ) ) )  goto L17731;
+        X1 = scrt1_cons_2a( c15031, 
+                            CONS( EMPTYLIST, EMPTYLIST ) );
+        X2 = CONS( EMPTYLIST, EMPTYLIST );
+        POPSTACKTRACE( scrt1_cons_2a( X1, 
+                                      CONS( scrt1_cons_2a( c15032, 
+                                                           CONS( EMPTYLIST, 
+                                                                 EMPTYLIST ) ), 
+                                            X2 ) ) );
+L17731:
+        if  ( NEQ( _S2CUINT( l14994 ), _S2CUINT( c15014 ) ) )  goto L17733;
+        X1 = scrt1_cons_2a( c15031, 
+                            CONS( EMPTYLIST, EMPTYLIST ) );
+        X2 = CONS( EMPTYLIST, EMPTYLIST );
+        POPSTACKTRACE( scrt1_cons_2a( X1, 
+                                      CONS( scrt1_cons_2a( c15032, 
+                                                           CONS( EMPTYLIST, 
+                                                                 EMPTYLIST ) ), 
+                                            X2 ) ) );
+L17733:
+        if  ( NEQ( _S2CUINT( l14994 ), _S2CUINT( c15018 ) ) )  goto L17735;
+        X1 = scrt1_cons_2a( c15031, 
+                            CONS( EMPTYLIST, EMPTYLIST ) );
+        X2 = CONS( EMPTYLIST, EMPTYLIST );
+        POPSTACKTRACE( scrt1_cons_2a( X1, 
+                                      CONS( scrt1_cons_2a( c15032, 
+                                                           CONS( EMPTYLIST, 
+                                                                 EMPTYLIST ) ), 
+                                            X2 ) ) );
+L17735:
+        if  ( NEQ( _S2CUINT( l14994 ), _S2CUINT( c15022 ) ) )  goto L17737;
+        X1 = scrt1_cons_2a( c15031, 
+                            CONS( EMPTYLIST, EMPTYLIST ) );
+        X2 = CONS( EMPTYLIST, EMPTYLIST );
+        POPSTACKTRACE( scrt1_cons_2a( X1, 
+                                      CONS( scrt1_cons_2a( c15034, 
+                                                           CONS( EMPTYLIST, 
+                                                                 EMPTYLIST ) ), 
+                                            X2 ) ) );
+L17737:
+        if  ( NEQ( _S2CUINT( l14994 ), _S2CUINT( c15026 ) ) )  goto L17739;
+        X2 = CONS( EMPTYLIST, EMPTYLIST );
+        X1 = scrt1_cons_2a( c15031, CONS( c15032, X2 ) );
+        X2 = CONS( EMPTYLIST, EMPTYLIST );
+        POPSTACKTRACE( scrt1_cons_2a( X1, 
+                                      CONS( scrt1_cons_2a( c15034, 
+                                                           CONS( EMPTYLIST, 
+                                                                 EMPTYLIST ) ), 
+                                            X2 ) ) );
+L17739:
+        if  ( NEQ( _S2CUINT( l14994 ), _S2CUINT( c15030 ) ) )  goto L17741;
+        X2 = CONS( EMPTYLIST, EMPTYLIST );
+        X1 = scrt1_cons_2a( c15031, CONS( c15032, X2 ) );
+        X2 = CONS( EMPTYLIST, EMPTYLIST );
+        POPSTACKTRACE( scrt1_cons_2a( X1, 
+                                      CONS( scrt1_cons_2a( c15033, 
+                                                           CONS( EMPTYLIST, 
+                                                                 EMPTYLIST ) ), 
+                                            X2 ) ) );
+L17741:
+        POPSTACKTRACE( scrt1_cons_2a( c15036, 
+                                      CONS( EMPTYLIST, EMPTYLIST ) ) );
+}
+
+DEFTSCP( parser__2adataset_2did_2a_v );
+DEFCSTRING( t17743, "*DATASET-ID*" );
+DEFTSCP( parser__2afiles_2ddir_2a_v );
+DEFCSTRING( t17744, "*FILES-DIR*" );
+DEFTSCP( parser_rticipants_7e4ac1e_v );
+DEFCSTRING( t17745, "SENTENCE->PARTICIPANTS" );
+EXTERNTSCPP( pregexp_pregexp_2dsplit, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( pregexp_pregexp_2dsplit_v );
+EXTERNTSCPP( dbindings_d_3esymbol_d89bd1b0, XAL1( TSCP ) );
+EXTERNTSCP( dbindings_d_3esymbol_d89bd1b0_v );
+EXTERNTSCPP( scrt4_vector, XAL1( TSCP ) );
+EXTERNTSCP( scrt4_vector_v );
+EXTERNTSCPP( scrt2__2b_2dtwo, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt2__2b_2dtwo_v );
+EXTERNTSCPP( qobischeme_y, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_y_v );
+
+TSCP  parser_rticipants_7e4ac1e( s15039, o15040 )
+        TSCP  s15039, o15040;
+{
+        TSCP  X20, 
+              X19, 
+              X18, 
+              X17, 
+              X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t17745 );
+        X1 = _TSCP( 0 );
+        X2 = _TSCP( 0 );
+        X3 = _TSCP( 0 );
+        X4 = _TSCP( 0 );
+        X4 = CONS( X4, EMPTYLIST );
+        X3 = CONS( X3, EMPTYLIST );
+        X2 = CONS( X2, EMPTYLIST );
+        X1 = CONS( X1, EMPTYLIST );
+        X5 = sc_cons( c14184, o15040 );
+        SETGEN( PAIR_CAR( X1 ), X5 );
+        X6 = scrt1_length( PAIR_CAR( X1 ) );
+        X5 = sc_make_2dvector( X6, 
+                               CONS( _TSCP( 0 ), EMPTYLIST ) );
+        SETGEN( PAIR_CAR( X2 ), X5 );
+        X5 = _TSCP( 0 );
+        SETGEN( PAIR_CAR( X3 ), X5 );
+        X5 = EMPTYLIST;
+        SETGEN( PAIR_CAR( X4 ), X5 );
+        X6 = pregexp_pregexp_2dsplit( c12989, s15039 );
+        X7 = X6;
+        X8 = EMPTYLIST;
+        X9 = EMPTYLIST;
+L17750:
+        if  ( NEQ( _S2CUINT( X7 ), _S2CUINT( EMPTYLIST ) ) )  goto L17751;
+        X5 = X8;
+        goto L17784;
+L17751:
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L17754;
+        scrt1__24__car_2derror( X7 );
+L17754:
+        X12 = PAIR_CAR( X7 );
+        X13 = dbindings_d_3esymbol_d89bd1b0( X12 );
+        if  ( FALSE( scrt1_member( X13, PAIR_CAR( X1 ) ) ) )  goto L17758;
+        X14 = qobischeme_position( X13, PAIR_CAR( X1 ) );
+        X17 = PAIR_CAR( X2 );
+        if  ( AND( EQ( TSCPTAG( X17 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( X17 ), VECTORTAG ) )
+            )  goto L17762;
+        scdebug_error( c12379, 
+                       c12311, CONS( X17, EMPTYLIST ) );
+L17762:
+        if  ( EQ( TSCPTAG( X14 ), FIXNUMTAG ) )  goto L17764;
+        scdebug_error( c12379, 
+                       c12314, CONS( X14, EMPTYLIST ) );
+L17764:
+        if  ( LT( _S2CUINT( FIXED_C( X14 ) ), 
+                  _S2CUINT( VECTOR_LENGTH( X17 ) ) ) )  goto L17766;
+        scdebug_error( c12379, 
+                       c12318, CONS( X14, EMPTYLIST ) );
+L17766:
+        X16 = CONS( VECTOR_ELEMENT( X17, X14 ), EMPTYLIST );
+        X15 = scrt4_vector( CONS( X13, X16 ) );
+        X18 = CONS( PAIR_CAR( X3 ), EMPTYLIST );
+        X17 = scrt6_format( FALSEVALUE, CONS( c15127, X18 ) );
+        X16 = dbindings_d_3esymbol_d89bd1b0( X17 );
+        X20 = sc_cons( X16, EMPTYLIST );
+        X19 = sc_cons( X15, X20 );
+        X18 = X19;
+        X17 = sc_cons( X18, PAIR_CAR( X4 ) );
+        SETGEN( PAIR_CAR( X4 ), X17 );
+        X18 = PAIR_CAR( X3 );
+        if  ( BITAND( BITOR( _S2CINT( X18 ), 
+                             _S2CINT( _TSCP( 4 ) ) ), 
+                      3 ) )  goto L17772;
+        X17 = _TSCP( IPLUS( _S2CINT( X18 ), 
+                            _S2CINT( _TSCP( 4 ) ) ) );
+        goto L17773;
+L17772:
+        X17 = scrt2__2b_2dtwo( X18, _TSCP( 4 ) );
+L17773:
+        SETGEN( PAIR_CAR( X3 ), X17 );
+        X18 = qobischeme_y( X15 );
+        if  ( BITAND( BITOR( _S2CINT( X18 ), 
+                             _S2CINT( _TSCP( 4 ) ) ), 
+                      3 ) )  goto L17775;
+        X17 = _TSCP( IPLUS( _S2CINT( X18 ), 
+                            _S2CINT( _TSCP( 4 ) ) ) );
+        goto L17776;
+L17775:
+        X17 = scrt2__2b_2dtwo( X18, _TSCP( 4 ) );
+L17776:
+        X18 = PAIR_CAR( X2 );
+        if  ( AND( EQ( TSCPTAG( X18 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( X18 ), VECTORTAG ) )
+            )  goto L17778;
+        scdebug_error( c12310, 
+                       c12311, CONS( X18, EMPTYLIST ) );
+L17778:
+        if  ( LT( _S2CUINT( FIXED_C( X14 ) ), 
+                  _S2CUINT( VECTOR_LENGTH( X18 ) ) ) )  goto L17780;
+        scdebug_error( c12310, 
+                       c12318, CONS( X14, EMPTYLIST ) );
+L17780:
+        SETGEN( VECTOR_ELEMENT( X18, X14 ), X17 );
+        X11 = X16;
+        goto L17759;
+L17758:
+        X11 = X13;
+L17759:
+        X10 = sc_cons( X11, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X8 ), _S2CUINT( EMPTYLIST ) ) )  goto L17783;
+        X11 = PAIR_CDR( X7 );
+        X9 = X10;
+        X8 = X10;
+        X7 = X11;
+        GOBACK( L17750 );
+L17783:
+        X11 = PAIR_CDR( X7 );
+        if  ( EQ( TSCPTAG( X9 ), PAIRTAG ) )  goto L17788;
+        scdebug_error( c12272, 
+                       c12273, CONS( X9, EMPTYLIST ) );
+L17788:
+        X9 = SETGEN( PAIR_CDR( X9 ), X10 );
+        X7 = X11;
+        GOBACK( L17750 );
+L17784:
+        X7 = sc_cons( PAIR_CAR( X4 ), EMPTYLIST );
+        X6 = sc_cons( X5, X7 );
+        POPSTACKTRACE( X6 );
+}
+
+DEFTSCP( parser_apply_2dbindings_v );
+DEFCSTRING( t17792, "APPLY-BINDINGS" );
+EXTERNTSCPP( scrt1_assoc, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt1_assoc_v );
+
+TSCP  parser_apply_2dbindings( b15139, p15140 )
+        TSCP  b15139, p15140;
+{
+        TSCP  X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t17792 );
+        X1 = p15140;
+        X2 = EMPTYLIST;
+        X3 = EMPTYLIST;
+L17795:
+        if  ( EQ( _S2CUINT( X1 ), _S2CUINT( EMPTYLIST ) ) )  goto L17796;
+        if  ( EQ( TSCPTAG( X1 ), PAIRTAG ) )  goto L17799;
+        scrt1__24__car_2derror( X1 );
+L17799:
+        X6 = PAIR_CAR( X1 );
+        X7 = X6;
+        X8 = EMPTYLIST;
+        X9 = EMPTYLIST;
+L17803:
+        if  ( NEQ( _S2CUINT( X7 ), _S2CUINT( EMPTYLIST ) ) )  goto L17804;
+        X5 = X8;
+        goto L17814;
+L17804:
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L17807;
+        scrt1__24__car_2derror( X7 );
+L17807:
+        X12 = PAIR_CAR( X7 );
+        if  ( FALSE( scrt1_assoc( X12, b15139 ) ) )  goto L17810;
+        X13 = scrt1_assoc( X12, b15139 );
+        X11 = qobischeme_second( X13 );
+        goto L17811;
+L17810:
+        X11 = X12;
+L17811:
+        X10 = sc_cons( X11, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X8 ), _S2CUINT( EMPTYLIST ) ) )  goto L17813;
+        X11 = PAIR_CDR( X7 );
+        X9 = X10;
+        X8 = X10;
+        X7 = X11;
+        GOBACK( L17803 );
+L17813:
+        X11 = PAIR_CDR( X7 );
+        if  ( EQ( TSCPTAG( X9 ), PAIRTAG ) )  goto L17818;
+        scdebug_error( c12272, 
+                       c12273, CONS( X9, EMPTYLIST ) );
+L17818:
+        X9 = SETGEN( PAIR_CDR( X9 ), X10 );
+        X7 = X11;
+        GOBACK( L17803 );
+L17814:
+        X4 = sc_cons( X5, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X2 ), _S2CUINT( EMPTYLIST ) ) )  goto L17821;
+        X5 = PAIR_CDR( X1 );
+        X3 = X4;
+        X2 = X4;
+        X1 = X5;
+        GOBACK( L17795 );
+L17821:
+        X5 = PAIR_CDR( X1 );
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L17826;
+        scdebug_error( c12272, 
+                       c12273, CONS( X3, EMPTYLIST ) );
+L17826:
+        X3 = SETGEN( PAIR_CDR( X3 ), X4 );
+        X1 = X5;
+        GOBACK( L17795 );
+L17796:
+        POPSTACKTRACE( X2 );
+}
+
+DEFTSCP( parser_get_2damt_2dcorpus_v );
+DEFCSTRING( t17828, "GET-AMT-CORPUS" );
+EXTERNTSCPP( qobischeme_read_2dfile, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_read_2dfile_v );
+EXTERNTSCPP( nlib_2dsc_group_2dby_96ef2b55, 
+             XAL2( TSCP, TSCP ) );
+EXTERNTSCP( nlib_2dsc_group_2dby_96ef2b55_v );
+
+TSCP  parser_l15279( v15280, c17831 )
+        TSCP  v15280, c17831;
+{
+        PUSHSTACKTRACE( "parser_l15279 [inside GET-AMT-CORPUS]" );
+        POPSTACKTRACE( qobischeme_first( v15280 ) );
+}
+
+EXTERNTSCPP( nlib_2dsc_of_2dlists_660f857e, XAL1( TSCP ) );
+EXTERNTSCP( nlib_2dsc_of_2dlists_660f857e_v );
+EXTERNTSCPP( nlib_2dsc_2dpossible_ced25962, 
+             XAL2( TSCP, TSCP ) );
+EXTERNTSCP( nlib_2dsc_2dpossible_ced25962_v );
+
+TSCP  parser_get_2damt_2dcorpus( k15230 )
+        TSCP  k15230;
+{
+        TSCP  X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t17828 );
+        X1 = qobischeme_read_2dfile( c15285 );
+        X2 = qobischeme_read_2dfile( c15284 );
+        X3 = qobischeme_read_2dfile( c15283 );
+        X5 = MAKEPROCEDURE( 1, 0, parser_l15279, EMPTYLIST );
+        X10 = sc_cons( X1, EMPTYLIST );
+        X9 = sc_cons( X3, X10 );
+        X8 = sc_cons( X2, X9 );
+        X7 = X8;
+        X6 = nlib_2dsc_of_2dlists_660f857e( X7 );
+        X4 = nlib_2dsc_group_2dby_96ef2b55( X5, X6 );
+        X5 = X4;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L17836:
+        if  ( EQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17837;
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17840;
+        scrt1__24__car_2derror( X5 );
+L17840:
+        X10 = PAIR_CAR( X5 );
+        X9 = nlib_2dsc_2dpossible_ced25962( k15230, X10 );
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L17843;
+        X9 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X9;
+        GOBACK( L17836 );
+L17843:
+        X9 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L17848;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L17848:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X9;
+        GOBACK( L17836 );
+L17837:
+        POPSTACKTRACE( X6 );
+}
+
+DEFTSCP( parser_dtemplates_4c01ce2e_v );
+DEFCSTRING( t17850, "AMT-SENTENCE-TEMPLATES" );
+EXTERNTSCPP( qobischeme_but_2dlast, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_but_2dlast_v );
+
+TSCP  parser_l15384( e15385, c17871 )
+        TSCP  e15385, c17871;
+{
+        PUSHSTACKTRACE( "parser_l15384 [inside AMT-SENTENCE-TEMPLATES]" );
+        POPSTACKTRACE( qobischeme_third( e15385 ) );
+}
+
+TSCP  parser_dtemplates_4c01ce2e( k15287, o15288 )
+        TSCP  k15287, o15288;
+{
+        TSCP  X18, 
+              X17, 
+              X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t17850 );
+        X2 = parser_get_2damt_2dcorpus( k15287 );
+        X1 = codetectionlib_2dsc_join( X2 );
+        X3 = X1;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L17854:
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17855;
+        X2 = X4;
+        goto L17864;
+L17855:
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L17858;
+        scrt1__24__car_2derror( X3 );
+L17858:
+        X8 = PAIR_CAR( X3 );
+        X9 = qobischeme_but_2dlast( X8 );
+        X14 = qobischeme_second( X8 );
+        X13 = parser_rticipants_7e4ac1e( X14, o15288 );
+        X12 = qobischeme_first( X13 );
+        X11 = sc_cons( X12, EMPTYLIST );
+        X10 = X11;
+        X7 = scrt1_append_2dtwo( X9, X10 );
+        X6 = sc_cons( X7, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17863;
+        X7 = PAIR_CDR( X3 );
+        X5 = X6;
+        X4 = X6;
+        X3 = X7;
+        GOBACK( L17854 );
+L17863:
+        X7 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17868;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L17868:
+        X5 = SETGEN( PAIR_CDR( X5 ), X6 );
+        X3 = X7;
+        GOBACK( L17854 );
+L17864:
+        X5 = MAKEPROCEDURE( 1, 0, parser_l15384, EMPTYLIST );
+        X4 = nlib_2dsc_group_2dby_96ef2b55( X5, X2 );
+        X5 = X4;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L17875:
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17876;
+        X3 = X6;
+        goto L17901;
+L17876:
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17879;
+        scrt1__24__car_2derror( X5 );
+L17879:
+        X10 = PAIR_CAR( X5 );
+        X13 = X10;
+        X14 = EMPTYLIST;
+        X15 = EMPTYLIST;
+L17884:
+        if  ( NEQ( _S2CUINT( X13 ), _S2CUINT( EMPTYLIST ) ) )  goto L17885;
+        X12 = X14;
+        goto L17892;
+L17885:
+        if  ( EQ( TSCPTAG( X13 ), PAIRTAG ) )  goto L17888;
+        scrt1__24__car_2derror( X13 );
+L17888:
+        X18 = PAIR_CAR( X13 );
+        X17 = qobischeme_but_2dlast( X18 );
+        X16 = sc_cons( X17, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X14 ), _S2CUINT( EMPTYLIST ) ) )  goto L17891;
+        X17 = PAIR_CDR( X13 );
+        X15 = X16;
+        X14 = X16;
+        X13 = X17;
+        GOBACK( L17884 );
+L17891:
+        X17 = PAIR_CDR( X13 );
+        if  ( EQ( TSCPTAG( X15 ), PAIRTAG ) )  goto L17896;
+        scdebug_error( c12272, 
+                       c12273, CONS( X15, EMPTYLIST ) );
+L17896:
+        X15 = SETGEN( PAIR_CDR( X15 ), X16 );
+        X13 = X17;
+        GOBACK( L17884 );
+L17892:
+        X15 = qobischeme_first( X10 );
+        X14 = qobischeme_last( X15 );
+        X16 = sc_cons( EMPTYLIST, EMPTYLIST );
+        X15 = sc_cons( c15383, X16 );
+        X13 = sc_cons( X14, X15 );
+        X11 = sc_cons( X12, X13 );
+        X9 = X11;
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L17900;
+        X9 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X9;
+        GOBACK( L17875 );
+L17900:
+        X9 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L17905;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L17905:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X9;
+        GOBACK( L17875 );
+L17901:
+        POPSTACKTRACE( X3 );
+}
+
+DEFTSCP( parser_get_2dold_2drules_v );
+DEFCSTRING( t17908, "GET-OLD-RULES" );
+EXTERNTSCPP( obischeme_rom_2dfile_92544bb1, XAL1( TSCP ) );
+EXTERNTSCP( obischeme_rom_2dfile_92544bb1_v );
+
+TSCP  parser_get_2dold_2drules(  )
+{
+        TSCP  X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t17908 );
+        X4 = CONS( parser__2afiles_2ddir_2a_v, EMPTYLIST );
+        X3 = scrt6_format( FALSEVALUE, CONS( c15575, X4 ) );
+        X2 = obischeme_rom_2dfile_92544bb1( X3 );
+        X3 = X2;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L17912:
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17913;
+        X1 = X4;
+        goto L17920;
+L17913:
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L17916;
+        scrt1__24__car_2derror( X3 );
+L17916:
+        X8 = PAIR_CAR( X3 );
+        X7 = qobischeme_rest( X8 );
+        X6 = sc_cons( X7, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17919;
+        X7 = PAIR_CDR( X3 );
+        X5 = X6;
+        X4 = X6;
+        X3 = X7;
+        GOBACK( L17912 );
+L17919:
+        X7 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17924;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L17924:
+        X5 = SETGEN( PAIR_CDR( X5 ), X6 );
+        X3 = X7;
+        GOBACK( L17912 );
+L17920:
+        X3 = X1;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L17928:
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17929;
+        X2 = X4;
+        goto L17941;
+L17929:
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L17932;
+        scrt1__24__car_2derror( X3 );
+L17932:
+        X8 = PAIR_CAR( X3 );
+        X10 = qobischeme_second( X8 );
+        X9 = parser_rticipants_7e4ac1e( X10, 
+                                        parser__2aobjects_2dhouse_2a_v );
+        X10 = qobischeme_first( X9 );
+        X11 = qobischeme_second( X9 );
+        X16 = qobischeme_first( X8 );
+        X15 = parser_apply_2dbindings( X11, X16 );
+        X14 = sc_cons( X15, EMPTYLIST );
+        X13 = sc_cons( c15383, X14 );
+        X12 = sc_cons( X10, X13 );
+        X7 = X12;
+        X6 = sc_cons( X7, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17940;
+        X7 = PAIR_CDR( X3 );
+        X5 = X6;
+        X4 = X6;
+        X3 = X7;
+        GOBACK( L17928 );
+L17940:
+        X7 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17945;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L17945:
+        X5 = SETGEN( PAIR_CDR( X5 ), X6 );
+        X3 = X7;
+        GOBACK( L17928 );
+L17941:
+        X3 = nlib_2dsc_group_2dby_96ef2b55( qobischeme_first_v, X2 );
+        X4 = X3;
+        X5 = EMPTYLIST;
+        X6 = EMPTYLIST;
+L17951:
+        if  ( EQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17952;
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L17955;
+        scrt1__24__car_2derror( X4 );
+L17955:
+        X9 = PAIR_CAR( X4 );
+        X8 = qobischeme_first( X9 );
+        X7 = sc_cons( X8, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L17958;
+        X8 = PAIR_CDR( X4 );
+        X6 = X7;
+        X5 = X7;
+        X4 = X8;
+        GOBACK( L17951 );
+L17958:
+        X8 = PAIR_CDR( X4 );
+        if  ( EQ( TSCPTAG( X6 ), PAIRTAG ) )  goto L17963;
+        scdebug_error( c12272, 
+                       c12273, CONS( X6, EMPTYLIST ) );
+L17963:
+        X6 = SETGEN( PAIR_CDR( X6 ), X7 );
+        X4 = X8;
+        GOBACK( L17951 );
+L17952:
+        POPSTACKTRACE( X5 );
+}
+
+DEFTSCP( parser_get_2damt_2drules_v );
+DEFCSTRING( t17965, "GET-AMT-RULES" );
+EXTERNTSCPP( codetectionlib_2dsc_split_2dn, 
+             XAL2( TSCP, TSCP ) );
+EXTERNTSCP( codetectionlib_2dsc_split_2dn_v );
+
+TSCP  parser_get_2damt_2drules( a15577 )
+        TSCP  a15577;
+{
+        TSCP  X22, 
+              X21, 
+              X20, 
+              X19, 
+              X18, 
+              X17, 
+              X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t17965 );
+        X2 = obischeme_rom_2dfile_92544bb1( a15577 );
+        X3 = X2;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L17969:
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L17970;
+        X1 = X4;
+        goto L17977;
+L17970:
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L17973;
+        scrt1__24__car_2derror( X3 );
+L17973:
+        X8 = PAIR_CAR( X3 );
+        X7 = qobischeme_rest( X8 );
+        X6 = sc_cons( X7, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L17976;
+        X7 = PAIR_CDR( X3 );
+        X5 = X6;
+        X4 = X6;
+        X3 = X7;
+        GOBACK( L17969 );
+L17976:
+        X7 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L17981;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L17981:
+        X5 = SETGEN( PAIR_CDR( X5 ), X6 );
+        X3 = X7;
+        GOBACK( L17969 );
+L17977:
+        X2 = X1;
+        X3 = EMPTYLIST;
+        X4 = EMPTYLIST;
+L17985:
+        if  ( EQ( _S2CUINT( X2 ), _S2CUINT( EMPTYLIST ) ) )  goto L17986;
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L17989;
+        scrt1__24__car_2derror( X2 );
+L17989:
+        X7 = PAIR_CAR( X2 );
+        X8 = qobischeme_third( X7 );
+        X10 = qobischeme_but_2dlast( X7 );
+        X13 = codetectionlib_2dsc_split_2dn( _TSCP( 12 ), X8 );
+        X14 = X13;
+        X15 = EMPTYLIST;
+        X16 = EMPTYLIST;
+L17995:
+        if  ( NEQ( _S2CUINT( X14 ), _S2CUINT( EMPTYLIST ) ) )  goto L17996;
+        X12 = X15;
+        goto L18004;
+L17996:
+        if  ( EQ( TSCPTAG( X14 ), PAIRTAG ) )  goto L17999;
+        scrt1__24__car_2derror( X14 );
+L17999:
+        X19 = PAIR_CAR( X14 );
+        X20 = CONS( EMPTYLIST, EMPTYLIST );
+        X20 = CONS( qobischeme_third( X19 ), X20 );
+        X20 = CONS( qobischeme_second( X19 ), X20 );
+        X22 = qobischeme_first( X19 );
+        X21 = scrt1_assoc( X22, parser_2dnames_2a_e0d5f98d_v );
+        X18 = scrt1_cons_2a( c14973, 
+                             CONS( qobischeme_second( X21 ), X20 ) );
+        X17 = sc_cons( X18, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X15 ), _S2CUINT( EMPTYLIST ) ) )  goto L18003;
+        X18 = PAIR_CDR( X14 );
+        X16 = X17;
+        X15 = X17;
+        X14 = X18;
+        GOBACK( L17995 );
+L18003:
+        X18 = PAIR_CDR( X14 );
+        if  ( EQ( TSCPTAG( X16 ), PAIRTAG ) )  goto L18008;
+        scdebug_error( c12272, 
+                       c12273, CONS( X16, EMPTYLIST ) );
+L18008:
+        X16 = SETGEN( PAIR_CDR( X16 ), X17 );
+        X14 = X18;
+        GOBACK( L17995 );
+L18004:
+        X11 = scrt1_cons_2a( X12, 
+                             CONS( EMPTYLIST, EMPTYLIST ) );
+        X9 = scrt1_append_2dtwo( X10, X11 );
+        X6 = scrt1_cons_2a( X9, EMPTYLIST );
+        X5 = sc_cons( X6, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L18011;
+        X6 = PAIR_CDR( X2 );
+        X4 = X5;
+        X3 = X5;
+        X2 = X6;
+        GOBACK( L17985 );
+L18011:
+        X6 = PAIR_CDR( X2 );
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L18016;
+        scdebug_error( c12272, 
+                       c12273, CONS( X4, EMPTYLIST ) );
+L18016:
+        X4 = SETGEN( PAIR_CDR( X4 ), X5 );
+        X2 = X6;
+        GOBACK( L17985 );
+L17986:
+        POPSTACKTRACE( X3 );
+}
+
+DEFTSCP( parser_2dsentence_8e143316_v );
+DEFCSTRING( t18018, "APPLY-RULES-TO-SENTENCE" );
+
+TSCP  parser_2dsentence_8e143316( s15713, r15714, o15715 )
+        TSCP  s15713, r15714, o15715;
+{
+        TSCP  X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( t18018 );
+        X1 = parser_rticipants_7e4ac1e( s15713, o15715 );
+        X2 = qobischeme_first( X1 );
+        X4 = qobischeme_second( X1 );
+        X5 = X4;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L18024:
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L18025;
+        X3 = X6;
+        goto L18032;
+L18025:
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L18028;
+        scrt1__24__car_2derror( X5 );
+L18028:
+        X10 = PAIR_CAR( X5 );
+        X9 = scrt1_reverse( X10 );
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L18031;
+        X9 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X9;
+        GOBACK( L18024 );
+L18031:
+        X9 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L18036;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L18036:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X9;
+        GOBACK( L18024 );
+L18032:
+        X5 = scrt1_assoc( X2, r15714 );
+        X4 = qobischeme_third( X5 );
+        POPSTACKTRACE( parser_apply_2dbindings( X3, X4 ) );
+}
+
+DEFTSCP( parser_t_2dcorpus_42c3abbe_v );
+DEFCSTRING( t18039, "GENERATE-AMT-CORPUS" );
+EXTERNTSCPP( codetectionlib_2dsc_unzip, XAL1( TSCP ) );
+EXTERNTSCP( codetectionlib_2dsc_unzip_v );
+EXTERNTSCPP( obischeme__2dindexed_d1069d4, 
+             XAL2( TSCP, TSCP ) );
+EXTERNTSCP( obischeme__2dindexed_d1069d4_v );
+EXTERNTSCPP( obischeme_dto_2dfile_ae5c74d4, 
+             XAL2( TSCP, TSCP ) );
+EXTERNTSCP( obischeme_dto_2dfile_ae5c74d4_v );
+
+TSCP  parser_l15772( c15773, i15774, c18042 )
+        TSCP  c15773, i15774, c18042;
+{
+        TSCP  X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l15772 [inside GENERATE-AMT-CORPUS]" );
+        X1 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c18042, 0 );
+        X2 = DISPLAY( 1 );
+        DISPLAY( 1 ) = CLOSURE_VAR( c18042, 1 );
+        X5 = c15773;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L18045:
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L18046;
+        X4 = X6;
+        goto L18055;
+L18046:
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L18049;
+        scrt1__24__car_2derror( X5 );
+L18049:
+        X10 = PAIR_CAR( X5 );
+        X13 = CONS( qobischeme_first( X10 ), EMPTYLIST );
+        X13 = CONS( parser__2adataset_2did_2a_v, X13 );
+        X12 = scrt6_format( FALSEVALUE, CONS( c15821, X13 ) );
+        X15 = qobischeme_second( X10 );
+        X14 = parser_2dsentence_8e143316( X15, 
+                                          DISPLAY( 1 ), 
+                                          DISPLAY( 0 ) );
+        X16 = qobischeme_third( X10 );
+        X15 = sc_cons( X16, EMPTYLIST );
+        X13 = sc_cons( X14, X15 );
+        X11 = sc_cons( X12, X13 );
+        X9 = X11;
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L18054;
+        X9 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X9;
+        GOBACK( L18045 );
+L18054:
+        X9 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L18059;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L18059:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X9;
+        GOBACK( L18045 );
+L18055:
+        if  ( BITAND( BITOR( _S2CINT( i15774 ), 
+                             _S2CINT( _TSCP( 4 ) ) ), 
+                      3 ) )  goto L18061;
+        X7 = _TSCP( IPLUS( _S2CINT( i15774 ), 
+                           _S2CINT( _TSCP( 4 ) ) ) );
+        goto L18062;
+L18061:
+        X7 = scrt2__2b_2dtwo( i15774, _TSCP( 4 ) );
+L18062:
+        X6 = CONS( X7, EMPTYLIST );
+        X6 = CONS( parser__2adataset_2did_2a_v, X6 );
+        X5 = scrt6_format( FALSEVALUE, CONS( c15822, X6 ) );
+        X3 = obischeme_dto_2dfile_ae5c74d4( X4, X5 );
+        DISPLAY( 0 ) = X1;
+        DISPLAY( 1 ) = X2;
+        POPSTACKTRACE( X3 );
+}
+
+TSCP  parser_t_2dcorpus_42c3abbe( k15767, o15768 )
+        TSCP  k15767, o15768;
+{
+        TSCP  X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SD1 = DISPLAY( 1 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t18039 );
+        DISPLAY( 0 ) = o15768;
+        X2 = parser_get_2damt_2dcorpus( k15767 );
+        X1 = codetectionlib_2dsc_unzip( X2 );
+        DISPLAY( 1 ) = parser_get_2damt_2drules( c15829 );
+        X2 = MAKEPROCEDURE( 2, 
+                            0, 
+                            parser_l15772, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         2, 
+                                         DISPLAY( 0 ), 
+                                         DISPLAY( 1 ) ) );
+        SDVAL = obischeme__2dindexed_d1069d4( X2, X1 );
+        DISPLAY( 0 ) = SD0;
+        DISPLAY( 1 ) = SD1;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser__2dobjects_b1739f29_v );
+DEFCSTRING( t18063, "FIND-MISSING-OBJECTS" );
+EXTERNTSCPP( qobischeme_map_2dn, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_map_2dn_v );
+
+TSCP  parser_l16010( i16011, c18083 )
+        TSCP  i16011, c18083;
+{
+        TSCP  X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l16010 [inside FIND-MISSING-OBJECTS]" );
+        if  ( BITAND( BITOR( _S2CINT( i16011 ), 
+                             _S2CINT( _TSCP( 4 ) ) ), 
+                      3 ) )  goto L18085;
+        X4 = _TSCP( IPLUS( _S2CINT( i16011 ), 
+                           _S2CINT( _TSCP( 4 ) ) ) );
+        goto L18086;
+L18085:
+        X4 = scrt2__2b_2dtwo( i16011, _TSCP( 4 ) );
+L18086:
+        X3 = CONS( X4, EMPTYLIST );
+        X2 = scrt6_format( FALSEVALUE, CONS( c16058, X3 ) );
+        X1 = obischeme_rom_2dfile_92544bb1( X2 );
+        X2 = X1;
+        X3 = EMPTYLIST;
+        X4 = EMPTYLIST;
+L18089:
+        if  ( EQ( _S2CUINT( X2 ), _S2CUINT( EMPTYLIST ) ) )  goto L18090;
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L18093;
+        scrt1__24__car_2derror( X2 );
+L18093:
+        X7 = PAIR_CAR( X2 );
+        X12 = qobischeme_second( X7 );
+        X11 = codetectionlib_2dsc_join( X12 );
+        X10 = qobischeme_remove_2dif_2dnot( scrt4_vector_3f_v, X11 );
+        X9 = obischeme_duplicates_bbb15811( X10 );
+        X11 = qobischeme_third( X7 );
+        X10 = sc_cons( X11, EMPTYLIST );
+        X8 = sc_cons( X9, X10 );
+        X6 = X8;
+        X5 = sc_cons( X6, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L18098;
+        X6 = PAIR_CDR( X2 );
+        X4 = X5;
+        X3 = X5;
+        X2 = X6;
+        GOBACK( L18089 );
+L18098:
+        X6 = PAIR_CDR( X2 );
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L18103;
+        scdebug_error( c12272, 
+                       c12273, CONS( X4, EMPTYLIST ) );
+L18103:
+        X4 = SETGEN( PAIR_CDR( X4 ), X5 );
+        X2 = X6;
+        GOBACK( L18089 );
+L18090:
+        POPSTACKTRACE( X3 );
+}
+
+EXTERNTSCPP( codetectionlib_2dsc_o, 
+             XAL3( TSCP, TSCP, TSCP ) );
+EXTERNTSCP( codetectionlib_2dsc_o_v );
+
+TSCP  parser_l15966( l15967, c18106 )
+        TSCP  l15967, c18106;
+{
+        TSCP  X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l15966 [inside FIND-MISSING-OBJECTS]" );
+        X1 = l15967;
+        X2 = EMPTYLIST;
+        X3 = EMPTYLIST;
+L18110:
+        if  ( EQ( _S2CUINT( X1 ), _S2CUINT( EMPTYLIST ) ) )  goto L18111;
+        if  ( EQ( TSCPTAG( X1 ), PAIRTAG ) )  goto L18114;
+        scrt1__24__car_2derror( X1 );
+L18114:
+        X6 = PAIR_CAR( X1 );
+        X5 = qobischeme_first( X6 );
+        X4 = sc_cons( X5, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X2 ), _S2CUINT( EMPTYLIST ) ) )  goto L18117;
+        X5 = PAIR_CDR( X1 );
+        X3 = X4;
+        X2 = X4;
+        X1 = X5;
+        GOBACK( L18110 );
+L18117:
+        X5 = PAIR_CDR( X1 );
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L18122;
+        scdebug_error( c12272, 
+                       c12273, CONS( X3, EMPTYLIST ) );
+L18122:
+        X3 = SETGEN( PAIR_CDR( X3 ), X4 );
+        X1 = X5;
+        GOBACK( L18110 );
+L18111:
+        POPSTACKTRACE( X2 );
+}
+
+TSCP  parser_l15856( x15857, c18167 )
+        TSCP  x15857, c18167;
+{
+        TSCP  X6, X5, X4, X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l15856 [inside FIND-MISSING-OBJECTS]" );
+        X1 = DISPLAY( 2 );
+        DISPLAY( 2 ) = CLOSURE_VAR( c18167, 0 );
+        X2 = DISPLAY( 1 );
+        DISPLAY( 1 ) = CLOSURE_VAR( c18167, 1 );
+        X6 = scrt1_list_2dref( x15857, DISPLAY( 2 ) );
+        X5 = qobischeme_first( X6 );
+        X4 = qobischeme_set_2ddifference( DISPLAY( 1 ), X5 );
+        X3 = BOOLEAN( EQ( _S2CUINT( X4 ), 
+                          _S2CUINT( EMPTYLIST ) ) );
+        DISPLAY( 2 ) = X1;
+        DISPLAY( 1 ) = X2;
+        POPSTACKTRACE( X3 );
+}
+
+TSCP  parser_l15844( l15845, n15846, c18163 )
+        TSCP  l15845, n15846, c18163;
+{
+        TSCP  X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD1 = DISPLAY( 1 );
+        TSCP  SD2 = DISPLAY( 2 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( "parser_l15844 [inside FIND-MISSING-OBJECTS]" );
+        X1 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c18163, 0 );
+        DISPLAY( 1 ) = l15845;
+        DISPLAY( 2 ) = n15846;
+        if  ( NEQ( _S2CUINT( DISPLAY( 1 ) ), 
+                   _S2CUINT( EMPTYLIST ) ) )  goto L18165;
+        X2 = EMPTYLIST;
+        goto L18166;
+L18165:
+        X4 = MAKEPROCEDURE( 1, 
+                            0, 
+                            parser_l15856, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         2, 
+                                         DISPLAY( 2 ), 
+                                         DISPLAY( 1 ) ) );
+        X3 = qobischeme_find_2dif( X4, DISPLAY( 0 ) );
+        X7 = scrt1_list_2dref( X3, DISPLAY( 2 ) );
+        X6 = qobischeme_second( X7 );
+        X5 = sc_cons( X6, EMPTYLIST );
+        X4 = sc_cons( DISPLAY( 1 ), X5 );
+        X2 = X4;
+L18166:
+        DISPLAY( 0 ) = X1;
+        SDVAL = X2;
+        DISPLAY( 1 ) = SD1;
+        DISPLAY( 2 ) = SD2;
+        POPSTACKTRACE( SDVAL );
+}
+
+EXTERNTSCPP( scrt1_null_3f, XAL1( TSCP ) );
+EXTERNTSCP( scrt1_null_3f_v );
+EXTERNTSCPP( codetectionlib_2dsc_zip, 
+             XAL3( TSCP, TSCP, TSCP ) );
+EXTERNTSCP( codetectionlib_2dsc_zip_v );
+
+TSCP  parser__2dobjects_b1739f29( k15831 )
+        TSCP  k15831;
+{
+        TSCP  X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t18063 );
+        X2 = obischeme_rom_2dfile_92544bb1( c16109 );
+        X3 = X2;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L18067:
+        if  ( NEQ( _S2CUINT( X3 ), _S2CUINT( EMPTYLIST ) ) )  goto L18068;
+        X1 = X4;
+        goto L18076;
+L18068:
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L18071;
+        scrt1__24__car_2derror( X3 );
+L18071:
+        X8 = PAIR_CAR( X3 );
+        X11 = qobischeme_second( X8 );
+        X10 = codetectionlib_2dsc_join( X11 );
+        X9 = qobischeme_remove_2dif_2dnot( scrt4_vector_3f_v, X10 );
+        X7 = obischeme_duplicates_bbb15811( X9 );
+        X6 = sc_cons( X7, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L18075;
+        X7 = PAIR_CDR( X3 );
+        X5 = X6;
+        X4 = X6;
+        X3 = X7;
+        GOBACK( L18067 );
+L18075:
+        X7 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L18080;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L18080:
+        X5 = SETGEN( PAIR_CDR( X5 ), X6 );
+        X3 = X7;
+        GOBACK( L18067 );
+L18076:
+        X2 = MAKEPROCEDURE( 1, 0, parser_l16010, EMPTYLIST );
+        DISPLAY( 0 ) = qobischeme_map_2dn( X2, k15831 );
+        X3 = nlib_2dsc_of_2dlists_660f857e( DISPLAY( 0 ) );
+        X4 = codetectionlib_2dsc_o( obischeme_duplicates_bbb15811_v, 
+                                    codetectionlib_2dsc_join_v, 
+                                    CONS( MAKEPROCEDURE( 1, 
+                                                         0, 
+                                                         parser_l15966, 
+                                                         EMPTYLIST ), 
+                                          EMPTYLIST ) );
+        X5 = X3;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L18126:
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L18127;
+        X2 = X6;
+        goto L18134;
+L18127:
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L18130;
+        scrt1__24__car_2derror( X5 );
+L18130:
+        X11 = PAIR_CAR( X5 );
+        X10 = X4;
+        X10 = UNKNOWNCALL( X10, 1 );
+        X9 = VIA( PROCEDURE_CODE( X10 ) )( X11, 
+                                           PROCEDURE_CLOSURE( X10 ) );
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L18133;
+        X9 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X9;
+        GOBACK( L18126 );
+L18133:
+        X9 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L18138;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L18138:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X9;
+        GOBACK( L18126 );
+L18134:
+        X4 = X2;
+        X5 = X1;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L18142:
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L18143;
+        X3 = X6;
+        goto L18154;
+L18143:
+        if  ( EQ( TSCPTAG( X4 ), PAIRTAG ) )  goto L18146;
+        scrt1__24__car_2derror( X4 );
+L18146:
+        X10 = PAIR_CAR( X4 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L18149;
+        scrt1__24__car_2derror( X5 );
+L18149:
+        X11 = PAIR_CAR( X5 );
+        X12 = qobischeme_set_2ddifference( X10, X11 );
+        X9 = scrt1_remove( c15923, X12 );
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L18153;
+        X9 = PAIR_CDR( X4 );
+        X10 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X10;
+        X4 = X9;
+        GOBACK( L18142 );
+L18153:
+        X9 = PAIR_CDR( X4 );
+        X10 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L18160;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L18160:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X10;
+        X4 = X9;
+        GOBACK( L18142 );
+L18154:
+        X5 = MAKEPROCEDURE( 2, 
+                            0, 
+                            parser_l15844, 
+                            MAKECLOSURE( EMPTYLIST, 
+                                         1, DISPLAY( 0 ) ) );
+        X4 = qobischeme_map_2dindexed( X5, X3 );
+        X6 = codetectionlib_2dsc_o( scrt1_null_3f_v, 
+                                    qobischeme_second_v, EMPTYLIST );
+        X8 = qobischeme_read_2dfile( c15842 );
+        X7 = codetectionlib_2dsc_zip( X8, X4, EMPTYLIST );
+        X5 = qobischeme_remove_2dif( X6, X7 );
+        SDVAL = obischeme_dto_2dfile_ae5c74d4( X5, c15843 );
+        DISPLAY( 0 ) = SD0;
+        POPSTACKTRACE( SDVAL );
+}
+
+DEFTSCP( parser_dsentences_83fbf3ef_v );
+DEFCSTRING( t18172, "GENERATE-ANNO-GUI-SENTENCES" );
+EXTERNTSCPP( qobischeme_write_2dfile, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_write_2dfile_v );
+EXTERNTSCPP( qobischeme_strip_2ddirectory, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_strip_2ddirectory_v );
+EXTERNTSCPP( qobischeme_string_2ddowncase, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_string_2ddowncase_v );
+EXTERNTSCPP( scrt3_string_3d_3f, XAL2( TSCP, TSCP ) );
+EXTERNTSCP( scrt3_string_3d_3f_v );
+
+TSCP  parser_l16215( w16216, c18197 )
+        TSCP  w16216, c18197;
+{
+        TSCP  X3, X2, X1;
+
+        PUSHSTACKTRACE( "parser_l16215 [inside GENERATE-ANNO-GUI-SENTENCES]" );
+        X1 = DISPLAY( 0 );
+        DISPLAY( 0 ) = CLOSURE_VAR( c18197, 0 );
+        X3 = qobischeme_first( w16216 );
+        X2 = scrt3_string_3d_3f( X3, DISPLAY( 0 ) );
+        DISPLAY( 0 ) = X1;
+        POPSTACKTRACE( X2 );
+}
+
+EXTERNTSCPP( qobischeme_identity, XAL1( TSCP ) );
+EXTERNTSCP( qobischeme_identity_v );
+EXTERNTSCPP( qobischeme_list_2dreplace, 
+             XAL3( TSCP, TSCP, TSCP ) );
+EXTERNTSCP( qobischeme_list_2dreplace_v );
+
+TSCP  parser_dsentences_83fbf3ef(  )
+{
+        TSCP  X27, 
+              X26, 
+              X25, 
+              X24, 
+              X23, 
+              X22, 
+              X21, 
+              X20, 
+              X19, 
+              X18, 
+              X17, 
+              X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+        TSCP  SD0 = DISPLAY( 0 );
+        TSCP  SDVAL;
+
+        PUSHSTACKTRACE( t18172 );
+        X4 = obischeme_rom_2dfile_92544bb1( c15843 );
+        X5 = X4;
+        X6 = EMPTYLIST;
+        X7 = EMPTYLIST;
+L18176:
+        if  ( NEQ( _S2CUINT( X5 ), _S2CUINT( EMPTYLIST ) ) )  goto L18177;
+        X3 = X6;
+        goto L18212;
+L18177:
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L18180;
+        scrt1__24__car_2derror( X5 );
+L18180:
+        X10 = PAIR_CAR( X5 );
+        X12 = qobischeme_first( X10 );
+        X11 = qobischeme_strip_2ddirectory( X12 );
+        X13 = qobischeme_second( X10 );
+        X12 = qobischeme_first( X13 );
+        X15 = qobischeme_second( X10 );
+        X14 = qobischeme_second( X15 );
+        X13 = pregexp_pregexp_2dsplit( c12989, X14 );
+        X14 = X12;
+        X15 = EMPTYLIST;
+        X16 = EMPTYLIST;
+L18185:
+        if  ( NEQ( _S2CUINT( X14 ), _S2CUINT( EMPTYLIST ) ) )  goto L18186;
+        X9 = X15;
+        goto L18204;
+L18186:
+        if  ( EQ( TSCPTAG( X14 ), PAIRTAG ) )  goto L18189;
+        scrt1__24__car_2derror( X14 );
+L18189:
+        X19 = PAIR_CAR( X14 );
+        X21 = qobischeme_x( X19 );
+        if  ( AND( EQ( TSCPTAG( X21 ), EXTENDEDTAG ), 
+                   EQ( TSCP_EXTENDEDTAG( X21 ), SYMBOLTAG ) )
+            )  goto L18193;
+        scdebug_error( c13066, 
+                       c13067, CONS( X21, EMPTYLIST ) );
+L18193:
+        X20 = SYMBOL_NAME( X21 );
+        DISPLAY( 0 ) = qobischeme_string_2ddowncase( X20 );
+        X21 = CONS( qobischeme_y( X19 ), EMPTYLIST );
+        X21 = CONS( DISPLAY( 0 ), X21 );
+        X20 = scrt6_format( FALSEVALUE, CONS( c16217, X21 ) );
+        X24 = MAKEPROCEDURE( 1, 
+                             0, 
+                             parser_l16215, 
+                             MAKECLOSURE( EMPTYLIST, 
+                                          1, DISPLAY( 0 ) ) );
+        X27 = scrt1_length( X13 );
+        X26 = qobischeme_map_2dn( qobischeme_identity_v, X27 );
+        X25 = codetectionlib_2dsc_zip( X13, X26, EMPTYLIST );
+        X23 = qobischeme_remove_2dif_2dnot( X24, X25 );
+        X24 = qobischeme_y( X19 );
+        X22 = scrt1_list_2dref( X23, X24 );
+        X21 = qobischeme_second( X22 );
+        X25 = CONS( DISPLAY( 0 ), EMPTYLIST );
+        X24 = scrt6_format( FALSEVALUE, CONS( c16214, X25 ) );
+        X23 = qobischeme_list_2dreplace( X13, X21, X24 );
+        X22 = parser_string_2djoin( c12989, X23 );
+        X25 = CONS( X20, EMPTYLIST );
+        X25 = CONS( X11, X25 );
+        X24 = scrt6_format( FALSEVALUE, CONS( c16213, X25 ) );
+        X25 = sc_cons( X22, EMPTYLIST );
+        X23 = sc_cons( X24, X25 );
+        X18 = X23;
+        X17 = sc_cons( X18, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X15 ), _S2CUINT( EMPTYLIST ) ) )  goto L18203;
+        X18 = PAIR_CDR( X14 );
+        X16 = X17;
+        X15 = X17;
+        X14 = X18;
+        GOBACK( L18185 );
+L18203:
+        X18 = PAIR_CDR( X14 );
+        if  ( EQ( TSCPTAG( X16 ), PAIRTAG ) )  goto L18208;
+        scdebug_error( c12272, 
+                       c12273, CONS( X16, EMPTYLIST ) );
+L18208:
+        X16 = SETGEN( PAIR_CDR( X16 ), X17 );
+        X14 = X18;
+        GOBACK( L18185 );
+L18204:
+        X8 = sc_cons( X9, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X6 ), _S2CUINT( EMPTYLIST ) ) )  goto L18211;
+        X9 = PAIR_CDR( X5 );
+        X7 = X8;
+        X6 = X8;
+        X5 = X9;
+        GOBACK( L18176 );
+L18211:
+        X9 = PAIR_CDR( X5 );
+        if  ( EQ( TSCPTAG( X7 ), PAIRTAG ) )  goto L18216;
+        scdebug_error( c12272, 
+                       c12273, CONS( X7, EMPTYLIST ) );
+L18216:
+        X7 = SETGEN( PAIR_CDR( X7 ), X8 );
+        X5 = X9;
+        GOBACK( L18176 );
+L18212:
+        X2 = codetectionlib_2dsc_join( X3 );
+        X1 = codetectionlib_2dsc_join( X2 );
+        SDVAL = qobischeme_write_2dfile( X1, c16222 );
+        DISPLAY( 0 ) = SD0;
+        POPSTACKTRACE( SDVAL );
+}
+
+void toollib_2dc_2dbindings__init();
+void pregexp__init();
+void scrt6__init();
+void codetectionlib_2dsc__init();
+void scrt3__init();
+void toollib_2dmatlab__init();
+void scrt4__init();
+void qobischeme__init();
+void scrt2__init();
+void scdebug__init();
+void scrt1__init();
+
+static void  init_modules( compiler_version )
+        char *compiler_version;
+{
+        toollib_2dc_2dbindings__init();
+        pregexp__init();
+        scrt6__init();
+        codetectionlib_2dsc__init();
+        scrt3__init();
+        toollib_2dmatlab__init();
+        scrt4__init();
+        qobischeme__init();
+        scrt2__init();
+        scdebug__init();
+        scrt1__init();
+        MAXDISPLAY( 13 );
+}
+
+void  parser__init()
+{
+        TSCP  X57, 
+              X56, 
+              X55, 
+              X54, 
+              X53, 
+              X52, 
+              X51, 
+              X50, 
+              X49, 
+              X48, 
+              X47, 
+              X46, 
+              X45, 
+              X44, 
+              X43, 
+              X42, 
+              X41, 
+              X40, 
+              X39, 
+              X38, 
+              X37, 
+              X36, 
+              X35, 
+              X34, 
+              X33, 
+              X32, 
+              X31, 
+              X30, 
+              X29, 
+              X28, 
+              X27, 
+              X26, 
+              X25, 
+              X24, 
+              X23, 
+              X22, 
+              X21, 
+              X20, 
+              X19, 
+              X18, 
+              X17, 
+              X16, 
+              X15, 
+              X14, 
+              X13, 
+              X12, 
+              X11, 
+              X10, 
+              X9, 
+              X8, X7, X6, X5, X4, X3, X2, X1;
+
+        static int  init = 0;
+        if  (init)  return;
+        init = 1;
+        INITHEAP( 0, 0, 0, 0 );
+        init_constants();
+        init_modules( "(parser SCHEME->C COMPILER 15mar93jfb)" );
+        sc_segv__handlers();
+        INITIALIZEVAR( t16399, 
+                       ADR( parser_er_2d1_2d0_a1598498_v ), 
+                       MAKEPROCEDURE( 0, 
+                                      0, 
+                                      parser_er_2d1_2d0_a1598498, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16401, 
+                       ADR( parser_er_2d3_2d0_db99d7f8_v ), 
+                       MAKEPROCEDURE( 0, 
+                                      0, 
+                                      parser_er_2d3_2d0_db99d7f8, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16403, 
+                       ADR( parser_er_2d5_2d0_54d92258_v ), 
+                       MAKEPROCEDURE( 0, 
+                                      0, 
+                                      parser_er_2d5_2d0_54d92258, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16405, 
+                       ADR( parser_2dnames_2a_b6d78203_v ), 
+                       c12230 );
+        X1 = parser_2dnames_2a_b6d78203_v;
+        X2 = c12296;
+        X3 = X1;
+        X4 = EMPTYLIST;
+        X5 = EMPTYLIST;
+L16409:
+        if  ( NEQ( _S2CUINT( X2 ), _S2CUINT( EMPTYLIST ) ) )  goto L16410;
+        X6 = X4;
+        goto L16422;
+L16410:
+        if  ( EQ( TSCPTAG( X2 ), PAIRTAG ) )  goto L16413;
+        scrt1__24__car_2derror( X2 );
+L16413:
+        X9 = PAIR_CAR( X2 );
+        if  ( EQ( TSCPTAG( X3 ), PAIRTAG ) )  goto L16416;
+        scrt1__24__car_2derror( X3 );
+L16416:
+        X10 = PAIR_CAR( X3 );
+        X12 = sc_cons( X10, EMPTYLIST );
+        X11 = sc_cons( X9, X12 );
+        X8 = X11;
+        X7 = sc_cons( X8, EMPTYLIST );
+        if  ( NEQ( _S2CUINT( X4 ), _S2CUINT( EMPTYLIST ) ) )  goto L16421;
+        X8 = PAIR_CDR( X2 );
+        X9 = PAIR_CDR( X3 );
+        X5 = X7;
+        X4 = X7;
+        X3 = X9;
+        X2 = X8;
+        GOBACK( L16409 );
+L16421:
+        X8 = PAIR_CDR( X2 );
+        X9 = PAIR_CDR( X3 );
+        if  ( EQ( TSCPTAG( X5 ), PAIRTAG ) )  goto L16428;
+        scdebug_error( c12272, 
+                       c12273, CONS( X5, EMPTYLIST ) );
+L16428:
+        X5 = SETGEN( PAIR_CDR( X5 ), X7 );
+        X3 = X9;
+        X2 = X8;
+        GOBACK( L16409 );
+L16422:
+        INITIALIZEVAR( t16406, 
+                       ADR( parser_2dnames_2a_e0d5f98d_v ), X6 );
+        INITIALIZEVAR( t16430, 
+                       ADR( parser__2aobjects_2dhouse_2a_v ), 
+                       c12297 );
+        INITIALIZEVAR( t16431, 
+                       ADR( parser__2aobjects_2dcad_2a_v ), 
+                       c12298 );
+        INITIALIZEVAR( t16432, 
+                       ADR( parser_ion_2drule_1c30c837_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_ion_2drule_1c30c837, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16452, 
+                       ADR( parser_production_2drule_3f_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_production_2drule_3f, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16468, 
+                       ADR( parser_e_2dlhs_21_58027dcd_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_e_2dlhs_21_58027dcd, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16472, 
+                       ADR( parser_rule_2dlhs_2a1135cc_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_rule_2dlhs_2a1135cc, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16483, 
+                       ADR( parser_e_2dlhs_21_5a079f5_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_e_2dlhs_21_5a079f5, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16494, 
+                       ADR( parser_e_2drhs_21_61de1e26_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_e_2drhs_21_61de1e26, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16498, 
+                       ADR( parser_rule_2drhs_3ca9bbb6_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_rule_2drhs_3ca9bbb6, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16509, 
+                       ADR( parser_e_2drhs_21_3c7c1a1e_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_e_2drhs_21_3c7c1a1e, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16520, 
+                       ADR( parser_make_2dcfg_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_make_2dcfg, EMPTYLIST ) );
+        INITIALIZEVAR( t16535, 
+                       ADR( parser_cfg_3f_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, parser_cfg_3f, EMPTYLIST ) );
+        INITIALIZEVAR( t16551, 
+                       ADR( parser_2drules_21_8770e3d9_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_2drules_21_8770e3d9, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16555, 
+                       ADR( parser_cfg_2drules_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_cfg_2drules, EMPTYLIST ) );
+        INITIALIZEVAR( t16566, 
+                       ADR( parser_set_2dcfg_2drules_21_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_set_2dcfg_2drules_21, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16577, 
+                       ADR( parser_p_2dlhs_v ), 
+                       parser_rule_2dlhs_2a1135cc_v );
+        INITIALIZEVAR( t16578, 
+                       ADR( parser_p_2drhs_v ), 
+                       parser_rule_2drhs_3ca9bbb6_v );
+        INITIALIZEVAR( t16579, 
+                       ADR( parser_p_2dleaf_3f_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_p_2dleaf_3f, EMPTYLIST ) );
+        INITIALIZEVAR( t16581, 
+                       ADR( parser_ip_2dleaf_3f_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_ip_2dleaf_3f, EMPTYLIST ) );
+        INITIALIZEVAR( t16587, 
+                       ADR( parser_index_2dleaves_v ), 
+                       MAKEPROCEDURE( 3, 
+                                      0, 
+                                      parser_index_2dleaves, EMPTYLIST ) );
+        INITIALIZEVAR( t16605, 
+                       ADR( parser_tree_2d_3eleaves_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_tree_2d_3eleaves, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16623, 
+                       ADR( parser_make_2dzipper_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_make_2dzipper, EMPTYLIST ) );
+        INITIALIZEVAR( t16643, 
+                       ADR( parser_zipper_3f_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_zipper_3f, EMPTYLIST ) );
+        INITIALIZEVAR( t16659, 
+                       ADR( parser__2dtree_21_51090c7_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser__2dtree_21_51090c7, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16663, 
+                       ADR( parser_zipper_2dtree_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_zipper_2dtree, EMPTYLIST ) );
+        INITIALIZEVAR( t16674, 
+                       ADR( parser_set_2dzipper_2dtree_21_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_set_2dzipper_2dtree_21, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16685, 
+                       ADR( parser_dthread_21_3526bc86_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_dthread_21_3526bc86, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16689, 
+                       ADR( parser_zipper_2dthread_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_zipper_2dthread, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16700, 
+                       ADR( parser_dthread_21_4891c5f5_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_dthread_21_4891c5f5, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16711, 
+                       ADR( parser_zipper_3ainitialize_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_zipper_3ainitialize, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16713, 
+                       ADR( parser_zipper_3adescend_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_zipper_3adescend, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16730, 
+                       ADR( parser_zipper_3aascend_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_zipper_3aascend, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16759, 
+                       ADR( parser_zipper_3adescend_2dseq_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_zipper_3adescend_2dseq, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16769, 
+                       ADR( parser_zipper_3aascend_2dn_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_zipper_3aascend_2dn, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16786, 
+                       ADR( parser_dascend_3f_a569356c_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_dascend_3f_a569356c, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16788, 
+                       ADR( parser_descend_3f_47b47812_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_descend_3f_47b47812, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16790, 
+                       ADR( parser_nd_2duntil_c0c74215_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_nd_2duntil_c0c74215, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16796, 
+                       ADR( parser_d_2dheight_3e6cd194_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_d_2dheight_3e6cd194, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16798, 
+                       ADR( parser_create_2dcfg_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_create_2dcfg, EMPTYLIST ) );
+        INITIALIZEVAR( t16842, 
+                       ADR( parser_unwords_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, parser_unwords, EMPTYLIST ) );
+        INITIALIZEVAR( t16844, 
+                       ADR( parser_string_2djoin_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_string_2djoin, EMPTYLIST ) );
+        INITIALIZEVAR( t16854, 
+                       ADR( parser_lexicalize_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      1, 
+                                      parser_lexicalize, EMPTYLIST ) );
+        INITIALIZEVAR( t16913, 
+                       ADR( parser_cfg_3aa_2dvalid_2drhs_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_cfg_3aa_2dvalid_2drhs, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16924, 
+                       ADR( parser_cfg_3apossible_2drules_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_cfg_3apossible_2drules, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16928, 
+                       ADR( parser_cfg_3aterminals_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_cfg_3aterminals, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16962, 
+                       ADR( parser_cfg_3anon_2dterminals_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_cfg_3anon_2dterminals, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16980, 
+                       ADR( parser_erminal_3f_904c897a_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_erminal_3f_904c897a, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t16998, 
+                       ADR( parser_categories_26669611_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_categories_26669611, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17024, 
+                       ADR( parser_ence_2dany_b386187b_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_ence_2dany_b386187b, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17042, 
+                       ADR( parser_2dsentence_57035f5c_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      1, 
+                                      parser_2dsentence_57035f5c, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17146, 
+                       ADR( parser_drop_2duntil_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_drop_2duntil, EMPTYLIST ) );
+        INITIALIZEVAR( t17158, 
+                       ADR( parser_take_2duntil_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_take_2duntil, EMPTYLIST ) );
+        INITIALIZEVAR( t17176, 
+                       ADR( parser_ssignments_d92ed835_v ), 
+                       MAKEPROCEDURE( 3, 
+                                      0, 
+                                      parser_ssignments_d92ed835, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17270, 
+                       ADR( parser_cal_2dsort_71a513bc_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_cal_2dsort_71a513bc, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17322, 
+                       ADR( parser_predicates_fa16644b_v ), 
+                       MAKEPROCEDURE( 3, 
+                                      0, 
+                                      parser_predicates_fa16644b, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17404, 
+                       ADR( parser__2dobjects_57413bd6_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser__2dobjects_57413bd6, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17502, 
+                       ADR( parser_predicates_4ae5d9b8_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_predicates_4ae5d9b8, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17580, 
+                       ADR( parser__2dobjects_dc2331e6_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser__2dobjects_dc2331e6, 
+                                      EMPTYLIST ) );
+        X3 = parser_ion_2drule_1c30c837( c13629, c14954 );
+        X5 = parser_ion_2drule_1c30c837( c13843, c14955 );
+        X7 = parser_ion_2drule_1c30c837( c14956, c14957 );
+        X9 = parser_ion_2drule_1c30c837( c14958, c14959 );
+        X11 = parser_ion_2drule_1c30c837( c14958, c14960 );
+        X13 = parser_ion_2drule_1c30c837( c13716, c14961 );
+        X15 = parser_ion_2drule_1c30c837( c13716, c14962 );
+        X17 = parser_ion_2drule_1c30c837( c13716, c14963 );
+        X19 = parser_ion_2drule_1c30c837( c13716, c14964 );
+        X21 = parser_ion_2drule_1c30c837( c13716, c14965 );
+        X23 = parser_ion_2drule_1c30c837( c13716, c14966 );
+        X25 = parser_ion_2drule_1c30c837( c13716, c14967 );
+        X27 = parser_ion_2drule_1c30c837( c14968, c14969 );
+        X29 = parser_ion_2drule_1c30c837( c14970, c14971 );
+        X31 = parser_ion_2drule_1c30c837( c14970, c14972 );
+        X33 = parser_ion_2drule_1c30c837( c14973, c14974 );
+        X35 = parser_ion_2drule_1c30c837( c14973, c14975 );
+        X37 = parser_ion_2drule_1c30c837( c14976, c14977 );
+        X39 = parser_ion_2drule_1c30c837( c14976, c14978 );
+        X41 = parser_ion_2drule_1c30c837( c14979, c14980 );
+        X43 = parser_ion_2drule_1c30c837( c14979, c14981 );
+        X45 = parser_ion_2drule_1c30c837( c14979, c14982 );
+        X47 = parser_ion_2drule_1c30c837( c14979, c14983 );
+        X49 = parser_ion_2drule_1c30c837( c14984, c14985 );
+        X51 = parser_ion_2drule_1c30c837( c14984, c14986 );
+        X53 = parser_ion_2drule_1c30c837( c14987, c14988 );
+        X55 = parser_ion_2drule_1c30c837( c14989, c14990 );
+        X57 = parser_ion_2drule_1c30c837( c14989, c14991 );
+        X56 = sc_cons( X57, EMPTYLIST );
+        X54 = sc_cons( X55, X56 );
+        X52 = sc_cons( X53, X54 );
+        X50 = sc_cons( X51, X52 );
+        X48 = sc_cons( X49, X50 );
+        X46 = sc_cons( X47, X48 );
+        X44 = sc_cons( X45, X46 );
+        X42 = sc_cons( X43, X44 );
+        X40 = sc_cons( X41, X42 );
+        X38 = sc_cons( X39, X40 );
+        X36 = sc_cons( X37, X38 );
+        X34 = sc_cons( X35, X36 );
+        X32 = sc_cons( X33, X34 );
+        X30 = sc_cons( X31, X32 );
+        X28 = sc_cons( X29, X30 );
+        X26 = sc_cons( X27, X28 );
+        X24 = sc_cons( X25, X26 );
+        X22 = sc_cons( X23, X24 );
+        X20 = sc_cons( X21, X22 );
+        X18 = sc_cons( X19, X20 );
+        X16 = sc_cons( X17, X18 );
+        X14 = sc_cons( X15, X16 );
+        X12 = sc_cons( X13, X14 );
+        X10 = sc_cons( X11, X12 );
+        X8 = sc_cons( X9, X10 );
+        X6 = sc_cons( X7, X8 );
+        X4 = sc_cons( X5, X6 );
+        X2 = sc_cons( X3, X4 );
+        X1 = X2;
+        INITIALIZEVAR( t17723, 
+                       ADR( parser_s_3acfg_2a_b68c7090_v ), 
+                       parser_create_2dcfg( X1 ) );
+        INITIALIZEVAR( t17725, 
+                       ADR( parser_mantics_2a_e96a1876_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_mantics_2a_e96a1876, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17743, 
+                       ADR( parser__2adataset_2did_2a_v ), 
+                       sc_emptystring );
+        INITIALIZEVAR( t17744, 
+                       ADR( parser__2afiles_2ddir_2a_v ), c15037 );
+        INITIALIZEVAR( t17745, 
+                       ADR( parser_rticipants_7e4ac1e_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_rticipants_7e4ac1e, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17792, 
+                       ADR( parser_apply_2dbindings_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_apply_2dbindings, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17828, 
+                       ADR( parser_get_2damt_2dcorpus_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_get_2damt_2dcorpus, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17850, 
+                       ADR( parser_dtemplates_4c01ce2e_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_dtemplates_4c01ce2e, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17908, 
+                       ADR( parser_get_2dold_2drules_v ), 
+                       MAKEPROCEDURE( 0, 
+                                      0, 
+                                      parser_get_2dold_2drules, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t17965, 
+                       ADR( parser_get_2damt_2drules_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser_get_2damt_2drules, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t18018, 
+                       ADR( parser_2dsentence_8e143316_v ), 
+                       MAKEPROCEDURE( 3, 
+                                      0, 
+                                      parser_2dsentence_8e143316, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t18039, 
+                       ADR( parser_t_2dcorpus_42c3abbe_v ), 
+                       MAKEPROCEDURE( 2, 
+                                      0, 
+                                      parser_t_2dcorpus_42c3abbe, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t18063, 
+                       ADR( parser__2dobjects_b1739f29_v ), 
+                       MAKEPROCEDURE( 1, 
+                                      0, 
+                                      parser__2dobjects_b1739f29, 
+                                      EMPTYLIST ) );
+        INITIALIZEVAR( t18172, 
+                       ADR( parser_dsentences_83fbf3ef_v ), 
+                       MAKEPROCEDURE( 0, 
+                                      0, 
+                                      parser_dsentences_83fbf3ef, 
+                                      EMPTYLIST ) );
+        return;
+}

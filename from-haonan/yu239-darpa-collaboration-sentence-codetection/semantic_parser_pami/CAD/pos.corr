@@ -1,0 +1,11 @@
+[("up", "IN"),
+ ("down", "IN"),
+ ("blue", "JJ"),
+ ("drank", "VBD"),
+ ("pours", "VBZ"),
+ ("poured", "VBD"),
+ ("places", "VBZ"),
+ ("reaches", "VBZ"),
+ ("tries", "VBZ"),
+ ("bowl", "NN") 
+]

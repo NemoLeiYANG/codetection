@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="Dstar.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="8870" topLine="392" />
+	</File>
+	<File name="Dstar.h" open="0" top="0" tabpos="4">
+		<Cursor position="1619" topLine="73" />
+	</File>
+	<File name="camera_main.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="11740" topLine="442" />
+	</File>
+	<File name="control_system.c" open="0" top="0" tabpos="2">
+		<Cursor position="151" topLine="0" />
+	</File>
+	<File name="control_system.h" open="0" top="0" tabpos="3">
+		<Cursor position="120" topLine="0" />
+	</File>
+	<File name="mGPSInfo.h" open="0" top="0" tabpos="0">
+		<Cursor position="377" topLine="7" />
+	</File>
+	<File name="mNMEAParser.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="16423" topLine="646" />
+	</File>
+	<File name="mNMEAParser.h" open="0" top="0" tabpos="5">
+		<Cursor position="305" topLine="0" />
+	</File>
+	<File name="main.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="11446" topLine="402" />
+	</File>
+</CodeBlocks_layout_file>

@@ -1,0 +1,4 @@
+1. ispell
+2. add "person" to a sentence to make it grammartical
+3. change "bottle" and "drink" to specific names
+4. noun-phrase mapping inside phrases.map

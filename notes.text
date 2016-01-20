@@ -5359,13 +5359,54 @@ choosing the parameters that RANSAC needs.
   /aux/sbroniko/vader-rover/logs/house-test-12nov15/house-test-sentences.txt for
   sentences to describe every run.
 
+----------------git commit 5d0fb37--------------
+
+19 Jan 16
+
+--Finished writing sentences to describe each run (house-test-sentences.txt)
+
+--Got copy of Haonan's code in ./from-haonan/codetectionlib-cpp.cpp.  Need to
+  look at similarity_between_videos, similarity-between-videos-c,
+  similarity-between-videos-matlab, similarity-among-videos (codetection.sc)
+
+--Got copy of Dan's code in ./from-dan/dpbarret-darpa-collaboration-rover.  Need
+  to look at definitions of prepositions (i.e., right-of, left-of, etc) in
+  sentence-to-trace-from-learned-models.sc 
+
+--Need to manually align videos to sentences.  Can do it by just determining
+  start and stop frames for each segment.  Then can split up tubes by doing a
+  sublist--probably also need to do something with a pose list (written out to
+  sc file?)
+
+20 Jan 16
+
+--Need to work on aligning videos/tubes with sentences.  Initial thought is to
+  just make a list of start/stop frames for the segments, and a matching list of
+  the phrase in the sentence.  This will JUST split the path pieces (from the
+  frame-matched poses) since the actual locations found from the tubes can be
+  valid anywhere in a particular run (or more likely, a whole floorplan).
 
 TO DO's
 -------
+ -code to save frame-poses
+ -code to split up frames, tubes, tube locations based on alignment
+   - each tube must be associated with its world location
+   - will tubes have an entry for every frame in the video, or just the frames
+   in a particular segment?  Seems the latter is probably better, but not
+   totally sure.  List of tubes should probably have an entry for ALL tubes, not
+   just the ones in that segment, just to keep numbering the same across
+   all-->if a tube is not in that segment, just replace the list with #F.
+ -SPLIT WON'T ACTUALLY AFFECT FRAMES OR TUBES, JUST PATH PIECES.
+ -DON'T SPLIT TUBES ACROSS SEGMENTS!!!  Each segment's head noun can take the
+ value of ANY tube in that video (and possibly all the other videos in that
+ floor plan) b/c the object isn't necessarily in view when it is the head noun
+ (i.e., behind, right of, etc.).  So a segment's noun variable can vary across
+ ALL tubes.
+ -THINK ABOUT consolidating nearby objects with a very small (~10cm??) threshold
+ in order to reduce number of possible objects.  Can also concatenate the tubes
+ from merged objects into mega-tubes.
 
- * compute distance of 1 std dev for (x,y,w,h) for boxes on the ground
- * look at boxes accepted vs. boxes rejected--reasonable?
- * are xy coordinates reasonable?
+
 
 **THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
 
@@ -5381,6 +5422,7 @@ TO DO's
         (by EOD m4jan2016)
      b. get sentences for each temporal segment of each video
         (by EOD t5jan2016)
+     DONE
         assume segmentation of sentence in phrase, temporal segmentation of
         video, and alignment between the two
      c. construct graphical model with vertex for head noun in each phrase
@@ -5401,6 +5443,7 @@ TO DO's
      DONE
      h. assume we know meanings of prepositions
         (done, get from Dan)
+     DONE
      i. unary score for vertex based on how well the world position and robot
         position/velocity satisfy head preposition in sentence segment
         (by EOD t5jan2016)

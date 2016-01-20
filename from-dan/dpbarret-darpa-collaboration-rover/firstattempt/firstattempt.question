@@ -1,0 +1,688 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuestionForm xmlns="http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2005-10-01/QuestionForm.xsd">
+ <Overview>
+   <Text> To properly view the videos in Google Chrome, it may be necessary to click the small shield icon in the upper right of the address bar, which tells Chrome to load the unauthenticated video files. In Mozilla IceWeasel, this icon is on the left of the address bar. When running Internet Explorer, you may see a message asking whether you wish to 'load only the content that was delivered securely'. You should select 'no'.  Analogous steps may need to be taken for other browsers.  If you do not have an up-to-date version already, you may also be asked to update Adobe Flash player. </Text>
+ </Overview> 
+ <Overview>
+   <Text> Determine the maximum number of simultaneously visible people and horses in this video.</Text>
+   <Application>
+     <Flash>
+       <FlashMovieURL>
+	 http://upplysingaoflun.ecn.purdue.edu/~dpbarret/AMTclips/$video1
+       </FlashMovieURL>
+       <Width> 600 </Width>
+       <Height> 300 </Height>
+     </Flash>
+   </Application>
+ </Overview> 
+  <Question>
+    <QuestionIdentifier>video1people</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of people visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Question>
+    <QuestionIdentifier>video1horse</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of horses visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+  <Overview>
+   <Text> Determine the maximum number of simultaneously visible people and horses in this video.</Text>
+   <Application>
+     <Flash>
+       <FlashMovieURL>
+	 http://upplysingaoflun.ecn.purdue.edu/~dpbarret/AMTclips/$video2
+       </FlashMovieURL>
+       <Width> 600 </Width>
+       <Height> 300 </Height>
+     </Flash>
+   </Application>
+ </Overview> 
+  <Question>
+    <QuestionIdentifier>video2people</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of people visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Question>
+    <QuestionIdentifier>video2horse</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of horses visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Overview>
+   <Text> Determine the maximum number of simultaneously visible people and horses in this video.</Text>
+   <Application>
+     <Flash>
+       <FlashMovieURL>
+	 http://upplysingaoflun.ecn.purdue.edu/~dpbarret/AMTclips/$video3
+       </FlashMovieURL>
+       <Width> 600 </Width>
+       <Height> 300 </Height>
+     </Flash>
+   </Application>
+ </Overview> 
+  <Question>
+    <QuestionIdentifier>video3people</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of people visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Question>
+    <QuestionIdentifier>video3horse</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of horses visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Overview>
+   <Text> Determine the maximum number of simultaneously visible people and horses in this video.</Text>
+   <Application>
+     <Flash>
+       <FlashMovieURL>
+	 http://upplysingaoflun.ecn.purdue.edu/~dpbarret/AMTclips/$video4
+       </FlashMovieURL>
+       <Width> 600 </Width>
+       <Height> 300 </Height>
+     </Flash>
+   </Application>
+ </Overview> 
+  <Question>
+    <QuestionIdentifier>video4people</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of people visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Question>
+    <QuestionIdentifier>video4horse</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of horses visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Overview>
+   <Text> Determine the maximum number of simultaneously visible people and horses in this video.</Text>
+   <Application>
+     <Flash>
+       <FlashMovieURL>
+	 http://upplysingaoflun.ecn.purdue.edu/~dpbarret/AMTclips/$video5
+       </FlashMovieURL>
+       <Width> 600 </Width>
+       <Height> 300 </Height>
+     </Flash>
+   </Application>
+ </Overview> 
+  <Question>
+    <QuestionIdentifier>video5people</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of people visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Question>
+    <QuestionIdentifier>video5horse</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of horses visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Overview>
+   <Text> Determine the maximum number of simultaneously visible people and horses in this video.</Text>
+   <Application>
+     <Flash>
+       <FlashMovieURL>
+	 http://upplysingaoflun.ecn.purdue.edu/~dpbarret/AMTclips/$video6
+       </FlashMovieURL>
+       <Width> 600 </Width>
+       <Height> 300 </Height>
+     </Flash>
+   </Application>
+ </Overview> 
+  <Question>
+    <QuestionIdentifier>video6people</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of people visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Question>
+    <QuestionIdentifier>video6horse</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of horses visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Overview>
+   <Text> Determine the maximum number of simultaneously visible people and horses in this video.</Text>
+   <Application>
+     <Flash>
+       <FlashMovieURL>
+	 http://upplysingaoflun.ecn.purdue.edu/~dpbarret/AMTclips/$video7
+       </FlashMovieURL>
+       <Width> 600 </Width>
+       <Height> 300 </Height>
+     </Flash>
+   </Application>
+ </Overview> 
+  <Question>
+    <QuestionIdentifier>video7people</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of people visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Question>
+    <QuestionIdentifier>video7horse</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of horses visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Overview>
+   <Text> Determine the maximum number of simultaneously visible people and horses in this video.</Text>
+   <Application>
+     <Flash>
+       <FlashMovieURL>
+	 http://upplysingaoflun.ecn.purdue.edu/~dpbarret/AMTclips/$video8
+       </FlashMovieURL>
+       <Width> 600 </Width>
+       <Height> 300 </Height>
+     </Flash>
+   </Application>
+ </Overview> 
+  <Question>
+    <QuestionIdentifier>video8people</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of people visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Question>
+    <QuestionIdentifier>video8horse</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of horses visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Overview>
+   <Text> Determine the maximum number of simultaneously visible people and horses in this video.</Text>
+   <Application>
+     <Flash>
+       <FlashMovieURL>
+	 http://upplysingaoflun.ecn.purdue.edu/~dpbarret/AMTclips/$video9
+       </FlashMovieURL>
+       <Width> 600 </Width>
+       <Height> 300 </Height>
+     </Flash>
+   </Application>
+ </Overview> 
+  <Question>
+    <QuestionIdentifier>video9people</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of people visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Question>
+    <QuestionIdentifier>video9horse</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of horses visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Overview>
+   <Text> Determine the maximum number of simultaneously visible people and horses in this video.</Text>
+   <Application>
+     <Flash>
+       <FlashMovieURL>
+	 http://upplysingaoflun.ecn.purdue.edu/~dpbarret/AMTclips/$video10
+       </FlashMovieURL>
+       <Width> 600 </Width>
+       <Height> 300 </Height>
+     </Flash>
+   </Application>
+ </Overview> 
+  <Question>
+    <QuestionIdentifier>video10people</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of people visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+<Question>
+    <QuestionIdentifier>video10horse</QuestionIdentifier>
+    <IsRequired> true </IsRequired>
+    <QuestionContent>
+      <Text> What is the maximum number of horses visible at the same time in the above video? </Text>
+    </QuestionContent>
+    <AnswerSpecification>
+      <SelectionAnswer>
+	<MinSelectionCount> 1 </MinSelectionCount>
+	<MaxSelectionCount> 1 </MaxSelectionCount>
+	<StyleSuggestion>radiobutton</StyleSuggestion>
+	<Selections>
+	  <Selection>
+	    <SelectionIdentifier>0</SelectionIdentifier>
+	    <Text> 0 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>1</SelectionIdentifier>
+	    <Text> 1 </Text>
+	  </Selection>
+	  <Selection>
+	    <SelectionIdentifier>2</SelectionIdentifier>
+	    <Text> 2 or more </Text>
+	  </Selection>
+	</Selections>
+      </SelectionAnswer>
+    </AnswerSpecification>
+  </Question>
+
+ 
+</QuestionForm>

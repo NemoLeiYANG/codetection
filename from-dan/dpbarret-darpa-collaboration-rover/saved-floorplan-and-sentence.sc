@@ -1,0 +1,5 @@
+(((((THE-CHAIR #(1.37 1.304))
+     (THE-CONE #(1.37 -1.304))
+     (THE-BAG #(-1.304 1.304))
+     (THE-BAG #(-1.37 -1.304)))
+    "the robot went behind the bag which is in front of the bag then went in front of the bag which is left of the chair then went towards the cone then went away from the chair then went right of the chair then went right of the bag which is left of the cone")))

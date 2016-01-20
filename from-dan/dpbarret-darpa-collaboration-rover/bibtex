@@ -1,0 +1,44 @@
+@inproceedings{Branavan:2010:RLL:1858681.1858810,
+ author = {Branavan, S. R. K. and Zettlemoyer, Luke S. and Barzilay, Regina},
+ title = {Reading Between the Lines: Learning to Map High-level Instructions to Commands},
+ booktitle = {Proceedings of the 48th Annual Meeting of the Association for Computational Linguistics},
+ pages = {1268-1277},
+ year = 2010   
+ 
+} 
+
+@inproceedings{Clarke:2010:DSP:1870568.1870571,
+ author = {Clarke, James and Goldwasser, Dan and Chang, Ming-Wei and Roth, Dan},
+ title = {Driving Semantic Parsing from the World's Response},
+ booktitle = {Proceedings of the Fourteenth Conference on Computational Natural Language Learning},
+ pages = {18-27},
+ year = 2010
+} 
+
+@inproceedings{Liang:2009:LSC:1687878.1687893,
+ author = {Liang, Percy and Jordan, Michael I. and Klein, Dan},
+ title = {Learning Semantic Correspondences with Less Supervision},
+ booktitle = {Proceedings of the Joint Conference of the 47th Annual Meeting of the ACL and the 4th International Joint Conference on Natural Language Processing of the AFNLP: Volume 1 - Volume 1},
+ pages = {91-99},
+ year = 2009} 
+
+@inproceedings{Lu:2008:GMP:1613715.1613815,
+ author = {Lu, Wei and Ng, Hwee Tou and Lee, Wee Sun and Zettlemoyer, Luke S.},
+ title = {A Generative Model for Parsing Natural Language to Meaning Representations},
+ booktitle = {Proceedings of the Conference on Empirical Methods in Natural Language Processing},
+ pages = {783-792},
+ year = 2008} 
+
+@inproceedings{Liang2011,
+author = {Percy Liang and Michael I. Jordan and Dan Klein},
+title = {Learning Dependency-Based Compositional Semantics},
+booktitle = acl,
+pages = {389-446},
+year= 2013}
+
+@inproceedings{papineni1997feature,
+  title={Feature-based language understanding},
+  author={Papineni, Kishore A and Roukos, Salim and Ward, Todd R},
+  booktitle={Fifth European Conference on Speech Communication and Technology},
+  year={1997}
+}

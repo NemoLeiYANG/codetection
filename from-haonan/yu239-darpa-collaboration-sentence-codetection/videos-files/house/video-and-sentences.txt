@@ -1,0 +1,300 @@
+00000-000001-000003-bowl
+the person put the bowl into the sink
+00000-000012-000003-cabbage
+the person took the cabbage in the bowl out from the sink and put it on the table
+00000-000015-000003-bowl
+the person took out the bowl from the sink
+00000-000020-000003-squash
+the person put the squash into the sink
+00000-000038-000003-pineapple
+the person took the pineapple out from the sink
+00000-000044-000003-cabbage
+the person put the cabbage into the sink
+00000-000051-000003-cleaner
+the person put the cleaner into the sink near the cabbage
+00000-000109-000004-coffee
+the person put the coffee above the cleaner into the sink
+00000-000113-000003-cleaner
+the person took the cleaner near the coffee out from the sink
+00000-000146-000003-coffee
+the person put the coffee into the sink
+00000-000156-000003-pineapple
+the person put the pineapple into the bowl
+00000-000204-000002-cleaner
+the person took the cleaner out from the bowl
+00000-000210-000003-pineapple
+the person put the pineapple into the sink below the cabbage
+00000-000236-000002-pineapple
+the person took the pineapple out from the sink and put it to the right of the coffee
+00000-000304-000003-squash
+the person took the squash out from the sink and put it near the coffee
+00000-000315-000004-coffee
+the person put the coffee into the sink
+00000-000319-000004-coffee
+the person took the coffee out from the sink
+00000-000332-000003-pineapple
+the person put the pineapple into the sink below the coffee
+00000-000341-000004-squash
+the person put the squash near the coffee into the sink
+00000-000354-000003-coffee
+the person put the coffee into the sink
+00000-000358-000004-coffee
+the person took the coffee out from the sink
+00000-000409-000003-cleaner
+the person put the cleaner above the bowl into the bowl
+00000-000411-000003-cleaner
+the person took the cleaner in the bowl away from the bowl
+00000-000415-000002-pineapple
+the person put the pineapple into the sink
+00000-000421-000002-cabbage
+the person put the cabbage in the bowl
+00000-000423-000002-cabbage
+the person took the cabbage away from the bowl
+00001-000000-000003-bowl
+the person moved the bowl from the right counter to the left counter
+00001-000004-000003-cleaner
+the person moved the cleaner from the right counter to the left counter
+00001-000009-000003-pineapple
+the person put the pineapple to the right of the cleaner near the cleaner
+00001-000014-000003-pineapple
+the person moved the pineapple from the left counter to the one on the right hand side
+00001-000018-000002-cleaner
+the person moved the cleaner from the left counter to the one on the right hand side
+00001-000024-000003-cabbage
+the person put the cabbage to the left of the pineapple near the cleaner
+00001-000031-000003-coffee
+the person carried the coffee rightwards
+00001-000043-000003-bowl
+the person moved the bowl from the left counter to the right counter
+00001-000053-000004-squash
+the person carried the squash rightwards
+00001-000059-000003-squash
+the person carried the squash leftwards
+00001-000132-000003-bowl
+the person moved the bowl from the right counter to the one on the left hand side
+00001-000136-000003-coffee
+the person carried the coffee leftwards
+00001-000141-000004-squash
+the person took the squash away from the coffee
+00001-000150-000002-bowl
+the person took the bowl away from the coffee
+00001-000155-000004-squash
+the person carried the squash to the left of the pineapple and put it near the coffee
+00001-000159-000003-pineapple
+the person carried the pineapple leftwards
+00001-000213-000002-pineapple
+the person carried the pineapple rightwards
+00001-000219-000002-squash
+the person carried the squash leftwards
+00001-000223-000002-coffee
+the person carried the coffee rightwards and put it near the pineapple
+00001-000227-000003-cabbage
+the person took the cabbage away from the squash
+00001-000233-000002-pineapple
+the person took the pineapple away from the cabbage and put it near the squash
+00001-000238-000002-squash
+the person carried the squash rightwards and put it near the cabbage
+00001-000256-000003-pineapple
+the person moved the pineapple from the left counter to the right counter
+00001-000317-000002-bowl
+the person put the bowl near the coffee
+00001-000348-000002-bowl
+the person put the bowl near the cleaner
+00001-000400-000003-pineapple
+the person moved the pineapple from the right counter to the one on the left hand side
+00001-000408-000003-coffee
+the person carried the coffee which is to the right of the cabbage rightwards
+00001-000426-000002-squash
+the person carried the squash rightwards
+00001-000437-000003-coffee
+the person moved the coffee from the right counter to the one on the left hand side
+00001-000442-000002-pineapple
+the person put the pineapple near the coffee
+00001-000507-000002-cleaner
+the person put the cleaner near the coffee
+00001-000509-000003-cleaner
+the person moved the cleaner from the left counter to the one on the right hand side
+00002-000006-000003-cabbage
+the person took the cabbage out from the bowl
+00002-000016-000005-pineapple
+the person put the pineapple to the left of the bowl in the bowl
+00002-000037-000003-squash
+the person put the squash to the right of the bowl in the bowl
+00002-000041-000002-squash
+the person took the squash out from the bowl
+00002-000056-000002-pineapple
+the person put the pineapple in the bowl
+00002-000058-000002-pineapple
+the person took the pineapple out from the bowl
+00002-000112-000002-squash
+the person took the squash out from the bowl
+00002-000120-000002-cabbage
+the person put the cabbage in the bowl
+00002-000123-000002-cabbage
+the person took the cabbage out from the bowl
+00002-000143-000002-cabbage
+the person put the cabbage in the bowl
+00002-000147-000002-cabbage
+the person took the cabbage out from the bowl
+00002-000154-000002-pineapple
+the person put the pineapple in the bowl
+00003-000002-000003-ketchup
+the person poured the ketchup into the cup
+00003-000014-000004-milk
+the person poured the milk into the cup
+00003-000036-000004-juice
+the person poured the juice into the cup
+00003-000059-000004-juice
+the person poured the juice into the cup
+00003-000107-000003-milk
+the person poured the milk into the cup to the left of the juice
+00003-000118-000004-ketchup
+the person poured the ketchup into the cup
+00003-000143-000003-ketchup
+the person added some ketchup into the cup
+00003-000153-000003-milk
+the person added some milk into the cup to the left of the cup
+00003-000245-000004-ketchup
+the person added some ketchup into the cup
+00003-000306-000004-juice
+the person poured some juice into the cup
+00003-000336-000004-milk
+the person poured the milk
+00003-000346-000003-ketchup
+the person poured the ketchup to the right of the milk
+00003-000350-000004-juice
+the person poured the juice into the cup
+00003-000418-000004-ketchup
+the person poured the ketchup to the left of the juice
+00003-000424-000003-juice
+the person poured the juice to the right of the ketchup
+00003-000459-000004-ketchup
+the person added some ketchup into the cup to the left of the cup
+00003-000508-000005-milk
+the person added some milk into the cup to the left of the cup
+00003-000518-000004-juice
+the person added some juice into the cup to the right of the cup
+00003-000540-000003-milk
+the person added some milk into the cup to the right of the cup
+00003-000548-000002-ketchup
+the person added some ketchup into the cup to the right of the cup
+00003-000600-000004-juice
+the person added some juice into the cup to the left of the cup
+00004-000006-000003-cooler
+the person lifted the cooler onto the table
+00004-000012-000002-cooler
+the person put down the cooler on the ground
+00004-000028-000003-cooler
+the person lifted the cooler to the right of the cooler
+00004-000035-000003-box
+the person picked up the box below the cooler
+00004-000040-000002-box
+the person put down the box on the ground
+00004-000104-000002-cooler
+the person put down the cooler
+00004-000156-000002-cooler
+the person stacked the cooler onto the cooler
+00004-000158-000004-cooler
+the person put down the cooler on top of the cooler
+00004-000210-000002-cooler
+the person stacked the cooler onto the cooler
+00004-000236-000003-cooler
+the person picked up the cooler and put it on top of the box
+00004-000320-000004-box
+the person carried the box leftwards
+00004-000438-000003-box
+the person carried the box leftwards
+00004-000447-000003-box
+the person carried the box leftwards
+00004-000450-000002-box
+the person picked up the box
+00004-000457-000002-box
+the person put down the box
+00004-000508-000003-box
+the person carried the box leftwards
+00004-000520-000003-cooler
+the person put the cooler near the box
+00004-000527-000002-cooler
+the person took the cooler away from the box
+00004-000529-000002-cooler
+the person stacked the cooler onto the box
+00005-000001-000003-cooler
+the person put down the cooler to the right of the box
+00005-000004-000003-box
+the person put down the box above the cooler
+00005-000029-000002-box
+the person lifted the box
+00005-000032-000003-cooler
+the person lifted the cooler and stacked it onto the box
+00005-000100-000002-cooler
+the person picked up the cooler
+00005-000204-000002-cooler
+the person carried the cooler rightwards
+00005-000214-000002-box
+the person put down the box
+00005-000252-000002-cooler
+the person picked up the cooler on top of the box
+00005-000255-000002-box
+the person picked up the box
+00005-000306-000003-cooler
+the person stacked the cooler onto the cooler
+00005-000339-000002-box
+the person put down the box to the right of the cooler
+00005-000403-000002-box
+the person carried the box rightwards
+00005-000614-000003-cooler
+the person picked up the cooler
+00005-000641-000003-cooler
+the person put down the cooler
+00006-000027-000003-box
+the person put down the box
+00006-000042-000002-cooler
+the person carried the cooler leftwards
+00006-000049-000002-cooler
+the person carried the cooler rightwards
+00008-000014-000003-watering-pot
+the person loaded the watering-pot into the trunk
+00008-000017-000002-watering-pot
+the person unloaded the watering-pot from the trunk
+00008-000049-000002-bucket
+the person loaded the bucket into the trunk
+00008-000051-000003-bucket
+the person unloaded the bucket from the trunk
+00008-000102-000003-bucket
+the person picked up the bucket
+00008-000105-000002-bucket
+the person put down the bucket on the ground
+00008-000109-000002-gas-can
+the person unloaded the gas-can from the trunk and put it to the left of the bucket
+00008-000113-000004-watering-pot
+the person put down the watering-pot above the gas-can
+00008-000158-000003-bucket
+the person loaded the bucket to the right of the gas-can into the trunk
+00008-000218-000002-gas-can
+the person unloaded the gas-can from the trunk
+00008-000320-000003-bucket
+the person loaded the bucket to the left of the gas-can into the trunk
+00008-000325-000003-gas-can
+the person picked up the gas-can and put it near the bucket
+00008-000337-000002-gas-can
+the person unloaded the gas-can from the trunk
+00008-000340-000002-bucket
+the person unloaded the bucket and put it near the gas-can
+00008-000439-000002-watering-pot
+the person picked up the watering-pot to the left of the bucket
+00008-000449-000002-watering-pot
+the person put down the watering-pot
+00008-000514-000002-watering-pot
+the person carried the watering-pot rightwards
+00008-000524-000002-bucket
+the person carried the bucket leftwards
+00008-000528-000002-bucket
+the person carried the bucket rightwards
+00008-000603-000003-watering-pot
+the person picked up the watering-pot
+00008-000637-000002-gas-can
+the person unloaded the gas-can from the trunk
+00008-000640-000003-bucket
+the person unloaded the bucket from the trunk and put it near the gas-can
+00008-000644-000002-watering-pot
+the person unloaded the watering-pot and put it near the bucket

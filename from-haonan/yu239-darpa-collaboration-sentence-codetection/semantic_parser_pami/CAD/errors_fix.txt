@@ -1,0 +1,4 @@
+1. ispell
+2. 0126141850-00050-00163-bowl sentence was corrected
+3. change "something" specific names ("water" or "cereal")
+4. noun-phrase mapping inside phrases.map
