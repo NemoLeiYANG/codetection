@@ -57,6 +57,72 @@
 	     1
 	     n))))
 
+;;---Preposition functions from sentence-to-trace-from-learned-models.sc----
+(define (center-angle-at angle center)
+ (cond ((< angle (- center pi)) (center-angle-at (+ angle two-pi) center))
+       ((> angle (+ center pi)) (center-angle-at (- angle two-pi) center))
+       (else (- angle center))))
+
+(define (angle-between p1 p2)
+ (if (equal? p1 p2)
+     0
+     (atan (- (y p1) (y p2))
+	   (- (x p1) (x p2)))))
+
+(define (left-of p1 p2)
+ (- 1 (/ (sqr (center-angle-at (angle-between p1 p2) pi))
+	 (* (sqr pi) 2))))
+
+(define (right-of p1 p2)
+ (- 1 (/ (sqr (center-angle-at (angle-between p1 p2) 0))
+	 (* (sqr pi) 2))))
+
+(define (in-front-of p1 p2)
+ (- 1 (/ (sqr (center-angle-at (angle-between p1 p2) (- (/ pi 2))))
+	 (* (sqr pi) 2))))
+
+(define (behind p1 p2)
+ (- 1 (/ (sqr (center-angle-at (angle-between p1 p2) (/ pi 2)))
+	 (* (sqr pi) 2))))
+
+(define (between p1 p2 p3)
+ (- 1 (/ (sqr (center-angle-at (- (angle-between p1 p2) (angle-between p1 p3)) pi))
+	 (* (sqr pi) 2))))
+
+(define (towards angle p1 p2)
+ ;;(trace-dtrace "v-angle" (primal* (y fv)))
+ ;;(trace-dtrace "v-angle target" (primal* (angle-between p2 (x fv))))
+ (- 1  (/ (sqr (center-angle-at angle (angle-between p2 p1)))
+	  (sqr two-pi))))
+
+
+(define (parallel-to angle p1 p2)
+ ;;(trace-dtrace "v-angle" (primal* (y fv)))
+ ;;(trace-dtrace "v-angle target" (primal* (angle-between p2 (x fv))))
+ (let ((c1 (- 1  (/ (sqr (center-angle-at angle (+ (angle-between p2 p1) (/ pi 2))))
+	       (sqr two-pi))))
+      (c2 (- 1  (/ (sqr (center-angle-at angle (- (angle-between p2 p1) (/ pi 2))))
+	       (sqr two-pi)))))
+  (if (< c1 c2)
+      c2
+      c1)))
+
+(define (away-from angle p1 p2)
+(- 1 (/ (sqr (center-angle-at angle (+ (angle-between  p2 p1) pi)))
+   (sqr two-pi))))
+
+(define (angles-opposite-each-other angle1 angle2)
+ (- 1 (/ (sqr (center-angle-at (center-angle-at angle1 angle2) pi))
+	 (sqr (* 2 pi)))))
+
+(define (distances-equal p1 p2 p3)
+ (* (- 1 (/ (sqrt (sqr (- (distance p1 p2) (distance p2 p3)))) (* 100 (distance p2 p3)))) 
+    (- 1 (/  (sqrt (sqr (- (distance p1 p2) (distance p1 p3)))) (* 100 (distance p1 p3))))))
+
+(define (near p1 p2)
+ (exp (/ (- (distance p1 p2)) 100)))
+;;--------------------------End preposition functions
+
 (define (select-frames video-path first-frame num-frames)
  (let ((video (video->frames 1 video-path)))
   (if (> (+ first-frame num-frames) (length video))
@@ -254,6 +320,17 @@
 		 (rest poses)
 		 (first poses)
 		 frame-poses))))))
+
+(define (save-poses-house-test)
+ (let* ((dirlist
+	 (system-output "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/floor*"))
+	(outfile-name "frame-poses.sc"))
+  (for-each
+   (lambda (dir)
+    (write-object-to-file
+     (get-corrected-poses-that-match-frames dir)
+     (format #f "~a/~a" dir outfile-name)))
+   dirlist)))
        
 (define (frame-test)
  (let* ((video-path "/home/sbroniko/codetection/test-run-data/video_front.avi")
@@ -4187,6 +4264,83 @@
  (let* ((abc (first (find-abc-and-filter path subdir)))
 	(def (first (find-def-and-filter path subdir))))
   (vector-append abc def)))
+
+(define (find-low-variance-tubes path)
+ ;;this is the old d-filter (>5 frames, distance from mean < 50 cm)
+ ;;modified to use the nms-tubes.sc in the base path
+ ;;output is: a list with an entry for each tube,
+ ;;  #f if the tube doesn't pass the filter, or ((#(x y w h) #(xv yv wv hv)) dist-var
+ ;;  video-name (list tubepixels))
+ (let* ((tubes-with-scores (read-object-from-file
+			    (format #f "~a/nms-tubes.sc" path)))
+	(tubes-no-scores (map first tubes-with-scores))
+	(length-thresh 5)
+	(length-filter (filter-tubes-by-length tubes-no-scores length-thresh))
+	(pose-list (read-object-from-file
+		    (format #f "~a/frame-poses.sc" path)))
+	(video-name (format #f "~a/video_front.avi" path))
+	(world-xywh-lists
+	 (map (lambda (t)
+	       (world-corners-list->world-xywh-list
+		(raw-tube-with-score-and-pose-list->world-corners-list t pose-list)))
+	      tubes-with-scores))
+	(wmv
+	 (map (lambda (t)
+	       (world-xywh-list->world-mean-and-variance t))
+	      world-xywh-lists))
+	(distance-lists
+	 (map third
+	      (map (lambda (l)
+		    (world-xywh-list->world-mean-and-distances l))
+		   world-xywh-lists)))
+	(distance-means
+	 (map (lambda (l) (list-mean l)) distance-lists))
+	(distance-thresh 0.50) ;;50cm
+	(first-distance-filter
+	 (map (lambda (l)
+	       (map (lambda (d) (if (< d distance-thresh) d #f)) l))
+	      distance-lists))
+	(final-distance-filter
+	 (map (lambda (l) (if (= (length l) (length (removeq #f l)))
+			      (list-mean l)
+			      #f))
+	      first-distance-filter))
+	(output
+	 (map (lambda (l1 l2 l3 l4 l5)
+	       (if (and l1 l2)
+		   (list l3 l4 video-name l5)
+		   #f))
+	      length-filter final-distance-filter
+	      wmv
+	      distance-means
+	      tubes-no-scores)))
+  output))
+
+(define (save-low-variance-tubes-house-test)
+ (let* ((dirlist
+	 (system-output "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/floor*"))
+	(outfile-name "low-variance-tubes.sc"))
+  (for-each
+   (lambda (dir)
+    (write-object-to-file
+     (find-low-variance-tubes dir)
+     (format #f "~a/~a" dir outfile-name)))
+   dirlist)))
+
+(define (split-path-by-alignment dir)
+ (let* ((path (read-object-from-file
+	       (format #f "~a/frame-poses.sc" dir)))
+	(alignment (second (read-object-from-file
+			    (format #f "~a/alignment.sc" dir)))))
+  (list (map (lambda (l) (sublist path (first l) (+ 1 (second l))))
+	     alignment)
+	alignment)))
+
+;; (define (find-unary-score full-tube path-segment preposition-function)
+;;  ;;full-tube is the format from find-low-variance-tubes:
+;;  ;;  ((#(x y w h) #(xv yv wv hv)) dist-var video-name (list tubepixels))
+;;  ;;path-segment is series of world path points to average over, or null if
+;;  ;;  working with a helper-noun (chair which is to the left of the TABLE)
 
 (define (render-b-tubes path subdir)
  (let* ((render-filter (second (find-abc-and-filter path subdir)))
