@@ -58,6 +58,53 @@
 	     n))))
 
 ;;---Preposition functions from sentence-to-trace-from-learned-models.sc----
+(define (fold-polynomial x coeffs)
+ (let loop ((s 0) (c (reverse coeffs)))
+  (if (null? c)
+      s
+      (loop (* x (+ s (first c))) (rest c)))))
+
+(define (log-bessel0 kappa)
+ (let ((ax (abs kappa)))
+  (if (< ax 3.75)
+      (log
+       (+ 1.0
+	  (fold-polynomial (sqr (/ kappa 3.75))
+			   '(3.5156229
+			     3.0899424
+			     1.2067492
+			     0.2659732
+			     0.360768e-1
+			     0.45813e-2))))
+      (+ (- ax (* 0.5 (log ax)))
+	 (log
+	  (+ 0.39894228
+	     (fold-polynomial (/ 3.75 ax)
+			      '(0.39894228
+				0.1328592e-1
+				0.225319e-2
+				-0.157565e-2
+				0.916281e-2
+				-0.2057706e-1
+				0.2635537e-1
+				-0.1647633e-1
+				0.392377e-2))))))))
+
+(define (log-von-mises v mean kappa)
+ (unless (and (> kappa 0.0)
+ 	      (and (>= mean (- pi)) (<= mean pi))
+ 	      (and (>= v (- pi)) (<= v pi)))
+  (format #t "~a ~a ~a~%" v mean kappa)
+  (panic "log-radial") (abort))
+ (let ((x (- v mean)))
+  (- (* kappa (cos x)) (log-bessel0 kappa))))
+
+(define (renormalized-von-mises v mean kappa)
+;; (let ((x (- v mean)))
+;; (/ (exp (* kappa (cos x)))))
+(- (log-von-mises v mean kappa)
+   (log-von-mises 0 0 kappa)))
+
 (define (center-angle-at angle center)
  (cond ((< angle (- center pi)) (center-angle-at (+ angle two-pi) center))
        ((> angle (+ center pi)) (center-angle-at (- angle two-pi) center))
@@ -69,51 +116,79 @@
      (atan (- (y p1) (y p2))
 	   (- (x p1) (x p2)))))
 
-(define (left-of p1 p2)
- (- 1 (/ (sqr (center-angle-at (angle-between p1 p2) pi))
-	 (* (sqr pi) 2))))
+(define *von-mises-kappa* 2.5) ;;might need to change this
 
-(define (right-of p1 p2)
- (- 1 (/ (sqr (center-angle-at (angle-between p1 p2) 0))
-	 (* (sqr pi) 2))))
+(define (left-of robot-or-tube tube)
+ (let* ((p1 (subvector robot-or-tube 0 2))
+	(p2 tube))
+  (exp (renormalized-von-mises (angle-between p1 p2) pi *von-mises-kappa*))))
 
-(define (in-front-of p1 p2)
- (- 1 (/ (sqr (center-angle-at (angle-between p1 p2) (- (/ pi 2))))
-	 (* (sqr pi) 2))))
+(define (right-of robot-or-tube tube)
+ (let* ((p1 (subvector robot-or-tube 0 2))
+	(p2 tube))
+  (exp (renormalized-von-mises (angle-between p1 p2) 0 *von-mises-kappa*))))
 
-(define (behind p1 p2)
- (- 1 (/ (sqr (center-angle-at (angle-between p1 p2) (/ pi 2)))
-	 (* (sqr pi) 2))))
+(define (in-front-of robot-or-tube tube)
+ (let* ((p1 (subvector robot-or-tube 0 2))
+	(p2 tube))
+  (exp (renormalized-von-mises (angle-between p1 p2) (- half-pi) *von-mises-kappa*))))
 
-(define (between p1 p2 p3)
- (- 1 (/ (sqr (center-angle-at (- (angle-between p1 p2) (angle-between p1 p3)) pi))
-	 (* (sqr pi) 2))))
+(define (behind robot-or-tube tube)
+ (let* ((p1 (subvector robot-or-tube 0 2))
+	(p2 tube))
+  (exp (renormalized-von-mises (angle-between p1 p2) half-pi *von-mises-kappa*))))
 
-(define (towards angle p1 p2)
+(define (between robot-or-tube tube2 tube3)
+ (let* ((p1 (subvector robot-or-tube 0 2))
+	(p2 tube2)
+	(p3 tube3))
+  (exp (renormalized-von-mises
+	(center-angle-at (- (angle-between p1 p2) (angle-between p1 p3)) 0)
+	pi *von-mises-kappa*))))
+
+(define (towards robot tube)
+ (let* ((p1 (subvector robot 0 2))
+	(angle (z robot))
+	(p2 tube))
+  (exp (renormalized-von-mises angle (angle-between p2 p1) *von-mises-kappa*))))
+
+;; this tells if a robot's heading is tangent to the line between
+;; the point and the robot
+(define (tangent-to robot point)
  ;;(trace-dtrace "v-angle" (primal* (y fv)))
  ;;(trace-dtrace "v-angle target" (primal* (angle-between p2 (x fv))))
- (- 1  (/ (sqr (center-angle-at angle (angle-between p2 p1)))
-	  (sqr two-pi))))
-
-
-(define (parallel-to angle p1 p2)
- ;;(trace-dtrace "v-angle" (primal* (y fv)))
- ;;(trace-dtrace "v-angle target" (primal* (angle-between p2 (x fv))))
- (let ((c1 (- 1  (/ (sqr (center-angle-at angle (+ (angle-between p2 p1) (/ pi 2))))
-	       (sqr two-pi))))
-      (c2 (- 1  (/ (sqr (center-angle-at angle (- (angle-between p2 p1) (/ pi 2))))
-	       (sqr two-pi)))))
+ (let* ((p1 (subvector robot 0 2))
+	(angle (z robot))
+	(p2 point)
+	(c1 ;; (- 1  (/ (sqr (center-angle-at angle (+ (angle-between p2 p1) (/ pi 2))))
+	   ;;     ;; (sqr two-pi)
+	   ;; 	    (sqr pi)))
+	(exp (renormalized-von-mises angle
+				     (+ (angle-between p2 p1) half-pi)
+				     *von-mises-kappa*)))
+      (c2 ;; (- 1  (/ (sqr (center-angle-at angle (- (angle-between p2 p1) (/ pi 2))))
+	  ;; 	   ;; (sqr two-pi)
+	  ;; 	   (sqr pi)))
+	  (exp (renormalized-von-mises angle
+				       (- (angle-between p2 p1) half-pi)
+				       *von-mises-kappa*))))
   (if (< c1 c2)
       c2
       c1)))
 
-(define (away-from angle p1 p2)
-(- 1 (/ (sqr (center-angle-at angle (+ (angle-between  p2 p1) pi)))
-   (sqr two-pi))))
+(define (away-from robot tube)
+ (let* ((p1 (subvector robot 0 2))
+	(angle (z robot))
+	(p2 tube))
+  (exp (renormalized-von-mises angle
+			       (+ (angle-between  p2 p1) pi)
+			       *von-mises-kappa*))))
 
+;; ?? what is this supposed to do??
 (define (angles-opposite-each-other angle1 angle2)
  (- 1 (/ (sqr (center-angle-at (center-angle-at angle1 angle2) pi))
-	 (sqr (* 2 pi)))))
+	 ;; (sqr (* 2 pi))
+	 (sqr pi))))
 
 (define (distances-equal p1 p2 p3)
  (* (- 1 (/ (sqrt (sqr (- (distance p1 p2) (distance p2 p3)))) (* 100 (distance p2 p3)))) 
@@ -4216,6 +4291,8 @@
   (list (vector A (vector B C))
 	var-length-filter)))
 
+(define *distance-thresh* 0.50) ;;50cm HARDCODED
+
 (define (find-def-and-filter path subdir)
  (let* ((wmvr (read-object-from-file
 	       (format #f "~a/~a/world-means-variances-robots.sc" path subdir)))
@@ -4237,7 +4314,7 @@
 		   world-xywh-lists)))
 	(distance-means
 	 (map (lambda (l) (list-mean l)) distance-lists))
-	(distance-thresh 0.50) ;;50cm
+	(distance-thresh *distance-thresh*);;0.50) ;;50cm
 	(first-distance-filter
 	 (map (lambda (l)
 	       (map (lambda (d) (if (< d distance-thresh) d #f)) l))
@@ -4295,7 +4372,9 @@
 		   world-xywh-lists)))
 	(distance-means
 	 (map (lambda (l) (list-mean l)) distance-lists))
-	(distance-thresh 0.50) ;;50cm
+	(distance-variances
+	 (map (lambda (l) (list-variance l)) distance-lists))
+	(distance-thresh *distance-thresh*);;0.50) ;;50cm
 	(first-distance-filter
 	 (map (lambda (l)
 	       (map (lambda (d) (if (< d distance-thresh) d #f)) l))
@@ -4306,13 +4385,14 @@
 			      #f))
 	      first-distance-filter))
 	(output
-	 (map (lambda (l1 l2 l3 l4 l5)
+	 (map (lambda (l1 l2 l3 l4 l5 l6)
 	       (if (and l1 l2)
-		   (list l3 l4 video-name l5)
+		   (list l3 (vector l4 l5) video-name l6)
 		   #f))
 	      length-filter final-distance-filter
 	      wmv
 	      distance-means
+	      distance-variances
 	      tubes-no-scores)))
   output))
 
@@ -4336,11 +4416,20 @@
 	     alignment)
 	alignment)))
 
-;; (define (find-unary-score full-tube path-segment preposition-function)
-;;  ;;full-tube is the format from find-low-variance-tubes:
-;;  ;;  ((#(x y w h) #(xv yv wv hv)) dist-var video-name (list tubepixels))
-;;  ;;path-segment is series of world path points to average over, or null if
-;;  ;;  working with a helper-noun (chair which is to the left of the TABLE)
+(define (find-unary-score full-tube path-segment preposition-function)
+ ;;full-tube is the format from find-low-variance-tubes:
+ ;;  ((#(x y w h) #(xv yv wv hv)) dist-var video-name (list tubepixels))
+ ;;path-segment is series of world path points to average over, or null if
+ ;;  working with a helper-noun (chair which is to the left of the TABLE)
+ (let* ((tube-pos (subvector (first (first full-tube)) 0 2))
+	(tube-var (x (second full-tube)))
+	(norm-var (/ tube-var *distance-thresh*))
+	(var-factor (- 1 norm-var)))
+ (if (null? path-segment)
+     ;;this noun is a helper-noun, so only var-factor is the score
+     var-factor
+     (list-mean (map (lambda (p) (preposition-function p tube-pos))
+		     path-segment)))))
 
 (define (render-b-tubes path subdir)
  (let* ((render-filter (second (find-abc-and-filter path subdir)))

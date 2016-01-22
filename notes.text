@@ -5450,11 +5450,50 @@ TO DO's
 --Started working on find-unary-score.  Need to get more info from Dan on how
   the preposition functions he wrote work before I can do the rest.
 
+----------------git commit 85598d8--------------
+
+22 Jan 16
+
+--Working on preposition functions.  Dan suggested using newer von-mises-based
+  functions, but I don't know where they are--waiting on Dan's reply.  Currently
+  modifying functions I have.  Old versions had score in range [0.5 1], not sure
+  why.  Modifying to have score in range [0 1].
+
+--Talked with Dan about von-mises functions and decided against them for
+  now--the hardcoded old versions work well enough and are simpler.
+
+--Talked with Dan about normalizing the variance penalty factor by dividing by
+  0.5 (or variance of (list 0 0.5))-->looking at this caused me to realize that
+  the number I had been saving in low-variance-tubes.sc was not the distance
+  variance, but the distance mean.  Fixed it so that now the second element of
+  each tube is #(dist-mean dist-var).  Still, should probably use the first
+  number, dist-mean, since the mean of the position differences is very similar
+  to the position variance--and dividing by 0.5 makes sense since the mean
+  position difference will always be < 0.5.
+
+--Switched to using renormalized-von-mises for preposition functions because the
+  kappa parameter makes it easy to adjust the relative steepness of the
+  function.
+
+--Have find-unary-score working.  Next need to write wrappers that run it over
+  all boxes for a path segment, then over all path segments.
+
+
 
 TO DO's
 -------
 
-**for towards and away-from, what is 'angle'?
+--wrappers for find-unary-score.
+
+--think about how to incorporate helper nouns
+
+--just hand-wave getting the data (nouns, prepositions, path segments) from
+  dataset--another piece of the software will do that
+
+--Do binary scores
+  --one score for same nouns, a different score for different nouns
+  --multiplier for preposition relationships between head and helper nouns.
+
 
 **NEED TO THINK ABOUT THIS MORE**
 --Thinking more about unary scores for helper nouns.  When talking with Dan, we
