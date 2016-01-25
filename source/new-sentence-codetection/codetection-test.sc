@@ -121,22 +121,34 @@
 (define (left-of robot-or-tube tube)
  (let* ((p1 (subvector robot-or-tube 0 2))
 	(p2 tube))
-  (exp (renormalized-von-mises (angle-between p1 p2) pi *von-mises-kappa*))))
+  (exp (renormalized-von-mises
+	(center-angle-at (angle-between p1 p2) 0)
+	pi
+	*von-mises-kappa*))))
 
 (define (right-of robot-or-tube tube)
  (let* ((p1 (subvector robot-or-tube 0 2))
 	(p2 tube))
-  (exp (renormalized-von-mises (angle-between p1 p2) 0 *von-mises-kappa*))))
+  (exp (renormalized-von-mises
+	(center-angle-at (angle-between p1 p2) 0)
+	0
+	*von-mises-kappa*))))
 
 (define (in-front-of robot-or-tube tube)
  (let* ((p1 (subvector robot-or-tube 0 2))
 	(p2 tube))
-  (exp (renormalized-von-mises (angle-between p1 p2) (- half-pi) *von-mises-kappa*))))
+  (exp (renormalized-von-mises
+	(center-angle-at (angle-between p1 p2) 0)
+	(- half-pi)
+	*von-mises-kappa*))))
 
 (define (behind robot-or-tube tube)
  (let* ((p1 (subvector robot-or-tube 0 2))
 	(p2 tube))
-  (exp (renormalized-von-mises (angle-between p1 p2) half-pi *von-mises-kappa*))))
+  (exp (renormalized-von-mises
+	(center-angle-at (angle-between p1 p2) 0)
+	half-pi
+	*von-mises-kappa*))))
 
 (define (between robot-or-tube tube2 tube3)
  (let* ((p1 (subvector robot-or-tube 0 2))
@@ -144,13 +156,16 @@
 	(p3 tube3))
   (exp (renormalized-von-mises
 	(center-angle-at (- (angle-between p1 p2) (angle-between p1 p3)) 0)
-	pi *von-mises-kappa*))))
+	pi
+	*von-mises-kappa*))))
 
 (define (towards robot tube)
  (let* ((p1 (subvector robot 0 2))
 	(angle (z robot))
 	(p2 tube))
-  (exp (renormalized-von-mises angle (angle-between p2 p1) *von-mises-kappa*))))
+  (exp (renormalized-von-mises (center-angle-at angle 0)
+			       (center-angle-at (angle-between p2 p1) 0)
+			       *von-mises-kappa*))))
 
 ;; this tells if a robot's heading is tangent to the line between
 ;; the point and the robot
@@ -160,18 +175,16 @@
  (let* ((p1 (subvector robot 0 2))
 	(angle (z robot))
 	(p2 point)
-	(c1 ;; (- 1  (/ (sqr (center-angle-at angle (+ (angle-between p2 p1) (/ pi 2))))
-	   ;;     ;; (sqr two-pi)
-	   ;; 	    (sqr pi)))
-	(exp (renormalized-von-mises angle
-				     (+ (angle-between p2 p1) half-pi)
-				     *von-mises-kappa*)))
-      (c2 ;; (- 1  (/ (sqr (center-angle-at angle (- (angle-between p2 p1) (/ pi 2))))
-	  ;; 	   ;; (sqr two-pi)
-	  ;; 	   (sqr pi)))
-	  (exp (renormalized-von-mises angle
-				       (- (angle-between p2 p1) half-pi)
-				       *von-mises-kappa*))))
+	(c1 (exp (renormalized-von-mises (center-angle-at angle 0)
+					 (center-angle-at (+ (angle-between p2 p1)
+							     half-pi)
+							   0)
+					 *von-mises-kappa*)))
+	(c2 (exp (renormalized-von-mises (center-angle-at angle 0)
+					 (center-angle-at (- (angle-between p2 p1)
+							     half-pi)
+							  0)
+					 *von-mises-kappa*))))
   (if (< c1 c2)
       c2
       c1)))
@@ -180,8 +193,8 @@
  (let* ((p1 (subvector robot 0 2))
 	(angle (z robot))
 	(p2 tube))
-  (exp (renormalized-von-mises angle
-			       (+ (angle-between  p2 p1) pi)
+  (exp (renormalized-von-mises (center-angle-at angle 0)
+			       (center-angle-at (+ (angle-between  p2 p1) pi)  0)
 			       *von-mises-kappa*))))
 
 ;; ?? what is this supposed to do??
@@ -4416,6 +4429,70 @@
 	     alignment)
 	alignment)))
 
+(define (get-noun-preposition-paths dir)
+ (let* ((path (read-object-from-file
+	       (format #f "~a/frame-poses.sc" dir)))
+	(alignment-file (read-object-from-file
+			 (format #f "~a/alignment.sc" dir))))
+  (map (lambda (a)
+	(if (> (length a) 3)
+	    (begin
+	     (join (list
+	      (list (first a)
+		    (second a)
+		    (sublist path
+			     (first (third a))
+			     (minimum (list (+ 1 (second (third a)))
+					    (length path)))))
+	      (map (lambda (b)
+		    (list (first b)
+			  (second b)
+			  (third b)))
+		   (sublist a 3 (length a))))))
+	    (list (first a)
+		  (second a)
+		  (sublist path
+			   (first (third a))
+			   (minimum (list (+ 1 (second (third a)))
+					  (length path)))))))
+       (third alignment-file))))
+
+;; ;;old working version--gives variable length lists
+;; (define (get-graphical-model-variables dir)
+;;  (let* ((np-paths (get-noun-preposition-paths dir)))
+;;   (map (lambda (p)
+;; 	(if (> (length p) 3)
+;; 	    (begin
+;; 	     (join
+;; 	      (list
+;; 	       (sublist p 0 3)
+;; 	       (map (lambda (q) q) (sublist p 3 (length p))))))
+;; 	    p))
+;;        np-paths)))
+
+(define (get-graphical-model-variables dir)
+ (let* ((np-paths (get-noun-preposition-paths dir))
+	(raw-list (map (lambda (p)
+			(if (> (length p) 3)
+			    (begin
+			     (join
+			      (list
+			       (sublist p 0 3)
+			       (map (lambda (q) q) (sublist p 3 (length p))))))
+			    p))
+		       np-paths)))
+  (join (map (lambda (l)
+	      (cond ((= (length l) 3)
+		     (list l))
+		    ((> (length l) 3)
+		     (append (list
+			      (sublist l 0 3))
+			     (sublist l 3 (length l))))
+		    (else (fuck-up))))
+	     raw-list))))
+
+			       
+
 (define (find-unary-score full-tube path-segment preposition-function)
  ;;full-tube is the format from find-low-variance-tubes:
  ;;  ((#(x y w h) #(xv yv wv hv)) dist-var video-name (list tubepixels))
@@ -4428,8 +4505,125 @@
  (if (null? path-segment)
      ;;this noun is a helper-noun, so only var-factor is the score
      var-factor
-     (list-mean (map (lambda (p) (preposition-function p tube-pos))
-		     path-segment)))))
+     (* var-factor (list-mean (map (lambda (p) (preposition-function p tube-pos))
+				   path-segment))))))
+
+(define (find-unary-scores-for-all-tubes all-tubes path-segment preposition-function)
+ (let* ((tubes (removeq #f all-tubes)))
+  (list->vector
+   (map (lambda (t) (find-unary-score t path-segment preposition-function)) tubes))))
+
+(define (find-unary-scores-for-one-run dir)
+ (let* ((all-tubes (find-low-variance-tubes dir))
+	(gm-var (get-graphical-model-variables dir)))
+  (list->vector
+   (map (lambda (v)
+	 (find-unary-scores-for-all-tubes all-tubes
+					  (third v)
+					  (eval (second v))))
+	gm-var))))
+
+(define (find-unary-score-matrix-for-floorplan dirlist)
+ (let* ((all-tubes
+	 (join (map (lambda (dir) (find-low-variance-tubes dir)) dirlist)))
+	(gm-vars
+	 (join (map (lambda (dir) (get-graphical-model-variables dir)) dirlist))))
+  (list->vector
+   (map (lambda (v)
+	 (find-unary-scores-for-all-tubes all-tubes
+					  (third v)
+					  (eval (second v))))
+	gm-vars))))
+
+(define (num-func num l)
+ (if (= (length l) 3)
+     (cons num l)
+     (cons num
+	   (append (sublist l 0 3)
+		   (let loop ((things (sublist l 3 (length l)))
+			      (n (+ 1 num)))
+		    (if (null? things)
+			'()
+			(let ((myvar (num-func n (first things))))
+			 (cons myvar
+			       (loop (rest things) (+ 1 (find-number myvar)))))))))))
+		
+(define (find-number l)
+ (if (= (length l) 4)
+     (first l)
+     (find-number (last l))))
+
+(define (number-nouns raw-alignment)
+ (let loop ((l raw-alignment)
+	    (num 0))
+  (if (null? l)
+      '()
+      (let* ((fun (num-func num (first l)))
+	     (thenum  (find-number fun)))
+       (cons fun
+	     (loop (rest l)
+		   (+ 1 thenum)))))))
+
+(define (make-helper-noun-list raw-alignment)
+ (let* ((numbered-alignment (number-nouns raw-alignment)))
+  (let loop ((lst numbered-alignment)
+	     (out '()))
+   (if (null? lst)
+       (join out)
+       (if (= (length (first lst)) 4)
+	   (loop (rest lst) out)
+	   (loop (rest lst)
+		 (cons (append
+			(let loop2 ((things
+				    (sublist (first lst) 4 (length (first lst))))
+				   (out2 '()))
+			(if (null? things)
+			    out2
+			    (loop2 (rest things)
+				   (cons (list (first (first lst))
+					       (third (first things))
+					       (first (first things)))
+					 out2))))
+			(loop (sublist (first lst) 4 (length (first lst))) '()))
+		       out)))))))
+
+	 
+
+
+
+(define (find-binary-score-matrices-for-floorplan dirlist)
+ ;;general idea here:
+ ;;  1)figure out helper-noun relationships from raw alignment
+ ;;  2)compute helper-noun binary scores using preposition functions
+ ;;  3)figure out which nouns are the same (string matching)
+ ;;  4)compute visual/location similarity for same nouns
+ ;;    a)visual similarity using PHOW/Chisq & HOG/L2 from Haonan
+ ;;    b)location similarity--multiplier to visual sim; will range
+ ;;      between 0.75 and 1; use sigmoid to give things that are nearby
+ ;;      a higher multiplier while things further apart get smaller mult;
+ ;;      floor of 0.75 on mult so as not to destroy scores for different
+ ;;      instances of same object; NEED TO DETERMINE SIG THRESH & SLOPE
+ ;;      (sig output * 0.25) + 0.75
+ ;;  5)take the two lists/vectors of noun-noun similarity-->if both nouns
+ ;;    the same, do element-by-element multiply of matrices
+ ;;  6)final output will be a single list of
+ ;;     #(idx1 idx2 #(ntubes by ntubes matrix of binary score))
+ ;;REMEMBER that score matrices only need to have upper-right triangular part
+
+ ;;binary scores for each pair of matched nouns is
+ ;;  #(noun1-idx noun2-idx #(numtubes by numtubes matrix))
+ (let* ((raw-alignment
+	 (join (map (lambda (dir)
+		     (third (read-object-from-file
+			     (format #f "~a/alignment.sc" dir))))
+		    dirlist)))
+	(all-tubes
+	 (join (map (lambda (dir) (find-low-variance-tubes dir)) dirlist)))
+	(gm-vars
+	 (join (map (lambda (dir) (get-graphical-model-variables dir)) dirlist)))
+;;	(helper-noun
+	)
+ #f))
 
 (define (render-b-tubes path subdir)
  (let* ((render-filter (second (find-abc-and-filter path subdir)))

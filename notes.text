@@ -5478,22 +5478,83 @@ TO DO's
 --Have find-unary-score working.  Next need to write wrappers that run it over
   all boxes for a path segment, then over all path segments.
 
+----------------git commit d4f8e14--------------
+
+25 Jan 16
+ 
+--Wrote find-unary-scores-for-all-tubes that finds the unary score for each tube
+  for a single path-segment/preposition-function pair.  Returns this as a
+  VECTOR, since that is probably what will be necessary to send data to C for
+  graphical model.
+
+--Adding 3rd element to alignment.sc files that groups together noun,
+  preposition, and path segment--this is what will be provided by other
+  software.  This has HIERARCHICAL structure.  For head nouns without helper
+  nouns, each element is a list of 3 elements: (noun prep frames).  For head
+  nouns WITH helper nouns, 4th and subsequent elements of the head noun's list
+  are 3-element lists: (helper-noun prep empty-list).
+
+--Wrote get-noun-preposition-paths which takes the new alignment.sc and keeps
+  the hierarchical structure while turning frame numbers into actual poses.
+
+--Wrote get-graphical-model-variables which flattens the structure of
+  get-noun-preposition-paths so that each element in the list is (noun
+  preposition path/null).
+
+--Wrote find-unary-scores-for-one-run which computes the unary scores for every
+  noun-preposition pair in a particular run/sentence.  Returns a vector of
+  vectors, where the first-level vectors are one per noun-prep pair, and within
+  each vector is the unary score for that noun-prep pair for each tube in that
+  run. 
+
+--Had to add a (center-angle-at x 0) for every renormalized-von-mises call in
+  the preposition functions b/c the von-mises function needs to have both angles
+  (v and mean) between -pi and pi.  Seems to work now.
+
+--Wrote find-unary-score-matrix-for-floorplan that finds all the unary scores
+  for a particular floorplan based on a list of input dirs that contain the
+  floorplan data.
+
+--Wrote functions for number-nouns and make-helper-noun-list to determine which
+  nouns have prepositional relationships and what those relationships are.  This
+  will be part of find-binary-score-matrices-for-floorplan, which will compute
+  all necessary binary scores for a given floorplan (defined as set of input
+  dirs with floorplan data.
+
+--Comments/ideas for find-binary-score-matrices...
+ ;;general idea here:
+ ;;  1)figure out helper-noun relationships from raw alignment
+ ;;  2)compute helper-noun binary scores using preposition functions
+ ;;  3)figure out which nouns are the same (string matching)
+ ;;  4)compute visual/location similarity for same nouns
+ ;;    a)visual similarity using PHOW/Chisq & HOG/L2 from Haonan
+ ;;    b)location similarity--multiplier to visual sim; will range
+ ;;      between 0.75 and 1; use sigmoid to give things that are nearby
+ ;;      a higher multiplier while things further apart get smaller mult;
+ ;;      floor of 0.75 on mult so as not to destroy scores for different
+ ;;      instances of same object; NEED TO DETERMINE SIG THRESH & SLOPE
+ ;;      (sig output * 0.25) + 0.75
+ ;;  5)take the two lists/vectors of noun-noun similarity-->if both nouns
+ ;;    the same, do element-by-element multiply of matrices
+ ;;  6)final output will be a single list of
+ ;;     #(idx1 idx2 #(ntubes by ntubes matrix of binary score))
+ ;;REMEMBER that score matrices only need to have upper-right triangular part
+
+ ;;binary scores for each pair of matched nouns is
+ ;;  #(noun1-idx noun2-idx #(numtubes by numtubes matrix))
+
+
 
 
 TO DO's
 -------
 
---wrappers for find-unary-score.
-
 --think about how to incorporate helper nouns
 
---just hand-wave getting the data (nouns, prepositions, path segments) from
-  dataset--another piece of the software will do that
-
 --Do binary scores
-  --one score for same nouns, a different score for different nouns
-  --multiplier for preposition relationships between head and helper nouns.
-
+  --one score for same nouns
+  --second score for prep. relationships between head and helper nouns
+  --if have both, multiply
 
 **NEED TO THINK ABOUT THIS MORE**
 --Thinking more about unary scores for helper nouns.  When talking with Dan, we
