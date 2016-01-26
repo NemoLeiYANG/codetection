@@ -4498,7 +4498,8 @@
  ;;  ((#(x y w h) #(xv yv wv hv)) dist-var video-name (list tubepixels))
  ;;path-segment is series of world path points to average over, or null if
  ;;  working with a helper-noun (chair which is to the left of the TABLE)
- (let* ((tube-pos (subvector (first (first full-tube)) 0 2))
+ (let* ((foo (dtrace "full-tube" full-tube))
+	(tube-pos (subvector (first (first full-tube)) 0 2))
 	(tube-var (x (second full-tube)))
 	(norm-var (/ tube-var *distance-thresh*))
 	(var-factor (- 1 norm-var)))
@@ -4587,9 +4588,38 @@
 			(loop (sublist (first lst) 4 (length (first lst))) '()))
 		       out)))))))
 
-	 
+(define (find-noun-to-helper-noun-binary-score tube1 tube2 preposition-function)
+ ;;similar to find-unary-score
+ ;;this ONLY works with in-front-of, behind, left-of, right-of
+ ;;WILL NOT WORK with towards, away-from (makes sense--nouns are stationary)
+ (let* ((tube1-pos (subvector (first (first tube1)) 0 2))
+	(tube2-pos (subvector (first (first tube2)) 0 2))
+	(tube1-var (x (second tube1)))
+	(tube2-var (x (second tube2)))
+	(tube1-norm-var (/ tube1-var *distance-thresh*))
+	(tube2-norm-var (/ tube2-var *distance-thresh*))
+	(var-factor1 (- 1 tube1-norm-var))
+	(var-factor2 (- 1 tube2-norm-var)))
+  (* (preposition-function tube1-pos tube2-pos)
+     var-factor1
+     var-factor2)))
 
-
+(define (find-noun-noun-binary-score-matrix all-tubes helper-noun-line)
+ ;;helper-noun-line is a single element from helper-noun-list (idx1 prep idx2)
+ ;;this returns #(idx1 idx2 #(numtubes by numtubes matrix))
+ (let* ((tubes (removeq #f all-tubes))
+	(idx1 (first helper-noun-line))
+	(idx2 (third helper-noun-line))
+	(prep-func (eval (second helper-noun-line)))
+	(scoremat
+	 (list->vector
+	  (map (lambda (t1)
+		(list->vector
+		 (map (lambda (t2)
+		       (find-noun-to-helper-noun-binary-score t1 t2 prep-func))
+		      tubes)))
+	       tubes))))
+  (vector idx1 idx2 scoremat)))
 
 (define (find-binary-score-matrices-for-floorplan dirlist)
  ;;general idea here:
@@ -4621,7 +4651,7 @@
 	 (join (map (lambda (dir) (find-low-variance-tubes dir)) dirlist)))
 	(gm-vars
 	 (join (map (lambda (dir) (get-graphical-model-variables dir)) dirlist)))
-;;	(helper-noun
+	(helper-noun-list (make-helper-noun-list raw-alignment))
 	)
  #f))
 
