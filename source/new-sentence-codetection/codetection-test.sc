@@ -4498,7 +4498,7 @@
  ;;  ((#(x y w h) #(xv yv wv hv)) dist-var video-name (list tubepixels))
  ;;path-segment is series of world path points to average over, or null if
  ;;  working with a helper-noun (chair which is to the left of the TABLE)
- (let* ((foo (dtrace "full-tube" full-tube))
+ (let* (;;(foo (dtrace "full-tube" full-tube))
 	(tube-pos (subvector (first (first full-tube)) 0 2))
 	(tube-var (x (second full-tube)))
 	(norm-var (/ tube-var *distance-thresh*))
@@ -4592,17 +4592,19 @@
  ;;similar to find-unary-score
  ;;this ONLY works with in-front-of, behind, left-of, right-of
  ;;WILL NOT WORK with towards, away-from (makes sense--nouns are stationary)
- (let* ((tube1-pos (subvector (first (first tube1)) 0 2))
-	(tube2-pos (subvector (first (first tube2)) 0 2))
-	(tube1-var (x (second tube1)))
-	(tube2-var (x (second tube2)))
-	(tube1-norm-var (/ tube1-var *distance-thresh*))
-	(tube2-norm-var (/ tube2-var *distance-thresh*))
-	(var-factor1 (- 1 tube1-norm-var))
-	(var-factor2 (- 1 tube2-norm-var)))
-  (* (preposition-function tube1-pos tube2-pos)
-     var-factor1
-     var-factor2)))
+ (if (equal? tube1 tube2)
+     0 ;;same tube can't represent 2 different nouns
+     (let* ((tube1-pos (subvector (first (first tube1)) 0 2))
+	    (tube2-pos (subvector (first (first tube2)) 0 2))
+	    (tube1-var (x (second tube1)))
+	    (tube2-var (x (second tube2)))
+	    (tube1-norm-var (/ tube1-var *distance-thresh*))
+	    (tube2-norm-var (/ tube2-var *distance-thresh*))
+	    (var-factor1 (- 1 tube1-norm-var))
+	    (var-factor2 (- 1 tube2-norm-var)))
+      (* (preposition-function tube1-pos tube2-pos)
+	 var-factor1
+	 var-factor2))))
 
 (define (find-noun-noun-binary-score-matrix all-tubes helper-noun-line)
  ;;helper-noun-line is a single element from helper-noun-list (idx1 prep idx2)
@@ -4621,6 +4623,61 @@
 	       tubes))))
   (vector idx1 idx2 scoremat)))
 
+(define (find-index-in-list noun noun-list)
+ (if (list? (member noun noun-list))
+     (- (length noun-list)
+	(length (member noun noun-list)))
+     #f))
+
+(define (find-all-instances noun full-noun-list)
+ (let* ((num-nouns (length full-noun-list))
+	(first-noun-ind (find-index-in-list noun full-noun-list)))
+  (let loop((remaining (sublist full-noun-list (+ 1 first-noun-ind) num-nouns))
+	    (out (list first-noun-ind noun)))
+   (let ((findval (find-index-in-list noun remaining)))
+    (if (not findval)
+	out
+	(loop (sublist remaining (+ 1 findval) (length remaining))
+	      (cons (+ 1 findval (first out)) out)))))))
+
+(define (find-same-nouns gm-vars)
+ (let* ((noun-list (map first gm-vars)))
+  (map (lambda (n) (find-all-instances n noun-list))
+       (remove-duplicates noun-list))))
+
+(define (make-list-of-matching-nouns same-nouns-list)
+ ;;output is #(noun noun-ind1 noun-ind2)
+ (join (map (lambda (l)
+	     (map (lambda (p)
+		   (list->vector (cons (last l) p)))
+		  (all-pairs (but-last l))))
+	     same-nouns-list)))
+
+(define *sigmoid-center* 0.25)
+(define *sigmoid-slope* -20)
+(define *sig-weight* 0.25) ;;range (0,1), establishes floor for location-sim
+;;above are for sigmoid of distance in find-binary-score-between-tubes
+
+(define (find-binary-score-between-tubes tube1 tube2)
+ ;;  4)compute visual/location similarity for same nouns
+ ;;    a)visual similarity using PHOW/Chisq & HOG/L2 from Haonan
+ ;;    b)location similarity--multiplier to visual sim; will range
+ ;;      between 0.75 and 1; use sigmoid to give things that are nearby
+ ;;      a higher multiplier while things further apart get smaller mult;
+ ;;      floor of 0.75 on mult so as not to destroy scores for different
+ ;;      instances of same object; sig threshold & slope defined above
+ ;;      (sig output * 0.25) + 0.75
+ (let* ((tube1-pos (subvector (first (first tube1)) 0 2))
+	(tube2-pos (subvector (first (first tube2)) 0 2))
+	(tube-dist (distance tube1-pos tube2-pos))
+	(location-sim
+	 (+ (- 1 *sig-weight*)
+	    (* *sig-weight*
+	       (sigmoid tube-dist *sigmoid-center* *sigmoid-slope*))))
+
+ #f)
+
+
 (define (find-binary-score-matrices-for-floorplan dirlist)
  ;;general idea here:
  ;;  1)figure out helper-noun relationships from raw alignment
@@ -4632,13 +4689,14 @@
  ;;      between 0.75 and 1; use sigmoid to give things that are nearby
  ;;      a higher multiplier while things further apart get smaller mult;
  ;;      floor of 0.75 on mult so as not to destroy scores for different
- ;;      instances of same object; NEED TO DETERMINE SIG THRESH & SLOPE
+ ;;      instances of same object; sig threshold & slope defined above
  ;;      (sig output * 0.25) + 0.75
  ;;  5)take the two lists/vectors of noun-noun similarity-->if both nouns
  ;;    the same, do element-by-element multiply of matrices
  ;;  6)final output will be a single list of
  ;;     #(idx1 idx2 #(ntubes by ntubes matrix of binary score))
  ;;REMEMBER that score matrices only need to have upper-right triangular part
+ ;;***IS THIS TRUE???***
 
  ;;binary scores for each pair of matched nouns is
  ;;  #(noun1-idx noun2-idx #(numtubes by numtubes matrix))
@@ -4652,6 +4710,11 @@
 	(gm-vars
 	 (join (map (lambda (dir) (get-graphical-model-variables dir)) dirlist)))
 	(helper-noun-list (make-helper-noun-list raw-alignment))
+	(helper-noun-binary-scores-list
+	 (map (lambda (l) (find-noun-noun-binary-score-matrix all-tubes l))
+	      helper-noun-list))
+	(same-noun-list (find-same-nouns gm-vars))
+	(noun-pairs-list (make-list-of-matching-nouns same-noun-list))
 	)
  #f))
 

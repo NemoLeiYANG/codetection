@@ -5556,11 +5556,43 @@ TO DO's
   matrix is NOT symmetric, which makes sense because (1 in-front-of 2) is
   DIFFERENT from (2 in-front-of 1).
 
+----------------git commit 910959e--------------
+
+26 Jan 16
+
+--Thinking about noun-noun binary score matrix-->would it make sense to zero out
+  the diagonal here?  Since noun-noun relationships (chair which is left of the
+  table) always involve two separate nouns, it would be impossible for two nouns
+  related by a prepositional relationship to be the same object (tube).
+
+--Implemented the above in find-noun-to-helper-noun-binary-score by doing an
+  equal? on the two tubes and returning 0 if it is true.
+
+--Wrote find-index-in-list, find-all-instances, find-same-nouns, and
+  make-list-of-matching-nouns to return vectors of #(noun n1-ind n2-ind)
+  [indices in the gm-vars list] for gm-variables that are of the same noun and
+  thus need to have similarity computed between them.
+
+--Starting on find-binary-score-between-tubes which will compute both the
+  location and visual similarity.  First finding the location similarity.
+
+--Have location similarity part of find-binary-score-between-tubes done.
+
+--Need to think more about how to do visual similarity.  Might need to do some
+  sort of preprocessing to tubes to align boxes with actual image frames--could
+  take only frames that correspond to actual boxes, then shorten the box list
+  with removeq #f and add frames to tube structure
+**What is the most efficient way to do this?  Does it matter if I open up a
+  video a bunch of times?
+
 
 TO DO's
 -------
 
---think about how to incorporate helper nouns
+**For location similarity, do we want to take into account variance on tube
+  locations?  Something like, if the distance between tubes is less than the
+  variance (which variance? both? a mean?), we think it is a better match than
+  when the distance is greater.
 
 --Do binary scores
   --one score for same nouns
