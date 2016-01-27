@@ -536,18 +536,20 @@
 	(dtrace "saved image" n)
 	(loop (rest images) (rest boxes) (+ n 1)))))))
 
-(define (video->frames downsample video-path)
- (let ((ffmpeg-video (ffmpeg-open-video video-path)))
-  (let loop ((frames '())
-	     (start #t)
-	     (i 0))
-   (if (or start (ffmpeg-next-frame! ffmpeg-video))
-       (if (zero? (modulo i downsample))
-	   (loop (cons (ffmpeg-video-frame-data-as-imlib ffmpeg-video) frames) #f (+ i 1))
-	   (loop frames #f (+ i 1)))
-       (begin
-	(ffmpeg-close-video ffmpeg-video)
-	(reverse frames))))))
+
+;;COMPILED INTO DSCI
+;; (define (video->frames downsample video-path)
+;;  (let ((ffmpeg-video (ffmpeg-open-video video-path)))
+;;   (let loop ((frames '())
+;; 	     (start #t)
+;; 	     (i 0))
+;;    (if (or start (ffmpeg-next-frame! ffmpeg-video))
+;;        (if (zero? (modulo i downsample))
+;; 	   (loop (cons (ffmpeg-video-frame-data-as-imlib ffmpeg-video) frames) #f (+ i 1))
+;; 	   (loop frames #f (+ i 1)))
+;;        (begin
+;; 	(ffmpeg-close-video ffmpeg-video)
+;; 	(reverse frames))))))
 
 
 (define (world->pixel world-xy width height minx maxx miny maxy)

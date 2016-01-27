@@ -3586,6 +3586,27 @@
     (imlib:free-image-and-decache frame))    
    frames)))
 
+(define (frames->matlab-no-free! frames matlab-name)
+ (let* ((num-frames (length frames))
+	(one-frame (first frames))
+	(height (imlib:height one-frame))
+	(width (imlib:width one-frame)))
+  (start-matlab!)
+  (matlab (format #f "clear ~a" matlab-name))
+  (matlab (format #f "~a = zeros(~a,~a,~a,~a,'uint8');"
+		  matlab-name height width 3 num-frames))
+  (for-each-indexed
+   (lambda (frame i)
+    (with-temporary-file
+     "/tmp/imlib-frame.ppm"
+     (lambda (tmp-frame)
+      ;; write scheme frame to file
+      (imlib:save-image frame tmp-frame)
+      ;; read file as matlab frame
+      (matlab (format #f "frame=imread('~a');" tmp-frame))
+      (matlab (format #f "~a(:,:,:,~a)=uint8(frame);" matlab-name (+ i 1))))))    
+   frames)))
+
 (define (get-medianflow-tube-from-starting-frame-and-proposal-box video-pathname
 								  starting-frame
 								  box)
@@ -4674,8 +4695,71 @@
 	 (+ (- 1 *sig-weight*)
 	    (* *sig-weight*
 	       (sigmoid tube-dist *sigmoid-center* *sigmoid-slope*))))
+	)
 
- #f)
+ #f))
+
+
+;; ;;;This eats a LOT of memory--might want to try something else
+;; (define (preprocess-all-tubes all-tubes)
+;;  (let* ((tubes (removeq #f all-tubes))
+;; 	(videos-list
+;; 	 (remove-duplicates (map third tubes)))
+;; 	(video-frames
+;; 	 (map (lambda (v) (video->frames 1 v))
+;; 	      videos-list))
+;; 	(tubes-with-frames
+;; 	 (map (lambda (t)
+;; 	       (let* ((boxes-only
+;; 		       (removeq #f (fourth t)))
+;; 		      (video-idx
+;; 		       (find-index-in-list (third t) videos-list))
+;; 		      (frames
+;; 		       (map (lambda (b f) (if b f #f))
+;; 			    (fourth t)
+;; 			    (list-ref video-frames video-idx))))
+;; 		(append t (list boxes-only) (list (removeq #f frames)))))
+;; 	      tubes)))
+;;   tubes-with-frames))
+
+(define (get-phow-hists-all-tubes all-tubes)
+ (let* ((tubes (removeq #f all-tubes))
+	(videos-list
+	 (remove-duplicates (map third tubes)))
+	(video-frames
+	 (map (lambda (v) (video->frames 1 v))
+	      videos-list)))
+  (start-matlab!)
+  ;;matlab setup stuff
+  (matlab "addpath(genpath('piotr-toolbox'));")
+  (matlab "addpath(genpath('vlfeat/toolbox'));")
+  (matlab "run('vlfeat/toolbox/vl_setup');")
+  ;;put all video-frames into matlab
+  (for-each-indexed (lambda (fl i)
+		     (frames->matlab! fl (format #f "video_~a" i)))
+		    video-frames)
+  ;;map over all non-#f tubes
+  (let ((new-tubes
+	 (map (lambda (t)
+	       (let* ((frame-numbers
+		       (removeq
+			#f
+			(map-indexed (lambda (b i) (if b i)) (fourth t))))
+		      (boxes (removeq #f (fourth t)))
+		      (video-idx (find-index-in-list (third t) videos-list)))
+		(matlab (format #f "vid = video_~a;" video-idx))
+		(scheme->matlab! "framenums" frame-numbers)
+		(scheme->matlab! "boxes" boxes)
+		;;call matlab compute phow hist function with video name,
+		;;frame numbers, box pixels
+		(matlab "hists_out = compute_phow_hist(vid,framenums,boxes);")
+;;		(matlab "hists_out = boxes;")
+		;;get hists back to scheme and append to tube
+		(append t (list frame-numbers)
+			(list (matlab-get-variable "hists_out")))))
+	      tubes)))
+   (matlab "clear all") ;;clean up matlab memory
+   new-tubes)))
 
 
 (define (find-binary-score-matrices-for-floorplan dirlist)
@@ -4699,7 +4783,7 @@
  ;;***IS THIS TRUE???***
 
  ;;binary scores for each pair of matched nouns is
- ;;  #(noun1-idx noun2-idx #(numtubes by numtubes matrix))
+ ;;  #(noun1-idx noun2-idx #(numtubes by numtubes matrix) noun-string-when-nouns-match)
  (let* ((raw-alignment
 	 (join (map (lambda (dir)
 		     (third (read-object-from-file
@@ -4715,8 +4799,25 @@
 	      helper-noun-list))
 	(same-noun-list (find-same-nouns gm-vars))
 	(noun-pairs-list (make-list-of-matching-nouns same-noun-list))
+	(tubes-with-phow (get-phow-hists-all-tubes all-tubes))
+	(tube-tube-binary-score-matrix
+	 (list->vector
+	  (map (lambda (t1)
+		(list->vector
+		 (map (lambda (t2)
+		       (find-binary-score-between-tubes t1 t2))
+		      tubes-with-phow)))
+	       tubes-with-phow)))
+		
 	)
- #f))
+  #f
+  ;;not quite right--still need to take into account binary scores from helper
+  ;;nouns-->maybe this function just finds the basic tube-tube matrix and then
+  ;;another function maps over the noun-helper-noun and matching-noun lists.
+  ;; (map (lambda (l)
+  ;; 	(vector (z l) (y l) tube-tube-binary-score-matrix (x l)))
+  ;;      noun-pairs-list)
+  ))
 
 (define (render-b-tubes path subdir)
  (let* ((render-filter (second (find-abc-and-filter path subdir)))

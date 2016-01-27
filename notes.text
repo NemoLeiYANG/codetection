@@ -5585,9 +5585,73 @@ TO DO's
 **What is the most efficient way to do this?  Does it matter if I open up a
   video a bunch of times?
 
+----------------git commit deba47d--------------
+
+27 Jan 16
+
+--Email status update to Jeff:
+  > Still working on implementing the visual similarity measure, first
+  > with PHOW in matlab, then HOG in C.
+  >
+  > Talked with Haonan a while yesterday evening on how his code works so
+  > that I pretty much understand the differences between what he does and
+  > what I'm trying to do.
+  >
+  > Right now I'm working on preprocessing the tubes so that actual frame
+  > images are aligned with the boxes in those frames.
+  > Then I will pass all the tubes into matlab and compute the PHOW
+  > histograms for each frame one time, since that is the step that takes
+  > the longest.
+  > Once I have the histograms, I will compute the tube-to-tube similarity
+  > matrix and pass it back to scheme.
+  >    For tube-to-tube similarity, I will need to do some sort of
+  > alignment between tubes of different lengths.
+  >    What I'm thinking of doing is using the length of the shorter tube
+  > to evenly down sample the longer tube.
+  >    However, I'm not sure that just taking these tubes and comparing
+  > the images in their natural temporal order will produce the most
+  > meaningful similarity scores.
+  >    For example if in one tube the robot is driving towards an object
+  > while in another tube it is backing away from the same object, the
+  > similarity scores between the frames in their temporal order will not
+  > be good.
+  >     I'm thinking about doing something to account for this, probably
+  > either computing the similarity between the tubes aligned in both the
+  > same and opposite temporal orders and taking the better of the two
+  > (simple solution), or computing the similarity scores for the tubes
+  > over all possible frame-to-frame permutations and taking the best
+  > (more complicated).
+
+--Based on email response from Jeff, going to do the simplest visual similarity
+  I can just to get the GM to a working state.  This simple similarity will be
+  based just on PHOW in matlab (no C/C++ for HOG), and will only look at 2
+  average similarities (same and reversed temporal alignment) to find the best
+  and use that score.
+
+--Wrote preprocess-all-tubes to add list of imlib pointers to actual frames onto
+  the tube structure.  However, this seems to eat up a ton of memory just in
+  scheme, and will eat more if I pass each into matlab.  Going to try a
+  different way--putting whole videos into matlab, then sending in from scheme
+  the frame numbers along with the pixel coordinates, then return to scheme a
+  list/matrix of the phow histograms.
+
+--Wrote get-phow-hists-all-tubes and compute_phow_hist.m to compute phow
+  histograms for each image in a tube and return that list of histograms to
+  scheme.  Next need to write a function to compute mean chi-sq distance for two
+  tubes after they have been downsampled to match length.
+
 
 TO DO's
 -------
+
+***Think about how to compute PHOW & HOG descriptors and store them with tubes.
+***Can I pass all frames/tubes into MATLAB at one time, then compute PHOW
+   histograms once (in parallel), then compute tube-tube similarity matrix
+***For tube-tube similarity, how should I align different-length tubes?
+   Thinking about using length of shorter tube to evenly downsample
+   (evenly-pick-m in scheme-->would need to find and reimplement in matlab) the
+   longer tube.  Then how should I align image to image?  Perhaps compute the
+   average similarity score for all possible permutations, then select the best?
 
 **For location similarity, do we want to take into account variance on tube
   locations?  Something like, if the distance between tubes is less than the
@@ -5607,6 +5671,54 @@ TO DO's
 
 
 **THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
+
+;;scheme setup
+(load "codetection-test.sc")
+(define *testdirs* (system-output (format #f "ls -d /net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))
+
+(define *gm-vars*
+	 (join (map (lambda (dir) (get-graphical-model-variables dir)) *testdirs*)))
+
+(define *snl* (find-same-nouns *gm-vars*))
+
+(define *noun-list* (map first *gm-vars*))
+
+(define *all-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) 
+
+(define *few-tubes* (sublist (removeq #f *all-tubes*) 0 5))
+
+(define *ra* (join (map (lambda (d) (third (read-object-from-file (format #f "~a/alignment.sc" d)))) *testdirs*)))
+
+(define *hnl* (make-helper-noun-list *ra*))
+
+(define *tube1* (first *few-tubes*))
+
+(define *tube2* (second *few-tubes*))
+
+(define *pos1* (subvector (first (first *tube1*)) 0 2))
+
+(define *pos2* (subvector (first (first *tube2*)) 0 2))
+(define *nnbs* (find-noun-noun-binary-score-matrix *all-tubes* (first *hnl*)))
+(define *hnbs-list* (map (lambda (l) (find-noun-noun-binary-score-matrix *few-tubes* l)) *hnl*))
+(define *videos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))
+(define *video-frames*  (map (lambda (v) (video->frames 1 v)) *videos-list*))
+
+
+;;probably don't need the below
+(define *tubes-with-frames*
+	 (map (lambda (t)
+	       (let* ((boxes-only
+		      (removeq #f (fourth t)))
+		     (video-idx
+		      (find-index-in-list (third t) *videos-list*))
+		     (frames
+		      (map (lambda (b f) (if b f))
+			   (fourth t)
+			   (list-ref *video-frames* video-idx))))
+		(append t (list boxes-only) (list (removeq #f frames))))) *few-tubes*))
+
+;;THIS TAKE A LOT OF MEMORY!
+(define *preprocessed-tubes* (preprocess-all-tubes *all-tubes*))
 
 
 **TASKS from Jeff email 4 Jan 16
@@ -5646,6 +5758,7 @@ TO DO's
      i. unary score for vertex based on how well the world position and robot
         position/velocity satisfy head preposition in sentence segment
         (by EOD t5jan2016)
+     DONE
      j. start running graphical model
         (t5jan2016 night)
 
