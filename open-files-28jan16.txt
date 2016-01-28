@@ -1,0 +1,52 @@
+.   notes.text          303481  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+    codetection-test.s: 206923  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+  * *shell*             356456  Shell:run	  ~/codetection/
+  * *shell*<4>          175218  Shell:run	  ~/darpa-collaboration/ideas/
+    toollib-codetection: 19140  Scheme		  ~/codetection/source/new-sentence-codetection/toollib-codetection.sc
+    inference.cpp|new-s: 41719  C++/l		  ~/codetection/source/new-sentence-codetection/inference.cpp
+    makefile             15227  GNUmakefile	  ~/darpa-collaboration/ideas/makefile
+  * *shell*<3>          131186  Shell:run	  /aux/sbroniko/vader-rover/logs/house-test-12nov15/
+    inference.cpp|yu239-: 4360  C++/l		  ~/codetection/from-haonan/yu239-darpa-collaboration-sentence-codetection/inference.cpp
+  * *shell*<2>          115675  Shell:run	  ~/codetection/from-haonan/yu239-darpa-collaboration-sentence-codetection/
+  * *scheme*           1415072  Inferior Scheme:
+    scheme-working-b: 10083173  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/scheme-working-buffer-27jan16.txt
+  * *scratch*             5872  Lisp Interaction
+    codetectionlib-sc.sc: 8288  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/from-haonan/yu239-darpa-collaboration-sentence-codetection/codetectionlib-sc.sc
+    rendering-code.sc    71910  Scheme		  ~/codetection/rendering-code.sc
+    codetectionlib-sc.sc: 8049  Scheme		  ~/darpa-collaboration/sentence-codetection/codetectionlib-sc.sc
+    codetection.sc|yu23: 27374  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/from-haonan/yu239-darpa-collaboration-sentence-codetection/codetection.sc
+    labeling.sc          13692  Scheme		  ~/codetection/source/new-sentence-codetection/labeling.sc
+    QobiScheme-AD.sc    295402  Scheme		  ~/QobiScheme/source/QobiScheme-AD.sc
+    sentence-to-trace-f: 43483  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/from-dan/dpbarret-darpa-collaboration-rover/sentence-to-trace-from-learned-models.sc
+ %  sentence-to-trace-f: 58439  Scheme		  /home/dpbarret/dsci-on-latop/sentence-to-trace-from-learned-models3.sc
+ %  sentence-to-trace-f: 43338  Scheme		  /home/dpbarret/dsci-on-latop/sentence-to-trace-from-learned-models.sc
+    sentence-to-trace-f: 45469  Scheme		  ~/darpa-collaboration/documentation/acl2015/code/sentence-to-trace-from-learned-models.sc
+ %  toollib-feature-bas: 28048  Scheme		  /home/dpbarret/darpa-collaboration/rover/toollib-feature-based-trace-generator.sc
+ %  toollib-trace-gener: 20075  Scheme		  /home/dpbarret/darpa-collaboration/rover/toollib-trace-generator.sc
+    toollib-feature-bas: 28048  Scheme		  ~/darpa-collaboration/rover/toollib-feature-based-trace-generator.sc
+    toollib-analysis-ol: 15442  Scheme		  ~/darpa-collaboration/rover/toollib-analysis-old.sc
+    toollib-analysis.sc  19051  Scheme		  ~/darpa-collaboration/rover/toollib-analysis.sc
+    .bashrc               5618  Shell-script[bas  ~/.bashrc
+ %  *Process List*         345  Help
+    codetection.sc|sent: 26523  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/sentence-codetection/codetection.sc
+    codetectionlib-cpp.: 53461  C++/l		  ~/codetection/from-haonan/codetectionlib-cpp.cpp
+    codetectionlib-cpp.hp: 983  C++/l		  /amd/upplysingaoflun/root/aux/home/sbroniko/darpa-collaboration/sentence-codetection/codetectionlib-cpp.hpp
+    toollib-image-proc: 125685  Scheme		  ~/darpa-collaboration/ideas/toollib-image-processing.sc
+    driver-gui.sc        11504  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/vader-rover/driver-gui.sc
+    idealib-stuff.sc    215317  Scheme		  ~/darpa-collaboration/ideas/idealib-stuff.sc
+    rover-projection.sc  16197  Scheme		  ~/codetection/source/rover-projection.sc
+    toollib-misc.sc|ide: 44479  Scheme		  ~/darpa-collaboration/ideas/toollib-misc.sc
+ %  toollib-perspective: 19422  Scheme		  /home/dpbarret/imitate/tool/toollib-perspective-projection.sc
+ %  felz-baum-welch-plot: 9947  Scheme		  /home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-plotting.sc
+    viterbi.sc            4365  Scheme		  ~/codetection/source/new-sentence-codetection/viterbi.sc
+    toollib-multi-proce: 11819  Scheme		  ~/darpa-collaboration/ideas/toollib-multi-process.sc
+    viterbi-new.sc        5949  Scheme		  ~/codetection/source/new-sentence-codetection/viterbi-new.sc
+    junk.sc               1152  Scheme		  ~/codetection/source/new-sentence-codetection/junk.sc
+    learning.sc          66413  Scheme		  ~/codetection/source/new-sentence-codetection/learning.sc
+    toollib-misc.sc|to: 113601  Scheme		  ~/imitate/tool/toollib-misc.sc
+    toollib-perspective: 13873  Scheme		  ~/imitate/tool/toollib-perspective-projection.sc
+    toollib-robot.sc     83430  Scheme		  ~/imitate/tool/toollib-robot.sc
+    toollib-nlopt.sc     10510  Scheme		  ~/imitate/tool/toollib-nlopt.sc
+    toollib-matlab.sc    12100  Scheme		  ~/darpa-collaboration/ideas/toollib-matlab.sc
+  * *Messages*            3691  Fundamental
+ %  *Ediff Registry*       482  MetaEdiff

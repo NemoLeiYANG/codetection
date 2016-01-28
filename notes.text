@@ -5657,6 +5657,89 @@ TO DO's
   to matlab?  Matrix is symmetric, so don't need to compute all of it, just
   upper triangular part.
 
+----------------git commit 75e73d2--------------
+
+28 Jan 16
+
+--Thinking about doing ALL phow-related stuff in MATLAB, so that Scheme will
+  pass in the list of frames/boxes for each tube, then MATLAB will pass back
+  the completed tube-tube matrix.
+
+--Wrote all-tubes->phow-visual-similarity-matrix that takes the raw tubes and
+  returns the visual similarity matrix between all valid tubes.  Appears to
+  work-->~1 min for 5 tubes, but too slow with all tubes.  Will rework matlab
+  file (compute_phow_sim_matrix.m) to better use parallelism.
+
+--Rewrote compute_phow_sim_matrix to properly slice sim_mat in a parfor; also
+  does not compute extra numbers, just copies them over at the end.  Hoping it
+  will work faster than old way.  New method running on jalitusteabe and chino.
+
+--Wrote elementwise-multiply-matrices to do the same operation as .* in
+  matlab--using this to combine the location similarity with the visual
+  similarity. 
+
+--Looking at chino, it doesn't appear to be doing computation of phow_sim in
+  parallel--WTF?? Trying on buddhi and faisneis to see what they do--also
+  changed those two to use local disk access for videos instead of through
+  /net/seykhl.  Jalitusteabe took ~45 min to load all 7 videos and then another
+  ~25 min to compute histograms, but appears to be computing phow_sim in
+  parallel.  Buddhi appears to be using 2+ cores, but faisneis looks like it's
+  doing the same thing as chino.
+
+--UPDATE: job on chino finished ~2h after all histograms were computed--full
+  output: 
+  > (define *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))
+  /usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
+  starting frames->matlab! load
+  Thu Jan 28 14:19:40 EST 2016
+  7 videos loaded into matlab
+  Thu Jan 28 14:32:11 EST 2016
+  starting histogram computation
+  Thu Jan 28 14:32:11 EST 2016
+  histograms computed for 1022 tubes
+  Thu Jan 28 14:43:59 EST 2016
+  phow similarity matrix computed
+  Thu Jan 28 16:30:54 EST 2016
+  *ALL-SIM*
+  > (vector-length *all-sim*)
+  1022
+  > (vector-length (x *all-sim*))
+  1022
+
+--Job on faisneis also completed in ~2h
+  > (define *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))
+  /usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
+  starting frames->matlab! load
+  Thu Jan 28 15:33:29 EST 2016
+  7 videos loaded into matlab
+  Thu Jan 28 15:46:39 EST 2016
+  starting histogram computation
+  Thu Jan 28 15:46:39 EST 2016
+  histograms computed for 1022 tubes
+  Thu Jan 28 15:58:07 EST 2016
+  phow similarity matrix computed
+  Thu Jan 28 17:34:47 EST 2016
+  *ALL-SIM*
+  > (vector-ref (vector-ref *all-sim* 1021) 1020)
+  0.1767607033252716
+
+--Have find-binary-score-DATA-for-floorplan done through the basic binary
+  score matrix that go between matching nouns.  Going to have this function
+  produce the different pieces of data that are needed for binary scores.  Then
+  will multiply elements as necessary in C++.
+
+--Wrote find-graphical-model-data-for-floorplan.  This produces a list that is
+  (#(unary-score-matrix) ;;num-vars rows, num-tubes columns
+    ((helper-noun-bsl) ;;each entry is #(noun1 noun2 #(num-tubes-by-numtubes scoremat))
+     (noun-pairs-list) ;;each entry is #("noun" noun1 noun2)
+     #(base-binary-scores-matrix))) #(num-tubes-by-num-tubes scoremat)
+
+--NEED TO DO inference interface in C++.  Look for bp-sentences-inference in
+  Haonan's code.  Look at his calls in codetecion.sc, inference.cpp/h/hpp; my
+  calls in inference.cpp/h (need hpp?), defines in toollib-codetection.sc (which
+  compiles into dsci)
+
+
 TO DO's
 -------
 
@@ -5690,6 +5773,9 @@ TO DO's
 
 ;;scheme setup
 (load "codetection-test.sc")
+
+;;one or the other
+(define *testdirs* (system-output (format #f "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))
 (define *testdirs* (system-output (format #f "ls -d /net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))
 
 (define *gm-vars*

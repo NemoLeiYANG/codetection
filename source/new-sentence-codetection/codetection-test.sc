@@ -4573,7 +4573,6 @@
 					  (third v)
 					  (eval (second v))))
 	gm-vars))))
-
 (define (num-func num l)
  (if (= (length l) 3)
      (cons num l)
@@ -4696,6 +4695,32 @@
 (define *sig-weight* 0.25) ;;range (0,1), establishes floor for location-sim
 ;;above are for sigmoid of distance in find-binary-score-between-tubes
 
+(define (find-location-similarity-between-tubes tube1 tube2)
+ ;; This does (b) below
+ ;;  4)compute visual/location similarity for same nouns
+ ;;    a)visual similarity using PHOW/Chisq & HOG/L2 from Haonan
+ ;;    b)location similarity--multiplier to visual sim; will range
+ ;;      between 0.75 and 1; use sigmoid to give things that are nearby
+ ;;      a higher multiplier while things further apart get smaller mult;
+ ;;      floor of 0.75 on mult so as not to destroy scores for different
+ ;;      instances of same object; sig threshold & slope defined above
+ ;;      (sig output * 0.25) + 0.75
+ (let* ((tube1-pos (subvector (first (first tube1)) 0 2))
+	(tube2-pos (subvector (first (first tube2)) 0 2))
+	(tube-dist (distance tube1-pos tube2-pos))
+	(location-sim
+	 (+ (- 1 *sig-weight*)
+	    (* *sig-weight*
+	       (sigmoid tube-dist *sigmoid-center* *sigmoid-slope*)))))
+  location-sim))
+
+(define (elementwise-multiply-matrices m1 m2)
+ ;;**NOTE** m1 and m2 MUST be the same size and vectors-of-vectors
+ (map-vector (lambda (av bv)
+	      (map-vector (lambda (a b) (* a b)) av bv))
+	     m1 m2))
+
+;;OLD VERSION--works pretty slowly
 (define (find-binary-score-between-tubes tube1 tube2)
  ;;***tube1 and tube2 have already been run through get-phow-hists-all-tubes
  ;;***and have frame number list as fifth and matrix (list of vec) of frame
@@ -4734,7 +4759,6 @@
 		    (x (x (matlab-get-variable "d"))))));;)
 	     (matlab "clear all;")
 	     chisq-dist))))
-
  (* location-sim phow-sim)))
 
 
@@ -4760,6 +4784,62 @@
 ;; 	      tubes)))
 ;;   tubes-with-frames))
 
+(define (all-tubes->phow-visual-similarity-matrix all-tubes)
+ (let* ((tubes (removeq #f all-tubes))
+	(videos-list
+	 (remove-duplicates (map third tubes)))
+	(video-frames
+	 (map (lambda (v) (video->frames 1 v))
+	      videos-list)))
+  (start-matlab!)
+  ;;matlab setup stuff
+  (matlab "addpath(genpath('piotr-toolbox'));")
+  (matlab "addpath(genpath('vlfeat/toolbox'));")
+  (matlab "run('vlfeat/toolbox/vl_setup');")
+  (matlab "enablePool") ;;EXPERIMENTAL
+  ;;put all video-frames into matlab
+  (display "MATLAB setup complete, starting frames->matlab! load")
+  (newline)
+  (system "date")
+  (for-each-indexed
+   (lambda (fl i) (frames->matlab! fl (format #f "video_~a" i))) video-frames)
+  (display (format #f "~a videos loaded into matlab" (length videos-list)))
+  (newline)
+  (system "date")
+  ;;create cell array to store histograms for each tube
+  (matlab (format #f "hist_cell = cell(~a,1);" (length tubes)))
+  ;;map over all non-#f tubes
+  (display "starting histogram computation")
+  (newline)
+  (system "date")
+  (map-indexed
+   (lambda (t j)
+    (let* ((frame-numbers
+	    (removeq #f (map-indexed (lambda (b i) (if b i)) (fourth t))))
+	   (boxes (removeq #f (fourth t)))
+	   (video-idx (find-index-in-list (third t) videos-list)))
+     (matlab (format #f "vid = video_~a;" video-idx))
+     (scheme->matlab! "framenums" frame-numbers)
+     (scheme->matlab! "boxes" boxes)
+     ;;call matlab compute phow hist function with video name,
+     ;;frame numbers, box pixels
+     (matlab "hists_out = compute_phow_hist(vid,framenums,boxes);")
+     ;;store hists in hist_cell
+     (matlab (format #f "hist_cell{~a} = hists_out;" (+ j 1)))))
+   tubes)
+  (display (format #f "histograms computed for ~a tubes" (length tubes)))
+  (newline)
+  (system "date")
+  ;;use hist_cell to create visual similarity scores matrix
+  (matlab "phow_mat = compute_phow_sim_matrix(hist_cell);")
+  (display "phow similarity matrix computed")
+  (newline)
+  (system "date")
+  (let ((outval (matlab-get-variable "phow_mat")))
+   (matlab "clear all;") ;;FIXME--reenable this!!
+   outval)))
+
+;;OLD--probably won't use anymore
 (define (get-phow-hists-all-tubes all-tubes)
  (let* ((tubes (removeq #f all-tubes))
 	(videos-list
@@ -4800,7 +4880,7 @@
    new-tubes)))
 
 
-(define (find-binary-score-matrices-for-floorplan dirlist)
+(define (find-binary-score-data-for-floorplan dirlist)
  ;;general idea here:
  ;;  1)figure out helper-noun relationships from raw alignment
  ;;  2)compute helper-noun binary scores using preposition functions
@@ -4813,15 +4893,22 @@
  ;;      floor of 0.75 on mult so as not to destroy scores for different
  ;;      instances of same object; sig threshold & slope defined above
  ;;      (sig output * 0.25) + 0.75
+ ;;  5) output the following:
+ ;;     (list helper-noun-binary-scores-list ;;structure is #(n1 n2 #(scoremat))
+ ;;           noun-pairs-list  ;;structure is #("noun" n1 n2)
+ ;;           base-binary-scores-matrix)
+ 
+ ;;-----SCRATCH------
  ;;  5)take the two lists/vectors of noun-noun similarity-->if both nouns
  ;;    the same, do element-by-element multiply of matrices
  ;;  6)final output will be a single list of
  ;;     #(idx1 idx2 #(ntubes by ntubes matrix of binary score))
  ;;REMEMBER that score matrices only need to have upper-right triangular part
  ;;***IS THIS TRUE???***
-
  ;;binary scores for each pair of matched nouns is
  ;;  #(noun1-idx noun2-idx #(numtubes by numtubes matrix) noun-string-when-nouns-match)
+ ;;-----SCRATCH-----
+ 
  (let* ((raw-alignment
 	 (join (map (lambda (dir)
 		     (third (read-object-from-file
@@ -4829,6 +4916,7 @@
 		    dirlist)))
 	(all-tubes
 	 (join (map (lambda (dir) (find-low-variance-tubes dir)) dirlist)))
+	(good-tubes (removeq #f all-tubes))
 	(gm-vars
 	 (join (map (lambda (dir) (get-graphical-model-variables dir)) dirlist)))
 	(helper-noun-list (make-helper-noun-list raw-alignment))
@@ -4837,26 +4925,36 @@
 	      helper-noun-list))
 	(same-noun-list (find-same-nouns gm-vars))
 	(noun-pairs-list (make-list-of-matching-nouns same-noun-list))
-	(tubes-with-phow (get-phow-hists-all-tubes all-tubes))
-	(tube-tube-binary-score-matrix
+	;;(tubes-with-phow (get-phow-hists-all-tubes all-tubes))
+	(tube-tube-loc-sim-matrix
 	 (list->vector
 	  (map (lambda (t1)
 		(list->vector
 		 (map (lambda (t2)
-		       (find-binary-score-between-tubes t1 t2))
-		      tubes-with-phow)))
-	       tubes-with-phow)))
-		
-	)
-  #f
-  ;;not quite right--still need to take into account binary scores from helper
-  ;;nouns-->maybe this function just finds the basic tube-tube matrix and then
-  ;;another function maps over the noun-helper-noun and matching-noun lists.
-  ;; (map (lambda (l)
-  ;; 	(vector (z l) (y l) tube-tube-binary-score-matrix (x l)))
-  ;;      noun-pairs-list)
-  ))
+		       (find-location-similarity-between-tubes t1 t2))
+		      good-tubes)))
+	       good-tubes)))
+	(tube-tube-phow-sim-matrix
+	 (all-tubes->phow-visual-similarity-matrix all-tubes))
+	(base-binary-scores-matrix
+	 (elementwise-multiply-matrices tube-tube-phow-sim-matrix
+					tube-tube-loc-sim-matrix)))
+  (list helper-noun-binary-scores-list
+	noun-pairs-list
+	base-binary-scores-matrix)))
 
+(define (find-graphical-model-data-for-floorplan dirlist)
+ (list (find-unary-score-matrix-for-floorplan dirlist)
+       (find-binary-score-data-for-floorplan dirlist)))
+;;THIS DOES ALL THE MAGIC--once alignment.sc, frame-poses.sc, nms-tubes.sc all exist
+
+(define (run-graphical-model gmdata)
+
+ #f)
+
+
+
+;;----------------rendering/filtering----------------
 (define (render-b-tubes path subdir)
  (let* ((render-filter (second (find-abc-and-filter path subdir)))
 	(num-tubes (length (removeq #f render-filter)))
@@ -5001,7 +5099,7 @@
   
   
 (define (render-multiple-filtered-tubes path subdir)
- (let* ((wmv-list ;;(find-world-means-and-variances path subdir))
+ (let* ((wmv-list ;;find-world-means-and-variances path subdir))
 	 (find-world-means-variances-robots path subdir))
 	(filtered-wmv-list ;;(filter-world-means-and-variances wmv-list *var-thresh*))
 	 (filter-world-means-variances-robots wmv-list *var-thresh* *ratio-thresh*))
