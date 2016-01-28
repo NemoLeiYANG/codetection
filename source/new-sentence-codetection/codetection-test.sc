@@ -211,6 +211,23 @@
  (exp (/ (- (distance p1 p2)) 100)))
 ;;--------------------------End preposition functions
 
+
+;;--------functions from Haonan's codetectionlib-sc.sc
+(define (middle lst)
+ (if (null? lst)
+     '()
+     (list-ref lst (quotient (length lst) 2))))
+
+(define (transpose-list-of-lists lol)
+ (matrix->list-of-lists (transpose (list-of-lists->matrix lol))))
+
+(define (evenly-pick-m lst m)
+ (if (= m 1)
+     (list-ref lst (quotient (length lst) 2))
+     (map middle (split-into m lst))))
+;;--------End Haonan functions
+;;;CONSIDER COMPILING MOST OF THE ABOVE FUNCTIONS INTO DSCI
+
 (define (select-frames video-path first-frame num-frames)
  (let ((video (video->frames 1 video-path)))
   (if (> (+ first-frame num-frames) (length video))
@@ -4680,6 +4697,9 @@
 ;;above are for sigmoid of distance in find-binary-score-between-tubes
 
 (define (find-binary-score-between-tubes tube1 tube2)
+ ;;***tube1 and tube2 have already been run through get-phow-hists-all-tubes
+ ;;***and have frame number list as fifth and matrix (list of vec) of frame
+ ;;***phow histograms as sixth
  ;;  4)compute visual/location similarity for same nouns
  ;;    a)visual similarity using PHOW/Chisq & HOG/L2 from Haonan
  ;;    b)location similarity--multiplier to visual sim; will range
@@ -4695,9 +4715,27 @@
 	 (+ (- 1 *sig-weight*)
 	    (* *sig-weight*
 	       (sigmoid tube-dist *sigmoid-center* *sigmoid-slope*))))
-	)
+	(tube1-phow (sixth tube1))
+	(tube2-phow (sixth tube2))
+	(tube1-phow-mod (if (<= (length tube1-phow) (length tube2-phow))
+			    tube1-phow
+			    (evenly-pick-m tube1-phow (length tube2-phow))))
+	(tube2-phow-mod (if (<= (length tube2-phow) (length tube1-phow))
+			    tube2-phow
+			    (evenly-pick-m tube2-phow (length tube1-phow))))
+	(phow-sim
+	 (- 1
+	    (let ((chisq-dist ;;(dtrace "chisq-dist" 
+		   (begin
+		    (start-matlab!)
+		    (scheme->matlab! "h1" tube1-phow-mod)
+		    (scheme->matlab! "h2" tube2-phow-mod)
+		    (matlab "d = compute_mean_chisq_dist(h1,h2);")
+		    (x (x (matlab-get-variable "d"))))));;)
+	     (matlab "clear all;")
+	     chisq-dist))))
 
- #f))
+ (* location-sim phow-sim)))
 
 
 ;; ;;;This eats a LOT of memory--might want to try something else
@@ -4756,7 +4794,7 @@
 ;;		(matlab "hists_out = boxes;")
 		;;get hists back to scheme and append to tube
 		(append t (list frame-numbers)
-			(list (matlab-get-variable "hists_out")))))
+			(list (vector->list (matlab-get-variable "hists_out"))))))
 	      tubes)))
    (matlab "clear all") ;;clean up matlab memory
    new-tubes)))

@@ -5640,6 +5640,22 @@ TO DO's
   scheme.  Next need to write a function to compute mean chi-sq distance for two
   tubes after they have been downsampled to match length.
 
+----------------git commit 01117c1--------------
+
+27 Jan 16 (2)
+
+--Wrote compute_mean_chisq_dist.m that takes 2 equal-length lists of phow
+  histograms and computes the mean chi-sq distance between.  Returns DISTANCE,
+  so must do the (- 1 dist) in scheme.
+
+--Finished find-binary-score-between-tubes, returns simple binary score (*
+  location-sim phow-sim).
+
+--Have tube-tube-binary-score-matrix call
+  find-binary-score-matrices-for-floorplan working, but it seems to take WAY too
+  long-->~44s for 25 element matrix.  How can I speed this up?  Move everything
+  to matlab?  Matrix is symmetric, so don't need to compute all of it, just
+  upper triangular part.
 
 TO DO's
 -------
@@ -5702,7 +5718,9 @@ TO DO's
 (define *hnbs-list* (map (lambda (l) (find-noun-noun-binary-score-matrix *few-tubes* l)) *hnl*))
 (define *videos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))
 (define *video-frames*  (map (lambda (v) (video->frames 1 v)) *videos-list*))
-
+(define *hist-few-tubes* (get-phow-hists-all-tubes *few-tubes*))
+(define *hist-tube1* (first *hist-few-tubes*))
+(define *hist-tube2* (second *hist-few-tubes*))
 
 ;;probably don't need the below
 (define *tubes-with-frames*

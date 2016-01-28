@@ -17,9 +17,8 @@ parfor n = 1:nframes
     hists_out(n,:) = temp_hist';
     %fprintf('completed n = %d\n',n);
 end %parfor
-
 end %function
-
+        
 function [x1,y1,x2,y2] = resize_box(box, im_height, im_width, scale)
 cx = (box(1)+box(3)) / 2;
 cy = (box(2)+box(4)) / 2;
