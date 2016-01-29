@@ -5739,6 +5739,56 @@ TO DO's
   calls in inference.cpp/h (need hpp?), defines in toollib-codetection.sc (which
   compiles into dsci)
 
+----------------git commit 78ff8a5--------------
+
+29 Jan 16
+
+--buddhi results:
+  > (define *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))
+  /usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
+  starting frames->matlab! load
+  Thu Jan 28 15:33:52 EST 2016
+  7 videos loaded into matlab
+  Thu Jan 28 15:49:49 EST 2016
+  starting histogram computation
+  Thu Jan 28 15:49:50 EST 2016
+  histograms computed for 1022 tubes
+  Thu Jan 28 16:02:50 EST 2016
+  phow similarity matrix computed
+  Thu Jan 28 17:41:42 EST 2016
+  *ALL-SIM*
+
+--jalitusteabe results:
+  > (define *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))
+  /usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
+  starting frames->matlab! load
+  Thu Jan 28 14:15:18 EST 2016
+  7 videos loaded into matlab
+  Thu Jan 28 15:03:54 EST 2016
+  starting histogram computation
+  Thu Jan 28 15:03:55 EST 2016
+  histograms computed for 1022 tubes
+  Thu Jan 28 15:28:43 EST 2016
+  phow similarity matrix computed
+  Thu Jan 28 18:34:28 EST 2016
+  *ALL-SIM*
+
+--Working on the scheme->c interface to get the graphical model up and running.
+
+--Saved full graphical model data (from just 1 run) in test-gm-data.sc.  Saved
+  full binary score matrix (all 7 runs from floorplan 0) in
+  test-full-similarity-matrix.sc 
+
+--Have scheme->c interface working with
+  bp-sentence-codetection-inference/bp_sentence_codetection_inference.  Calling
+  it with run-graphical-model.  Verified that data is being passed in
+  correctly.  Next step is modifying the old GM setup stuff from
+  bp_object_inference(_new) to use the new model.
+
+--Working on binary score adding in bp_sentence_codetection_inference
+  (inference.cpp).  Have general outline in comments, just need to fill in the
+  blanks. **compiles with only unused variable warnings**
+
 
 TO DO's
 -------
@@ -5770,6 +5820,10 @@ TO DO's
 
 
 **THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
+
+;;gm test scheme setup
+(load "codetection-test.sc")
+(define *gmdata* (read-object-from-file "test-gm-data.sc"))
 
 ;;scheme setup
 (load "codetection-test.sc")

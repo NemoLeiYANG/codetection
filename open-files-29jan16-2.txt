@@ -1,0 +1,11 @@
+.   codetection.sc       27374  Scheme		  ~/codetection/from-haonan/yu239-darpa-collaboration-sentence-codetection/codetection.sc
+    inference.cpp         4360  C++/l		  ~/codetection/from-haonan/yu239-darpa-collaboration-sentence-codetection/inference.cpp
+    codetectionlib-cpp.: 53461  C++/l		  ~/codetection/from-haonan/yu239-darpa-collaboration-sentence-codetection/codetectionlib-cpp.cpp
+    inference.h            348  C++/l		  ~/codetection/from-haonan/yu239-darpa-collaboration-sentence-codetection/inference.h
+    inference.hpp          112  C++/l
+    ~/codetection/from-haonan/yu239-darpa-collaboration-sentence-codetection/inference.hpp
+    codetectionlib-sc.sc: 8288  Scheme		  ~/codetection/from-haonan/yu239-darpa-collaboration-sentence-codetection/codetectionlib-sc.sc
+  * *scheme*            498328  Inferior Scheme:
+    compute_phow_sim_mat: 2191  MATLAB		  ~/codetection/source/new-sentence-codetection/compute_phow_sim_matrix.m
+    *scratch*              191  Lisp Interaction
+  * *Messages*            2565  Fundamental

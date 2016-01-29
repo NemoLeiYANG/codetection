@@ -26,6 +26,212 @@
 // typedef opengm::MessagePassing<GraphModel, opengm::Minimizer, UpdateRules, opengm::MaxDistance> BP;
 // //typedef opengm::external::libdai::Bp<GraphModel, opengm::Minimizer> libdaiBP;
 
+void elementwise_2d_matrix_multiply(int rows, int cols, 
+				    double **mat1, double **mat2, double **outmat){
+  for (int i = 0; i < rows; i++){
+    for (int j = 0; j < cols; j++){
+      outmat[i][j] = mat1[i][j] * mat2[i][j];
+    }
+  }
+}
+
+extern "C" 
+double bp_sentence_codetection_inference(int num_nouns, int num_tubes,
+					 double **unary_score_matrix,
+					 int num_helper_nouns,
+					 int **helper_noun_pairs_matrix,
+					 double ***helper_noun_scores_matrix,
+					 int num_matching_noun_pairs,
+					 int **matching_noun_pairs_matrix,
+					 double **visual_similarity_matrix,
+					 int *output_tubes){
+  ////DATA TESTING
+  // printf("num_nouns = %d, num_tubes = %d, num_helper_nouns = %d, "
+  // 	 "num_matching_noun_pairs = %d\n", num_nouns, num_tubes, 
+  // 	 num_helper_nouns, num_matching_noun_pairs);
+  // printf("--------------------\n");
+  // printf("%6.4f %6.4f\n", visual_similarity_matrix[128][128], visual_similarity_matrix[128][127]);
+  // for (int i = 0; i < num_helper_nouns; i++){
+  // 	printf("%6.4f ", helper_noun_scores_matrix[i][num_tubes - 1][num_tubes - 1]);}
+  // printf("\n");
+  // for (int i = 0; i < num_nouns; i++){
+  // 	printf("%6.4f ", unary_score_matrix[i][num_tubes - 1]);}
+  // printf("\n");
+  // for (int i = 0; i < num_matching_noun_pairs; i++){
+  //   for (int j = 0; j < 2; j++){
+  // 	printf("%d ", matching_noun_pairs_matrix[i][j]);}
+  //   printf("\n");
+  // }
+  // for (int i = 0; i < num_nouns; i++){
+  //   for (int j = 0; j < num_tubes; j++){
+  //     printf("%6.4f ",unary_score_matrix[i][j]);}
+  //   printf("\n\n");
+  // }
+  time_t mytime;
+  mytime = time(NULL);
+  printf("\nStarting bp_sentence_codetection_inference at ");
+  printf(ctime(&mytime));
+  printf("--------------------\n");
+
+  typedef opengm::DiscreteSpace<> Space;
+  typedef opengm::ExplicitFunction<double> Function;
+  typedef opengm::GraphicalModel<double, opengm::Adder, Function, Space> GraphModel;
+  typedef GraphModel::FunctionIdentifier FID;
+  typedef opengm::BeliefPropagationUpdateRules<GraphModel, opengm::Maximizer> UpdateRules; //maximizing since good score is close to 1
+  typedef opengm::MessagePassing<GraphModel, opengm::Maximizer, UpdateRules, opengm::MaxDistance> BP;
+  
+  size_t numVariables = size_t(num_nouns);
+  size_t numLabels = size_t(num_tubes);
+  size_t *vars = new size_t[numVariables];
+  for (unsigned int t = 0; t < numVariables; t++)
+    vars[t] = numLabels;
+  Space space(vars, vars+numVariables);
+  GraphModel gm(space);
+  
+  double default_unary_score = 0.0;
+  //add unary score functions
+  for (unsigned int t = 0; t < numVariables; t++){
+    FID fid;
+    size_t fshape[] = {numLabels};
+    Function ff(fshape,fshape+1,default_unary_score);
+    for (int i = 0; i < num_tubes; i++)
+      ff(i) = unary_score_matrix[t][i];
+    fid = gm.addFunction(ff);
+    //add factors
+    size_t fv[] = {size_t(t)};
+    gm.addFactor(fid, fv, fv+1);
+    // //debugging
+    // printf("ff values for t = %u: ",t);
+    // for (unsigned int i = 0; i < numLabels; i++){
+    //   printf("%f ",ff(i));
+    // }
+    // printf("\n");
+  }
+  printf("Unary scores added\n");
+
+  //add binary score functions
+  size_t gshape[] = {numLabels,numLabels};
+  int noun1, noun2;
+  double default_binary_score = 0.0;
+  double **binary_scores_to_add;
+  bool match_flag, helper_flag, helper_reverse;
+  int helper_idx;
+  for (noun1 = 0; noun1 < num_nouns; noun1++){
+    for (noun2 = noun1 + 1; noun2 < num_nouns; noun2++){
+      match_flag = false;
+      helper_flag = false;
+      helper_reverse = false;
+      helper_idx = -1;
+      //check matching noun pairs
+      for (int i = 0; i < num_matching_noun_pairs; i++){
+	if (((matching_noun_pairs_matrix[i][0] == noun1) &&
+	     (matching_noun_pairs_matrix[i][1] == noun2)) ||
+	    ((matching_noun_pairs_matrix[i][0] == noun2) &&
+	     (matching_noun_pairs_matrix[i][1] == noun1))){
+	  match_flag = true;
+	  break;
+	}
+      }
+      //check helper noun pairs
+      for (int i = 0; i < num_helper_nouns; i++){
+	if ((helper_noun_pairs_matrix[i][0] == noun1) &&
+	    (helper_noun_pairs_matrix[i][1] == noun2)){
+	  helper_flag = true;
+	  helper_idx = i;
+	  break;
+	}
+	if ((helper_noun_pairs_matrix[i][1] == noun1) &&
+	    (helper_noun_pairs_matrix[i][0] == noun2)){
+	  helper_flag = true;
+	  helper_reverse = true;
+	  helper_idx = i;
+	  break;
+	}
+      }
+      //check flags and act
+      if ((helper_flag) && (match_flag)){
+	double **outmat;
+	outmat = (double **)malloc(num_tubes*sizeof(double *));
+	for (int j = 0; j < num_tubes; j++){
+	  outmat[j] = (double *)malloc(num_tubes*sizeof(double));
+	}
+	
+	elementwise_2d_matrix_multiply(num_tubes,num_tubes,
+				       visual_similarity_matrix,
+				       helper_noun_scores_matrix[helper_idx],
+				       outmat);
+	binary_scores_to_add = outmat;
+	//create gg
+	//check reverse flag; if reverse, switch order of nouns when adding gg
+	//REVERSE OK on visual similarity matrix b/c visual similarity is symmetric
+	continue;
+      }
+      else if (helper_flag){
+	//get matrix from helper noun scores
+	//create gg
+	//check reverse flag; if reverse, switch order of nouns when adding gg
+	continue;
+      }
+      else if (match_flag)
+	//create gg from visual similarity matrix
+	//add gg
+	continue;
+    }
+  }
+
+  // for (int i = 0; i < num_matching_noun_pairs; i++){
+  //   combine_flag = false;
+  //   combine_idx = -1;
+  //   //loop over matching noun pairs
+  //   noun1 = matching_noun_pairs_matrix[i][0];
+  //   noun2 = matching_noun_pairs_matrix[i][1];
+  //   //check against helper noun pairs
+  //   for (int j = 0; j < num_helper_nouns; j++){
+  //     if (((noun1 == helper_noun_pairs_matrix[j][0]) &&
+  // 	   (noun2 == helper_noun_pairs_matrix[j][1])) ||
+  // 	  ((noun1 == helper_noun_pairs_matrix[j][1]) &&
+  // 	   (noun2 == helper_noun_pairs_matrix[j][0]))){
+  // 	combine_flag = true;
+  // 	combine_idx = j;
+  // 	break;
+  //     }
+  //   }
+  //   if (combine_flag){
+  //     //combine visual similarity matrix with 
+  //     //double outmat[num_tubes][num_tubes];
+  //     double **outmat;
+  //     outmat = (double **)malloc(num_tubes*sizeof(double *));
+  //     for (int j = 0; j < num_tubes; j++){
+  // 	outmat[j] = (double *)malloc(num_tubes*sizeof(double));
+  //     }
+      
+  //     elementwise_2d_matrix_multiply(num_tubes,num_tubes,
+  // 				     visual_similarity_matrix,
+  // 				     helper_noun_scores_matrix[combine_idx],
+  // 				     outmat);
+  //     binary_scores_to_add = outmat;
+  //   }
+  //   else
+  //     binary_scores_to_add = visual_similarity_matrix;
+
+
+
+  //   Function gg(gshape, gshape + 2, default_binary_score);
+  // }
+  // //also must loop over helper noun pairs and add those scores as necessary
+
+
+
+
+  mytime = time(NULL);
+  printf("--------------------\n");
+  printf("\nFinshed bp_sentence_codetection_inference at ");
+  printf(ctime(&mytime));
+  return 0;
+}
+
+
+
 extern "C" double bp_object_inference_new(double **f, double **g, 
 					  int T, int top_k, 
 					  double dummy_f, double dummy_g, 

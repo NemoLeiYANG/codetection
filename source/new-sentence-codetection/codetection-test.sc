@@ -33,62 +33,63 @@
   (vector 0. 724.12307134397406 203.10961045807585)
   (vector 0. 0. 1.)))
 
-;;----Dan's string-rounding function from driver-gui
-(define (number->string-with-n-decimal-places f n)
-  (let* ((non-decimal-length (string-length (number->string (exact-round f))))
-	 (s (number->string
-	      (/ (exact-round (* f (expt 10 n)))
-		 (expt 10 n))))
-	 (s (if (= f 0)
-		"0."
-		s))
-	 (len (string-length s))
-	 (s (string-append s (string-join ""
-					  (map-n (lambda (i)
-						   "0")
-						 (- (+ non-decimal-length
-						       1
-						       n)
-						    len))))))
-	 (substring
-	  s
-	  0 
-	  (+ non-decimal-length
-	     1
-	     n))))
+;;---------------BELOW functions compiled into dsci in toollib-codetection.sc
+;; ;;----Dan's string-rounding function from driver-gui
+;; (define (number->string-with-n-decimal-places f n)
+;;   (let* ((non-decimal-length (string-length (number->string (exact-round f))))
+;; 	 (s (number->string
+;; 	      (/ (exact-round (* f (expt 10 n)))
+;; 		 (expt 10 n))))
+;; 	 (s (if (= f 0)
+;; 		"0."
+;; 		s))
+;; 	 (len (string-length s))
+;; 	 (s (string-append s (string-join ""
+;; 					  (map-n (lambda (i)
+;; 						   "0")
+;; 						 (- (+ non-decimal-length
+;; 						       1
+;; 						       n)
+;; 						    len))))))
+;; 	 (substring
+;; 	  s
+;; 	  0 
+;; 	  (+ non-decimal-length
+;; 	     1
+;; 	     n))))
 
-;;---Preposition functions from sentence-to-trace-from-learned-models.sc----
-(define (fold-polynomial x coeffs)
- (let loop ((s 0) (c (reverse coeffs)))
-  (if (null? c)
-      s
-      (loop (* x (+ s (first c))) (rest c)))))
+;; ;;---Preposition functions from sentence-to-trace-from-learned-models.sc----
+;; (define (fold-polynomial x coeffs)
+;;  (let loop ((s 0) (c (reverse coeffs)))
+;;   (if (null? c)
+;;       s
+;;       (loop (* x (+ s (first c))) (rest c)))))
 
-(define (log-bessel0 kappa)
- (let ((ax (abs kappa)))
-  (if (< ax 3.75)
-      (log
-       (+ 1.0
-	  (fold-polynomial (sqr (/ kappa 3.75))
-			   '(3.5156229
-			     3.0899424
-			     1.2067492
-			     0.2659732
-			     0.360768e-1
-			     0.45813e-2))))
-      (+ (- ax (* 0.5 (log ax)))
-	 (log
-	  (+ 0.39894228
-	     (fold-polynomial (/ 3.75 ax)
-			      '(0.39894228
-				0.1328592e-1
-				0.225319e-2
-				-0.157565e-2
-				0.916281e-2
-				-0.2057706e-1
-				0.2635537e-1
-				-0.1647633e-1
-				0.392377e-2))))))))
+;; (define (log-bessel0 kappa)
+;;  (let ((ax (abs kappa)))
+;;   (if (< ax 3.75)
+;;       (log
+;;        (+ 1.0
+;; 	  (fold-polynomial (sqr (/ kappa 3.75))
+;; 			   '(3.5156229
+;; 			     3.0899424
+;; 			     1.2067492
+;; 			     0.2659732
+;; 			     0.360768e-1
+;; 			     0.45813e-2))))
+;;       (+ (- ax (* 0.5 (log ax)))
+;; 	 (log
+;; 	  (+ 0.39894228
+;; 	     (fold-polynomial (/ 3.75 ax)
+;; 			      '(0.39894228
+;; 				0.1328592e-1
+;; 				0.225319e-2
+;; 				-0.157565e-2
+;; 				0.916281e-2
+;; 				-0.2057706e-1
+;; 				0.2635537e-1
+;; 				-0.1647633e-1
+;; 				0.392377e-2))))))))
 
 (define (log-von-mises v mean kappa)
  (unless (and (> kappa 0.0)
@@ -99,134 +100,134 @@
  (let ((x (- v mean)))
   (- (* kappa (cos x)) (log-bessel0 kappa))))
 
-(define (renormalized-von-mises v mean kappa)
-;; (let ((x (- v mean)))
-;; (/ (exp (* kappa (cos x)))))
-(- (log-von-mises v mean kappa)
-   (log-von-mises 0 0 kappa)))
+;; (define (renormalized-von-mises v mean kappa)
+;; ;; (let ((x (- v mean)))
+;; ;; (/ (exp (* kappa (cos x)))))
+;; (- (log-von-mises v mean kappa)
+;;    (log-von-mises 0 0 kappa)))
 
-(define (center-angle-at angle center)
- (cond ((< angle (- center pi)) (center-angle-at (+ angle two-pi) center))
-       ((> angle (+ center pi)) (center-angle-at (- angle two-pi) center))
-       (else (- angle center))))
+;; (define (center-angle-at angle center)
+;;  (cond ((< angle (- center pi)) (center-angle-at (+ angle two-pi) center))
+;;        ((> angle (+ center pi)) (center-angle-at (- angle two-pi) center))
+;;        (else (- angle center))))
 
-(define (angle-between p1 p2)
- (if (equal? p1 p2)
-     0
-     (atan (- (y p1) (y p2))
-	   (- (x p1) (x p2)))))
+;; (define (angle-between p1 p2)
+;;  (if (equal? p1 p2)
+;;      0
+;;      (atan (- (y p1) (y p2))
+;; 	   (- (x p1) (x p2)))))
 
-(define *von-mises-kappa* 2.5) ;;might need to change this
+;; (define *von-mises-kappa* 2.5) ;;might need to change this
 
-(define (left-of robot-or-tube tube)
- (let* ((p1 (subvector robot-or-tube 0 2))
-	(p2 tube))
-  (exp (renormalized-von-mises
-	(center-angle-at (angle-between p1 p2) 0)
-	pi
-	*von-mises-kappa*))))
+;; (define (left-of robot-or-tube tube)
+;;  (let* ((p1 (subvector robot-or-tube 0 2))
+;; 	(p2 tube))
+;;   (exp (renormalized-von-mises
+;; 	(center-angle-at (angle-between p1 p2) 0)
+;; 	pi
+;; 	*von-mises-kappa*))))
 
-(define (right-of robot-or-tube tube)
- (let* ((p1 (subvector robot-or-tube 0 2))
-	(p2 tube))
-  (exp (renormalized-von-mises
-	(center-angle-at (angle-between p1 p2) 0)
-	0
-	*von-mises-kappa*))))
+;; (define (right-of robot-or-tube tube)
+;;  (let* ((p1 (subvector robot-or-tube 0 2))
+;; 	(p2 tube))
+;;   (exp (renormalized-von-mises
+;; 	(center-angle-at (angle-between p1 p2) 0)
+;; 	0
+;; 	*von-mises-kappa*))))
 
-(define (in-front-of robot-or-tube tube)
- (let* ((p1 (subvector robot-or-tube 0 2))
-	(p2 tube))
-  (exp (renormalized-von-mises
-	(center-angle-at (angle-between p1 p2) 0)
-	(- half-pi)
-	*von-mises-kappa*))))
+;; (define (in-front-of robot-or-tube tube)
+;;  (let* ((p1 (subvector robot-or-tube 0 2))
+;; 	(p2 tube))
+;;   (exp (renormalized-von-mises
+;; 	(center-angle-at (angle-between p1 p2) 0)
+;; 	(- half-pi)
+;; 	*von-mises-kappa*))))
 
-(define (behind robot-or-tube tube)
- (let* ((p1 (subvector robot-or-tube 0 2))
-	(p2 tube))
-  (exp (renormalized-von-mises
-	(center-angle-at (angle-between p1 p2) 0)
-	half-pi
-	*von-mises-kappa*))))
+;; (define (behind robot-or-tube tube)
+;;  (let* ((p1 (subvector robot-or-tube 0 2))
+;; 	(p2 tube))
+;;   (exp (renormalized-von-mises
+;; 	(center-angle-at (angle-between p1 p2) 0)
+;; 	half-pi
+;; 	*von-mises-kappa*))))
 
-(define (between robot-or-tube tube2 tube3)
- (let* ((p1 (subvector robot-or-tube 0 2))
-	(p2 tube2)
-	(p3 tube3))
-  (exp (renormalized-von-mises
-	(center-angle-at (- (angle-between p1 p2) (angle-between p1 p3)) 0)
-	pi
-	*von-mises-kappa*))))
+;; (define (between robot-or-tube tube2 tube3)
+;;  (let* ((p1 (subvector robot-or-tube 0 2))
+;; 	(p2 tube2)
+;; 	(p3 tube3))
+;;   (exp (renormalized-von-mises
+;; 	(center-angle-at (- (angle-between p1 p2) (angle-between p1 p3)) 0)
+;; 	pi
+;; 	*von-mises-kappa*))))
 
-(define (towards robot tube)
- (let* ((p1 (subvector robot 0 2))
-	(angle (z robot))
-	(p2 tube))
-  (exp (renormalized-von-mises (center-angle-at angle 0)
-			       (center-angle-at (angle-between p2 p1) 0)
-			       *von-mises-kappa*))))
+;; (define (towards robot tube)
+;;  (let* ((p1 (subvector robot 0 2))
+;; 	(angle (z robot))
+;; 	(p2 tube))
+;;   (exp (renormalized-von-mises (center-angle-at angle 0)
+;; 			       (center-angle-at (angle-between p2 p1) 0)
+;; 			       *von-mises-kappa*))))
 
-;; this tells if a robot's heading is tangent to the line between
-;; the point and the robot
-(define (tangent-to robot point)
- ;;(trace-dtrace "v-angle" (primal* (y fv)))
- ;;(trace-dtrace "v-angle target" (primal* (angle-between p2 (x fv))))
- (let* ((p1 (subvector robot 0 2))
-	(angle (z robot))
-	(p2 point)
-	(c1 (exp (renormalized-von-mises (center-angle-at angle 0)
-					 (center-angle-at (+ (angle-between p2 p1)
-							     half-pi)
-							   0)
-					 *von-mises-kappa*)))
-	(c2 (exp (renormalized-von-mises (center-angle-at angle 0)
-					 (center-angle-at (- (angle-between p2 p1)
-							     half-pi)
-							  0)
-					 *von-mises-kappa*))))
-  (if (< c1 c2)
-      c2
-      c1)))
+;; ;; this tells if a robot's heading is tangent to the line between
+;; ;; the point and the robot
+;; (define (tangent-to robot point)
+;;  ;;(trace-dtrace "v-angle" (primal* (y fv)))
+;;  ;;(trace-dtrace "v-angle target" (primal* (angle-between p2 (x fv))))
+;;  (let* ((p1 (subvector robot 0 2))
+;; 	(angle (z robot))
+;; 	(p2 point)
+;; 	(c1 (exp (renormalized-von-mises (center-angle-at angle 0)
+;; 					 (center-angle-at (+ (angle-between p2 p1)
+;; 							     half-pi)
+;; 							   0)
+;; 					 *von-mises-kappa*)))
+;; 	(c2 (exp (renormalized-von-mises (center-angle-at angle 0)
+;; 					 (center-angle-at (- (angle-between p2 p1)
+;; 							     half-pi)
+;; 							  0)
+;; 					 *von-mises-kappa*))))
+;;   (if (< c1 c2)
+;;       c2
+;;       c1)))
 
-(define (away-from robot tube)
- (let* ((p1 (subvector robot 0 2))
-	(angle (z robot))
-	(p2 tube))
-  (exp (renormalized-von-mises (center-angle-at angle 0)
-			       (center-angle-at (+ (angle-between  p2 p1) pi)  0)
-			       *von-mises-kappa*))))
+;; (define (away-from robot tube)
+;;  (let* ((p1 (subvector robot 0 2))
+;; 	(angle (z robot))
+;; 	(p2 tube))
+;;   (exp (renormalized-von-mises (center-angle-at angle 0)
+;; 			       (center-angle-at (+ (angle-between  p2 p1) pi)  0)
+;; 			       *von-mises-kappa*))))
 
-;; ?? what is this supposed to do??
-(define (angles-opposite-each-other angle1 angle2)
- (- 1 (/ (sqr (center-angle-at (center-angle-at angle1 angle2) pi))
-	 ;; (sqr (* 2 pi))
-	 (sqr pi))))
+;; ;; ?? what is this supposed to do??
+;; (define (angles-opposite-each-other angle1 angle2)
+;;  (- 1 (/ (sqr (center-angle-at (center-angle-at angle1 angle2) pi))
+;; 	 ;; (sqr (* 2 pi))
+;; 	 (sqr pi))))
 
-(define (distances-equal p1 p2 p3)
- (* (- 1 (/ (sqrt (sqr (- (distance p1 p2) (distance p2 p3)))) (* 100 (distance p2 p3)))) 
-    (- 1 (/  (sqrt (sqr (- (distance p1 p2) (distance p1 p3)))) (* 100 (distance p1 p3))))))
+;; (define (distances-equal p1 p2 p3)
+;;  (* (- 1 (/ (sqrt (sqr (- (distance p1 p2) (distance p2 p3)))) (* 100 (distance p2 p3)))) 
+;;     (- 1 (/  (sqrt (sqr (- (distance p1 p2) (distance p1 p3)))) (* 100 (distance p1 p3))))))
 
-(define (near p1 p2)
- (exp (/ (- (distance p1 p2)) 100)))
-;;--------------------------End preposition functions
+;; (define (near p1 p2)
+;;  (exp (/ (- (distance p1 p2)) 100)))
+;; ;;--------------------------End preposition functions
 
 
-;;--------functions from Haonan's codetectionlib-sc.sc
-(define (middle lst)
- (if (null? lst)
-     '()
-     (list-ref lst (quotient (length lst) 2))))
+;; ;;--------functions from Haonan's codetectionlib-sc.sc
+;; (define (middle lst)
+;;  (if (null? lst)
+;;      '()
+;;      (list-ref lst (quotient (length lst) 2))))
 
-(define (transpose-list-of-lists lol)
- (matrix->list-of-lists (transpose (list-of-lists->matrix lol))))
+;; (define (transpose-list-of-lists lol)
+;;  (matrix->list-of-lists (transpose (list-of-lists->matrix lol))))
 
-(define (evenly-pick-m lst m)
- (if (= m 1)
-     (list-ref lst (quotient (length lst) 2))
-     (map middle (split-into m lst))))
-;;--------End Haonan functions
-;;;CONSIDER COMPILING MOST OF THE ABOVE FUNCTIONS INTO DSCI
+;; (define (evenly-pick-m lst m)
+;;  (if (= m 1)
+;;      (list-ref lst (quotient (length lst) 2))
+;;      (map middle (split-into m lst))))
+;; ;;--------End Haonan functions
+;;---------------END functions compiled into dsci in toollib-codetection.sc
 
 (define (select-frames video-path first-frame num-frames)
  (let ((video (video->frames 1 video-path)))
@@ -4949,9 +4950,44 @@
 ;;THIS DOES ALL THE MAGIC--once alignment.sc, frame-poses.sc, nms-tubes.sc all exist
 
 (define (run-graphical-model gmdata)
+ (let* ((num-nouns (vector-length (first gmdata)))
+	(num-tubes (vector-length (x (first gmdata))))
+	(unary-score-matrix (easy-ffi:double-to-c 2 (first gmdata)))
+	(helper-noun-pairs (list->vector (map (lambda (v) (subvector v 0 2))
+					      (first (second gmdata)))))
+	(num-helper-noun-pairs (vector-length helper-noun-pairs))
+	(helper-noun-pairs-matrix (easy-ffi:int-to-c 2 helper-noun-pairs))
+	(helper-noun-scores (list->vector (map z (first (second gmdata)))))
+	(helper-noun-scores-matrix (easy-ffi:double-to-c 3 helper-noun-scores))
+	(matching-noun-pairs (list->vector (map (lambda (v) (subvector v 1 3))
+						(second (second gmdata)))))
+	(num-matching-noun-pairs (vector-length matching-noun-pairs))
+	(matching-noun-pairs-matrix (easy-ffi:int-to-c 2 matching-noun-pairs))
+	(visual-similarity-matrix (easy-ffi:double-to-c 2 (third (second gmdata))))
+	(output-tubes-c (list->c-exact-array (malloc (* c-sizeof-int num-nouns))
+					     (map-n (lambda _ 0) num-nouns)
+					     c-sizeof-int #t))
+	;;call bp-sentence-codetection-inference in here (use a pointer for output)
+	;;convert output from c to scheme
+	
+	)
+  ;;temp for testing
+  (bp-sentence-codetection-inference num-nouns num-tubes unary-score-matrix
+				     num-helper-noun-pairs
+				     helper-noun-pairs-matrix
+				     helper-noun-scores-matrix
+				     num-matching-noun-pairs
+				     matching-noun-pairs-matrix
+				     visual-similarity-matrix
+				     output-tubes-c)
+  ;;free allocated memory
 
- #f)
 
+  ;;do any rendering/saving here??
+
+  
+  ;;give output from above
+ #f))
 
 
 ;;----------------rendering/filtering----------------
