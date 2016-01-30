@@ -107,7 +107,9 @@ double bp_sentence_codetection_inference(int num_nouns, int num_tubes,
     // }
     // printf("\n");
   }
-  printf("Unary scores added\n");
+  printf("Unary scores added at ");
+  mytime = time(NULL);
+  printf(ctime(&mytime));
 
   //add binary score functions
   size_t gshape[] = {numLabels,numLabels};
@@ -149,85 +151,82 @@ double bp_sentence_codetection_inference(int num_nouns, int num_tubes,
 	}
       }
       //check flags and act
-      if ((helper_flag) && (match_flag)){
+      if ((!match_flag) && (!helper_flag))
+	//nothing to do here
+	continue;
+      else if ((helper_flag) && (match_flag)){
+	//combine matrices
 	double **outmat;
 	outmat = (double **)malloc(num_tubes*sizeof(double *));
 	for (int j = 0; j < num_tubes; j++){
-	  outmat[j] = (double *)malloc(num_tubes*sizeof(double));
-	}
-	
+	  outmat[j] = (double *)malloc(num_tubes*sizeof(double));}	
 	elementwise_2d_matrix_multiply(num_tubes,num_tubes,
 				       visual_similarity_matrix,
 				       helper_noun_scores_matrix[helper_idx],
 				       outmat);
 	binary_scores_to_add = outmat;
-	//create gg
-	//check reverse flag; if reverse, switch order of nouns when adding gg
-	//REVERSE OK on visual similarity matrix b/c visual similarity is symmetric
-	continue;
       }
-      else if (helper_flag){
+      else if (helper_flag)
 	//get matrix from helper noun scores
-	//create gg
-	//check reverse flag; if reverse, switch order of nouns when adding gg
-	continue;
-      }
+	binary_scores_to_add = helper_noun_scores_matrix[helper_idx];
       else if (match_flag)
-	//create gg from visual similarity matrix
-	//add gg
-	continue;
+	//get matrix from visual similarity scores
+	binary_scores_to_add = visual_similarity_matrix;
+      //if we get here, binary_scores_to_add points to the scores for gg
+      //create gg
+      Function gg(gshape, gshape + 2, default_binary_score);
+      for (size_t i = 0; i < numLabels; i++){
+	for (size_t j = 0; j < numLabels; j++){
+	  gg(i,j) = binary_scores_to_add[i][j];
+	}
+      }
+      FID gid = gm.addFunction(gg);
+      //check reverse flag; if reverse, switch order of nouns when adding gg
+      //REVERSE OK on visual similarity matrix b/c visual similarity is symmetric
+      if (helper_reverse){
+	size_t gv[] = {size_t(noun2),size_t(noun1)};
+	gm.addFactor(gid, gv, gv + 2);
+      }
+      else{
+	size_t gv[] = {size_t(noun1),size_t(noun2)};
+	gm.addFactor(gid, gv, gv + 2);
+      }
+      //done
     }
   }
+  printf("Binary scores added at ");
+  mytime = time(NULL);
+  printf(ctime(&mytime));
 
-  // for (int i = 0; i < num_matching_noun_pairs; i++){
-  //   combine_flag = false;
-  //   combine_idx = -1;
-  //   //loop over matching noun pairs
-  //   noun1 = matching_noun_pairs_matrix[i][0];
-  //   noun2 = matching_noun_pairs_matrix[i][1];
-  //   //check against helper noun pairs
-  //   for (int j = 0; j < num_helper_nouns; j++){
-  //     if (((noun1 == helper_noun_pairs_matrix[j][0]) &&
-  // 	   (noun2 == helper_noun_pairs_matrix[j][1])) ||
-  // 	  ((noun1 == helper_noun_pairs_matrix[j][1]) &&
-  // 	   (noun2 == helper_noun_pairs_matrix[j][0]))){
-  // 	combine_flag = true;
-  // 	combine_idx = j;
-  // 	break;
-  //     }
-  //   }
-  //   if (combine_flag){
-  //     //combine visual similarity matrix with 
-  //     //double outmat[num_tubes][num_tubes];
-  //     double **outmat;
-  //     outmat = (double **)malloc(num_tubes*sizeof(double *));
-  //     for (int j = 0; j < num_tubes; j++){
-  // 	outmat[j] = (double *)malloc(num_tubes*sizeof(double));
-  //     }
-      
-  //     elementwise_2d_matrix_multiply(num_tubes,num_tubes,
-  // 				     visual_similarity_matrix,
-  // 				     helper_noun_scores_matrix[combine_idx],
-  // 				     outmat);
-  //     binary_scores_to_add = outmat;
-  //   }
-  //   else
-  //     binary_scores_to_add = visual_similarity_matrix;
-
-
-
-  //   Function gg(gshape, gshape + 2, default_binary_score);
-  // }
-  // //also must loop over helper noun pairs and add those scores as necessary
-
-
-
-
+  //  inference
+  const size_t maxIterations=10000;//100;
+  const double damping=0.0;
+  const double convergenceBound = 1e-10;//1e-7;
+  BP::Parameter parameter(maxIterations,convergenceBound,damping);
+  BP::VerboseVisitorType visitor;
+  printf("before bp call\n");
+  BP bp(gm, parameter);
+  printf("after bp call\n");
+  // optimize (approximately)
+  clock_t t1, t2;
+  printf("before bp.infer\n");
+  t1 = clock();
+  //  bp.infer();
+  bp.infer(visitor);
+  t2 = clock();
+  printf("after bp.infer\n");
+  std::cout << (double(t2) - double(t1))/CLOCKS_PER_SEC*1000 << " ms" << std::endl;
+  std::cout << "OpenGM Belief Propagation " << bp.value() << std::endl;
+  std::vector<size_t> labeling(num_nouns); 
+  bp.arg(labeling);
+  for (unsigned int i = 0; i < labeling.size(); i ++)
+    output_tubes[i] = int(labeling[i]);
+  delete [] vars;
   mytime = time(NULL);
   printf("--------------------\n");
-  printf("\nFinshed bp_sentence_codetection_inference at ");
+  printf("Finshed bp_sentence_codetection_inference at ");
   printf(ctime(&mytime));
-  return 0;
+  return bp.value();
 }
 
 

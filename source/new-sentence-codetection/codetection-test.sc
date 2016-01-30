@@ -4968,26 +4968,41 @@
 					     (map-n (lambda _ 0) num-nouns)
 					     c-sizeof-int #t))
 	;;call bp-sentence-codetection-inference in here (use a pointer for output)
+	(score (bp-sentence-codetection-inference num-nouns num-tubes
+						  unary-score-matrix
+						  num-helper-noun-pairs
+						  helper-noun-pairs-matrix
+						  helper-noun-scores-matrix
+						  num-matching-noun-pairs
+						  matching-noun-pairs-matrix
+						  visual-similarity-matrix
+						  output-tubes-c))
 	;;convert output from c to scheme
-	
+	(output-tubes (c-exact-array->list output-tubes-c c-sizeof-int num-nouns #t))
 	)
   ;;temp for testing
-  (bp-sentence-codetection-inference num-nouns num-tubes unary-score-matrix
-				     num-helper-noun-pairs
-				     helper-noun-pairs-matrix
-				     helper-noun-scores-matrix
-				     num-matching-noun-pairs
-				     matching-noun-pairs-matrix
-				     visual-similarity-matrix
-				     output-tubes-c)
+  
   ;;free allocated memory
-
-
+  (free output-tubes-c)
+  (easy-ffi:free 2 (third (second gmdata)) visual-similarity-matrix)
+  (easy-ffi:free 2 matching-noun-pairs matching-noun-pairs-matrix)
+  (easy-ffi:free 3 helper-noun-scores helper-noun-scores-matrix)
+  (easy-ffi:free 2 helper-noun-pairs helper-noun-pairs-matrix)
+  (easy-ffi:free 2 (first gmdata) unary-score-matrix)
   ;;do any rendering/saving here??
-
   
   ;;give output from above
- #f))
+  (list score output-tubes)
+  ))
+
+(define (gm-full-test)
+ (let* ((dirlist (system-output
+		  (format
+		   #f
+		   "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*"
+		   "floorplan-0")))
+	(gmdata (find-graphical-model-data-for-floorplan dirlist)))
+  (run-graphical-model gmdata)))
 
 
 ;;----------------rendering/filtering----------------

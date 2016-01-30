@@ -5789,6 +5789,15 @@ TO DO's
   (inference.cpp).  Have general outline in comments, just need to fill in the
   blanks. **compiles with only unused variable warnings**
 
+----------------git commit f6ac233--------------
+
+30 Jan 16
+
+--Finished bp_sentence_codetection_inference and run-graphical-model.  Getting
+  results quickly (~6s) on simple test data.  Going to turn it loose on the full
+  dirlist of floorplan0 using gm-full-test.
+
+--Started run of gm-full-test on seykhl at 1718 and on chino at 1725.
 
 TO DO's
 -------
