@@ -5004,6 +5004,82 @@
 	(gmdata (find-graphical-model-data-for-floorplan dirlist)))
   (run-graphical-model gmdata)))
 
+(define (render-gm-output dirlist gm-output output-dir)
+ (let* ((all-tubes
+	 (join (map (lambda (dir) (find-low-variance-tubes dir)) dirlist)))
+	(good-tubes (removeq #f all-tubes))
+	(gm-outfile-name (format #f "~a/gm-output.sc" output-dir))
+	(tubedata-outfile-name (format #f "~a/gm-output-tubes.sc" output-dir))
+	(objects-outfile-name (format #f
+				      "~a/gm-output-unique-objects.sc"
+				      output-dir))
+	(selected-tubes (second gm-output))
+	(gm-vars
+	 (join
+	  (map (lambda (dir) (get-graphical-model-variables dir)) dirlist)))
+	(noun-list (map first gm-vars))
+	(object-names-and-locations
+	 (map (lambda (noun sel)
+	       (list noun sel (first (first (list-ref good-tubes sel)))))
+	      noun-list selected-tubes))
+	(nouns-with-selections
+	 (remove-duplicates
+	  (map (lambda (a b) (list a b)) noun-list selected-tubes)))
+	)
+  (mkdir-p output-dir)
+  ;;write gm-output to file
+  (write-object-to-file gm-output gm-outfile-name)
+  ;;write tube names & locations to file
+  (write-object-to-file object-names-and-locations tubedata-outfile-name)
+  (write-object-to-file (remove-duplicates object-names-and-locations)
+			objects-outfile-name)
+  ;;get first image from each winning tube, render box, then
+  ;;save image with name noun-object-#-tube-#.png
+  (map-indexed (lambda (sel i)
+		(let* ((noun (first sel))
+		       (sel-num (second sel))
+		       (tube (list-ref good-tubes sel-num))
+		       (video-pathname (third tube))
+		       (tube-frames (fourth tube))
+		       (color-cyan (vector 0 255 255))
+		       (color-blue (vector 0 0 255))
+		       (outname
+			(format #f "~a/~a-object-~a-tube-~a.png"
+				output-dir
+				noun
+				(number->padded-string-of-length i 3)
+				(number->padded-string-of-length sel-num 5)))
+		       (frames (video->frames 1 video-pathname)))
+		 (let loop ((tube tube-frames)
+			    (images frames)
+			    (stop #f))
+		  (if (or (null? tube)
+			  (null? images)
+			  stop)
+		      #f ;;done
+		      (if (first tube)
+			  (let* ((image (first images))
+				 (box (first tube))
+				 (x-val (x box))
+				 (y-val (y box))
+				 (w-val (- (z box) (x box)))
+				 (h-val (- (vector-ref box 3) (y box))))
+			   (imlib:draw-rectangle image x-val y-val w-val
+						 h-val color-blue 3)
+			   (imlib:save image outname)
+			   (imlib:free-image-and-decache image)
+			   (display (format #f "saved ~a" outname))
+			   (newline)
+			   (loop (rest tube) (rest images) #t))
+			  (loop (rest tube) (rest images) #f))))))
+	       nouns-with-selections)
+  ;;do I want to render ALL traces with the noun-locations plotted?
+  
+  ))
+
+
+
+
 
 ;;----------------rendering/filtering----------------
 (define (render-b-tubes path subdir)

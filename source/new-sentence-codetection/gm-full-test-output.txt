@@ -1,0 +1,54 @@
+> (define *floorplan0-output* (gm-full-test))
+/usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
+MATLAB setup complete, starting frames->matlab! load
+Sat Jan 30 17:23:24 EST 2016
+7 videos loaded into matlab
+Sat Jan 30 17:45:50 EST 2016
+starting histogram computation
+Sat Jan 30 17:45:50 EST 2016
+histograms computed for 1022 tubes
+Sat Jan 30 17:54:16 EST 2016
+phow similarity matrix computed
+Sat Jan 30 18:30:01 EST 2016
+
+Starting bp_sentence_codetection_inference at Sat Jan 30 18:33:04 2016
+--------------------
+Unary scores added at Sat Jan 30 18:33:04 2016
+Binary scores added at Sat Jan 30 18:35:33 2016
+before bp call
+after bp call
+before bp.infer
+begin: value 325.058 bound inf
+step: 1 value 310.426 bound inf
+step: 2 value 245.165 bound inf
+step: 3 value 333.537 bound inf
+step: 4 value 336.861 bound inf
+step: 5 value 343.498 bound inf
+step: 6 value 351.641 bound inf
+step: 7 value 350.098 bound inf
+step: 8 value 351.698 bound inf
+step: 9 value 349.577 bound inf
+step: 10 value 350.098 bound inf
+step: 11 value 361.369 bound inf
+step: 12 value 361.369 bound inf
+step: 13 value 350.098 bound inf
+step: 14 value 361.369 bound inf
+step: 15 value 361.369 bound inf
+step: 16 value 361.369 bound inf
+step: 17 value 361.369 bound inf
+step: 18 value 361.369 bound inf
+value 361.369 bound inf
+after bp.infer
+5.69053e+06 ms
+OpenGM Belief Propagation 361.369
+--------------------
+Finshed bp_sentence_codetection_inference at Sat Jan 30 20:10:28 2016
+*FLOORPLAN0-OUTPUT*
+> *floorplan0-output*
+(361.3690243946456 (268 163 268 40 40 163 40 708 778 778 708 60 268 708 778 163 40 40 163 40 268 209 708 708 708 268 40 708 40 163 40 708 778 708 708 778 708 40 708 268 708 268 708 708 268 778 778 708 268 163 268 40 268 163 268 40 163 40))
+> (remove-duplicates *floorplan0-output*)
+(361.3690243946456 (268 163 268 40 40 163 40 708 778 778 708 60 268 708 778 163 40 40 163 40 268 209 708 708 708 268 40 708 40 163 40 708 778 708 708 778 708 40 708 268 708 268 708 708 268 778 778 708 268 163 268 40 268 163 268 40 163 40))
+> (remove-duplicates (second *floorplan0-output*))
+(268 163 40 708 778 60 209)
+> (write-object-to-file *floorplan0-output* "test-gm-output.sc")
+#F

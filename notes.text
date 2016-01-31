@@ -5799,36 +5799,201 @@ TO DO's
 
 --Started run of gm-full-test on seykhl at 1718 and on chino at 1725.
 
+----------------git commit 75f8702--------------
+
+31 Jan 16
+
+--Run of gm-full-test finished.  Total runtime (including building the graphical
+  model data) was just < 3 hours.  Wrote output to test-gm-output.sc.  Saved
+  scheme buffer output to gm-full-test-output.txt.
+
+--Wrote render-gm-output to write scheme files and images of objects output from
+  graphical model.  Output is written in
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan-0-31jan16/
+
+--Email exchange w/Jeff
+  On Sun, Jan 31, 2016 at 8:58 AM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
+  >>> The jobs on chino and seykhl have finished.
+  >>>
+  >>> Here is a suggestion for how to go about debugging.
+  >>>
+  >>> Construct a small example as follows:
+  >>>
+  >>>  1. Take the full set of 58 noun instances.
+  >>>  2. Take the full set of 58 temporal segments with the associated full set of
+  >>>     47 clauses, where each clause has the full set of prepositions.
+  >>>  3. Take the full set of 7 distinct nouns.
+  >>>  4. Take just 7 tubes. One tube for each of the 7 distinct nouns. Manually
+  >>>     select a tube that is a reasonable fit to each of the 7 distinct nouns.
+  >>>
+  >>> This graphical model should be fast to construct. My guess is that it will be
+  >>> instantaneous or close to instantaneous. It should also be fast to perform
+  >>> inference on. My guess is that it will be instantaneous or close to
+  >>> instantaneous. With this you will be able to work interactively.
+  >>>
+  >>> The above graphical model should have an obvious correct solution. It will be
+  >>> trivial to see which of the 58 noun instances get assigned the correct tube.
+  >>> You should take the solution that it gives, along with the total score that
+  >>> the inference procedure computes at that solution and compare it with the
+  >>> total score that you compute by hand for that solution. This should be trivial
+  >>> to do. If it doesn't match, you know where you need to start looking. If it
+  >>> does, but the obtained solution is not the desired solution, you can compute
+  >>> by hand the scores of the different assignments and see which ones lead to
+  >>> getting the wrong answer.
+  >>>
+  >>> Once you get the above example working, you can take 14 tubes, 1 correct for
+  >>> each of the 7 distinct nouns and 1 random distractor. And incrementally work
+  >>> your way up to larger and larger examples.
+  >>>
+  >>> Remember the general principle I told you. Move forward from known working
+  >>> positions not backwards from nonworking positions.
+  >>>
+  >>>     Jeff (http://engineering.purdue.edu/~qobi)
+  On Sun, Jan 31, 2016 at 3:49 PM, Scott Bronikowski <sbroniko@purdue.edu> wrote:
+  >> I have the output of the first graphical model runs rendered in
+  >> seykhl:/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan-0-31jan16
+  >>
+  >> The graphical model reduces the 58 noun instances to 7 unique objects,
+  >> which is correct (except for the fact that there are 2 instances of
+  >> chair, so there should really be 8 objects).  The file
+  >> gm-output-tubes.sc is a list of (noun tube-number #(world x,y,w,h))
+  >> for each noun instance.  The file gm-output-unique-objects.sc is
+  >> simply a remove-duplicates on gm-output-tubes.
+  >>
+  >> For each object in gm-output-unique-objects, I rendered the first box
+  >> in the selected tube for each object.
+  >>
+  >> In 2 cases (dining-room-table and hutch), the selected tube is on at
+  >> least a portion of the correct object.
+  >> In 3 cases (crate, table-with-doors, and chair), the selected tube is
+  >> near the correct object.  For table-with-doors and crate the correct
+  >> object is in the frame, and for chair the correct object is just out
+  >> of frame.
+  >> In the last 2 cases (recycle-bin and side-table), the selected tube is
+  >> actually on the opposite side of the robot from the correct object.
+  >> That is, the correct object is actually behind, instead of in front
+  >> of, the robot in the selected tube.
+  >>
+  >> These results obviously aren't great, but I'm encouraged by the fact
+  >> that matching nouns get assigned the same tube.  I think this means
+  >> that the graphical model is set up correctly.  I think the correctness
+  >> of the selected tubes is a function of the quantity and quality of
+  >> semantic information provided in the sentences.  Does that make sense?
+  >>
+  >> Do you think that constructing the small example you suggested would
+  >> be useful, considering that like nouns already get assigned the same
+  >> tube?  Or would it be more useful to try running the graphical model
+  >> with more & better/longer sentences (i.e., more semantic information)?
+  On Sun, Jan 31, 2016 at 4:05 PM, Scott Bronikowski <sbroniko@purdue.edu> wrote:
+  > Another interesting thing I noticed:
+  >
+  > For the 2 objects that are actually behind the robot on the selected tube,
+  > ("side-table"
+  >     778
+  >     #(-2.210566072535129
+  >        -1.456864947464559
+  >        0.348400213569514
+  >        -0.4594186122568394))
+  > and
+  > ("recycle-bin"
+  >     209
+  >     #(2.544818103155885
+  >        3.893232491162431
+  >        0.1161995540447775
+  >        -0.06165912050593226))
+  > The heights on both of those tubes (last element of the vector) is
+  > negative, which means that the tube projects behind the camera, and
+  > that the box representing the tube is above the horizon.  Those tubes
+  > made it past the variance filter, and I never filtered on negative
+  > heights.  The x-y locations of those tubes are actually reasonable to
+  > where the objects really exist.  Need to think a bit more about what
+  > this means...
+  On Sun, Jan 31, 2016 at 4:12 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
+  >    but I'm encouraged by the fact that matching nouns get assigned the same
+  >    tube.
+  >
+  > This might be an artifact. It could be that for some reason the similarity
+  > measure is being given an unduly high weight.
+  >
+  >    I think this means that the graphical model is set up correctly.
+  >
+  > I wouldn't jump to that conclusion yet.
+  >
+  >    Do you think that constructing the small example you suggested would
+  >    be useful, considering that like nouns already get assigned the same
+  >    tube?
+  >
+  > Yes. There are several distinct things we want to happen:
+  >
+  >  1. Instances of the same noun get assigned to the same tube.
+  >  2. Instances of different nouns get assigned to different tubes.
+  >  3. Nouns get assigned to correct tubes as reflected both
+  >     a. by the image boxes and
+  >     b. by the scores of the prepositions applied to world coordinates
+  >
+  > So far (1) and (2) happen but (3a) doesn't happen. And we don't know about (3b).
+  > And we have only observed (1) and (2) for a single example.
+  >
+  > The general principle that I stated still holds. Move forward from known working
+  > positions not backwards from nonworking positions. We are not yet in a known
+  > working position. Let's get in a position that not only fully works but we
+  > fully understand why it works (or doesn't work). Let's do this on a small
+  > example. And then let's move up incrementally. We'll only take the
+  > nonincremental leap to much larger examples once we have confidence that the
+  > framework is working correctly for the right reasons.
+  >
+  >     Jeff (http://engineering.purdue.edu/~qobi)
+  On Sun, Jan 31, 2016 at 4:30 PM, Jeffrey Mark Siskind <qobi@purdue.edu> wrote:
+  > For the small example, you not only want to see the output, you also was to
+  > see the individual components of the total score for the solution found. You
+  > want to calculate the unary and binary scores by hand for the solution to make
+  > sure they are correct. You want to make sure that they add up to the total
+  > score reported by the graphical model inference procedure. You want to make
+  > sure that the particular scores for this particular solution make sense and
+  > that they encode what you believe are true properties of the input.
+  >
+  > Your graphical model maximizes the within noun image similarity. Obviously,
+  > the image most similar to a given image is the image itself. So obviously,
+  > assigning the same tube to all instances of a noun maximizes this. Something
+  > else trivial probably prevents assigning the same tube to different nouns.
+  > So that alone does not tell you that
+  >
+  >  - the rest of your graphical model formulation is correct or
+  >  - the formal framework solves the pretheoretic problem
+  >
+  >     Jeff (http://engineering.purdue.edu/~qobi)
+
+--Based on emails, going to build small example with hand-selected correct tubes
+  to see if model is working correctly.
+  
+
+
+
+
+
 TO DO's
 -------
 
 ***Think about how to compute PHOW & HOG descriptors and store them with tubes.
-***Can I pass all frames/tubes into MATLAB at one time, then compute PHOW
-   histograms once (in parallel), then compute tube-tube similarity matrix
+
 ***For tube-tube similarity, how should I align different-length tubes?
    Thinking about using length of shorter tube to evenly downsample
    (evenly-pick-m in scheme-->would need to find and reimplement in matlab) the
    longer tube.  Then how should I align image to image?  Perhaps compute the
    average similarity score for all possible permutations, then select the best?
+   **CURRENTLY just using forward and backward alignment, then picking the better
 
 **For location similarity, do we want to take into account variance on tube
   locations?  Something like, if the distance between tubes is less than the
   variance (which variance? both? a mean?), we think it is a better match than
   when the distance is greater.
 
---Do binary scores
-  --one score for same nouns
-  --second score for prep. relationships between head and helper nouns
-  --if have both, multiply
-
-**NEED TO THINK ABOUT THIS MORE**
---Thinking more about unary scores for helper nouns.  When talking with Dan, we
-  discussed incorporating the spatial relationship into the binary score, but
-  I'm not sure how that would work--everything we do with the prepositions
-  happens in the unary score. 
-
-
 **THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
+
+;;for rendering
+(load "codetection-test.sc")
+(define *testdirs* (system-output (format #f "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))
+(define *gm-output* (read-object-from-file "test-gm-output.sc"))
 
 ;;gm test scheme setup
 (load "codetection-test.sc")
