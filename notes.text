@@ -5966,10 +5966,46 @@ TO DO's
 --Based on emails, going to build small example with hand-selected correct tubes
   to see if model is working correctly.
   
+----------------git commit ecac3cc--------------
 
+31 Jan 16 (2)
 
+--First thing to do for small example is to visualize each of the 1022 tubes to
+  pick a reasonable fit for each noun.  Will look at images first, then check
+  location to make sure it is in the right location.
 
+--Have render-good-tubes working, with results in
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan0-good-tubes.
+  Tubes and their locations are saved in good-tubes.sc and good-tubes-xywh.sc.
 
+--Possibilities for good tubes:
+  --table-with-doors:
+    968, 924, 884p, 748p, 696*, 
+  --chair (right of hutch):
+    876p, 867, 567p, 494p, 438*, 421, 340p*, 
+  --chair (left of hutch):
+    1011p (partial), 986p , 951*, 944p, 939*, 936p, 932*, 928*, 927, 717*, 547p,
+    338p*, 157p*, 11p*, 
+  --hutch:
+    998, 980, 952*, 934, 574p, 528p, 524p, 399*, 345p, 
+  --dining-room-table:
+    822, 785, 768, 757*, 735*, 724, 714, 403, 185, 
+  --side-table:
+    808p, 764p, 731, 373*, 346*, 336*, 65p*, 
+  --crate:
+    120(close but not very), 98(closer), 35, 55
+  --recycle-bin:
+    543(wide), 311(small), 252*, 242(dog bowls),
+
+--Good tubes selected: table-with-doors->696, chair(right of hutch)->340,
+  chair(left of hutch)->932, hutch->399, dining-room-table->757,
+  side-table->346, crate->98, recycle-bin->252
+
+--Wrote selected good tubes to
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan0-good-tubes/small-example-tubes.sc 
+
+--Next step is to modify find-graphical-model-data-for-floorplan functions to
+  use just a select number of tubes instead of all.
 
 TO DO's
 -------
@@ -5989,6 +6025,17 @@ TO DO's
   when the distance is greater.
 
 **THOUGHT--change frame nms threshold to a parameter (currently hardcoded 0.5)
+
+;;for finding good tubes
+(load "codetection-test.sc")
+(define *testdirs* (system-output (format #f "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))
+(render-good-tubes *testdirs* "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan0-good-tubes")
+
+(load "codetection-test.sc")
+(define *testdirs* (system-output (format #f "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))
+(define *all-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*)))
+(define *good-tubes* (removeq #f *all-tubes*))
+(define *good-tubes-xywh* (map (lambda (t) (first (first t))) *good-tubes*))
 
 ;;for rendering
 (load "codetection-test.sc")

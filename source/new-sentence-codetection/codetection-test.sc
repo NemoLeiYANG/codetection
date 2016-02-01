@@ -5077,6 +5077,52 @@
   
   ))
 
+(define (render-good-tubes dirlist output-dir)
+  (let* ((all-tubes
+	 (join (map (lambda (dir) (find-low-variance-tubes dir)) dirlist)))
+	 (good-tubes (removeq #f all-tubes))
+	 (videos-list
+	 (remove-duplicates (map third good-tubes)))
+	 (all-video-frames
+	  (map (lambda (v) (video->frames 1 v))
+	       videos-list)))
+   (rm output-dir)
+   (mkdir-p output-dir)
+   ;;get first image from each good tube, render box, then
+   ;;save image with name tube-#.png
+   (map-indexed (lambda (tube i)
+		 (let* ((tube-frames (fourth tube))
+			(color-cyan (vector 0 255 255))
+			(color-blue (vector 0 0 255))
+			(outname
+			 (format #f "~a/tube-~a.png"
+				 output-dir
+				 (number->padded-string-of-length i 5)))
+			(video-idx (find-index-in-list (third tube) videos-list))
+			(frames (list-ref all-video-frames video-idx)))
+		  (let loop ((tube tube-frames)
+			     (images frames)
+			     (stop #f))
+		   (if (or (null? tube)
+			   (null? images)
+			   stop)
+		       #f ;;done
+		       (if (first tube)
+			   (let* ((image (imlib:clone (first images)))
+				  (box (first tube))
+				  (x-val (x box))
+				  (y-val (y box))
+				  (w-val (- (z box) (x box)))
+				  (h-val (- (vector-ref box 3) (y box))))
+			    (imlib:draw-rectangle image x-val y-val w-val
+						  h-val color-blue 3)
+			    (imlib:save image outname)
+			    (imlib:free-image-and-decache image)
+			    (display (format #f "saved ~a" outname))
+			    (newline)
+			    (loop '() '() #t))
+			   (loop (rest tube) (rest images) #f))))))
+		good-tubes)))
 
 
 

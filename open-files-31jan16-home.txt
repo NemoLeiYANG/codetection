@@ -1,0 +1,11 @@
+.   notes.text          317121  Text		  ~/codetection/notes.text
+    codetection-test.s: 213814  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+  * *shell*<3>           91233  Shell:run	  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan0-good-tubes/
+  * *scheme*           1234873  Inferior Scheme:
+  * *shell*              15058  Shell:run	  ~/codetection/
+    gm-output-unique-obje: 851  Scheme		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan-0-31jan16/gm-output-unique-objects.sc
+  * *shell*<2>           16063  Shell:run	  ~/codetection/source/new-sentence-codetection/
+    inference.cpp        48684  C++/l		  ~/codetection/source/new-sentence-codetection/inference.cpp
+    inference.h           1655  C++/l		  ~/codetection/source/new-sentence-codetection/inference.h
+    *scratch*              191  Lisp Interaction
+  * *Messages*            1954  Fundamental
