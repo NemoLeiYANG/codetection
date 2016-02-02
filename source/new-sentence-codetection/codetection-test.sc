@@ -4647,6 +4647,70 @@
 			(loop (sublist (first lst) 4 (length (first lst))) '()))
 		       out)))))))
 
+(define (make-phrases raw-alignment)
+ (let* ((numbered-alignment (number-nouns raw-alignment)))
+  (let loop ((lst numbered-alignment)
+	     (out '()))
+   (if (null? lst)
+       (reverse out)
+       (if (and (= (length (first lst)) 4)
+		(not (null? (fourth (first lst)))))
+	   (loop (rest lst) (cons (list
+				   (fourth (first lst))
+				   (string-append
+					 (symbol->string (third (first lst)))
+					 " " (second (first lst))))
+						       out))
+	   (loop (rest lst)
+		 (cons (append
+			(let loop2 ((things
+				    (sublist (first lst) 4 (length (first lst))))
+				   (out2 '()))
+			(if (null? things)
+			    (join out2)
+			    (loop2 (rest things)
+				   (cons (list
+					  (fourth (first lst))
+					  (string-append
+					   (symbol->string (third (first lst)))
+					   " " (second (first lst)) " which is "
+					   (symbol->string (third (first things)))
+					   " " (second (first things)))
+					       
+					  ;; (first (first lst))
+					  ;; (third (first things))
+					  ;; (first (first things))
+					       )
+					 out2))))
+			(loop (sublist (first lst) 4 (length (first lst))) '()))
+		       out)))))))
+
+(define (clean-phrases phrase-list)
+ (let loop ((ph1 (first phrase-list))
+	    (phrases (rest phrase-list))
+	    (out '()))
+  (if (null? phrases)
+      (reverse (cons ph1 out))
+      (if (and (< (length ph1) 4)
+	       (not (equal? (first ph1) (first (first phrases)))))
+	  (loop (first phrases) (rest phrases) (cons ph1 out)) ;;normal
+	  (if (equal? (first ph1) (first (first phrases)))
+	      (loop (second phrases) ;;2 different phrases describing same path seg
+		    (rest (rest phrases))
+		    (cons (list (first ph1)
+				(string-append (second ph1)
+					       ";";;"\\n"
+					       (second (first phrases))))
+			  out))
+	      (loop (first phrases) ;;phrase with 2 different helper nouns HACK
+		    (rest phrases)
+		    (cons (list (first ph1)
+				(string-append (second ph1)
+					       "&";;"\\n"
+					       (fourth ph1)))
+			  out)))))))
+	    
+
 (define (find-noun-to-helper-noun-binary-score tube1 tube2 preposition-function)
  ;;similar to find-unary-score
  ;;this ONLY works with in-front-of, behind, left-of, right-of
@@ -6159,4 +6223,170 @@
 ;;~/Documents/MATLAB/startup.m
 ;;(start-matlab!)
 ;;REMOVED and put back in (generate-proposals)
+
+
+;;plotting stuff for paths with graphical model output
+
+(define (matlab-plot-one-run raw-trace idx object-names-and-locations alignment
+			     xy-max xy-min output-dir)
+ ;;this is meant to be called from within render-gm-output(-small-example)
+ ;;object-names-and-locations should be JUST the objects for this run-->
+ ;;  HOW do we do that?
+ (let* ((trace (map (lambda (p) (subvector p 0 2)) raw-trace)) ;;need to downsample?
+	(start (first trace))
+	(end (last trace))
+	(xvals (map x trace))
+	(yvals (map y trace))
+	(raw-arrow-trace
+	 (map-indexed
+	  (lambda (p i) (vector-append p (list-ref trace (+ i 1))))
+	  (but-last trace)))
+	(dist-interval 0.20) ;;20 cm
+	(arrow-trace
+	 (but-last (removeq
+		    #f
+		    (let loop ((poi (first raw-arrow-trace))
+			       (points (rest raw-arrow-trace))
+			       (out '()))
+		     (if (null? points)
+			 out
+			 (if (> (distance (subvector poi 0 2)
+					  (subvector (first points) 0 2))
+				dist-interval)
+			     (loop (first points) (rest points) (cons poi out))
+			     (loop poi (rest points) out)))))))
+	(unique-objects
+	 (remove-duplicates object-names-and-locations))
+	(object-names (map first unique-objects))
+	(object-xy (map (lambda (v) (subvector (third v) 0 2)) unique-objects))
+	(phrases (clean-phrases (make-phrases (third alignment))))
+	(phrases-xy
+	 ;;(dtrace "phrases-xy"
+	 (map (lambda (p)
+	       (list-ref trace ;; (dtrace "list-mean" (exact-round (list-mean (first p))))
+			 (+ 10 (random-integer 10)
+			    (first (first p)))
+			 ))
+	      phrases));;)
+	(break-point-indices
+	 (but-last
+	  (map (lambda (l) (second (third l))) (third alignment))))
+	(break-point-xy
+	 (map (lambda (p) (list-ref trace p)) break-point-indices))
+				   
+	)
+  (start-matlab!)
+  (matlab "clear all; close all;")
+  (matlab "h=figure")
+  ;;use something like "h=figure('visible','off');" to just save file
+  ;;see house_make_plots_new.m
+  (matlab "hold on")
+  (matlab (format #f "axis([~a ~a ~a ~a]);" xy-min xy-max xy-min xy-max))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list xvals)
+   (list yvals)
+   (list "'trace'")
+   (list "'c-','LineWidth',2"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (map x object-xy))
+   (list (map y object-xy))
+   (list "'objects'")
+   (list "'md','MarkerFaceColor','m'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (map x break-point-xy))
+   (list (map y break-point-xy))
+   (list "'breaks'")
+   (list "'ko','MarkerFaceColor','k'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (map x phrases-xy))
+   (list (map y phrases-xy))
+   (list "'breaks'")
+   (list "'bo','MarkerFaceColor','b'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (list (first (vector->list start))))
+   (list (list (second (vector->list start))))
+   (list "'start'" )
+   (list "'go','MarkerFaceColor','g'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (list (first (vector->list end))))
+   (list (list (second (vector->list end))))
+   (list "'end'" )
+   (list "'ro','MarkerFaceColor','r'"))
+  ;;(matlab (format #f "text(~a,~a,'~a')" (x start) (y start) "start"))
+  ;;(matlab (format #f "text(~a,~a,'~a')" (x end) (y end) "end"))
+  (map (lambda (oname oxy)
+	(matlab (format #f "text(~a,~a,'~a')" (x oxy) (y oxy)
+			oname)))
+       object-names object-xy)
+  (map-indexed (lambda (pxy i)
+		(matlab (format #f "text(~a,~a,'~a')"
+				(+ (x pxy) 0.05)
+				(+ (y pxy) 0.05) (+ i 1))))
+	       phrases-xy)
+  (matlab "strmat = [];")
+  (map-indexed (lambda (ph i)
+  		(matlab (format #f "str = sprintf('~a. ~a');" (+ i 1) (second ph)))
+  		;; (matlab "textbp(str);")
+  		(matlab "strmat = [strmat,' ',str];")
+  		)
+  	       phrases)
+  ;;(matlab "textbp(strmat)")
+  (matlab (format #f "text(~a,~a,strmat)" (+ 1 xy-min) (+ 1 xy-min)))
+  ;; (map (lambda (ph pxy)
+  ;; 	(matlab (format #f "str = sprintf('~a');" (second ph)))
+  ;; 	(matlab (format #f "text(~a,~a,str)" (x pxy) (y pxy))))
+  ;;      phrases phrases-xy)
+  (matlab-plot-arrowheads-on-trace arrow-trace) ;;this has to go last
+  (matlab "box on")
+  (matlab "hold off")
+  (matlab (format #f "saveas(h,'~a/sentence-~a.png');"
+		  output-dir
+		  (number->padded-string-of-length idx 3)))
+  ))
+
+(define (plot-lines-in-matlab-with-symbols-no-legend x-lists
+						     y-lists
+						     labels
+						     symbols)
+ (matlab "X=[];")
+ (matlab "Y=[];")
+  (matlab
+   (string-append
+    "h=plot("
+    (reduce (lambda (s1 s2)
+	     (string-append s1 "," s2))
+	    (map (lambda (x-values y-values symbol i)
+		  (scheme->matlab! "tempx" x-values)
+		  (scheme->matlab! "tempy" y-values)
+		  (matlab (format #f
+				  "X{~a}=tempx;"
+				  (+ i 1)))
+		  (matlab (format #f
+				     "Y{~a}=tempy;"
+				     (+ i 1)))
+		  (format #f
+			  (string-append "X{~a},Y{~a},"
+					 ""symbol"")
+			  (+ i 1)
+			  (+ i 1)))
+		 x-lists y-lists symbols (enumerate (length x-lists)))
+   	   "")
+    ")")
+   )
+  )
+	 
+(define (matlab-plot-arrowheads-on-trace list-of-xy-vectors)
+ (let* ((arrow-linespec
+	 "'Color','cyan','HeadStyle','vback3','HeadLength',10,'HeadWidth',10"))
+  (scheme->matlab! "D" list-of-xy-vectors)
+  ;;(matlab "axis([-4 4 -4 4])")
+  (matlab "[r,c] = size(D)")
+  (matlab (format #f
+		  "for i = 1:r;
+                       xa = [D(i,1),D(i,3)]; ya = [D(i,2),D(i,4)];
+                       [xaf,yaf] = ds2nfu(xa,ya)
+                       ah = annotation('arrow',xaf,yaf,~a);
+                   end;" arrow-linespec))
+  (matlab "set(gcf,'WindowStyle','normal'); set(gcf, 'Position', [0 0 900 800])")))
+
 

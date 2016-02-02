@@ -6113,6 +6113,18 @@ TO DO's
 --Found problem with GM being set up as an adder instead of a multiplier--fixed
   it.
 
+----------------git commit 851d32a--------------
+
+2 Feb 16
+
+--After changeover to multiplier instead of adder, noticed that even with only
+  the 8 correct tubes, there are 10 objects found-->1 extra chair (tube on
+  recycle-bin) and 1 extra side-table (tube also on recycle-bin).
+
+--Working on matlab-plot-one-run in codetection-test.sc, along with the
+  associated functions therein.  Plot looks good, just got to get text to print
+  reasonably.  Experimenting with text, textbp, annotation functions.
+
 
 TO DO:
 **get rid of binary scores so it is trivial to solve-->make sure it works

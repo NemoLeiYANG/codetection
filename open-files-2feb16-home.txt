@@ -1,0 +1,12 @@
+.   notes.text          323378  Text		  ~/codetection/notes.text
+    rendering-code.sc    71910  Scheme		  ~/codetection/rendering-code.sc
+    codetection-test.s: 220295  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+  * *shell*<3>           94234  Shell:run	  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan-0-gt2-mult-small-1/
+    scheme-working-buf: 889780  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-1feb16.txt
+    inference.cpp        48689  C++/l		  ~/codetection/source/new-sentence-codetection/inference.cpp
+  * *shell*              17812  Shell:run	  ~/codetection/
+    open-files-1feb16.tx: 4800  Text		  ~/codetection/open-files-1feb16.txt
+  * *scheme*           1234905  Inferior Scheme:
+  * *shell*<2>           16063  Shell:run	  ~/codetection/source/new-sentence-codetection/
+    *scratch*              191  Lisp Interaction
+  * *Messages*            2517  Fundamental
