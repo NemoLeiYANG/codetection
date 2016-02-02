@@ -75,7 +75,7 @@ double bp_sentence_codetection_inference(int num_nouns, int num_tubes,
 
   typedef opengm::DiscreteSpace<> Space;
   typedef opengm::ExplicitFunction<double> Function;
-  typedef opengm::GraphicalModel<double, opengm::Adder, Function, Space> GraphModel;
+  typedef opengm::GraphicalModel<double, opengm::Multiplier, Function, Space> GraphModel;
   typedef GraphModel::FunctionIdentifier FID;
   typedef opengm::BeliefPropagationUpdateRules<GraphModel, opengm::Maximizer> UpdateRules; //maximizing since good score is close to 1
   typedef opengm::MessagePassing<GraphModel, opengm::Maximizer, UpdateRules, opengm::MaxDistance> BP;

@@ -4394,6 +4394,9 @@
 	(def (first (find-def-and-filter path subdir))))
   (vector-append abc def)))
 
+
+;; (define *good-tubes-new* (removeq #f (map (lambda (t) (if (< (vector-ref (first (first t)) 3) 0) #f t)) *good-tubes*)))
+
 (define (find-low-variance-tubes path)
  ;;this is the old d-filter (>5 frames, distance from mean < 50 cm)
  ;;modified to use the nms-tubes.sc in the base path
@@ -4417,6 +4420,9 @@
 	 (map (lambda (t)
 	       (world-xywh-list->world-mean-and-variance t))
 	      world-xywh-lists))
+	(ground-plane-filter
+	 (map (lambda (tube)
+	       (if (< (vector-ref (first tube) 3) 0) #f #t)) wmv))
 	(distance-lists
 	 (map third
 	      (map (lambda (l)
@@ -4437,16 +4443,19 @@
 			      #f))
 	      first-distance-filter))
 	(output
-	 (map (lambda (l1 l2 l3 l4 l5 l6)
-	       (if (and l1 l2)
+	 (map (lambda (l1 l2 l3 l4 l5 l6 l7)
+	       (if (and l1 l2 l7)
 		   (list l3 (vector l4 l5) video-name l6)
 		   #f))
 	      length-filter final-distance-filter
 	      wmv
 	      distance-means
 	      distance-variances
-	      tubes-no-scores)))
+	      tubes-no-scores
+	      ground-plane-filter)))
   output))
+
+
 
 (define (save-low-variance-tubes-house-test)
  (let* ((dirlist
@@ -4574,6 +4583,18 @@
 					  (third v)
 					  (eval (second v))))
 	gm-vars))))
+
+(define (find-unary-score-matrix-for-given-tubes tubes dirlist)
+ (let* ((all-tubes tubes)
+	(gm-vars
+	 (join (map (lambda (dir) (get-graphical-model-variables dir)) dirlist))))
+  (list->vector
+   (map (lambda (v)
+	 (find-unary-scores-for-all-tubes all-tubes
+					  (third v)
+					  (eval (second v))))
+	gm-vars))))
+
 (define (num-func num l)
  (if (= (length l) 3)
      (cons num l)
@@ -4944,10 +4965,62 @@
 	noun-pairs-list
 	base-binary-scores-matrix)))
 
+(define (find-binary-score-data-for-given-tubes tubes dirlist)
+ ;;this does the same thing as find-binary-score-data-for-floorplan, except it
+ ;;uses only the given tubes
+ (let* ((raw-alignment
+	 (join (map (lambda (dir)
+		     (third (read-object-from-file
+			     (format #f "~a/alignment.sc" dir))))
+		    dirlist)))
+	(all-tubes tubes)
+	(good-tubes (removeq #f all-tubes))
+	(gm-vars
+	 (join (map (lambda (dir) (get-graphical-model-variables dir)) dirlist)))
+	(helper-noun-list (make-helper-noun-list raw-alignment))
+	(helper-noun-binary-scores-list
+	 (map (lambda (l) (find-noun-noun-binary-score-matrix all-tubes l))
+	      helper-noun-list))
+	(same-noun-list (find-same-nouns gm-vars))
+	(noun-pairs-list (make-list-of-matching-nouns same-noun-list))
+	;;(tubes-with-phow (get-phow-hists-all-tubes all-tubes))
+	(tube-tube-loc-sim-matrix
+	 (list->vector
+	  (map (lambda (t1)
+		(list->vector
+		 (map (lambda (t2)
+		       (find-location-similarity-between-tubes t1 t2))
+		      good-tubes)))
+	       good-tubes)))
+	;; (tube-tube-phow-sim-matrix
+	;;  ;;FIXME--change this if tube list changes!!
+	;;  (vector (vector 1 1 1 1 1 1 1 1)
+	;; 	 (vector 1 1 1 1 1 1 1 1)
+	;; 	 (vector 1 1 1 1 1 1 1 1)
+	;; 	 (vector 1 1 1 1 1 1 1 1)
+	;; 	 (vector 1 1 1 1 1 1 1 1)
+	;; 	 (vector 1 1 1 1 1 1 1 1)
+	;; 	 (vector 1 1 1 1 1 1 1 1)
+	;; 	 (vector 1 1 1 1 1 1 1 1))
+	;;  ;; (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan0-good-tubes/small-example-tubes-2-phow-sim-mat.sc")
+	;;  ;; (all-tubes->phow-visual-similarity-matrix all-tubes)
+	;;  )
+	(base-binary-scores-matrix tube-tube-loc-sim-matrix)
+	 ;; (elementwise-multiply-matrices tube-tube-phow-sim-matrix
+	 ;; 				tube-tube-loc-sim-matrix)
+	 )
+  (list helper-noun-binary-scores-list
+	noun-pairs-list
+	base-binary-scores-matrix)))
+
 (define (find-graphical-model-data-for-floorplan dirlist)
  (list (find-unary-score-matrix-for-floorplan dirlist)
        (find-binary-score-data-for-floorplan dirlist)))
 ;;THIS DOES ALL THE MAGIC--once alignment.sc, frame-poses.sc, nms-tubes.sc all exist
+
+(define (find-graphical-model-data-for-given-tubes tubes dirlist)
+ (list (find-unary-score-matrix-for-given-tubes tubes dirlist)
+       (find-binary-score-data-for-given-tubes tubes dirlist)))
 
 (define (run-graphical-model gmdata)
  (let* ((num-nouns (vector-length (first gmdata)))
@@ -5004,6 +5077,15 @@
 	(gmdata (find-graphical-model-data-for-floorplan dirlist)))
   (run-graphical-model gmdata)))
 
+(define (gm-small-example tubes)
+ (let* ((dirlist (system-output
+		  (format
+		   #f
+		   "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*"
+		   "floorplan-0")))
+	(gmdata (find-graphical-model-data-for-given-tubes tubes dirlist)))
+  (run-graphical-model gmdata)))
+
 (define (render-gm-output dirlist gm-output output-dir)
  (let* ((all-tubes
 	 (join (map (lambda (dir) (find-low-variance-tubes dir)) dirlist)))
@@ -5025,7 +5107,11 @@
 	(nouns-with-selections
 	 (remove-duplicates
 	  (map (lambda (a b) (list a b)) noun-list selected-tubes)))
-	)
+	(videos-list
+	  (remove-duplicates (map third good-tubes)))
+	 (all-video-frames
+	  (map (lambda (v) (video->frames 1 v))
+	       videos-list)))
   (mkdir-p output-dir)
   ;;write gm-output to file
   (write-object-to-file gm-output gm-outfile-name)
@@ -5049,7 +5135,9 @@
 				noun
 				(number->padded-string-of-length i 3)
 				(number->padded-string-of-length sel-num 5)))
-		       (frames (video->frames 1 video-pathname)))
+		       ;; (frames (video->frames 1 video-pathname))
+		       (video-idx (find-index-in-list (third tube) videos-list))
+		       (frames (list-ref all-video-frames video-idx)))
 		 (let loop ((tube tube-frames)
 			    (images frames)
 			    (stop #f))
@@ -5058,7 +5146,7 @@
 			  stop)
 		      #f ;;done
 		      (if (first tube)
-			  (let* ((image (first images))
+			  (let* ((image (imlib:clone (first images)))
 				 (box (first tube))
 				 (x-val (x box))
 				 (y-val (y box))
@@ -5073,6 +5161,94 @@
 			   (loop (rest tube) (rest images) #t))
 			  (loop (rest tube) (rest images) #f))))))
 	       nouns-with-selections)
+  ;;free memory
+  (length (map (lambda (frame) (begin
+				(imlib-context-set-image! frame)
+				(imlib:free-image-and-decache frame)))
+	       (join all-video-frames)))
+  ;;do I want to render ALL traces with the noun-locations plotted?
+  
+  ))
+
+(define (render-gm-output-small-example tubes dirlist gm-output output-dir)
+ (let* ((all-tubes tubes)
+	(good-tubes (removeq #f all-tubes))
+	(gm-outfile-name (format #f "~a/gm-output.sc" output-dir))
+	(tubedata-outfile-name (format #f "~a/gm-output-tubes.sc" output-dir))
+	(objects-outfile-name (format #f
+				      "~a/gm-output-unique-objects.sc"
+				      output-dir))
+	(selected-tubes (second gm-output))
+	(gm-vars
+	 (join
+	  (map (lambda (dir) (get-graphical-model-variables dir)) dirlist)))
+	(noun-list (map first gm-vars))
+	(object-names-and-locations
+	 (map (lambda (noun sel)
+	       (list noun sel (first (first (list-ref good-tubes sel)))))
+	      noun-list selected-tubes))
+	(nouns-with-selections
+	 (remove-duplicates
+	  (map (lambda (a b) (list a b)) noun-list selected-tubes)))
+	(videos-list
+	  (remove-duplicates (map third good-tubes)))
+	 (all-video-frames
+	  (map (lambda (v) (video->frames 1 v))
+	       videos-list)))
+  (mkdir-p output-dir)
+  ;;write gm-output to file
+  (write-object-to-file gm-output gm-outfile-name)
+  ;;write tube names & locations to file
+  (write-object-to-file object-names-and-locations tubedata-outfile-name)
+  (write-object-to-file (remove-duplicates object-names-and-locations)
+			objects-outfile-name)
+  ;;get first image from each winning tube, render box, then
+  ;;save image with name noun-object-#-tube-#.png
+  (map-indexed (lambda (sel i)
+		(let* ((noun (first sel))
+		       (sel-num (second sel))
+		       (tube (list-ref good-tubes sel-num))
+		       (video-pathname (third tube))
+		       (tube-frames (fourth tube))
+		       (color-cyan (vector 0 255 255))
+		       (color-blue (vector 0 0 255))
+		       (outname
+			(format #f "~a/~a-object-~a-tube-~a.png"
+				output-dir
+				noun
+				(number->padded-string-of-length i 3)
+				(number->padded-string-of-length sel-num 5)))
+		       ;; (frames (video->frames 1 video-pathname))
+		       (video-idx (find-index-in-list (third tube) videos-list))
+		       (frames (list-ref all-video-frames video-idx)))
+		 (let loop ((tube tube-frames)
+			    (images frames)
+			    (stop #f))
+		  (if (or (null? tube)
+			  (null? images)
+			  stop)
+		      #f ;;done
+		      (if (first tube)
+			  (let* ((image (imlib:clone (first images)))
+				 (box (first tube))
+				 (x-val (x box))
+				 (y-val (y box))
+				 (w-val (- (z box) (x box)))
+				 (h-val (- (vector-ref box 3) (y box))))
+			   (imlib:draw-rectangle image x-val y-val w-val
+						 h-val color-blue 3)
+			   (imlib:save image outname)
+			   (imlib:free-image-and-decache image)
+			   (display (format #f "saved ~a" outname))
+			   (newline)
+			   (loop (rest tube) (rest images) #t))
+			  (loop (rest tube) (rest images) #f))))))
+	       nouns-with-selections)
+  ;;free memory
+  (length (map (lambda (frame) (begin
+			(imlib-context-set-image! frame)
+			(imlib:free-image-and-decache frame)))
+       (join all-video-frames)))
   ;;do I want to render ALL traces with the noun-locations plotted?
   
   ))
@@ -5082,7 +5258,7 @@
 	 (join (map (lambda (dir) (find-low-variance-tubes dir)) dirlist)))
 	 (good-tubes (removeq #f all-tubes))
 	 (videos-list
-	 (remove-duplicates (map third good-tubes)))
+	  (remove-duplicates (map third good-tubes)))
 	 (all-video-frames
 	  (map (lambda (v) (video->frames 1 v))
 	       videos-list)))
@@ -5122,7 +5298,13 @@
 			    (newline)
 			    (loop '() '() #t))
 			   (loop (rest tube) (rest images) #f))))))
-		good-tubes)))
+		good-tubes)
+   ;;free memory
+   (length (map (lambda (frame) (begin
+			 (imlib-context-set-image! frame)
+			 (imlib:free-image-and-decache frame)))
+	(join all-video-frames))) ;;length to prevent output of long list of #f
+   ))
 
 
 

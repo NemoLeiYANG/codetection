@@ -6007,6 +6007,138 @@ TO DO's
 --Next step is to modify find-graphical-model-data-for-floorplan functions to
   use just a select number of tubes instead of all.
 
+----------------git commit c7feaec--------------
+
+1 Feb 16
+
+--Wrote find-unary-score-matrix-for-given-tubes,
+  find-binary-score-data-for-given-tubes,
+  find-graphical-model-data-for-given-tubes, gm-small-example, and
+  render-gm-output-small-example to run render a graphical model run from a
+  small set of tubes.
+
+--Looked at output from first selection of good tubes (above) and saw that chair
+  and hutch were assigned to the same tube, and that tubes 5 and 6 were never
+  used.  Selections for crate, dining-room-table, recycle-bin, side-table, and
+  table-with-doors were correct.  Looking to change tube selected for hutch to
+  see if this changes.
+
+--New selections (IN ORDER):
+      table-with-doors: 696
+      chair R: 340
+      chair L: 932
+      hutch: 934 (considered 998, 934, 574, 528, 524)
+      dining-room-table: 757
+      side-table: 346
+      crate: 98
+      recycle-bin: 252
+  Written to
+      /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan0-good-tubes/small-example-tubes-2.sc 
+
+--To speed things along, replaced the call to
+  all-tubes->phow-visual-similarity-matrix in
+  find-binary-score-data-for-given-tubes with a file read.  ***NEED TO CHANGE
+  THIS IF LIST OF TUBES CHANGES*** 
+
+--Tried small example with new, different tube for hutch, still same
+  result-->but chair and hutch should NOT be able to get the same tube b/c they
+  are in SEVERAL different noun-noun clauses together.  Need to understand why
+  this is happening.
+
+--After discussing a few ideas with Dan, I tried removing visual similarity
+  completely, since it seemed to be pretty noisy and not have a lot of
+  connection with what seems similar to humans.  Without any visual similarity
+  between tubes (i.e., using JUST location similarity), we got the results we were
+  looking for-->each of the 8 tubes assigned to a different noun (except for 2
+  chairs, which were different chair tubes).  So I guess ditching visual
+  similarity is a good idea.
+
+--Next going to try adding in an additional 8 random-noise tubes to see what
+  happens. Random noise tubes added (in order) are: 0, 6, 11, 14, 37, 71, 106,
+  121.  Appended these onto small-example-tubes-2.sc and wrote to
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan0-good-tubes/small-example-tubes-3.sc.
+
+--On test with random-noise tubes, found 7/8 correct.  The chair left-of the
+  hutch was the only one incorrect, and it turned out that the tube selected was
+  one that was above the horizon and thus projected back to a position that was
+  'more left' than the correct tube.
+
+--After talking with Dan, decided to implement another filter on the tubes to
+  remove all of the tubes that are above the horizon.  This is simply filtering
+  on anything that has a world height < 0, but that is just an artifact of how
+  we compute the locations.  Since we assume that all boxes are on the ground,
+  boxes that are above the horizon break this assumption and actually project
+  behind the camera (i.e., not in the direction the camera is looking).  That is
+  the justification for eliminating the boxes.  The negative world height is
+  simply a convenient trait on which to filter.
+
+--Redid find-low-variance-tubes to also include a ground plane filter.  Have new
+  good tubes for small example rendered in
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan0-good-tubes-2. Also
+  wrote out the good-tubes.sc and good-tubes-xywh.sc files there.  
+
+--New selections for reduced tube list (IN ORDER):
+      table-with-doors: 475
+      chair R: 235
+      chair L: 629 (635?)
+      hutch: 631 
+      dining-room-table: 523
+      side-table: 241
+      crate: 65
+      recycle-bin: 173
+  Written to
+      /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan0-good-tubes-2/small-example-tubes.sc 
+
+--Output of test with new tubes w/o distractors in
+  test-floorplan-0-gt2-small-1/, same results as with previous.
+
+--Adding 8 distractor tubes to set : 5, 8, 20, 40, 54, 57, 80, 95
+
+--When distractor tubes are added, get bogus results.  Only 7 objects (1 chair
+  only) selected, and dining-room-table is on the wrong tube.  Interestingly,
+  the objective function score is LOWER on the bogus solution.  This makes
+  sense, since it is a worse solution, but why is OpenGM exiting when there is a
+  better solution possible?
+
+--Small test results:
+  gt2-small-1-->8 tubes, all valid-->score 354.511, 8 objects, no mistakes
+    (stays the same when adding up to 3 bad tubes)
+  gt2-small-2-->12 tubes, 4 bad--> score 354.227, 8 objects (2 chairs), 1
+     mistake (dining-room-table) 
+  gt2-small-3-->16 tubes, 8 bad-->score 354.365, 7 objects (only 1 chair), 1
+     mistake (dining-room-table)
+
+--Need to figure out why it is getting a worse score when more tubes are added.
+
+--Found problem with GM being set up as an adder instead of a multiplier--fixed
+  it.
+
+
+TO DO:
+**get rid of binary scores so it is trivial to solve-->make sure it works
+  (verifiable optimal solution for given tubes)
+
+**visualize selected nouns with sentences-->plot per sentence, mark start and
+  end points of path segments, plot noun/preposition phrases for that sentence,
+  maybe somehow connect path segments to nouns
+
+**if binary scores back in, take nth root (n=number of nouns in clique) of
+  binary score to make more like a linear score rather than quadratic.
+
+
+
+**ideas discussed with Dan 1Feb16 but not implemented
+  1. Sigmoid von-mises (preposition) output to make the functions more square
+  2. Limit visual self-similarity to max non-self similarity (MOOT NOW).
+  3. Discussed that adding helper noun relationships between all instances of
+     such nouns would just add noise-->every instance would have every
+     relationship, so there would be no differentiation.
+
+**IDEAS FOR FIX:
+  1. for visual similarity, limit self-similarity to the maximum non-self
+  similarity (or a small % higher) NOW MOOT
+  2. add helper noun relationships between ALL instances of such nouns NO!
+
 TO DO's
 -------
 
