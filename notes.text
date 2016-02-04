@@ -6125,10 +6125,81 @@ TO DO's
   associated functions therein.  Plot looks good, just got to get text to print
   reasonably.  Experimenting with text, textbp, annotation functions.
 
+----------------git commit a64830f--------------
+
+3 Feb 16
+
+--Finished fixing matlab-plot-one-run.  Got text working by putting strings into
+  a cell array.  
+
+--Have call to matlab-plot-one-run working from within
+  render-gm-output(-small-example). 
+
+--Noticed in rendered paths that sometimes the path is passing behind objects
+  that are against the far wall.  At first thought that it might be a problem
+  with which tubes I selected, but then after talking to Dan realized that the
+  problem might come from the gyro drift correction I apply to the paths.  Going
+  to try taking that correction out and then plotting both traces.
+
+--Modified matlab-plot-one-run and render-gm-output-small-example to take two
+  traces and plot them on top of each other.  Saw that there is no difference
+  between the two traces since the correction only altered the theta value and
+  didn't recompute the KF output.
+
+--Analyzing the raw tracks (track.sc) to see if the drift is consistent.
+
+--Implemented small correction to theta in
+  ~/vader-rover/position/log_to_track.cpp.  Did not make a large difference.
+  Also noticed that version of KF on rover (the_force.cpp) was using the dt from
+  the encoder, while log_to_track was using a fixed dt of 1/50s.  The fixed dt
+  seems to give a more accurate track in many cases. which seems to make sense
+  b/c the IMU is spitting out dTheta every 20 ms, while encoder is being polled
+  at an interval close to 20ms, but not exactly.  Of course, tube locations have
+  been derived from robot (less accurate) odometry, so we would probably have to
+  re-derive tube locations if we went with an odometry change.
+
+--Since solving odometry is probably outside the realm of possibility for the
+  time we have left, going a different direction.  
+   --Make the simplest GM possible with 1 vertex for each physical object (so 8
+     in the example floorplan).  
+   --Label each instance uniquely (i.e., chair1, chair2)
+   --Use sentence occurrences (with no visual sim or location binary scores at
+     all) to determine the assignment of tubes to vertices.  
+   --What about sentential binary clues?
+
+--Changed 'chair' to 'chairR' or 'chairL' in alignment.sc files for
+  floorplan-0.  NEED TO CHANGE THIS BACK AT SOME POINT!
+
+--Creating new simpler graphical model by changing the following:
+  - gm-small-example -> simple-gm-small-example (DONE)
+  - find-graphical-model-data-for-given-tubes ->
+    find-simple-graphical-model-data-for-given-tubes 
+  - find-unary-score-matrix-for-given-tubes ->
+    find-simple-unary-score-matrix-for-given-tubes 
+  - find-binary-score-matrix-for-given-tubes ->
+    find-simple-binary-score-matrix-for-given-tubes 
+  - run-graphical-model -> run-simple-graphical-model
+  - bp-sentence-codetection-inference ->
+    bp-sentence-codetection-inference-simple
+
+--New methods needed for finding graphical model variables, computing unary and
+  binary scores.  Also need new C++ code to run GM.
+
+--Idea for graphical model variables: start with old way of joined list; get
+  list of just nouns with remove-duplicates and map first; make separate lists
+  for each noun using transitive-equivalence-classesp (see yesterday)
+
+--The above seems to be working-->now need to figure out what to do about helper
+  nouns--do I just disregard them when building the gm vars and then come back
+  with a helper noun list similar (but significantly different) than before?
+  **probably should be similar to numbered stuff, but just need (n1 prep n2)
+
 
 TO DO:
 **get rid of binary scores so it is trivial to solve-->make sure it works
   (verifiable optimal solution for given tubes)
+*****NEED TO GET TO THIS ASAP******
+
 
 **visualize selected nouns with sentences-->plot per sentence, mark start and
   end points of path segments, plot noun/preposition phrases for that sentence,

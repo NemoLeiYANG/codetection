@@ -1,0 +1,16 @@
+.   notes.text          327134  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+    alignment.sc           421  Scheme		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-6/alignment.sc
+    codetection-test.s: 232399  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+  * *scheme*           1353578  Inferior Scheme:
+  * *shell*<3>             337  Shell:run	  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan-0-gt2-mult-small-1/
+    inference.cpp        48689  C++/l		  ~/codetection/source/new-sentence-codetection/inference.cpp
+    log_to_track.cpp     16427  C++/l		  /amd/upplysingaoflun/root/aux/home/sbroniko/vader-rover/position/log_to_track.cpp
+  * *shell*<2>           12151  Shell:run	  ~/vader-rover/position/
+    the-force.cpp        73164  C++/l		  ~/vader-rover/position/the-force.cpp
+  * *Messages*            4180  Fundamental
+  * *scratch*              454  Lisp Interaction
+    open-files-2feb16-wo: 1810  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/open-files-2feb16-work.txt
+  * *shell*<4>             290  Shell:run	  ~/darpa-collaboration/ideas/x86_64-Linux-3.2.0-4-amd64/
+  * *shell*                230  Shell:run	  ~/codetection/
+    rendering-code.sc    71910  Scheme		  ~/codetection/rendering-code.sc
+ %  *Ediff Registry*       482  MetaEdiff

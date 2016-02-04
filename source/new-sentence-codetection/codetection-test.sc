@@ -437,6 +437,17 @@
      (get-corrected-poses-that-match-frames dir)
      (format #f "~a/~a" dir outfile-name)))
    dirlist)))
+
+(define (save-uncorrected-poses-house-test)
+ (let* ((dirlist
+	 (system-output "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/floor*"))
+	(outfile-name "frame-poses-uncorrected.sc"))
+  (for-each
+   (lambda (dir)
+    (write-object-to-file
+     (get-poses-that-match-frames dir)
+     (format #f "~a/~a" dir outfile-name)))
+   dirlist)))
        
 (define (frame-test)
  (let* ((video-path "/home/sbroniko/codetection/test-run-data/video_front.avi")
@@ -4539,6 +4550,16 @@
 		    (else (fuck-up))))
 	     raw-list))))
 
+(define (get-graphical-model-variables-for-simple-gm dirlist)
+ (let* ((raw-gms
+	 (join (map (lambda (dir) (get-graphical-model-variables dir)) dirlist)))
+	(noun-list (remove-duplicates (map first raw-gms)))
+	(gms-by-noun
+	 (transitive-equivalence-classesp (lambda (a b)
+					   (equal? (first a) (first b)))  *raw-gms*))
+	)
+  #f))
+
 			       
 
 (define (find-unary-score full-tube path-segment preposition-function)
@@ -4593,6 +4614,21 @@
 	 (find-unary-scores-for-all-tubes all-tubes
 					  (third v)
 					  (eval (second v))))
+	gm-vars))))
+
+(define (find-simple-unary-score-matrix-for-given-tubes tubes dirlist)
+ (let* ((all-tubes tubes)
+	(gm-vars
+	 ;; (join (map (lambda (dir) (get-graphical-model-variables dir)) dirlist))
+	 ;;NEED NEW WAY OF FINDING GM-VARS
+	 ))
+  (list->vector
+   (map (lambda (v)
+	 ;; (find-unary-scores-for-all-tubes all-tubes
+	 ;; 				  (third v)
+	 ;; 				  (eval (second v)))
+	 ;;NEED NEW WAY TO COMPUTE UNARY SCORES
+	 )
 	gm-vars))))
 
 (define (num-func num l)
@@ -4690,23 +4726,27 @@
 	    (phrases (rest phrase-list))
 	    (out '()))
   (if (null? phrases)
-      (reverse (cons ph1 out))
+      (reverse (remove-if null? (cons ph1 out)))
       (if (and (< (length ph1) 4)
 	       (not (equal? (first ph1) (first (first phrases)))))
 	  (loop (first phrases) (rest phrases) (cons ph1 out)) ;;normal
 	  (if (equal? (first ph1) (first (first phrases)))
-	      (loop (second phrases) ;;2 different phrases describing same path seg
-		    (rest (rest phrases))
+	      (loop (if (> (length phrases) 1)
+			(second phrases) ;;2 different phrases describing same path seg
+			'())
+		    (if (not (null? (rest phrases)))
+			(rest (rest phrases))
+			'())
 		    (cons (list (first ph1)
 				(string-append (second ph1)
-					       ";";;"\\n"
+					       "\\n   ";;";";;"\\n"
 					       (second (first phrases))))
 			  out))
 	      (loop (first phrases) ;;phrase with 2 different helper nouns HACK
 		    (rest phrases)
 		    (cons (list (first ph1)
 				(string-append (second ph1)
-					       "&";;"\\n"
+					       "\\n   ";;"&";;"\\n"
 					       (fourth ph1)))
 			  out)))))))
 	    
@@ -5086,6 +5126,11 @@
  (list (find-unary-score-matrix-for-given-tubes tubes dirlist)
        (find-binary-score-data-for-given-tubes tubes dirlist)))
 
+(define (find-simple-graphical-model-data-for-given-tubes tubes dirlist)
+ (list (find-simple-unary-score-matrix-for-given-tubes tubes dirlist)
+       (find-simple-binary-score-data-for-given-tubes tubes dirlist)))
+
+
 (define (run-graphical-model gmdata)
  (let* ((num-nouns (vector-length (first gmdata)))
 	(num-tubes (vector-length (x (first gmdata))))
@@ -5149,6 +5194,15 @@
 		   "floorplan-0")))
 	(gmdata (find-graphical-model-data-for-given-tubes tubes dirlist)))
   (run-graphical-model gmdata)))
+
+(define (simple-gm-small-example tubes)
+ (let* ((dirlist (system-output
+		  (format
+		   #f
+		   "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*"
+		   "floorplan-0")))
+	(gmdata (find-simple-graphical-model-data-for-given-tubes tubes dirlist)))
+  (run-simple-graphical-model gmdata)))
 
 (define (render-gm-output dirlist gm-output output-dir)
  (let* ((all-tubes
@@ -5255,10 +5309,68 @@
 	 (remove-duplicates
 	  (map (lambda (a b) (list a b)) noun-list selected-tubes)))
 	(videos-list
-	  (remove-duplicates (map third good-tubes)))
-	 (all-video-frames
-	  (map (lambda (v) (video->frames 1 v))
-	       videos-list)))
+	 (remove-duplicates (map third good-tubes)))
+	(all-video-frames
+	 (map (lambda (v) (video->frames 1 v))
+	      videos-list))
+	;;get traces (frame-poses.sc)
+	(raw-traces
+	 (map (lambda (dir)
+	       (read-object-from-file (format #f "~a/frame-poses.sc" dir)))
+	      dirlist))
+	(raw-traces-uncorrected
+	 (map (lambda (dir)
+	       (map list->vector (read-object-from-file (format #f "~a/new-track.sc" dir)
+		;; (format #f "~a/frame-poses-uncorrected.sc" dir)
+				      )))
+	      dirlist))
+	;;figure out xy-max and xy-min
+	(xvals
+	 (join (cons (map (lambda (l) (x (third l)))
+			  object-names-and-locations)
+		     (map (lambda (lst) (map (lambda (l) (x l)) lst))
+			  raw-traces))))
+	(yvals
+	 (join (cons (map (lambda (l) (y (third l)))
+			  object-names-and-locations)
+		     (map (lambda (lst) (map (lambda (l) (y l)) lst))
+			  raw-traces))))
+	(xy-max
+	 (* 1.1 (maximum (list (maximum xvals) (maximum yvals)))))
+	(xy-min
+	 (* 1.1 (minimum (list (minimum xvals) (minimum yvals)))))
+	;;get alignments
+	(alignments
+	 (map (lambda (dir)
+	       (read-object-from-file (format #f "~a/alignment.sc" dir)))
+	      dirlist))
+	;;parse object-names-and-locations
+	(num-objects
+	 ;; (dtrace "num-objects" 
+	 (map (lambda (align)
+	       (+ (length (make-phrases (third align)))
+		  (reduce +
+			  (map
+			   length
+			   (map
+			    (lambda (l)
+			     (remove-if-not null? l))
+			    (make-phrases (third align))))
+			  0)))
+	      alignments));;)
+	(object-names-and-locations-lists
+	 ;; (dtrace "onl-lists"
+	 (let loop ((prev 0)
+		    (num-obj num-objects)
+		    (out '()))
+	  (if (null? num-obj)
+	      (reverse out)
+	      (loop (+ prev (first num-obj))
+		    (rest num-obj)
+		    (cons (sublist object-names-and-locations
+				   prev (+ prev (first num-obj)))
+			  out)))));;)
+	)
   (mkdir-p output-dir)
   ;;write gm-output to file
   (write-object-to-file gm-output gm-outfile-name)
@@ -5314,6 +5426,18 @@
 			(imlib:free-image-and-decache frame)))
        (join all-video-frames)))
   ;;do I want to render ALL traces with the noun-locations plotted?
+  (map-indexed (lambda (dir i)
+		(matlab-plot-one-run (list-ref raw-traces i)
+				     (list-ref raw-traces-uncorrected i)
+				     i
+				     (list-ref object-names-and-locations-lists i)
+				     (list-ref alignments i)
+				     xy-max
+				     xy-min
+				     output-dir))
+
+	       ;;raw-traces, alignments, object-names-and-locations-lists
+	       dirlist)
   
   ))
 
@@ -5766,6 +5890,36 @@
     ;;(dtrace "theta " (z (second p)))
     (list (first p) (v- (second p) (k*v i (vector 0 0 simple-correction)))))
    poses-with-timing)))
+
+(define (find-theta-drift-from-track track)
+ (let* ((track-vec (map list->vector track))
+	(first-theta (z (first track-vec)))
+	(still-track
+	 (remove-if-not
+	  (lambda (p) (and (= 0. (x p)) (= 0. (y p))))
+	  (rest track-vec)))
+	(drift-per-timestep
+	 (/ (- (z (last still-track)) first-theta)
+	    (length still-track)))
+	(theta-deltas (map (lambda (q) (- (z q) first-theta)) still-track))
+	(mean-theta-delta (list-mean theta-deltas))
+	(theta-deltas-over-timestep
+	 (map-indexed (lambda (r i) (/ r (+ i 1))) theta-deltas))
+	(mean-tdot (list-mean theta-deltas-over-timestep)))
+  (list (length still-track)
+	drift-per-timestep
+	;;mean-theta-delta
+	;;theta-deltas-over-timestep
+	mean-tdot)))
+
+(define (find-all-theta-drifts dirlist)
+ (map (lambda (dir)
+       (find-theta-drift-from-track
+	(read-object-from-file 
+	 (format #f "~a/track.sc" dir))))
+      dirlist))
+	
+  
 
 
 (define (find-points-and-deltas odometry raw-tubes-with-score)
@@ -6227,16 +6381,20 @@
 
 ;;plotting stuff for paths with graphical model output
 
-(define (matlab-plot-one-run raw-trace idx object-names-and-locations alignment
+(define (matlab-plot-one-run raw-trace raw-trace-alt
+			     idx object-names-and-locations alignment
 			     xy-max xy-min output-dir)
  ;;this is meant to be called from within render-gm-output(-small-example)
  ;;object-names-and-locations should be JUST the objects for this run-->
  ;;  HOW do we do that?
  (let* ((trace (map (lambda (p) (subvector p 0 2)) raw-trace)) ;;need to downsample?
+	(trace-alt (map (lambda (p) (subvector p 0 2)) raw-trace-alt))
 	(start (first trace))
 	(end (last trace))
 	(xvals (map x trace))
 	(yvals (map y trace))
+	(xvals-alt (map x trace-alt))
+	(yvals-alt (map y trace-alt))
 	(raw-arrow-trace
 	 (map-indexed
 	  (lambda (p i) (vector-append p (list-ref trace (+ i 1))))
@@ -6260,24 +6418,16 @@
 	(object-names (map first unique-objects))
 	(object-xy (map (lambda (v) (subvector (third v) 0 2)) unique-objects))
 	(phrases (clean-phrases (make-phrases (third alignment))))
-	(phrases-xy
-	 ;;(dtrace "phrases-xy"
-	 (map (lambda (p)
-	       (list-ref trace ;; (dtrace "list-mean" (exact-round (list-mean (first p))))
-			 (+ 10 (random-integer 10)
-			    (first (first p)))
-			 ))
-	      phrases));;)
 	(break-point-indices
-	 (but-last
-	  (map (lambda (l) (second (third l))) (third alignment))))
+	 (remove-duplicates
+	  (but-last
+	   (map (lambda (l) (second (third l))) (third alignment)))))
 	(break-point-xy
-	 (map (lambda (p) (list-ref trace p)) break-point-indices))
-				   
-	)
+	 (map (lambda (p) (list-ref trace p)) break-point-indices)))
   (start-matlab!)
   (matlab "clear all; close all;")
-  (matlab "h=figure")
+  ;;  (matlab "h=figure")
+  (matlab "h = figure('visible','off');")
   ;;use something like "h=figure('visible','off');" to just save file
   ;;see house_make_plots_new.m
   (matlab "hold on")
@@ -6288,6 +6438,11 @@
    (list "'trace'")
    (list "'c-','LineWidth',2"))
   (plot-lines-in-matlab-with-symbols-no-legend
+   (list xvals-alt)
+   (list yvals-alt)
+   (list "'trace-alt'")
+   (list "'r-','LineWidth',2"))
+  (plot-lines-in-matlab-with-symbols-no-legend
    (list (map x object-xy))
    (list (map y object-xy))
    (list "'objects'")
@@ -6297,11 +6452,11 @@
    (list (map y break-point-xy))
    (list "'breaks'")
    (list "'ko','MarkerFaceColor','k'"))
-  (plot-lines-in-matlab-with-symbols-no-legend
-   (list (map x phrases-xy))
-   (list (map y phrases-xy))
-   (list "'breaks'")
-   (list "'bo','MarkerFaceColor','b'"))
+  ;; (plot-lines-in-matlab-with-symbols-no-legend
+  ;;  (list (map x phrases-xy))
+  ;;  (list (map y phrases-xy))
+  ;;  (list "'breaks'")
+  ;;  (list "'bo','MarkerFaceColor','b'"))
   (plot-lines-in-matlab-with-symbols-no-legend
    (list (list (first (vector->list start))))
    (list (list (second (vector->list start))))
@@ -6318,30 +6473,27 @@
 	(matlab (format #f "text(~a,~a,'~a')" (x oxy) (y oxy)
 			oname)))
        object-names object-xy)
-  (map-indexed (lambda (pxy i)
+  (map-indexed (lambda (pxy i) ;;phrase indices
 		(matlab (format #f "text(~a,~a,'~a')"
 				(+ (x pxy) 0.05)
 				(+ (y pxy) 0.05) (+ i 1))))
-	       phrases-xy)
-  (matlab "strmat = [];")
+	       (cons (vector 0. 0.) break-point-xy))
+  (matlab "strcell = {};")
   (map-indexed (lambda (ph i)
-  		(matlab (format #f "str = sprintf('~a. ~a');" (+ i 1) (second ph)))
-  		;; (matlab "textbp(str);")
-  		(matlab "strmat = [strmat,' ',str];")
-  		)
-  	       phrases)
-  ;;(matlab "textbp(strmat)")
-  (matlab (format #f "text(~a,~a,strmat)" (+ 1 xy-min) (+ 1 xy-min)))
-  ;; (map (lambda (ph pxy)
-  ;; 	(matlab (format #f "str = sprintf('~a');" (second ph)))
-  ;; 	(matlab (format #f "text(~a,~a,str)" (x pxy) (y pxy))))
-  ;;      phrases phrases-xy)
+		(matlab (format #f "str = sprintf('~a. ~a');" (+ i 1) (second ph)))
+		(matlab (format #f "strcell(~a) = {str};" (+ i 1))))
+	       phrases)
+  (matlab (format #f "text(~a,~a,strcell)" (+ xy-min 0.5) (+ xy-min 1)))
   (matlab-plot-arrowheads-on-trace arrow-trace) ;;this has to go last
   (matlab "box on")
   (matlab "hold off")
   (matlab (format #f "saveas(h,'~a/sentence-~a.png');"
 		  output-dir
 		  (number->padded-string-of-length idx 3)))
+  (display (format #f "saved ~a/sentence-~a.png"
+		  output-dir
+		  (number->padded-string-of-length idx 3)))
+  (newline)
   ))
 
 (define (plot-lines-in-matlab-with-symbols-no-legend x-lists
