@@ -11,6 +11,14 @@ double bp_sentence_codetection_inference(int num_nouns, int num_tubes,
 			       // double dummy_f, double dummy_g, 
 			       // int num_gscores, int *boxes);
 
+double bp_sentence_codetection_inference_simple(int num_nouns, int num_tubes,
+						double **unary_score_matrix,
+						int num_helper_nouns,
+						int **helper_noun_pairs_matrix,
+						double ***helper_noun_scores_matrix,
+						int *output_tubes);
+
+
 void elementwise_2d_matrix_multiply(int rows, int cols, 
 				    double **mat1, double **mat2, double **outmat);
 

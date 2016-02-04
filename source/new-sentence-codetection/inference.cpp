@@ -229,6 +229,174 @@ double bp_sentence_codetection_inference(int num_nouns, int num_tubes,
   return bp.value();
 }
 
+extern "C" 
+double bp_sentence_codetection_inference_simple(int num_nouns, int num_tubes,
+						double **unary_score_matrix,
+						int num_helper_nouns,
+						int **helper_noun_pairs_matrix,
+						double ***helper_noun_scores_matrix,
+						int *output_tubes){
+  ////DATA TESTING
+  // printf("num_nouns = %d, num_tubes = %d, num_helper_nouns = %d, "
+  // 	 "num_matching_noun_pairs = %d\n", num_nouns, num_tubes, 
+  // 	 num_helper_nouns, num_matching_noun_pairs);
+  // printf("--------------------\n");
+  // printf("%6.4f %6.4f\n", visual_similarity_matrix[128][128], visual_similarity_matrix[128][127]);
+  // for (int i = 0; i < num_helper_nouns; i++){
+  // 	printf("%6.4f ", helper_noun_scores_matrix[i][num_tubes - 1][num_tubes - 1]);}
+  // printf("\n");
+  // for (int i = 0; i < num_nouns; i++){
+  // 	printf("%6.4f ", unary_score_matrix[i][num_tubes - 1]);}
+  // printf("\n");
+  // for (int i = 0; i < num_matching_noun_pairs; i++){
+  //   for (int j = 0; j < 2; j++){
+  // 	printf("%d ", matching_noun_pairs_matrix[i][j]);}
+  //   printf("\n");
+  // }
+  // for (int i = 0; i < num_nouns; i++){
+  //   for (int j = 0; j < num_tubes; j++){
+  //     printf("%6.4f ",unary_score_matrix[i][j]);}
+  //   printf("\n\n");
+  // }
+  time_t mytime;
+  mytime = time(NULL);
+  printf("\nStarting bp_sentence_codetection_inference at ");
+  printf(ctime(&mytime));
+  printf("--------------------\n");
+
+  typedef opengm::DiscreteSpace<> Space;
+  typedef opengm::ExplicitFunction<double> Function;
+  typedef opengm::GraphicalModel<double, opengm::Multiplier, Function, Space> GraphModel;
+  typedef GraphModel::FunctionIdentifier FID;
+  typedef opengm::BeliefPropagationUpdateRules<GraphModel, opengm::Maximizer> UpdateRules; //maximizing since good score is close to 1
+  typedef opengm::MessagePassing<GraphModel, opengm::Maximizer, UpdateRules, opengm::MaxDistance> BP;
+  
+  size_t numVariables = size_t(num_nouns);
+  size_t numLabels = size_t(num_tubes);
+  size_t *vars = new size_t[numVariables];
+  for (unsigned int t = 0; t < numVariables; t++)
+    vars[t] = numLabels;
+  Space space(vars, vars+numVariables);
+  GraphModel gm(space);
+  
+  double default_unary_score = 0.0;
+  //add unary score functions
+  for (unsigned int t = 0; t < numVariables; t++){
+    FID fid;
+    size_t fshape[] = {numLabels};
+    Function ff(fshape,fshape+1,default_unary_score);
+    for (int i = 0; i < num_tubes; i++)
+      ff(i) = unary_score_matrix[t][i];
+    fid = gm.addFunction(ff);
+    //add factors
+    size_t fv[] = {size_t(t)};
+    gm.addFactor(fid, fv, fv+1);
+    // //debugging
+    // printf("ff values for t = %u: ",t);
+    // for (unsigned int i = 0; i < numLabels; i++){
+    //   printf("%f ",ff(i));
+    // }
+    // printf("\n");
+  }
+  printf("Unary scores added at ");
+  mytime = time(NULL);
+  printf(ctime(&mytime));
+
+  //add binary score functions
+  size_t gshape[] = {numLabels,numLabels};
+  int noun1, noun2;
+  double default_binary_score = 0.0;
+  double **binary_scores_to_add;
+  bool helper_flag, helper_reverse;
+  int helper_idx;
+  for (noun1 = 0; noun1 < num_nouns; noun1++){
+    for (noun2 = noun1 + 1; noun2 < num_nouns; noun2++){
+      //printf("noun1 = %d, noun2 = %d\n",noun1,noun2);
+      helper_flag = false;
+      helper_reverse = false;
+      helper_idx = -1;
+      //check helper noun pairs
+      for (int i = 0; i < num_helper_nouns; i++){
+	if ((helper_noun_pairs_matrix[i][0] == noun1) &&
+	    (helper_noun_pairs_matrix[i][1] == noun2)){
+	  helper_flag = true;
+	  helper_idx = i;
+	  break;
+	}
+	if ((helper_noun_pairs_matrix[i][1] == noun1) &&
+	    (helper_noun_pairs_matrix[i][0] == noun2)){
+	  helper_flag = true;
+	  helper_reverse = true;
+	  helper_idx = i;
+	  break;
+	}
+      }
+      //check flags and act
+      if (!helper_flag)
+	//nothing to do here
+	continue;
+      else {
+	//get matrix from helper noun scores
+	binary_scores_to_add = helper_noun_scores_matrix[helper_idx];
+	//create gg
+	Function gg(gshape, gshape + 2, default_binary_score);
+	//check reverse flag here--OpenGM won't let ind0 be > ind1
+	if (helper_reverse){
+	  for (size_t i = 0; i < numLabels; i++){
+	    for (size_t j = 0; j < numLabels; j++){
+	      gg(i,j) = binary_scores_to_add[j][i];
+	    }
+	  }
+	}
+	else{
+	  for (size_t i = 0; i < numLabels; i++){
+	    for (size_t j = 0; j < numLabels; j++){
+	      gg(i,j) = binary_scores_to_add[i][j];
+	    }
+	  }
+	}
+	FID gid = gm.addFunction(gg);
+	size_t gv[] = {size_t(noun1),size_t(noun2)};
+	gm.addFactor(gid, gv, gv + 2);
+	//done
+      }
+    }
+  }
+  printf("Binary scores added at ");
+  mytime = time(NULL);
+  printf(ctime(&mytime));
+
+  //  inference
+  const size_t maxIterations=10000;//100;
+  const double damping=0.0;
+  const double convergenceBound = 1e-10;//1e-7;
+  BP::Parameter parameter(maxIterations,convergenceBound,damping);
+  BP::VerboseVisitorType visitor;
+  printf("before bp call\n");
+  BP bp(gm, parameter);
+  printf("after bp call\n");
+  // optimize (approximately)
+  clock_t t1, t2;
+  printf("before bp.infer\n");
+  t1 = clock();
+  //  bp.infer();
+  bp.infer(visitor);
+  t2 = clock();
+  printf("after bp.infer\n");
+  std::cout << (double(t2) - double(t1))/CLOCKS_PER_SEC*1000 << " ms" << std::endl;
+  std::cout << "OpenGM Belief Propagation " << bp.value() << std::endl;
+  std::vector<size_t> labeling(num_nouns); 
+  bp.arg(labeling);
+  for (unsigned int i = 0; i < labeling.size(); i ++)
+    output_tubes[i] = int(labeling[i]);
+  delete [] vars;
+  mytime = time(NULL);
+  printf("--------------------\n");
+  printf("Finshed bp_sentence_codetection_inference at ");
+  printf(ctime(&mytime));
+  return bp.value();
+}
+
 
 
 extern "C" double bp_object_inference_new(double **f, double **g, 

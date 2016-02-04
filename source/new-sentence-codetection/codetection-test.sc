@@ -4551,14 +4551,17 @@
 	     raw-list))))
 
 (define (get-graphical-model-variables-for-simple-gm dirlist)
- (let* ((raw-gms
+ (let* ((raw-gmvs
 	 (join (map (lambda (dir) (get-graphical-model-variables dir)) dirlist)))
-	(noun-list (remove-duplicates (map first raw-gms)))
-	(gms-by-noun
+	(noun-list (remove-duplicates (map first raw-gmvs)))
+	(gmvs-by-noun
 	 (transitive-equivalence-classesp (lambda (a b)
-					   (equal? (first a) (first b)))  *raw-gms*))
+					   (equal? (first a) (first b))) raw-gmvs))
+	(gmvs-by-noun-no-helpers
+	 (map (lambda (l) (remove-if (lambda (ll) (null? (third ll))) l))
+	      gmvs-by-noun))
 	)
-  #f))
+  gmvs-by-noun-no-helpers))
 
 			       
 
@@ -4578,10 +4581,35 @@
      (* var-factor (list-mean (map (lambda (p) (preposition-function p tube-pos))
 				   path-segment))))))
 
+(define (find-simple-unary-score full-tube path-segment preposition-function)
+ ;;full-tube is the format from find-low-variance-tubes:
+ ;;  ((#(x y w h) #(xv yv wv hv)) dist-var video-name (list tubepixels))
+ ;;path-segment is series of world path points to average over, or null if
+ ;;  working with a helper-noun (chair which is to the left of the TABLE)
+ ;;THIS VERSION does not multiply in the variance factor (only done once at end)
+ (let* ((tube-pos (subvector (first (first full-tube)) 0 2)))
+  (if (null? path-segment)
+      1 ;;SHOULDN'T EVER GET HERE
+      (list-mean (map (lambda (p) (preposition-function p tube-pos))
+		      path-segment)))))
+
+(define (find-simple-variance-factor full-tube)
+ (let* ((tube-var (x (second full-tube)))
+	(norm-var (/ tube-var *distance-thresh*))
+	(var-factor (- 1 norm-var)))
+  var-factor))
+
 (define (find-unary-scores-for-all-tubes all-tubes path-segment preposition-function)
  (let* ((tubes (removeq #f all-tubes)))
   (list->vector
    (map (lambda (t) (find-unary-score t path-segment preposition-function)) tubes))))
+
+(define (find-simple-unary-scores-for-all-tubes all-tubes path-segment
+						preposition-function)
+ (let* ((tubes (removeq #f all-tubes)))
+  (list->vector
+   (map (lambda (t) (find-simple-unary-score t path-segment preposition-function))
+	tubes))))
 
 (define (find-unary-scores-for-one-run dir)
  (let* ((all-tubes (find-low-variance-tubes dir))
@@ -4619,17 +4647,30 @@
 (define (find-simple-unary-score-matrix-for-given-tubes tubes dirlist)
  (let* ((all-tubes tubes)
 	(gm-vars
-	 ;; (join (map (lambda (dir) (get-graphical-model-variables dir)) dirlist))
-	 ;;NEED NEW WAY OF FINDING GM-VARS
-	 ))
+	 (get-graphical-model-variables-for-simple-gm dirlist))
+	(raw-score-mat
+	 (map
+	  (lambda (noun)
+	   (map
+	    (lambda (instance)
+	     (find-simple-unary-scores-for-all-tubes all-tubes
+						     (third instance)
+						     (eval (second instance))))
+	    noun))
+	  gm-vars))
+	(var-factor-list
+	 (map find-simple-variance-factor all-tubes))
+	(scores-with-vars
+	 (map (lambda (t) (cons (list->vector var-factor-list) t)) raw-score-mat)))
   (list->vector
-   (map (lambda (v)
-	 ;; (find-unary-scores-for-all-tubes all-tubes
-	 ;; 				  (third v)
-	 ;; 				  (eval (second v)))
-	 ;;NEED NEW WAY TO COMPUTE UNARY SCORES
-	 )
-	gm-vars))))
+   (map (lambda (s)
+	 (x (reduce elementwise-multiply-matrices (map vector s) identity)))
+	scores-with-vars))))
+
+(define (find-simple-noun-list dirlist)
+ (let* ((gm-vars
+	 (get-graphical-model-variables-for-simple-gm dirlist)))
+  (map (lambda (v) (first (first v))) gm-vars)))
 
 (define (num-func num l)
  (if (= (length l) 3)
@@ -4682,6 +4723,28 @@
 					 out2))))
 			(loop (sublist (first lst) 4 (length (first lst))) '()))
 		       out)))))))
+
+(define (make-simple-helper-noun-list raw-alignment)
+ (let loop ((lst raw-alignment)
+	    (out '()))
+  (if (null? lst)
+      (remove-duplicates (join out))
+      (if (= (length (first lst)) 3)
+	  (loop (rest lst) out)
+	  (loop (rest lst)
+		(cons (append
+		       (let loop2 ((things
+				    (sublist (first lst) 3 (length (first lst))))
+				   (out2 '()))
+			(if (null? things)
+			    out2
+			    (loop2 (rest things)
+				   (cons (list (first (first lst))
+					       (second (first things))
+					       (first (first things)))
+					 out2))))
+		       (loop (sublist (first lst) 3 (length (first lst))) '()))
+		      out))))))
 
 (define (make-phrases raw-alignment)
  (let* ((numbered-alignment (number-nouns raw-alignment)))
@@ -5117,6 +5180,22 @@
 	noun-pairs-list
 	base-binary-scores-matrix)))
 
+(define (find-simple-binary-score-data-for-given-tubes tubes dirlist)
+ (let* ((raw-alignment
+	 (join (map (lambda (dir)
+		     (third (read-object-from-file
+			     (format #f "~a/alignment.sc" dir))))
+		    dirlist)))
+	(all-tubes tubes)
+	(good-tubes (removeq #f all-tubes))
+	(gm-vars
+	 (get-graphical-model-variables-for-simple-gm dirlist))
+	(helper-noun-list (make-simple-helper-noun-list raw-alignment))
+	(helper-noun-binary-scores-list
+	 (map (lambda (l) (find-noun-noun-binary-score-matrix all-tubes l))
+	      helper-noun-list)))
+  (list helper-noun-binary-scores-list)))
+
 (define (find-graphical-model-data-for-floorplan dirlist)
  (list (find-unary-score-matrix-for-floorplan dirlist)
        (find-binary-score-data-for-floorplan dirlist)))
@@ -5128,7 +5207,8 @@
 
 (define (find-simple-graphical-model-data-for-given-tubes tubes dirlist)
  (list (find-simple-unary-score-matrix-for-given-tubes tubes dirlist)
-       (find-simple-binary-score-data-for-given-tubes tubes dirlist)))
+       (find-simple-binary-score-data-for-given-tubes tubes dirlist)
+       (find-simple-noun-list dirlist)))
 
 
 (define (run-graphical-model gmdata)
@@ -5168,6 +5248,49 @@
   (free output-tubes-c)
   (easy-ffi:free 2 (third (second gmdata)) visual-similarity-matrix)
   (easy-ffi:free 2 matching-noun-pairs matching-noun-pairs-matrix)
+  (easy-ffi:free 3 helper-noun-scores helper-noun-scores-matrix)
+  (easy-ffi:free 2 helper-noun-pairs helper-noun-pairs-matrix)
+  (easy-ffi:free 2 (first gmdata) unary-score-matrix)
+  ;;do any rendering/saving here??
+  
+  ;;give output from above
+  (list score output-tubes)
+  ))
+
+(define (run-simple-graphical-model gmdata)
+ (let* ((num-nouns (vector-length (first gmdata)))
+	(num-tubes (vector-length (x (first gmdata))))
+	(unary-score-matrix (easy-ffi:double-to-c 2 (first gmdata)))
+	;;need to fix this-->C wants numbers, not strings
+	(helper-noun-pairs-list (map (lambda (v) (subvector v 0 2))
+				     (first (second gmdata))))
+	(noun-list (third gmdata))
+	(helper-noun-pairs
+	 (list->vector (map (lambda (v)
+			     (vector (find-index-in-list (x v) noun-list)
+				     (find-index-in-list (y v) noun-list)))
+			    helper-noun-pairs-list)))
+	(num-helper-noun-pairs (vector-length helper-noun-pairs))
+	(helper-noun-pairs-matrix (easy-ffi:int-to-c 2 helper-noun-pairs))
+	(helper-noun-scores (list->vector (map z (first (second gmdata)))))
+	(helper-noun-scores-matrix (easy-ffi:double-to-c 3 helper-noun-scores))
+	(output-tubes-c (list->c-exact-array (malloc (* c-sizeof-int num-nouns))
+					     (map-n (lambda _ 0) num-nouns)
+					     c-sizeof-int #t))
+	;;call bp-sentence-codetection-inference in here (use a pointer for output)
+	(score (bp-sentence-codetection-inference-simple num-nouns num-tubes
+							 unary-score-matrix
+							 num-helper-noun-pairs
+							 helper-noun-pairs-matrix
+							 helper-noun-scores-matrix
+							 output-tubes-c))
+	;;convert output from c to scheme
+	(output-tubes (c-exact-array->list output-tubes-c c-sizeof-int num-nouns #t))
+	)
+  ;;temp for testing
+  
+  ;;free allocated memory
+  (free output-tubes-c)
   (easy-ffi:free 3 helper-noun-scores helper-noun-scores-matrix)
   (easy-ffi:free 2 helper-noun-pairs helper-noun-pairs-matrix)
   (easy-ffi:free 2 (first gmdata) unary-score-matrix)
@@ -5370,6 +5493,149 @@
 		    (cons (sublist object-names-and-locations
 				   prev (+ prev (first num-obj)))
 			  out)))));;)
+	)
+  (mkdir-p output-dir)
+  ;;write gm-output to file
+  (write-object-to-file gm-output gm-outfile-name)
+  ;;write tube names & locations to file
+  (write-object-to-file object-names-and-locations tubedata-outfile-name)
+  (write-object-to-file (remove-duplicates object-names-and-locations)
+			objects-outfile-name)
+  ;;get first image from each winning tube, render box, then
+  ;;save image with name noun-object-#-tube-#.png
+  (map-indexed (lambda (sel i)
+		(let* ((noun (first sel))
+		       (sel-num (second sel))
+		       (tube (list-ref good-tubes sel-num))
+		       (video-pathname (third tube))
+		       (tube-frames (fourth tube))
+		       (color-cyan (vector 0 255 255))
+		       (color-blue (vector 0 0 255))
+		       (outname
+			(format #f "~a/~a-object-~a-tube-~a.png"
+				output-dir
+				noun
+				(number->padded-string-of-length i 3)
+				(number->padded-string-of-length sel-num 5)))
+		       ;; (frames (video->frames 1 video-pathname))
+		       (video-idx (find-index-in-list (third tube) videos-list))
+		       (frames (list-ref all-video-frames video-idx)))
+		 (let loop ((tube tube-frames)
+			    (images frames)
+			    (stop #f))
+		  (if (or (null? tube)
+			  (null? images)
+			  stop)
+		      #f ;;done
+		      (if (first tube)
+			  (let* ((image (imlib:clone (first images)))
+				 (box (first tube))
+				 (x-val (x box))
+				 (y-val (y box))
+				 (w-val (- (z box) (x box)))
+				 (h-val (- (vector-ref box 3) (y box))))
+			   (imlib:draw-rectangle image x-val y-val w-val
+						 h-val color-blue 3)
+			   (imlib:save image outname)
+			   (imlib:free-image-and-decache image)
+			   (display (format #f "saved ~a" outname))
+			   (newline)
+			   (loop (rest tube) (rest images) #t))
+			  (loop (rest tube) (rest images) #f))))))
+	       nouns-with-selections)
+  ;;free memory
+  (length (map (lambda (frame) (begin
+			(imlib-context-set-image! frame)
+			(imlib:free-image-and-decache frame)))
+       (join all-video-frames)))
+  ;;do I want to render ALL traces with the noun-locations plotted?
+  (map-indexed (lambda (dir i)
+		(matlab-plot-one-run (list-ref raw-traces i)
+				     (list-ref raw-traces-uncorrected i)
+				     i
+				     (list-ref object-names-and-locations-lists i)
+				     (list-ref alignments i)
+				     xy-max
+				     xy-min
+				     output-dir))
+
+	       ;;raw-traces, alignments, object-names-and-locations-lists
+	       dirlist)
+  
+  ))
+
+(define (render-simple-gm-output-small-example tubes dirlist gm-output output-dir)
+ (let* ((all-tubes tubes)
+	(good-tubes (removeq #f all-tubes))
+	(gm-outfile-name (format #f "~a/gm-output.sc" output-dir))
+	(tubedata-outfile-name (format #f "~a/gm-output-tubes.sc" output-dir))
+	(objects-outfile-name (format #f
+				      "~a/gm-output-unique-objects.sc"
+				      output-dir))
+	(selected-tubes (second gm-output))
+	(gm-vars
+	 (get-graphical-model-variables-for-simple-gm dirlist))
+	(noun-list (find-simple-noun-list dirlist))
+	(object-names-and-locations
+	 (map (lambda (noun sel)
+	       (list noun sel (first (first (list-ref good-tubes sel)))))
+	      noun-list selected-tubes))
+	(nouns-with-selections
+	 (remove-duplicates
+	  (map (lambda (a b) (list a b)) noun-list selected-tubes)))
+	(videos-list
+	 (remove-duplicates (map third good-tubes)))
+	(all-video-frames
+	 (map (lambda (v) (video->frames 1 v))
+	      videos-list))
+	;;get traces (frame-poses.sc)
+	(raw-traces
+	 (map (lambda (dir)
+	       (read-object-from-file (format #f "~a/frame-poses.sc" dir)))
+	      dirlist))
+	(raw-traces-uncorrected
+	 (map (lambda (dir)
+	       (map list->vector (read-object-from-file (format #f "~a/new-track.sc" dir)
+		;; (format #f "~a/frame-poses-uncorrected.sc" dir)
+				      )))
+	      dirlist))
+	;;figure out xy-max and xy-min
+	(xvals
+	 (join (cons (map (lambda (l) (x (third l)))
+			  object-names-and-locations)
+		     (map (lambda (lst) (map (lambda (l) (x l)) lst))
+			  raw-traces))))
+	(yvals
+	 (join (cons (map (lambda (l) (y (third l)))
+			  object-names-and-locations)
+		     (map (lambda (lst) (map (lambda (l) (y l)) lst))
+			  raw-traces))))
+	(xy-max
+	 (* 1.1 (maximum (list (maximum xvals) (maximum yvals)))))
+	(xy-min
+	 (* 1.1 (minimum (list (minimum xvals) (minimum yvals)))))
+	;;get alignments
+	(alignments
+	 (map (lambda (dir)
+	       (read-object-from-file (format #f "~a/alignment.sc" dir)))
+	      dirlist))
+	;;find nouns present in each run
+	(nouns-by-run
+	 (map (lambda (l)
+	       (remove-duplicates (map first l))) (map third alignments)))
+	;;get just names from object-names-and-locations
+	(object-names (map first object-names-and-locations))
+	;;find each noun's position in o-n-l
+	(noun-indices-by-run
+	 (map (lambda (l)
+	       (map (lambda (ll)
+		     (position ll object-names)) l)) nouns-by-run))
+	;;now make a list for each run of the objects & locations
+	(object-names-and-locations-lists
+	 (map (lambda (l)
+	       (map (lambda (ll)
+		     (list-ref object-names-and-locations ll)) l))
+	      noun-indices-by-run))
 	)
   (mkdir-p output-dir)
   ;;write gm-output to file

@@ -6173,9 +6173,9 @@ TO DO's
 --Creating new simpler graphical model by changing the following:
   - gm-small-example -> simple-gm-small-example (DONE)
   - find-graphical-model-data-for-given-tubes ->
-    find-simple-graphical-model-data-for-given-tubes 
+    find-simple-graphical-model-data-for-given-tubes (DONE)
   - find-unary-score-matrix-for-given-tubes ->
-    find-simple-unary-score-matrix-for-given-tubes 
+    find-simple-unary-score-matrix-for-given-tubes (DONE)
   - find-binary-score-matrix-for-given-tubes ->
     find-simple-binary-score-matrix-for-given-tubes 
   - run-graphical-model -> run-simple-graphical-model
@@ -6194,12 +6194,126 @@ TO DO's
   with a helper noun list similar (but significantly different) than before?
   **probably should be similar to numbered stuff, but just need (n1 prep n2)
 
+----------------git commit bb01bf2--------------
+
+4 Feb 16
+
+--Finished find-simple-graphical-model-data-for-given-tubes,
+  find-simple-unary-score-matrix-for-given-tubes.  For unary scores, had to add
+  functions get-graphical-model-variables-for-simple-gm,
+  find-simple-unary-scores-for-all-tubes, find-simple-variance-factor.  Seems to
+  work.
+
+--Wrote make-simple-helper-noun-list to have output of (n1 prep n2) instead of
+  indices. 
+
+--Have simple-gm-small-example and render-simple-gm-output-small-example
+  working.
+
+--Ran new simple small example against just the 8 hand-selected 'correct' tubes
+  and against those with 8 'random' tubes.  Results are in
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan-0-gt2-mult-small-simple-{1,2}.
+  Gets everything right when just against the 8 tubes.  With the 16, gets 7/8
+  right, mistaking the table-with-doors for a bad tube.  From looking at the
+  plots of the traces, that selection actually makes more sense semantically;
+  the objective function also reflects a better (higher) score (3e-19 vs 7e-21
+  for just 8 good tubes) when selecting that tube.  However, the location for
+  that tube is inaccurate--that particular tube was captured at the end of a
+  run, when the drift in location had accumulated.  Maybe we need some sort of
+  confidence measure in the tube that discounts the score based on how 'late' in
+  the video that tube happens...
+
+--Output for run with just 8 good tubes:
+  (define *seoutput* (simple-gm-small-example *setubes*))
+  Starting bp_sentence_codetection_inference at Thu Feb  4 18:07:26 2016
+  --------------------
+  Unary scores added at Thu Feb  4 18:07:26 2016
+  Binary scores added at Thu Feb  4 18:07:26 2016
+  before bp call
+  after bp call
+  before bp.infer
+  begin: value 7.74188e-42 bound inf
+  step: 1 value 0 bound inf
+  step: 2 value 0 bound inf
+  step: 3 value 7.18301e-21 bound inf
+  step: 4 value 7.18301e-21 bound inf
+  step: 5 value 7.18301e-21 bound inf
+  value 7.18301e-21 bound inf
+  after bp.infer
+  0 ms
+  OpenGM Belief Propagation 7.18301e-21
+  --------------------
+  Finshed bp_sentence_codetection_inference at Thu Feb  4 18:07:26 2016
+  ***** *SEOUTPUT* is redefined
+  *SEOUTPUT*
+
+--Output for run with 8 good and 8 bad tubes:
+  (define *seoutput2* (simple-gm-small-example *setubes2*))
+  Starting bp_sentence_codetection_inference at Thu Feb  4 18:03:08 2016
+  --------------------
+  Unary scores added at Thu Feb  4 18:03:08 2016
+  Binary scores added at Thu Feb  4 18:03:08 2016
+  before bp call
+  after bp call
+  before bp.infer
+  begin: value 1.19696e-40 bound inf
+  step: 1 value 0 bound inf
+  step: 2 value 8.61631e-20 bound inf
+  step: 3 value 3.46767e-19 bound inf
+  step: 4 value 3.46767e-19 bound inf
+  step: 5 value 3.46767e-19 bound inf
+  value 3.46767e-19 bound inf
+  after bp.infer
+  0 ms
+  OpenGM Belief Propagation 3.46767e-19
+  --------------------
+  Finshed bp_sentence_codetection_inference at Thu Feb  4 18:03:08 2016
+  *SEOUTPUT2*
+
+--Output using all tubes:
+ (define *goodtubes* (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan0-good-tubes-2/good-tubes.sc"))
+ (define *seoutput3* (simple-gm-small-example *goodtubes*))
+ Starting bp_sentence_codetection_inference at Thu Feb  4 18:22:46 2016
+ --------------------
+ Unary scores added at Thu Feb  4 18:22:46 2016
+ Binary scores added at Thu Feb  4 18:22:46 2016
+ before bp call
+ after bp call
+ before bp.infer
+ begin: value 4.41511e-50 bound inf
+ step: 1 value 1.46125e-14 bound inf
+ step: 2 value 1.13632e-14 bound inf
+ step: 3 value 2.24209e-14 bound inf
+ step: 4 value 2.59023e-13 bound inf
+ step: 5 value 2.59023e-13 bound inf
+ value 2.59023e-13 bound inf
+ after bp.infer
+ 2720 ms
+ OpenGM Belief Propagation 2.59023e-13
+ --------------------
+ Finshed bp_sentence_codetection_inference at Thu Feb  4 18:22:49 2016
+ *SEOUTPUT3*
+
+--Results for all tubes are in
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan-0-gt2-mult-small-simple-3.
+  Selected tube locations look like they satisfy the sentence semantics, but the
+  images from the selected tubes are not good (some are better than others).
+
+
+
 
 TO DO:
-**get rid of binary scores so it is trivial to solve-->make sure it works
-  (verifiable optimal solution for given tubes)
-*****NEED TO GET TO THIS ASAP******
 
+**try plotting all tube xy locations
+**how much variation in the locations of alternates for correct tubes?
+**proposal/objectness/other score to prune set
+  --will we preserve the right tubes?
+  --how close are selected tubes to correct/alternate tubes?
+  --add scores back to tubes
+
+****novel way to use similarity: have image similarity only BETWEEN same-class
+    objects in different floorplans, use some sort of visual similarity
+    (PHOW/SIFT, HOG, ??) to constrain the larger GM that results.
 
 **visualize selected nouns with sentences-->plot per sentence, mark start and
   end points of path segments, plot noun/preposition phrases for that sentence,

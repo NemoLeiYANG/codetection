@@ -179,6 +179,11 @@
  (c-function double ("bp_sentence_codetection_inference" int int pointer
 		     int pointer pointer int pointer pointer pointer)))
 
+;;--new function for simple graphical model 4Feb16
+(define bp-sentence-codetection-inference-simple
+ (c-function double ("bp_sentence_codetection_inference_simple" int int pointer
+		     int pointer pointer pointer)))
+
 
 ;;------these don't work
 (define bp-label-inference
