@@ -1,0 +1,14 @@
+.   notes.text          333598  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+    codetection-test.s: 246786  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc
+    inference.cpp        54250  C++/l		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/inference.cpp
+  * *shell*               6863  Shell:run	  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/
+  * *shell*<2>           49565  Shell:run	  ~/darpa-collaboration/ideas/x86_64-Linux-3.2.0-4-amd64/
+    inference.h           1905  C++/l		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/inference.h
+    toollib-codetection: 25104  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/toollib-codetection.sc
+    log_to_track.cpp     16427  C++/l		  ~/vader-rover/position/log_to_track.cpp
+    QobiScheme-AD.sc    295402  Scheme		  ~/QobiScheme/source/QobiScheme-AD.sc
+    rendering-code.sc    71910  Scheme		  ~/codetection/rendering-code.sc
+    scheme-working-bu: 1353610  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-3feb16.txt
+    the-force.cpp        73164  C++/l		  ~/vader-rover/position/the-force.cpp
+    *scratch*              191  Lisp Interaction
+  * *Messages*            3932  Fundamental

@@ -6299,25 +6299,68 @@ TO DO's
   Selected tube locations look like they satisfy the sentence semantics, but the
   images from the selected tubes are not good (some are better than others).
 
+----------------git commit ad44d81--------------
+
+5 Feb 16
+
+--Thinking more about how to get better results from the simple graphical
+  model.  Why would putting a confidence score based on how far along in a path
+  a tube happens be a hack, as Jeff said?
+
+--Added matlab-plot-one-run-with-all-tubes to
+  render-simple-gm-output-small-example.  Now have plots that also have all
+  possible tubes as blue dots.
+
+--Changed find-low-variance-tubes to add the tube (proposal) score as the last
+  (fifth) element of a tube with location.  Resaved good-tubes.sc in
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan0-good-tubes-2.
+  Old good-tubes file saved as good-tubes-NO-SCORES.sc.
+  collections.
+
+--List-mean of the scores for all 693 good-tubes is 0.167447.  Checked selected
+  tubes (1feb16) and found that all but crate and recycle-bin were above the
+  mean (and those two were < 10% below).  However, 5 of the 8 distractor tubes
+  were also above the mean.
+
 
 
 
 TO DO:
+**plot all low-variance tubes that are on same objects-->try to use this as a
+  measure of odometry drift
+**look at adding accelerometer/magnetometer to odometry-->can we just use the
+  heading data from the log file for theta?  Would just need to compute the
+  shift to set the initial heading = pi/2.  Could also compute dHeading every
+  time and use that as dTheta.  TRY THIS!!!!
+**look at median of scores instead of mean-->see where 'good' tubes rank
+**finish redoing the run-gm and render with the scores as a filter
+**try to incorporate proposal score into unary score (just multiply?)
+**look at objectness score-->can we get it running off the shelf?
+**if so, combine that into unary score
 
-**try plotting all tube xy locations
+**HOG for visual similarity between floorplans
+**split test floorplan into runs of 2-2-3 and put visual similarity linking the
+  same objects in different floorplans/gms.  See if this constrains the problem
+  enough. 
+
+
+discussion w/Jeff 4feb16:
 **how much variation in the locations of alternates for correct tubes?
 **proposal/objectness/other score to prune set
   --will we preserve the right tubes?
   --how close are selected tubes to correct/alternate tubes?
-  --add scores back to tubes
-
+  --add scores back to tubes (DONE)
 ****novel way to use similarity: have image similarity only BETWEEN same-class
     objects in different floorplans, use some sort of visual similarity
     (PHOW/SIFT, HOG, ??) to constrain the larger GM that results.
 
-**visualize selected nouns with sentences-->plot per sentence, mark start and
-  end points of path segments, plot noun/preposition phrases for that sentence,
-  maybe somehow connect path segments to nouns
+
+**talking with Dan 5feb16: Can OpenGM give us a distribution for each of the
+  variables, instead of just the labeling?  If we have some sort of discrete
+  distribution, it might be possible to find a mean of good-scoring tubes,
+  instead of just a single winner.
+
+
 
 **if binary scores back in, take nth root (n=number of nouns in clique) of
   binary score to make more like a linear score rather than quadratic.
