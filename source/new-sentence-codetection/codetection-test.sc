@@ -352,10 +352,48 @@
 (define (get-poses-that-match-frames datapath)
  (let* ((cam-timing (read-camera-timing-new
 		     (format #f "~a/camera_front.txt" datapath)))
-	(timing-file (if (file-exists? (format #f "~a/imu-log-with-estimates.txt"
-					       datapath))
-			 (format #f "~a/imu-log-with-estimates.txt" datapath)
-			 (format #f "~a/imu-log.txt" datapath)))
+	(timing-file ;; (if (file-exists? (format #f "~a/imu-log-with-estimates.txt"
+		     ;; 			       datapath))
+		     ;; 	 (format #f "~a/imu-log-with-estimates.txt" datapath)
+			 (format #f "~a/imu-log.txt" datapath));;)
+	(poses-with-timing (read-robot-estimated-pose-from-log-file timing-file)))
+;;  (dtrace "length cam-timing" (length cam-timing))
+;;  (dtrace "length poses-with-timing" (length poses-with-timing))
+  (let loop ((cam-timing cam-timing)
+	     (poses poses-with-timing)
+	     (previous-pose #f)
+	     (frame-poses '()))
+   (if (or (null? poses) (null? cam-timing))
+       (begin
+;;	(dtrace "length cam-timing" (length cam-timing))
+;;	(dtrace "length poses " (length poses))
+	(if (and (null? poses) (not (null? cam-timing)))
+	    (reverse (cons (second previous-pose) frame-poses))
+	    (reverse frame-poses))) ;; done
+       (if previous-pose
+	   (if (< (abs (- (first previous-pose) (first cam-timing)))
+		  (abs (- (first (first poses)) (first cam-timing))))
+	       (loop (rest cam-timing)
+		     (rest poses)
+		     (first poses)
+		     (cons (second previous-pose) frame-poses))
+	       (loop cam-timing
+		     (rest poses)
+		     (first poses)
+		     frame-poses))
+	   (loop cam-timing
+		 (rest poses)
+		 (first poses)
+		 frame-poses))))))
+
+(define (get-poses-that-match-frames-new datapath)
+ (let* ((cam-timing (read-camera-timing-new
+		     (format #f "~a/camera_front.txt" datapath)))
+	(timing-file ;; (if (file-exists? (format #f "~a/imu-log-with-estimates.txt"
+		     ;; 			       datapath))
+		     ;; 	 (format #f "~a/imu-log-with-estimates.txt" datapath)
+		     ;; 	 (format #f "~a/imu-log.txt" datapath))
+	 (format #f "~a/imu-log-with-estimates.txt" datapath))
 	(poses-with-timing (read-robot-estimated-pose-from-log-file timing-file)))
 ;;  (dtrace "length cam-timing" (length cam-timing))
 ;;  (dtrace "length poses-with-timing" (length poses-with-timing))
@@ -442,6 +480,28 @@
  (let* ((dirlist
 	 (system-output "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/floor*"))
 	(outfile-name "frame-poses-uncorrected.sc"))
+  (for-each
+   (lambda (dir)
+    (write-object-to-file
+     (get-poses-that-match-frames dir)
+     (format #f "~a/~a" dir outfile-name)))
+   dirlist)))
+
+(define (save-new-poses-house-test)
+ (let* ((dirlist
+	 (system-output "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/floor*"))
+	(outfile-name "frame-poses-new.sc"))
+  (for-each
+   (lambda (dir)
+    (write-object-to-file
+     (get-poses-that-match-frames-new dir)
+     (format #f "~a/~a" dir outfile-name)))
+   dirlist)))
+
+(define (save-old-poses-house-test)
+ (let* ((dirlist
+	 (system-output "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/floor*"))
+	(outfile-name "frame-poses-old.sc"))
   (for-each
    (lambda (dir)
     (write-object-to-file
@@ -6776,6 +6836,169 @@
   (newline)
   ))
 
+(define (matlab-plot-just-traces raw-trace raw-trace-alt
+				 xy-max xy-min output-file)
+ (let* ((trace (map (lambda (p) (subvector p 0 2)) raw-trace)) ;;need to downsample?
+	(trace-alt (map (lambda (p) (subvector p 0 2)) raw-trace-alt))
+	(start (first trace))
+	(end (last trace))
+	(xvals (map x trace))
+	(yvals (map y trace))
+	(xvals-alt (map x trace-alt))
+	(yvals-alt (map y trace-alt))
+	(raw-arrow-trace
+	 (map-indexed
+	  (lambda (p i) (vector-append p (list-ref trace (+ i 1))))
+	  (but-last trace)))
+	(dist-interval 0.20) ;;20 cm
+	(arrow-trace
+	 (but-last (removeq
+		    #f
+		    (let loop ((poi (first raw-arrow-trace))
+			       (points (rest raw-arrow-trace))
+			       (out '()))
+		     (if (null? points)
+			 out
+			 (if (> (distance (subvector poi 0 2)
+					  (subvector (first points) 0 2))
+				dist-interval)
+			     (loop (first points) (rest points) (cons poi out))
+			     (loop poi (rest points) out))))))))
+  (start-matlab!)
+  (matlab "clear all; close all;")
+  ;;  (matlab "h=figure")
+  (matlab "h = figure('visible','off');")
+  ;;use something like "h=figure('visible','off');" to just save file
+  ;;see house_make_plots_new.m
+  (matlab "hold on")
+  (matlab (format #f "axis([~a ~a ~a ~a]);" xy-min xy-max xy-min xy-max))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list xvals)
+   (list yvals)
+   (list "'trace'")
+   (list "'c-','LineWidth',1"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list xvals-alt)
+   (list yvals-alt)
+   (list "'trace-alt'")
+   (list "'r-','LineWidth',1"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (list (first (vector->list start))))
+   (list (list (second (vector->list start))))
+   (list "'start'" )
+   (list "'go','MarkerFaceColor','g'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (list (first (vector->list end))))
+   (list (list (second (vector->list end))))
+   (list "'end'" )
+   (list "'ro','MarkerFaceColor','r'"))
+;;  (matlab-plot-arrowheads-on-trace arrow-trace) ;;this has to go last
+  (matlab "box on")
+  (matlab "hold off")
+  (matlab (format #f "saveas(h,'~a');"
+		  output-file))
+  (display (format #f "saved ~a"
+		  output-file))
+  (newline)
+  ))
+
+(define (quick-plot-traces-only)
+ (let* ((dirlist (system-output
+		  (format
+		   #f
+		   "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*"
+		   "floorplan-0")))
+	(orig-file "frame-poses-old.sc")
+	(int-file "new-track-old.sc")
+	(new-file "frame-poses-new.sc"))
+  (for-each-indexed (lambda (dir i)
+		     (let ((orig-trace (read-object-from-file
+					(format #f "~a/~a" dir orig-file)))
+			   (int-trace (map list->vector
+					   (read-object-from-file
+					    (format #f "~a/~a" dir int-file))))
+			   (new-trace (read-object-from-file
+				       (format #f "~a/~a" dir new-file))))
+		      (matlab-plot-three-traces
+		       orig-trace int-trace new-trace 6 -6
+		       (format #f "/tmp/scott-trace-~a.png" i))))
+		    dirlist)))
+			   
+ ;;orig-trace int-trace new-trace
+
+(define (matlab-plot-three-traces raw-trace raw-trace-alt trace-alt2
+				 xy-max xy-min output-file)
+ (let* ((trace (map (lambda (p) (subvector p 0 2)) raw-trace)) ;;need to downsample?
+	(trace-alt (map (lambda (p) (subvector p 0 2)) raw-trace-alt))
+	(start (first trace))
+	(end (last trace))
+	(xvals (map x trace))
+	(yvals (map y trace))
+	(xvals-alt (map x trace-alt))
+	(yvals-alt (map y trace-alt))
+	(xvals-alt2 (map x trace-alt2))
+	(yvals-alt2 (map y trace-alt2))
+
+	(raw-arrow-trace
+	 (map-indexed
+	  (lambda (p i) (vector-append p (list-ref trace (+ i 1))))
+	  (but-last trace)))
+	(dist-interval 0.20) ;;20 cm
+	(arrow-trace
+	 (but-last (removeq
+		    #f
+		    (let loop ((poi (first raw-arrow-trace))
+			       (points (rest raw-arrow-trace))
+			       (out '()))
+		     (if (null? points)
+			 out
+			 (if (> (distance (subvector poi 0 2)
+					  (subvector (first points) 0 2))
+				dist-interval)
+			     (loop (first points) (rest points) (cons poi out))
+			     (loop poi (rest points) out))))))))
+  (start-matlab!)
+  (matlab "clear all; close all;")
+  ;;  (matlab "h=figure")
+  (matlab "h = figure('visible','off');")
+  ;;use something like "h=figure('visible','off');" to just save file
+  ;;see house_make_plots_new.m
+  (matlab "hold on")
+  (matlab (format #f "axis([~a ~a ~a ~a]);" xy-min xy-max xy-min xy-max))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list xvals)
+   (list yvals)
+   (list "'trace'")
+   (list "'c-','LineWidth',1"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list xvals-alt)
+   (list yvals-alt)
+   (list "'trace-alt'")
+   (list "'r-','LineWidth',1"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list xvals-alt2)
+   (list yvals-alt2)
+   (list "'trace-alt'")
+   (list "'k-','LineWidth',1"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (list (first (vector->list start))))
+   (list (list (second (vector->list start))))
+   (list "'start'" )
+   (list "'go','MarkerFaceColor','g'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (list (first (vector->list end))))
+   (list (list (second (vector->list end))))
+   (list "'end'" )
+   (list "'ro','MarkerFaceColor','r'"))
+;;  (matlab-plot-arrowheads-on-trace arrow-trace) ;;this has to go last
+  (matlab "box on")
+  (matlab "hold off")
+  (matlab (format #f "saveas(h,'~a');"
+		  output-file))
+  (display (format #f "saved ~a"
+		  output-file))
+  (newline)))
+
 (define (matlab-plot-one-run-with-all-tubes all-tube-locs raw-trace raw-trace-alt
 					    idx object-names-and-locations alignment
 					    xy-max xy-min output-dir)
@@ -6941,4 +7164,13 @@
                    end;" arrow-linespec))
   (matlab "set(gcf,'WindowStyle','normal'); set(gcf, 'Position', [0 0 900 800])")))
 
+;;to find median of list--do I want to compile this into dsci?
+(define (list-median lst)
+ (let* ((sorted-list (sort lst > identity))
+	(len (length sorted-list)))
+  (if (odd? len)
+      (list-ref sorted-list (exact-round (- (/ len 2) 0.5)))
+      (/ (+ (list-ref sorted-list (/ len 2))
+	    (list-ref sorted-list (- (/ len 2) 1)))
+	 2))))
 

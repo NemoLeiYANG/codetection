@@ -1,0 +1,24 @@
+.   notes.text          335736  Text		  ~/codetection/notes.text
+    codetection-test.s: 254586  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+  * *shell*<2>           96653  Shell:run	  /tmp/
+  * *scheme*            111940  Inferior Scheme:
+  * *shell*<3>           28439  Shell:run	  /amd/upplysingaoflun/root/aux/home/sbroniko/vader-rover/position/
+    log_to_track.cpp     16502  C++/l		  /amd/upplysingaoflun/root/aux/home/sbroniko/vader-rover/position/log_to_track.cpp
+    new-track.sc         65459  Scheme		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/new-track.sc
+    new-track-old.sc     65497  Scheme		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/new-track-old.sc
+    frame-poses-old.sc   14150  Scheme		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/frame-poses-old.sc
+    track.sc             68278  Scheme		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/track.sc
+    imu-log.txt         675173  Text		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/imu-log.txt
+    the-force.cpp        73164  C++/l		  ~/vader-rover/position/the-force.cpp
+    scheme-working-buf: 956937  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-5feb16.txt
+    QobiScheme-AD.sc    295402  Scheme		  ~/QobiScheme/source/QobiScheme-AD.sc
+    toollib-misc.sc      44479  Scheme		  ~/darpa-collaboration/ideas/toollib-misc.sc
+  * *shell*                149  Shell:run	  ~/codetection/source/new-sentence-codetection/
+    open-files-5feb16.tx: 1419  Text		  ~/codetection/open-files-5feb16.txt
+    scheme-working-buf: 710891  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-4feb16.txt
+    scheme-working-bu: 1353610  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-3feb16.txt
+    rendering-code.sc    71910  Scheme		  ~/codetection/rendering-code.sc
+    toollib-codetection: 25104  Scheme		  ~/codetection/source/new-sentence-codetection/toollib-codetection.sc
+    inference.h           1905  C++/l		  ~/codetection/source/new-sentence-codetection/inference.h
+    inference.cpp        54250  C++/l		  ~/codetection/source/new-sentence-codetection/inference.cpp
+    *scratch*              191  Lisp Interaction

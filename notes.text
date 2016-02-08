@@ -6322,17 +6322,68 @@ TO DO's
   mean (and those two were < 10% below).  However, 5 of the 8 distractor tubes
   were also above the mean.
 
+----------------git commit 7718bfb--------------
 
+7 Feb 16
+
+--Looked at the median value (wrote list-median to find median) and saw that it
+  was relatively the same as the list mean (0.166830), so conclusions from above
+  regarding scores vs. mean should still apply.
+
+--Looked at yaw (Y, Y(a)) and mag heading (M_h, M_h(a)) from IMU, realized that
+  the readings are pretty crappy.  Might be able to use the accelerometer (Ax,
+  Ay) readings.  I see Ax as Measurement.at<float>(6) in log_to_track.cpp, so I
+  think I could incorporate that just by making mAN smaller.  What about Ay?  Is
+  that useful?  Shouldn't we have some robot-y acceleration during turns?  Also,
+  I noticed that the heading readings from the GPS (which are only given once
+  per second) are actually pretty accurate-->the robot starts going west then
+  turns south, and the GPS headings are within a degree or two of that.  Is
+  there a way we can incorporate that heading?  Problems I see with this:
+  1) reading only given once per second, and 2) reading is bogus until robot
+  starts moving.
+
+--Played with measurement noise parameters in log_to_track.cpp and found that
+  the following give what seems to be a pretty accurate track for at least the
+  first run (f0s0): 
+  float mThetaN = 20000000*(pi/180);//1000000000 * (pi/180); //  orientation noise variance (radians)
+  float mdThetaN = .01;//.0001; 
+  //1000000000000 * (pi/180); //  orientation derivative noise variance (radians)
+  float mSLN = .01; //  left wheel speed noise variance
+  float mSRN = .01; //  right wheel speed noise variance
+  float mAN  = .01;//100000000; //  acceleration noise variance
+
+
+--Re-ran log-to-track against original imu-log.txt files and saving to
+  imu-log-with-estimates.txt so that get-poses-that-match-frames will get new
+  frame-poses.sc.
+
+--Fixed bug in log_to_track.cpp that was writing the old estimates out to the
+  new .txt file.
+
+--Plotted all runs with original, intermediate, and new tracks only--sent in
+  email to Dan.
+
+--Re-ran get-poses-that-match-frames to make frame-poses-new.sc (old files saved
+  as frame-poses-old.sc
+
+--NEXT STEP is to re-run everything from find-low-variance-tubes forward and
+  replot with new frame-poses.
 
 
 TO DO:
 **plot all low-variance tubes that are on same objects-->try to use this as a
-  measure of odometry drift
+  measure of odometry drift (??)
+
+**Make sure boxes are clipped to image limits BEFORE computing locations.
+**RECOMPUTE tube locations off new odometry.
+
+
 **look at adding accelerometer/magnetometer to odometry-->can we just use the
   heading data from the log file for theta?  Would just need to compute the
   shift to set the initial heading = pi/2.  Could also compute dHeading every
   time and use that as dTheta.  TRY THIS!!!!
-**look at median of scores instead of mean-->see where 'good' tubes rank
+
+**look at median of scores instead of mean-->see where 'good' tubes rank (DONE)
 **finish redoing the run-gm and render with the scores as a filter
 **try to incorporate proposal score into unary score (just multiply?)
 **look at objectness score-->can we get it running off the shelf?
