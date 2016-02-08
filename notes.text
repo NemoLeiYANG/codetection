@@ -6369,30 +6369,148 @@ TO DO's
 --NEXT STEP is to re-run everything from find-low-variance-tubes forward and
   replot with new frame-poses.
 
+----------------git commit 02e3c29--------------
+
+8 Feb 16
+
+--Rewrote render-good-tubes to also put the x,y and distance variation mean
+  (dvm) on the images.  Re-ran on the test floorplan with the new frame-poses.
+  Saved data in
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan-0-good-tubes-3-8feb16.
+
+--Added hardcoded image size limits.
+
+--Wrote box-within-frame? to determine if box is within image limits.  
+
+--Wrote preprocess-tube to replace call box-within-frame? and replace
+  out-of-frame boxes with #F.  Call this from within find-low-variance-tubes.
+
+--Re-ran render-good-tubes to get new good-tubes without out-of-frame boxes.
+  Saved output in
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan-0-good-tubes-4-8feb16.
+
+--Rechecked selections for reduced tube list.  They are (IN ORDER): 
+      table-with-doors: 458 (397 alt)
+      chair R: 177 (254 alt)
+      chair L: 480 (286, 275 alt)
+      hutch: 54 (69 alt)
+      dining-room-table: 398
+      side-table: 189
+      crate: 36
+      recycle-bin: 128
+
+--Ran simple-gm against new small-example-tubes, +8 distractors, and all
+  good-tubes.  Results are in
+  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan-0-8feb16-simple-{all-good-tubes,small-example-tubes,small-example-tubes-8-random}.
+  Looks pretty much the same as previous results-->good when number of tubes is
+  low, but picking crappy tubes that satisfy the semantics when using all tubes.
+
+--Output from test runs showing higher score with more tubes:
+  > (define *seoutput* (simple-gm-small-example *setubes*))
+  Starting bp_sentence_codetection_inference at Mon Feb  8 18:13:15 2016
+  --------------------
+  Unary scores added at Mon Feb  8 18:13:15 2016
+  Binary scores added at Mon Feb  8 18:13:15 2016
+  before bp call
+  after bp call
+  before bp.infer
+  begin: value 4.78515e-44 bound inf
+  step: 1 value 0 bound inf
+  step: 2 value 0 bound inf
+  step: 3 value 2.85334e-22 bound inf
+  step: 4 value 2.72387e-21 bound inf
+  step: 5 value 2.72387e-21 bound inf
+  value 2.72387e-21 bound inf
+  after bp.infer
+  0 ms
+  OpenGM Belief Propagation 2.72387e-21
+  --------------------
+  Finshed bp_sentence_codetection_inference at Mon Feb  8 18:13:15 2016
+  ***** *SEOUTPUT* is redefined
+  *SEOUTPUT*
+  
+  > (define *seoutput2* (simple-gm-small-example *setubes2*))
+  Starting bp_sentence_codetection_inference at Mon Feb  8 18:17:00 2016
+  --------------------
+  Unary scores added at Mon Feb  8 18:17:00 2016
+  Binary scores added at Mon Feb  8 18:17:00 2016
+  before bp call
+  after bp call
+  before bp.infer
+  begin: value 5.60589e-42 bound inf
+  step: 1 value 0 bound inf
+  step: 2 value 0 bound inf
+  step: 3 value 6.70166e-22 bound inf
+  step: 4 value 6.39757e-21 bound inf
+  step: 5 value 6.39757e-21 bound inf
+  value 6.39757e-21 bound inf
+  after bp.infer
+  0 ms
+  OpenGM Belief Propagation 6.39757e-21
+  --------------------
+  Finshed bp_sentence_codetection_inference at Mon Feb  8 18:17:00 2016
+  *SEOUTPUT2*
+  
+  > (define *seoutput3* (simple-gm-small-example *good-tubes2*))
+  Starting bp_sentence_codetection_inference at Mon Feb  8 18:19:38 2016
+  --------------------
+  Unary scores added at Mon Feb  8 18:19:38 2016
+  Binary scores added at Mon Feb  8 18:19:38 2016
+  before bp call
+  after bp call
+  before bp.infer
+  begin: value 3.4923e-47 bound inf
+  step: 1 value 0 bound inf
+  step: 2 value 3.48732e-15 bound inf
+  step: 3 value 5.64268e-15 bound inf
+  step: 4 value 2.43842e-14 bound inf
+  step: 5 value 2.43842e-14 bound inf
+  value 2.43842e-14 bound inf
+  after bp.infer
+  1580 ms
+  OpenGM Belief Propagation 2.43842e-14
+  --------------------
+  Finshed bp_sentence_codetection_inference at Mon Feb  8 18:19:40 2016
+  *SEOUTPUT3*
+
+--The lack of change with using the new odometry leads me to believe that I need
+  to implement the use of some sort of visual score within the unary score.
+  Jeff's suggestion is to try using the Objectness Measure score first, so I
+  will try that.
+
+--Might also try some sort of run-length-based confidence score to give better
+  scores to tubes that occur earlier in a run--maybe also to longer tubes over
+  shorter tubes.
+
+
+
+
 
 TO DO:
-**plot all low-variance tubes that are on same objects-->try to use this as a
-  measure of odometry drift (??)
-
-**Make sure boxes are clipped to image limits BEFORE computing locations.
-**RECOMPUTE tube locations off new odometry.
-
-
-**look at adding accelerometer/magnetometer to odometry-->can we just use the
-  heading data from the log file for theta?  Would just need to compute the
-  shift to set the initial heading = pi/2.  Could also compute dHeading every
-  time and use that as dTheta.  TRY THIS!!!!
-
-**look at median of scores instead of mean-->see where 'good' tubes rank (DONE)
-**finish redoing the run-gm and render with the scores as a filter
-**try to incorporate proposal score into unary score (just multiply?)
-**look at objectness score-->can we get it running off the shelf?
-**if so, combine that into unary score
+**try to incorporate proposal score into unary score (just multiply?) OBJECTNESS
+  MEASURE 
+**think more about confidence score based on where tube occurs in run (relative
+  or absolute?) 
+**what about a score boost for longer tubes??  or maybe just a sigmoided
+  discount for shorter tubes, like in distance variation
+**look at objectness score-->can we get it running off the shelf?  if so,
+  combine that into unary score 
 
 **HOG for visual similarity between floorplans
 **split test floorplan into runs of 2-2-3 and put visual similarity linking the
   same objects in different floorplans/gms.  See if this constrains the problem
   enough. 
+
+**Email convo w/Dan 8Feb16: try doing some sort of manual filtering on plotted
+  odometry with real-world locations-->get rid of runs with crappy odometry
+  at the beginning
+
+**FOR REAL DATA: think about generating more proposals/tubes-->seems like there
+  aren't enough in the test dataset
+
+**plot all low-variance tubes that are on same objects-->try to use this as a
+  measure of odometry drift (??)
+**finish redoing the run-gm and render with the scores as a filter
 
 
 discussion w/Jeff 4feb16:

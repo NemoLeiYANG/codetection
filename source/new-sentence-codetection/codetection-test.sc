@@ -4207,6 +4207,16 @@
 				      camera-offset-matrix camera-intrinsics))
     br-corners pose-list-6dof))))
 
+;;**HARDCODED image size**
+(define *img-width* 640)
+(define *img-height* 480)
+
+(define (box-within-frame? box img-w img-h)
+ (and (>= (x box) 0)
+      (>= (y box) 0)
+      (< (z box) img-w)
+      (< (vector-ref box 3) img-h)))
+
 (define (raw-tube-with-score-and-pose-list->world-corners-list raw-tube-with-score
 							       pose-list) ;;(3dof)
  (let* ((tube (if (< (length pose-list) (length (first raw-tube-with-score)))
@@ -4216,7 +4226,7 @@
 	(camera-intrinsics *camera-k-matrix*) ;;PREDEFINED
 	(height 0)) ;;ASSUMPTION FOR OBJECTS ON GROUND
   (map (lambda (box pose)
-	(if box
+	(if box	 
 	    (box-vector-at-height-and-pose->world-corners box height pose
 							  camera-intrinsics
 							  camera-offset-matrix)
@@ -4468,14 +4478,26 @@
 
 ;; (define *good-tubes-new* (removeq #f (map (lambda (t) (if (< (vector-ref (first (first t)) 3) 0) #f t)) *good-tubes*)))
 
+(define (preprocess-tube tube-with-score) ;;this removes boxes that are outside of frame
+ (let* ((tube (first tube-with-score))
+	(score (second tube-with-score)))
+  (list (map (lambda (b) (if b
+			     (if (box-within-frame? b *img-width* *img-height*)
+				 b
+				 #f)
+			     #f))
+	     tube)
+	score)))
+
 (define (find-low-variance-tubes path)
  ;;this is the old d-filter (>5 frames, distance from mean < 50 cm)
  ;;modified to use the nms-tubes.sc in the base path
  ;;output is: a list with an entry for each tube,
  ;;  #f if the tube doesn't pass the filter, or ((#(x y w h) #(xv yv wv hv)) dist-var
  ;;  video-name (list tubepixels))
- (let* ((tubes-with-scores (read-object-from-file
-			    (format #f "~a/nms-tubes.sc" path)))
+ (let* ((tubes-with-scores
+	 (map preprocess-tube (read-object-from-file
+			       (format #f "~a/nms-tubes.sc" path))))
 	(tubes-no-scores (map first tubes-with-scores))
 	(tube-scores (map second tubes-with-scores))
 	(length-thresh 5)
@@ -5758,7 +5780,7 @@
   ;;do I want to render ALL traces with the noun-locations plotted?
   (map-indexed (lambda (dir i)
 		(matlab-plot-one-run (list-ref raw-traces i)
-				     (list-ref raw-traces-uncorrected i)
+				     ;;(list-ref raw-traces-uncorrected i)
 				     i
 				     (list-ref object-names-and-locations-lists i)
 				     (list-ref alignments i)
@@ -5768,7 +5790,7 @@
 		(matlab-plot-one-run-with-all-tubes
 		 all-tube-locations
 		 (list-ref raw-traces i)
-		 (list-ref raw-traces-uncorrected i)
+		 ;;(list-ref raw-traces-uncorrected i)
 		 i
 		 (list-ref object-names-and-locations-lists i)
 		 (list-ref alignments i)
@@ -5796,6 +5818,8 @@
    ;;save image with name tube-#.png
    (map-indexed (lambda (tube i)
 		 (let* ((tube-frames (fourth tube))
+			(tube-xy (subvector (first (first tube)) 0 2))
+			(tube-dvm (x (second tube))) ;;dvm=dist variation mean
 			(color-cyan (vector 0 255 255))
 			(color-blue (vector 0 0 255))
 			(outname
@@ -5820,6 +5844,17 @@
 				  (h-val (- (vector-ref box 3) (y box))))
 			    (imlib:draw-rectangle image x-val y-val w-val
 						  h-val color-blue 3)
+			    (imlib:text-draw2 image 320 240 ;;hard-coded text location
+					      ;;x-val (vector-ref box 3)
+		   		     (format #f "x:~a y:~a dvm:~a"
+					     (number->string-with-n-decimal-places
+					      (x tube-xy) 2)
+					     (number->string-with-n-decimal-places
+					      (y tube-xy) 2)
+					     (number->string-with-n-decimal-places
+					      tube-dvm 2))
+				     color-cyan;;color-blue
+				     10)
 			    (imlib:save image outname)
 			    (imlib:free-image-and-decache image)
 			    (display (format #f "saved ~a" outname))
@@ -6721,20 +6756,20 @@
 
 ;;plotting stuff for paths with graphical model output
 
-(define (matlab-plot-one-run raw-trace raw-trace-alt
+(define (matlab-plot-one-run raw-trace ;;raw-trace-alt
 			     idx object-names-and-locations alignment
 			     xy-max xy-min output-dir)
  ;;this is meant to be called from within render-gm-output(-small-example)
  ;;object-names-and-locations should be JUST the objects for this run-->
  ;;  HOW do we do that?
  (let* ((trace (map (lambda (p) (subvector p 0 2)) raw-trace)) ;;need to downsample?
-	(trace-alt (map (lambda (p) (subvector p 0 2)) raw-trace-alt))
+	;;(trace-alt (map (lambda (p) (subvector p 0 2)) raw-trace-alt))
 	(start (first trace))
 	(end (last trace))
 	(xvals (map x trace))
 	(yvals (map y trace))
-	(xvals-alt (map x trace-alt))
-	(yvals-alt (map y trace-alt))
+	;; (xvals-alt (map x trace-alt))
+	;; (yvals-alt (map y trace-alt))
 	(raw-arrow-trace
 	 (map-indexed
 	  (lambda (p i) (vector-append p (list-ref trace (+ i 1))))
@@ -6777,11 +6812,11 @@
    (list yvals)
    (list "'trace'")
    (list "'c-','LineWidth',2"))
-  (plot-lines-in-matlab-with-symbols-no-legend
-   (list xvals-alt)
-   (list yvals-alt)
-   (list "'trace-alt'")
-   (list "'r-','LineWidth',2"))
+  ;; (plot-lines-in-matlab-with-symbols-no-legend
+  ;;  (list xvals-alt)
+  ;;  (list yvals-alt)
+  ;;  (list "'trace-alt'")
+  ;;  (list "'r-','LineWidth',2"))
   (plot-lines-in-matlab-with-symbols-no-legend
    (list (map x object-xy))
    (list (map y object-xy))
@@ -6999,20 +7034,20 @@
 		  output-file))
   (newline)))
 
-(define (matlab-plot-one-run-with-all-tubes all-tube-locs raw-trace raw-trace-alt
+(define (matlab-plot-one-run-with-all-tubes all-tube-locs raw-trace ;;raw-trace-alt
 					    idx object-names-and-locations alignment
 					    xy-max xy-min output-dir)
  ;;this is meant to be called from within render-gm-output(-small-example)
  ;;object-names-and-locations should be JUST the objects for this run
  ;;all-tube-locs is list of #(x y) locations of tubes
  (let* ((trace (map (lambda (p) (subvector p 0 2)) raw-trace)) ;;need to downsample?
-	(trace-alt (map (lambda (p) (subvector p 0 2)) raw-trace-alt))
+	;;(trace-alt (map (lambda (p) (subvector p 0 2)) raw-trace-alt))
 	(start (first trace))
 	(end (last trace))
 	(xvals (map x trace))
 	(yvals (map y trace))
-	(xvals-alt (map x trace-alt))
-	(yvals-alt (map y trace-alt))
+	;; (xvals-alt (map x trace-alt))
+	;; (yvals-alt (map y trace-alt))
 	(raw-arrow-trace
 	 (map-indexed
 	  (lambda (p i) (vector-append p (list-ref trace (+ i 1))))
@@ -7055,11 +7090,11 @@
    (list yvals)
    (list "'trace'")
    (list "'c-','LineWidth',2"))
-  (plot-lines-in-matlab-with-symbols-no-legend
-   (list xvals-alt)
-   (list yvals-alt)
-   (list "'trace-alt'")
-   (list "'r-','LineWidth',2"))
+  ;; (plot-lines-in-matlab-with-symbols-no-legend
+  ;;  (list xvals-alt)
+  ;;  (list yvals-alt)
+  ;;  (list "'trace-alt'")
+  ;;  (list "'r-','LineWidth',2"))
   (plot-lines-in-matlab-with-symbols-no-legend
    (list (map x all-tube-locs))
    (list (map y all-tube-locs))
