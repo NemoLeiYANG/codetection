@@ -6524,12 +6524,65 @@ TO DO's
   20160209-matlab-work.txt.  Got scores that were all over the place.  Not sure
   what this means.
 
+----------------git commit 05f21bf--------------
+
+10 Feb 15
+
+--Thinking about objectness measure-->why not try giving JUST the box contents
+  (maybe resized) to the objectness code, letting it run all methods (including
+  MS) and then taking the score of the LARGEST AREA box, since that is the one
+  that would most closely match the original box.  Or take the mean score of the
+  top N boxes.
+
+--Talked with Dan about idea above.  Agreed that mean score would not be very
+  principled.  But could take the product of the box score and its IoU with the
+  original box.  Also need to look at best-score box--test box with just wall is
+  getting a perfect score--try throwing away a box if its area is > 90% (??) of
+  full image area.
+
+--Incorporated the above into a rewrite of find_img_objectness_score.m.
+
+--Discovered that the output of the runObjectness is non-deterministic--probably
+  because the boxes that are generated are so.  Going to try increasing the
+  number of boxes generated to see if it gives a more stable output for my img
+  objectness function. **REALIZED that this won't help if I'm looking at the max
+  score-->adding more boxes will just increase the likelihood of a wild max
+  being in the mix.
+
+  **looking at whether the bad maxes for the all-wall box happen at a certain
+    IoU value
+  **also thinking about some type of Monte Carlo modification--maybe get the max
+    3-5 times and then take the median of those
+  **or maybe take the median of the original data, instead of the max
+
+**OR DO I EVEN NEED TO WORRY ABOUT BOGUS SCORES-->since I'm going to be using
+  the score for a TUBE (i.e., a series of frames), would the averaging at the
+  tube level take care of bad results?
+
+--After running SEVERAL tests by hand, observed that the max score for the
+  all-wall box was consistently ~2e-2, while the score for goodbox_corners(5,:)
+  was ~4e-1.  That seems like a big enough delta to make a difference.
+
+--Tried to see if there was a way to tune the olthresh value to block out the
+  occasional bad score on the all-wall box, but after looking at the overlaps of
+  the bad all-wall boxes and the overlaps of the max winning boxes on
+  goodbox_corners, realized there wasn't a gap in values there-->bad boxes had
+  an overlap of ~.75, while good ones had overlap of ~.8-->can't filter on
+  that.  May just have to deal with the occasional bad data and let the
+  averaging across a tube take care of it
+**Could we take the MEDIAN score of a tube instead of the mean??
+
+--Currently using the myparams structure as the parameters for my runs-->cues
+  are MS CC SS, with *no* ED.  Seems to work the best.  Saved in
+  objectness_params.mat.  NEED TO REMEMBER TO USE THIS ONE AND NOT params.
+
+
 ***Look at all-tubes->phow-visual-similarity-matrix for how to get videos into
    matlab and do stuff with them
    **remember to clear matlab data when done
    **might need to figure out a way to minimize the pulling of data back out
      from matlab to scheme if it is slow
-   **think about using the resize_box function in compute_phow_hist.m
+
 
 
 
