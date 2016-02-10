@@ -6482,6 +6482,54 @@ TO DO's
   scores to tubes that occur earlier in a run--maybe also to longer tubes over
   shorter tubes.
 
+----------------git commit 79f8f5a--------------
+
+9 Feb 16
+
+--Starting to work on using objectness-release-v2.2 for objectness measure.
+  Made changes to matlab startup.m to load necessary parameters.  It looks like
+  the function I want to use is computeScores.m.  This has a 'cue' parameter
+  that is either 'CC', 'ED', or 'SS'.  Not sure what the difference between
+  those is--I think the objectness code somehow merges those scores into a
+  single score.
+
+--Wrote find_img_objectness_score.m as quick test of objectness score code.
+  Used it on selection of good boxes (7,10,86,92,235) and bad boxes
+  (12,17,32,35,40) from test-floorplan0-good-tubes-2.  Imported videos into
+  matlab (saved as 20160209_videos.mat).  Results seem to be inverse to what I
+  would expect-->'good' boxes have score that is usually LOWER than 'bad'
+  boxes.  See saved output in 20160209-matlab-work.txt.
+
+--Working on compute_tube_objectness_score.m to find the mean obj score for all
+  boxes in a tube.
+
+--Reading the Alexe papers on objectness measure to get a better idea of how
+  their measure works and try to see why the scores I'm getting seem to be
+  inverse.
+
+**THOUGHT: Objectness measure seems to have a strong preference for boxes that
+  enclose ENTIRE objects, not partials as there are quite a few of in these
+  videos.  Might that be a feature instead of a bug?
+
+**THOUGHT: Would it make sense to take the scores from objectness measure and
+  divide them by the percentage of the frame that the box takes up?  This would
+  give a bigger boost to smaller boxes, but could result in scores > 1...
+
+**THOUGHT: Maybe this is just another case of human intuition being different
+  from machine sense-->maybe the boxes I picked for the test aren't very good
+  examples of good/bad.  Should I try just pushing through and running it with
+  all the tubes-->maybe the combination of semantics and objectness will work.
+
+--Tried with box of just blank wall--see 'new shit' section of
+  20160209-matlab-work.txt.  Got scores that were all over the place.  Not sure
+  what this means.
+
+***Look at all-tubes->phow-visual-similarity-matrix for how to get videos into
+   matlab and do stuff with them
+   **remember to clear matlab data when done
+   **might need to figure out a way to minimize the pulling of data back out
+     from matlab to scheme if it is slow
+   **think about using the resize_box function in compute_phow_hist.m
 
 
 

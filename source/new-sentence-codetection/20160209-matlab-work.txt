@@ -1,0 +1,313 @@
+>> goodbox_framenums=[189,175,414,270,310];
+>> goodbox_vidnums=[0,0,1,1,2];
+>> badbox_vidnums=[0,0,0,0,0];
+>> goodbox_framenums = goodbox_framenums + 1
+goodbox_framenums =
+   190   176   415   271   311
+>> goodbox_corners = [207 57 415 290; 72 67 299 283; 69 4 440 312; 193 75 427 285; 170 57 449 295]
+goodbox_corners =
+   207    57   415   290
+    72    67   299   283
+    69     4   440   312
+   193    75   427   285
+   170    57   449   295
+>> goodbox_corners = goodbox_corners + 1
+goodbox_corners =
+   208    58   416   291
+    73    68   300   284
+    70     5   441   313
+   194    76   428   286
+   171    58   450   296
+>> badbox_corners = [47 1 550 268; 5 44 304 339; 312 -3 505 281; 425 1 639 284 ;16 1 639 479]
+badbox_corners =
+    47     1   550   268
+     5    44   304   339
+   312    -3   505   281
+   425     1   639   284
+    16     1   639   479
+>> badbox_corners = badbox_corners + 1
+badbox_corners =
+    48     2   551   269
+     6    45   305   340
+   313    -2   506   282
+   426     2   640   285
+    17     2   640   480
+>> badbox_corners(3,2) = 1
+badbox_corners =
+    48     2   551   269
+     6    45   305   340
+   313     1   506   282
+   426     2   640   285
+    17     2   640   480
+>> badbox_framenums = [0 130 294 10 220]
+badbox_framenums =
+     0   130   294    10   220
+>> badbox_framenums = badbox_framenums + 1
+badbox_framenums =
+     1   131   295    11   221
+>> cues = {'CC','ED','SS'};
+>> find_img_objectness_score(video_0(:,:,:,1),badbox_corners(1,:),cues,params)
+??? Undefined function or method 'inegrateBayes' for input arguments of type
+'cell'.
+
+Error in ==> find_img_objectness_score at 7
+img_score = inegrateBayes(cues,scores,params);
+ 
+>> find_img_objectness_score(video_0(:,:,:,1),badbox_corners(1,:),cues,params)
+ans =
+    0.1580
+>> find_img_objectness_score(video_0(:,:,:,131),badbox_corners(2,:),cues,params)
+ans =
+    0.3525
+>> find_img_objectness_score(video_0(:,:,:,295),badbox_corners(3,:),cues,params)
+ans =
+    0.1530
+>> find_img_objectness_score(video_0(:,:,:,11),badbox_corners(4,:),cues,params)
+ans =
+    0.3746
+>> find_img_objectness_score(video_0(:,:,:,221),badbox_corners(5,:),cues,params)
+ans =
+    0.4506
+>> goodbox_vidnums
+goodbox_vidnums =
+     0     0     1     1     2
+>> goodbox_framenums
+goodbox_framenums =
+   190   176   415   271   311
+>> find_img_objectness_score(video_0(:,:,:,190),goodbox_corners(1,:),cues,params)
+ans =
+    0.0165
+>> find_img_objectness_score(video_0(:,:,:,176),goodbox_corners(2,:),cues,params)
+ans =
+    0.0174
+>> find_img_objectness_score(video_1(:,:,:,415),goodbox_corners(3,:),cues,params)
+ans =
+    0.1656
+>> find_img_objectness_score(video_1(:,:,:,271),goodbox_corners(4,:),cues,params)
+ans =
+    0.0582
+>> find_img_objectness_score(video_2(:,:,:,311),goodbox_corners(5,:),cues,params)
+ans =
+    0.1550
+>> cues = {'ED','SS'};
+>> find_img_objectness_score(video_0(:,:,:,1),badbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,131),badbox_corners(2,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,295),badbox_corners(3,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,11),badbox_corners(4,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,221),badbox_corners(5,:),cues,params)
+ans =
+    0.1714
+ans =
+    0.1679
+ans =
+    0.1029
+ans =
+    0.1456
+ans =
+    0.1185
+>> find_img_objectness_score(video_0(:,:,:,190),goodbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,176),goodbox_corners(2,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,415),goodbox_corners(3,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,271),goodbox_corners(4,:),cues,params)
+find_img_objectness_score(video_2(:,:,:,311),goodbox_corners(5,:),cues,params)
+ans =
+    0.0352
+ans =
+    0.0379
+ans =
+    0.1562
+ans =
+    0.0757
+ans =
+    0.1467
+>> cues = {'CC','SS'};
+>> find_img_objectness_score(video_0(:,:,:,1),badbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,131),badbox_corners(2,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,295),badbox_corners(3,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,11),badbox_corners(4,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,221),badbox_corners(5,:),cues,params)
+ans =
+    0.4765
+ans =
+    0.6961
+ans =
+    0.4740
+ans =
+    0.7492
+ans =
+    0.7741
+>> find_img_objectness_score(video_0(:,:,:,190),goodbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,176),goodbox_corners(2,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,415),goodbox_corners(3,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,271),goodbox_corners(4,:),cues,params)
+find_img_objectness_score(video_2(:,:,:,311),goodbox_corners(5,:),cues,params)
+
+ans =
+    0.0771
+ans =
+    0.0811
+ans =
+    0.4550
+ans =
+    0.2064
+ans =
+    0.4777
+>> cues = {'CC','ED'};
+>> find_img_objectness_score(video_0(:,:,:,1),badbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,131),badbox_corners(2,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,295),badbox_corners(3,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,11),badbox_corners(4,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,221),badbox_corners(5,:),cues,params)
+ans =
+    0.0159
+ans =
+    0.0526
+ans =
+    0.0266
+ans =
+    0.0576
+ans =
+    0.1123
+>> find_img_objectness_score(video_0(:,:,:,190),goodbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,176),goodbox_corners(2,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,415),goodbox_corners(3,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,271),goodbox_corners(4,:),cues,params)
+find_img_objectness_score(video_2(:,:,:,311),goodbox_corners(5,:),cues,params)
+ans =
+    0.0079
+ans =
+    0.0077
+ans =
+    0.0216
+ans =
+    0.0153
+ans =
+    0.0182
+>> 
+>> cues = {'CC'};
+>> find_img_objectness_score(video_0(:,:,:,1),badbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,131),badbox_corners(2,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,295),badbox_corners(3,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,11),badbox_corners(4,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,221),badbox_corners(5,:),cues,params)
+ans =
+    0.0729
+ans =
+    0.1895
+ans =
+    0.1200
+ans =
+    0.2334
+ans =
+    0.3457
+>> find_img_objectness_score(video_0(:,:,:,190),goodbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,176),goodbox_corners(2,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,415),goodbox_corners(3,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,271),goodbox_corners(4,:),cues,params)
+find_img_objectness_score(video_2(:,:,:,311),goodbox_corners(5,:),cues,params)
+ans =
+    0.0382
+ans =
+    0.0375
+ans =
+    0.0849
+ans =
+    0.0614
+ans =
+    0.0846
+>> cues = {'SS'};
+>> find_img_objectness_score(video_0(:,:,:,1),badbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,131),badbox_corners(2,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,295),badbox_corners(3,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,11),badbox_corners(4,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,221),badbox_corners(5,:),cues,params)
+ans =
+    0.5008
+ans =
+    0.4590
+ans =
+    0.3639
+ans =
+    0.4593
+ans =
+    0.3596
+>> find_img_objectness_score(video_0(:,:,:,190),goodbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,176),goodbox_corners(2,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,415),goodbox_corners(3,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,271),goodbox_corners(4,:),cues,params)
+find_img_objectness_score(video_2(:,:,:,311),goodbox_corners(5,:),cues,params)
+ans =
+    0.1539
+ans =
+    0.1640
+ans =
+    0.4379
+ans =
+    0.2562
+ans =
+    0.4615
+>> cues = {'ED'};
+>> find_img_objectness_score(video_0(:,:,:,1),badbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,131),badbox_corners(2,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,295),badbox_corners(3,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,11),badbox_corners(4,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,221),badbox_corners(5,:),cues,params)
+ans =
+    0.0175
+ans =
+    0.0202
+ans =
+    0.0171
+ans =
+    0.0171
+ans =
+    0.0203
+>> find_img_objectness_score(video_0(:,:,:,190),goodbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,176),goodbox_corners(2,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,415),goodbox_corners(3,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,271),goodbox_corners(4,:),cues,params)
+find_img_objectness_score(video_2(:,:,:,311),goodbox_corners(5,:),cues,params)
+ans =
+    0.0171
+ans =
+    0.0171
+ans =
+    0.0202
+ans =
+    0.0202
+ans =
+    0.0171
+>> 
+>> %%new shit--looking at a box that just contains blank wall
+>> imshow(video_0(:,:,:,1))
+>> drawBoxes([600 40 640 80 1])
+>> find_img_objectness_score(video_0(:,:,:,1),[600 40 640 80 1],cues,params)
+ans =
+    0.0171
+>> cues
+cues = 
+    'ED'
+>> cues = {'CC'};
+>> find_img_objectness_score(video_0(:,:,:,1),[600 40 640 80 1],cues,params)
+ans =
+    0.3766
+>> cues = {'SS'};
+>> find_img_objectness_score(video_0(:,:,:,1),[600 40 640 80 1],cues,params)
+ans =
+    0.0797
+>> cues = {'CC','ED','SS'};
+>> find_img_objectness_score(video_0(:,:,:,1),[600 40 640 80 1],cues,params)
+ans =
+    0.1081
+>> cues = {'CC','ED'};
+>> find_img_objectness_score(video_0(:,:,:,1),[600 40 640 80 1],cues,params)
+ans =
+    0.1081
+>> cues = {'CC','SS'};
+>> find_img_objectness_score(video_0(:,:,:,1),[600 40 640 80 1],cues,params)
+ans =
+    0.3766
+>> cues = {'ED','SS'};
+>> find_img_objectness_score(video_0(:,:,:,1),[600 40 640 80 1],cues,params)
+ans =
+    0.0171
