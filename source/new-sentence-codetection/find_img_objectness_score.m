@@ -1,4 +1,4 @@
-function img_score = find_img_objectness_score(img,box,cues,params) %(img,box,cues,params)
+function img_score = find_img_objectness_score(img,box,params) %(img,box,cues,params)
 % scores = zeros(1,length(cues));
 % for i = 1:length(cues)
 %     foo = computeScores(img,cues{i},params,box);
@@ -6,7 +6,7 @@ function img_score = find_img_objectness_score(img,box,cues,params) %(img,box,cu
 % end %for i
 % img_score = integrateBayes(cues,scores,params);
 [h,w,~] = size(img);
-scale = 1.2; %HARDCODING image scale factor
+scale = 1.1; %HARDCODING image scale factor
 numboxes = 10; %HARDCODING number of boxes to output
 %convert original image box into x y w h
 origbox = [1,1,(box(3)-box(1)+1),(box(4)-box(2)+1)];
@@ -34,17 +34,18 @@ boxscores(idx,:) = [];
 %now do IoU for remaining boxes
 boxscores(:,9) = boxscores(:,7) ./ ... %IoU for ORIGINAL box
     (boxscores(:,6) + origboxarea - boxscores(:,7));
-boxscores(:,8)
-boxscores(:,5)
-boxscores(:,9)
+% boxscores(:,8)
+% boxscores(:,5)
+% boxscores(:,9)
 %multiply IoU by original objectness score
-newscores = boxscores(:,9) .* boxscores(:,5)
+newscores = boxscores(:,9) .* boxscores(:,5);
 
-imgboxarea
-origboxarea
-1.1*origboxarea/imgboxarea
+% imgboxarea
+% origboxarea
+% 1.1*origboxarea/imgboxarea
 
-img_score = [mean(newscores), median(newscores), max(newscores)];
+%img_score = [max(newscores), mean(newscores), median(newscores)];
+img_score = max(newscores);
 
 % meanscore = mean(boxscores(:,5));
 % areas = (boxes(:,3)-boxes(:,1)) .* (boxes(:,4)-boxes(:,2));

@@ -6293,9 +6293,6 @@
 	(read-object-from-file 
 	 (format #f "~a/track.sc" dir))))
       dirlist))
-	
-  
-
 
 (define (find-points-and-deltas odometry raw-tubes-with-score)
  (let* ((num-points (length raw-tubes-with-score))

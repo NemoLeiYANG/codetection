@@ -1,0 +1,11 @@
+find_img_objectness_score(video_0(:,:,:,1),badbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,131),badbox_corners(2,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,295),badbox_corners(3,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,11),badbox_corners(4,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,221),badbox_corners(5,:),cues,params)
+
+find_img_objectness_score(video_0(:,:,:,190),goodbox_corners(1,:),cues,params)
+find_img_objectness_score(video_0(:,:,:,176),goodbox_corners(2,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,415),goodbox_corners(3,:),cues,params)
+find_img_objectness_score(video_1(:,:,:,271),goodbox_corners(4,:),cues,params)
+find_img_objectness_score(video_2(:,:,:,311),goodbox_corners(5,:),cues,params)
