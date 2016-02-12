@@ -1,10 +1,5 @@
 Identity added: /home/sbroniko/.ssh/id_rsa_github (/home/sbroniko/.ssh/id_rsa_github)
-]0;sbroniko@buddhi: ~/codetection/source/new-sentence-codetection[01;32msbroniko@buddhi[00m:[01;36m[new-sentence-codetection][00m$ screen -ls
-There is a screen on:
-	61557.phow-run	(01/28/2016 03:22:49 PM)	(Attached)
-1 Socket in /var/run/screen/S-sbroniko.
-
-]0;sbroniko@buddhi: ~/codetection/source/new-sentence-codetection[01;32msbroniko@buddhi[00m:[01;36m[new-sentence-codetection][00m$ rlwrap dara[Kpa-wrap run-dsci
+]0;sbroniko@seykhl: ~/codetection/source/new-sentence-codetection[01;32msbroniko@seykhl[00m:[01;36m[new-sentence-codetection][00m$ rlwrap darpa-wrap run-dsci[12Pm screenlog.0lwrap darpa-wrap run-dsci
 [K***** INITIALIZEVAR Duplicately defined symbol +
 ***** INITIALIZEVAR Duplicately defined symbol -
 ***** INITIALIZEVAR Duplicately defined symbol *
@@ -26,436 +21,7 @@ There is a screen on:
 ***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
 ***** INITIALIZEVAR Duplicately defined symbol REAL?
 Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
-> [K> [K> (exit)[C[C[C[C[C[C[C[C[K[K[K[K[K[K(load "codetection-test.sc")[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K([K(load "codetection-test.sc")
-[K(define *testdirs* (system-output (format #f "ls -d /net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K(define *testdirs* (system-output (format #f "ls -d /net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))
-[K([K
-[K(define *gm-vars*[K[K(define *gm-vars*
-[K (join (map (lambda (dir)[C[C[C[C[C (get-graphical-model-variables dir)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C *testdirs*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[K[K (join (map (lambda (dir) (get-graphical-model-variables dir)) *testdirs*)))
-[K([K
-[K(define *snl* (find-same-nouns *gm-vars*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K(define *snl* (find-same-nouns *gm-vars*))
-MODULE form ignored
-INCLUDE form ignored
-INCLUDE form ignored
-*3G-AND-4G-SERVERS*
-*2G-SERVERS*
-*WORKSTATIONS*
-SERVER-NAME->NUMBER-OF-CPUS
-GET-SERVER-IDLE-PERCENT
-GET-APPROXIMATE-FREE-SERVER-CPUS
-GET-TOTAL-SERVER-FREE-CPUS
-REPEAT-LIST-TO-LENGTH-N
-DETERMINE-JOB-TO-SERVER-MAPPING
-DETERMINE-JOB-TO-SERVER-MAPPING-WITH-QUEUEING
-SANITIZE-STRING-FOR-SPAWNING
-CREATE-DSCI-JOB
-CREATE-DSCI-JOB2
-SPAWN-JOBS
-SPAWN-AND-WAIT-FOR-JOBS
-SPAWN-AND-WAIT-FOR-JOBS-WITH-QUEUEING
-SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL
-RSYNC-DIRECTORY-TO-SERVER
-RUN-UNIX-COMMAND-ON-SERVER
-SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL-WITH-QUEUEING
-"/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc"
-[K([K
-[K(define *noun-list* (map first *gm-vars*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K(define *noun-list* (map first *gm-vars*))
-[K([K
-[K(define *all-tubes* (join (map (lambda (dir)[C[C[C[C[C (find-low-variance-tubes dir)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C *testdirs*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C [K[K(define *all-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) 
-[K([K
-[K(define *few-tubes* (sublist (removeq #f *all-tubes*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C 0 5)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K(define *few-tubes* (sublist (removeq #f *all-tubes*) 0 5))
-[K([K
-[K(define *ra* (join (map (lambda (d)[C[C[C (third (read-object-from-file (format #f "~a/alignment.sc" d)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C *testdirs*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K(define *ra* (join (map (lambda (d) (third (read-object-from-file (format #f "~a/alignment.sc" d)))) *testdirs*)))
-[K([K
-[K(define *hnl* (make-helper-noun-list *ra*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K(define *hnl* (make-helper-noun-list *ra*))
-[K([K
-[K(define *tube1* (first *few-tubes*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K(define *tube1* (first *few-tubes*))
-[K([K
-[K(define *tube2* (second *few-tubes*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K(define *tube2* (second *few-tubes*))
-MODULE form ignored
-INCLUDE form ignored
-INCLUDE form ignored
-INCLUDE form ignored
-INCLUDE form ignored
-TRANSFORM-WORLD-POINT-TO-PIXEL
-TRANSFORM-WORLD-POINT-TO-PIXEL-WITH-TRANSFORMATION
-TRANSFORM-WORLD-POINT->PIXEL-GENERIC
-DRAW-POINT-PROJECTION
-DRAW-TEXT-PROJECTION
-DRAW-LINE-PROJECTION
-DRAW-ARROW-PROJECTION
-DRAW-AXIS-PROJECTION
-WORLD-FORWARD-PROJECT
-DRAW-3D-LINES-PROJECTION
-DRAW-CIRCLE-PROJECTION
-FACING-CAMERA?
-FIND-CYLINDER-LINES
-POINTS->SETS-OF-VISIBLE-POINTS
-DRAW-CYLINDER-PROJECTION
-DRAW-KING-BOTTOM-PROJECTION
-MAKE-CYLINDER-IMAGE
-MAKE-KING-BOTTOM-IMAGE
-TEST-MAKE-CYLINDER-IMAGE
-TEST-MAKE-KING-BOTTOM-IMAGE
-"/home/dpbarret/imitate/tool/toollib-perspective-projection.sc"
-LINSPACE
-V/S
-VECTORS->ANGLE
-MY-ROTATION-3D-X
-MY-ROTATION-3D-Y
-MY-ROTATION-3D-Z
-MY-MAKE-TRANSFORM-3D
-MY-ASIN
-MY-TRANSFORM->PARAMETERS
-INVERT-TX-MATRIX
-***** POINT->HOMOGENOUS is redefined
-POINT->HOMOGENOUS
-***** HOMOGENOUS->POINT is redefined
-HOMOGENOUS->POINT
-***** TRANSFORM-POINT-3D is redefined
-TRANSFORM-POINT-3D
-PIXEL-AND-HEIGHT->WORLD
-BOX-AT-HEIGHT->WORLD-CORNERS
-BOX-VECTOR-AT-HEIGHT-AND-POSE->WORLD-CORNERS
-READ-ROBOT-ESTIMATED-POSE-FROM-LOG-FILE
-INTERPOLATE-LINE
-DRAW-3D-LINES-PROJECTION-NICE
-ROBOT-POSE-TO-CAMERA->WORLD-TXF
-X-Y-THETA->6DOF
-SIX-DOF->X-Y-THETA
-ROBOT-6DOF->WORLD-6DOF
-WORLD-6DOF->ROBOT-6DOF
-ROBOT-POSE-6DOF-TO-CAMERA->WORLD-TXF
-READ-CAMERA-TIMING
-TEST
-"/home/sbroniko/codetection/source/rover-projection.sc"
-[K([K
-[K(define *pos1* (subvector (first (first *tube1*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C 0 2)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K(define *pos1* (subvector (first (first *tube1*)) 0 2))
-[K([K
-[K(define *pos2* (subvector (first (first *tube2*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C 0 2)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[KPLOT-BOX-SCORES
-PLOT-BOX-SCORES-PRELOADED
-PLOT-LINES-IN-MATLAB
-PLOT-LINES-IN-MATLAB-WITH-SYMBOLS
-READ-PROBABILITIES-FROM-BOX-LIST
-READ-FRAME-NUMBERS-FROM-BOX-LIST
-READ-FILENAMES-FROM-BOX-LIST
-OFFSET-VIDEO-FRAME-NUMBERS
-PLOT-PROBABILITIES-FROM-BOX-LIST
-PLOT-SCORES-FROM-TRAINING
-PLOT-HMM-LIKELIHOODS
-PLOT-TRACK-SCORES
-VISUALIZE-BEST-MODELS
-VISUALIZE-BEST-ROOTS
-VISUALIZE-STATE-ITERATIONS
-"/home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-plotting.sc"
-[K(define *pos2* (subvector (first (first *tube2*)) 0 2))[K[K([K(define *pos2* (subvector (first (first *tube2*)) 0 2))
-[K([KVITERBI-BOXES
-***** BOX-AT-HEIGHT->WORLD-CORNERS is redefined
-BOX-AT-HEIGHT->WORLD-CORNERS
-DISCOUNT-BOXES
-VITERBI-MULTIPLE
-"/home/sbroniko/codetection/source/new-sentence-codetection/viterbi.sc"
-*CAMERA-OFFSET*
-*CAMERA-OFFSET-MATRIX*
-*CAMERA-K-MATRIX*
-NUMBER->STRING-WITH-N-DECIMAL-PLACES
-FOLD-POLYNOMIAL
-[K([KLOG-BESSEL0
-***** LOG-VON-MISES is redefined
-LOG-VON-MISES
-RENORMALIZED-VON-MISES
-CENTER-ANGLE-AT
-ANGLE-BETWEEN
-*VON-MISES-KAPPA*
-LEFT-OF
-RIGHT-OF
-IN-FRONT-OF
-BEHIND
-BETWEEN
-TOWARDS
-TANGENT-TO
-AWAY-FROM
-ANGLES-OPPOSITE-EACH-OTHER
-DISTANCES-EQUAL
-NEAR
-MIDDLE
-***** TRANS[K***** TRANS([K[K***** TRANSPOSE-LIST-OF-LISTS is redefined
-TRANSPOSE-LIST-OF-LISTS
-EVENLY-PICK-M
-SELECT-FRAMES
-RUN-CODETECTION-WITH-FRAMES
-RUN-CODETECTION-WITH-VIDEO
-ALIGN-FRAMES-WITH-POSES
-GET-POSES-THAT-MATCH-FRAMES
-[K([KGET-CORRECTED-POSES-THAT-MATCH-FRAMES
-SAVE-POSES-HOUSE-TEST
-FRAME-TEST
-SCOTT-PROPOSALS&SIMILARITY-WITH-FRAMES
-SCOTT-RUN-CODETECTION-FULL-VIDEO
-FRAME-TEST2
-MAKE-F[KMAKE-F([K[KMAKE-FRAMES
-GET-MATLAB-PROPOSALS-SIMILARITY
-GET-MATLAB-PROPOSALS-SIMILARITY-BY-FRAME
-GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO
-RUN-CODETECTION-WITH-PROPOSALS-SIMILARITY
-GET-MATLAB-DATA-HOUSE-TEST-NEW2
-[K([KRUN-CODETECTION-VITERBI
-RUN-CODETECTION-VITERBI-MULTIPLE
-[K(define *nnbs* (find-noun-noun-binary-score-matrix *all-tubes* (first *hnl*)[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K([K(define *nnbs* (find-noun-noun-binary-score-matrix *all-tubes* (first *hnl*)))
-VISUALIZE-RESULTS-TEST
-VISUALIZE-RESULTS
-VISUALIZE-RESULTS-IMPROVED
-VISUA[KVISUA([K[KVISUALIZE-RESULTS-IMPROVED-NEW
-VISUALIZE-RESULTS-VITERBI
-VISUALIZE-RESULTS-VITERBI-MULTIPLE
-RUN-FULL-RESULTS
-MATLAB-DATA-TO-FILES
-GET-MATLAB-DATA-TRAINING-OR-GENERATION-IMPROVED
-GET-MATLAB-DATA-[KGET-MATLAB-DATA-([K[KGET-MATLAB-DATA-AUTO-DRIVE-IMPROVED
-GET-MATLAB-DATA-TRAINING-OR-GENERATION
-RESULTS-END-TO-END
-JOIN-IMAGES
-JOIN-ALL-IMAGES
-RUN-MY-SHIT
-RUN-MY-SHIT-2
-GET-XY-FROM-RESULTS-FILE
-PLOT-OBJECTS-FROM-FILE
-*XMIN*
-*XMAX*
-*YMIN*
-*YMAX*
-*BOUNDARIES*
-*X-1*
-*X0*
-*X+1*
-*Y-1*
-[K([K*Y0*
-*Y+1*
-*Y+2*
-POINT-LOCATIONS
-PLOT-GRID
-PLOT-OBJECTS-FROM-FLOORPLAN
-PLOT-OBJECTS-FROM-FLOORPLAN-MULTICOLOR
-ENSURE-SCORES
-GET-SCORES-FROM-RESULTS-AND-FRAME-DATA-FILES
-GET-DETECTION-IMAGES
-MAKE-TEST-FILE
-[K([KGET-DETECTION-DATA-FOR-FLOORPLAN
-POINT-IN-TRIANGLE
-DETECT-SORT-LABEL-OBJECTS-SINGLE-FLOORPLAN
-GET-CODETECTION-RESULTS-TRAINING-OR-GENERATION
-GET-CODETECTION-RESULTS-AUTO-DRIVE
-[K([KGET-OBJECT-DETECTIONS-ALL-FLOORPLANS
-CODETECT-SORT-TEMPLABEL-TRAINING-OR-GENERATION
-CODETECT-SORT-TEMPLABEL-AUTO-DRIVE
-GET-GROUND-TRUTH-FROM-DATASET-FILE
-GET-LABELED-GROUND-TRUTH-FROM-DATASET-FILE
-MAKE-SCHEME-FILE-OF-XYS
-MAKE-SCHEME-FILE-OF-XYS-SEPARATED
-SCOTT-PROPOSALS-ONLY
-RUN-CODETECTION-ONLY-HOUSE-TEST
-[K([KRUN-CODETECTION-ONLY-HOUSE-TEST-2
-GET-CODETECTION-RESULTS-HOUSE-TEST
-GET-CODETECTION-RESULTS-HOUSE-TEST-2
-GET-MATLAB-DATA-HOUSE-TEST
-QUICK-AND-DIRTY-TEST
-[K([KSINGLE-RUN-TEST
-SINGLE-RUN-TEST-NEW
-SINGLE-RUN-TEST-NEW2
-SINGLE-RUN-TEST-VITERBI
-SINGLE-RUN-TEST-VITERBI-MULTIPLE
-READ-CAMERA-TIMING-NEW
-GET-MATLAB-DATA-HOUSE-TEST-NEW
-[K([K***** GET-MATLAB-DATA-HOUSE-TEST-NEW2 is redefined
-GET-MATLAB-DATA-HOUSE-TEST-NEW2
-GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW
-GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW2
-GET-MATLAB-PROPOSALS-SIMILARITY-NEW
-[K(define *hnbs-list* (map (lambda (l)[C[C[C (find-noun-noun-binary-score-matrix *few-tubes* l)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C *hnl*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K([K(define *hnbs-list* (map (lambda (l) (find-noun-noun-binary-score-matrix *few-tubes* l)) *hnl*))
-GET-MATLAB-PROPOSALS-SIMILARITY-NEW2
-GET-MATLAB-PROPOSALS-SIMILARITY-VITERBI
-GET-AND-SAVE-PROPOSAL-BOXES
-GET-AND-SAVE-PROPOSAL-BOXES-ALL-VIDEOS
-FRAMES-AND-POSES->MATLAB
-[K([KSIMPLE-RUN-AND-PLOT
-SIMPLE-TEST
-SIMPLE-RUN-AND-PLOT-NEW
-SIMPLE-RUN-AND-PLOT-VITERBI
-READ-AND-SORT-MATLAB-PROPOSALS
-GET-TLD-TUBE-FROM-BOX
-SCOTT-BOX->VOC4
-*VIDEO-PATH*
-*TEST-PATH*
-GET-FRAME-NUMBERS
-GENERATE-PROPOSALS
-[K([KFRAMES->MATLAB!
-FRAMES->MATLAB-NO-FREE!
-GET-MEDIANFLOW-TUBE-FROM-STARTING-FRAME-AND-PROPOSAL-BOX
-GET-ALL-TUBES
-GET-ALL-TUBES-SORTED
-RENDER-ONE-TUBE
-RENDER-ALL-TUBES
-SCOTT-BOX-X1
-SCOTT-BOX-X2
-SCOTT-BOX-Y1
-SCOTT-BOX-Y2
-SCOTT-BOX-AREA
-SCOTT[KSCOTT([K[KSCOTT-BOX-INTERSECTION-AREA
-SCOTT-BOX-UNION-AREA
-SCOTT-BOX-INTERSECTION-OVER-UNION
-TUBE-INTERSECTION-OVER-UNION
-TUBES-OVERLAP?
-TUBE-NMS
-TUBE-TEST-END-TO-END
-BIG-TUBE-TEST-END-TO-END
-BIG-TUBE-TEST-END-TO-END2
-GET-ALL-NMS-TUBES
-GET-ALL-NMS-TUBES-AND-RENDER-N
-GET-AND-RENDER-N-NMS-TU[KGET-AND-RENDER-N-NMS-TU([K[KGET-AND-RENDER-N-NMS-TUBES-HOUSE-TEST
-ALIGN-ONE-TUBE-WITH-POSES
-REMOVE-FALSE-BOXES
-ALIGN-ALL-TUBES-WITH-POSES-AND-REMOVE-FALSES
-READ-AND-ALIGN-SCORED-TUBES
-PIXEL-AND-POSE->WORLD-LINE
-PIXEL-AND-POSE-6DOF->WORLD-LINE
-ALIGNED-TUBE-WITH-SCORE->LINES
-RAW-TUBE-WITH-SCORE-AND-POSE-LIST-6DOF->LINES
-RAW-TUBE-WITH-SCORE-AND-POSE-LIST->WORLD-CORNERS-LIST
-WORLD-CORNERS-LIST->WORLD-XYWH-LIST
-[K([KWORLD-XYWH-LIST->WORLD-MEAN-AND-VARIANCE
-WORLD-XYWH-LIST->WORLD-MEAN-AND-DISTANCES
-WORLD-XYWHS-AND-POSES->WORLD-MEAN-VARIANCE-ROBOT
-FIND-WORLD-MEANS-AND-VARIANCES
-FIND-WORLD-MEANS-VARIANCES-ROBOTS
-FIND-AND-SAVE-WORLD-MEANS-AND-VARIANCES-HOUSE-TEST
-FIND-AND-SAVE-WORLD-MEANS-VARIANCES-ROBOTS-HOUSE-TEST
-FILTER-WORLD-MEANS-AND-VARIANCES
-FILTER-WORLD-MEANS-VARIANCES-ROBOTS
-*VAR-THR[K*VAR-THR([K[K*VAR-THRESH*
-*RATIO-THRESH*
-*LENGTH-THRESH*
-FILTER-TUBES-BY-LENGTH
-FIND-ABC-AND-FILTER
-*DISTANCE-THRESH*
-FIND-DEF-AND-FILTER
-FIND-ABCDEF
-FIND-LOW-VARIANCE-TUBES
-SAVE-LOW-VARIANCE-TUBES-HOUSE-TEST
-SPLIT-PATH-BY-ALIGNMENT
-GET-NOUN-PREPOSITION-PATHS
-GET-GRAP[KGET-GRAP([K[KGET-GRAPHICAL-MODEL-VARIABLES
-FIND-UNARY-SCORE
-FIND-UNARY-SCORES-FOR-ALL-TUBES
-FIND-UNARY-SCORES-FOR-ONE-RUN
-FIND-UNARY-SCORE-MATRIX-FOR-FLOORPLAN
-NUM-FUNC
-FIND-NUMBER
-NUMBER-NOUNS
-MAKE-HELPER-NOUN-LIST
-FIND-NOUN-TO-HELPER-NOUN-BINARY-SCORE
-FIND-NOUN-NOUN-BINARY-SCORE-MATRIX
-FIND-INDEX-IN-LIST
-FIND-ALL-INSTANCES
-FIND-SAME-NOUNS
-MAKE-LIST-OF-MATCHING-NOUNS
-*SIGMO[K*SIGMO([K[K*SIGMOID-CENTER*
-*SIGMOID-SLOPE*
-*SIG-WEIGHT*
-FIND-LOCATION-SIMILARITY-BETWEEN-TUBES
-ELEMENTWISE-MULTIPLY-MATRICES
-FIND-BINARY-SCORE-BETWEEN-TUBES
-ALL-TUBES->PHOW-VISUAL-SIMILARITY-MATRIX
-GET-PHOW-HISTS-ALL-TUBES
-FIND-BINARY-SCORE-MATRICES-FOR-FLOORPLAN
-[K([KRENDER-B-TUBES
-RENDER-D-TUBES
-RENDER-MULTIPLE-FILTERED-TUBES
-[K([KRENDER-UNFILTERED-TUBES
-RENDER-FILTERED-TUBES-HOUSE-TEST
-RENDER-B-D-TUBES-HOUSE-TEST
-POINT-LINE-SQUARED-DISTANCE
-FIND-POINT-FROM-LINES
-VISUALIZE-TWO-TRACKS
-CORRECT-THETA-DRIFT
-[K([KFIND-POINTS-AND-DELTAS
-FIND-POINTS-AND-DELTAS-OLD
-FIND-DELTAS-ONLY
-GET-DELTAS-OF-WORLD-TRACK-3DOF
-[K([KWORLD-DELTA-AND-POSE-6DOF->ROBOT-DELTA-6DOF
-***** CORRECT-ANGLE is redefined
-CORRECT-ANGLE
-ANGLE-MINUS
-SUBTRACT-POSE
-WEIGHTED-SUBTRACT-POSE
-WORLD-POSE-AND-ROBOT-DELTA-6DOF->WORLD-POSE-6DOF
-ROBOT-DELTAS-LIST-AND-WORLD-START-3DOF->WORLD-TRACK-6DOF
-WORLD-TRACK-3DOF->WORLD-TRACK-6DOF
-WORLD-TRACK-6DOF->WORLD-TRACK-3DOF
-GET-DELTAS-LIST-FROM-WORLD-TRACK-6DOF
-[K([KGET-DELTAS-LIST-IN-ROBOT-6DOF
-SPLIT-DELTAS
-MERGE-DELTAS
-SPLIT-POINTS
-MERGE-POINTS
-MERGE-GIANT-VECTOR
-SPLIT-GIANT-VECTOR
-SPLIT-GIANT-VECTOR-FOUR-POINTS
-FIND-6DOF-POSES-LIST-FROM-DELTAS-VECTOR-AND-INITIAL-POSE
-"codetection-test.sc"
-[K(define *videos-list* (remove-duplicates (map third (removeq #f *all-tubes*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K*TESTDIRS*
-*GM-VARS*
-*SNL*
-*NOUN-LIST*
-[K(define *videos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[C[C[C[C[C[C[C[C[Chnbs-list* (map (lambda (l) (find-noun-noun-binary-score-matrix *few-tubes* l)) *hnl*))[C[C[C[C[C[C[C[C[C[17Pvideos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[K*ALL-TUBES*[K*ALL-TUBES*(define *videos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[C[C[C[C[C[C[C[C[C[C[C[K[K*ALL-TUBES*
-*FEW-TUBES*
-[K(define *videos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[K*RA*[K*RA*(define *videos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[C[C[C[C[K[K*RA*
-*HNL*
-*TUBE1*
-*TUBE2*
-*POS1*
-*POS2*
-[K(define *videos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[K*NNBS*
-[K(define *videos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[K*HNBS-LIS[K*HNBS-LIS(define *videos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[C[C[C[C[C[C[C[C[C[K[K*HNBS-LIST*
-> [K> (define *videos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[C[C[K(define *videos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))
-*VIDEOS-LIST*
-> [K> [K> (define *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K(define *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))
-[K/usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
-[Kstarting frames->matlab! load
-[KThu Jan 28 15:27:52 EST 2016
-[K[K(define *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))[C[C[C[C[C[C[C[C[Cvideos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[C[C[C[C[C[C[C[C[Chnbs-list* (map (lambda (l) (find-noun-noun-binary-score-matrix *few-tubes* l)) *hnl*))[C[C[C[C[C[C[C[C[C[18Pnnbs* (find-noun-noun-binary-score-matrix *all-tubes* (first *hnl*)))[C[C[C[C[C[C[C[C[C[23Ppos2* (subvector (first (first *tube2*)) 0 2))[C[C[C[C[C[C[C[C[C[C[C[C1* (subvector (first (first *tube1[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[18Ptube2* (second *few-tubes*))[C[C[C[C[C[C[C[C[C[C[C[C[C[1P1* (first[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Chnl* (make-helper-noun-list *ra*))[C[C[C[C[C[C[C[C[Cra* (join (map (lambda (d) (third (read-object-from-file (format #f "~a/alignment.sc" d)))) *testdirs*)))[C[C[C[C[C[C[C[C[C[55Pfew-tubes* (sublist (removeq #f *all-tubes*) 0 5))[C[C[C[C[C[C[C[C[Call-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) [C[C[C[C[C[C[C[C[C[48Pnoun-list* (map first *gm-vars*))[C[C[C[C[C[C[C[C[Csnl* (find-same-nouns[C[C[C[C[C[C[C[C[C[C[C[C (join (map (lambda (dir) (get-graphical-model-variables dir)) *testdirs*)))(define *gm-vars*[Ktestdirs* (system-output (format #f "ls -d /net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))[Cload "codetection-test.sc")[K[CExit)[K[Cwrite-object-to-file *new-output-15* "/home/sbroniko/codetection/source/new-sentence-codetection/20160113-15-tubes.sc")*new-output-15*[K(system "date") (define *new-output-15* (find-points-and-deltas *test-track* (sublist *nms-tubes-with-scores* 0 15))) (system "date")[C[16Pdefine *test-track* (get-poses-that-match-frames "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/"))[C[C[C[C[C[C[C[C[Cnms-tubes-with-scores* (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/20160103test1/nms-tubes.sc"))[Cload "codetection-test.sc")[K[CExit)[K[Csystem "date") (find-points-and-deltas *test-track* (sublist *nms-tubes-with-scores* 0 15)) (system "date")0[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cdefine *nms-tubes-with-scores* (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/20160103test1/nms-tubes.sc"))[C[C[C[C[C[C[C[C[C[31Ptest-track* (get-poses-that-match-frames "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/"))[Cload "codetection-test.sc")[K[Cfind-points-and-deltas *test-track* *nms-tubes-with-scores*)[Cdefine *nms-tubes-with-scores* (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/20160103test1/nms-tubes.sc"))[C[C[C[C[C[C[C[C[C[31Ptest-track* (get-poses-that-match-frames "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/"))[Cload "codetection-test.sc")[K[Cexit)[K[Crender-all-tubes "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/auto-drive/plan0/2014-11-21-00:39:42/" *tubes-to-render* "tube-test")[C[33Pdefine *tubes-to-render* (sublist (get-tubes-of-length *test-tubes* *test-tubes-lengths* 10) 0 20))[C[33Plength (get-tubes-of-length *test-tubes* *test-tubes-lengths* 10))[C[9Pget-tubes-of-length *test-tubes* *test-tubes-lengths* 10)out-tubes)))))[K(get-tubes-of-length *test-tubes* *test-tubes-lengths* 10)[Clength (get-tubes-of-length *test-tubes* *test-tubes-lengths* 10))[Cdefine *tubes-to-render* (sublist (get-tubes-of-length *test-tubes* *test-tubes-lengths* 10) 0 20))[Crender-all-tubes "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/auto-drive/plan0/2014-11-21-00:39:42/" *tubes-to-render* "tube-test")[Cexit)[K[Cload "codetection-test.sc")[Cdefine *test-track* (get-poses-that-match-frames "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/"))[C[C[C[C[C[C[C[C[Cnms-tubes-with-scores* (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/20160103test1/nms-tubes.sc"))[C[87Pfind-points-and-deltas *test-track* *nms-tubes-with-scores*)[C[33Pload "codetection-test.sc")[Cdefine *test-track* (get-poses-that-match-frames "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/"))[C[C[C[C[C[C[C[C[Cnms-tubes-with-scores* (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/20160103test1/nms-tubes.sc"))[C[40Psystem "date") (find-points-and-deltas *test-track* (sublist *nms-tubes-with-scores* 0 10)) (system "date")5[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[CExit)[K[Cload "codetection-test.sc")[Cdefine *nms-tubes-with-scores* (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/20160103test1/nms-tubes.sc"))[C[C[C[C[C[C[C[C[C[31Ptest-track* (get-poses-that-match-frames "/aux/sbroniko/vader-rover/logs/house-test-12nov15/test-segment/"))[Csystem "date") (define *new-output-15* (find-points-and-deltas *test-track* (sublist *nms-tubes-with-scores* 0 15))) (system "date")*new-output-15*[K(write-object-to-file *new-output-15* "/home/sbroniko/codetection/source/new-sentence-codetection/20160113-15-tubes.sc")[CExit)[K[Cload "codetection-test.sc")[Cdefine *testdirs* (system-output (format #f "ls -d /net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))[C[C[C[C[C[C[C[C[Cgm-vars*[K (join (map (lambda (dir) (get-graphical-model-variables dir)) *testdirs*)))[34P(define *snl* (find-same-nouns *gm-vars*))[C[C[C[C[C[C[C[C[Cnoun-list* (map first[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Call-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) [C[C[C[C[C[C[C[C[C[31Pfew-tubes* (sublist (removeq #f *all-tubes*) 0 5))[C[C[C[C[C[C[C[C[Cra* (join (map (lambda (d) (third (read-object-from-file (format #f "~a/alignment.sc" d)))) *testdirs*)))[C[C[C[C[C[C[C[C[Chnl* (make-helper-noun-list *ra*))[K[C[C[C[C[C[C[C[C[C[7Ptube1* (first *few-tubes*))[C[C[C[C[C[C[C[C[C[C[C[C[C[1@2* (second[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cpos1* (subvector (first (first *tube1*)) 0 2))[C[C[C[C[C[C[C[C[C[C[C[C2* (subvector (first (first *tube2[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cnnbs* (find-noun-noun-binary-score-matrix *all-tubes* (first *hnl*)))[C[C[C[C[C[C[C[C[Chnbs-list* (map (lambda (l) (find-noun-noun-binary-score-matrix *few-tubes* l)) *hnl*))[C[C[C[C[C[C[C[C[C[17Pvideos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[C[C[C[C[C[C[C[C[C[6Pall-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))[K(define *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))[K
-[K>>Interrupt:
-DEBUGGER:
->> [K>> 
->>Interrupt:
-DEBUGGER:
->>> [K>>> 
->>Interrupt:
-DEBUGGER:
->> [K>> 
-Back to top level
-> [K> 
-[K]0;sbroniko@buddhi: ~/codetection/source/new-sentence-codetection[01;32msbroniko@buddhi[00m:[01;36m[new-sentence-codetection][00m$ rlwrap darpa-wrap run-dsci
-[K***** INITIALIZEVAR Duplicately defined symbol +
-***** INITIALIZEVAR Duplicately defined symbol -
-***** INITIALIZEVAR Duplicately defined symbol *
-***** INITIALIZEVAR Duplicately defined symbol /
-***** INITIALIZEVAR Duplicately defined symbol SQRT
-***** INITIALIZEVAR Duplicately defined symbol EXP
-***** INITIALIZEVAR Duplicately defined symbol LOG
-***** INITIALIZEVAR Duplicately defined symbol EXPT
-***** INITIALIZEVAR Duplicately defined symbol SIN
-***** INITIALIZEVAR Duplicately defined symbol COS
-***** INITIALIZEVAR Duplicately defined symbol ATAN
-***** INITIALIZEVAR Duplicately defined symbol =
-***** INITIALIZEVAR Duplicately defined symbol <
-***** INITIALIZEVAR Duplicately defined symbol >
-***** INITIALIZEVAR Duplicately defined symbol <=
-***** INITIALIZEVAR Duplicately defined symbol >=
-***** INITIALIZEVAR Duplicately defined symbol ZERO?
-***** INITIALIZEVAR Duplicately defined symbol POSITIVE?
-***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
-***** INITIALIZEVAR Duplicately defined symbol REAL?
-Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
-> [K> [K> (define *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))[C[C[C[C[C[C[C[C[C[C[Cvideos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[C[C[C[C[C[C[C[C[C[C[Chnbs-list* (map (lambda (l) (find-noun-noun-binary-score-matrix *few-tubes* l)) *hnl*))[C[C[C[C[C[C[C[C[C[C[C[18Pnnbs* (find-noun-noun-binary-score-matrix *all-tubes* (first *hnl*)))[C[C[C[C[C[C[C[C[C[C[C[23Ppos2* (subvector (first (first *tube2*)) 0 2))[C[C[C[C[C[C[C[C[C[C[C[C[C[C1* (subvector (first (first *tube1[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[18Ptube2* (second *few-tubes*))[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P1* (first[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Chnl* (make-helper-noun-list *ra*))[C[C[C[C[C[C[C[C[C[C[Cra* (join (map (lambda (d) (third (read-object-from-file (format #f "~a/alignment.sc" d)))) *testdirs*)))[C[C[C[C[C[C[C[C[C[C[C[55Pfew-tubes* (sublist (removeq #f *all-tubes*) 0 5))[C[C[C[C[C[C[C[C[C[C[Call-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) [C[C[C[C[C[C[C[C[C[C[C[48Pnoun-list* (map first *gm-vars*))[C[C[C[C[C[C[C[C[C[C[Csnl* (find-same-nouns[C[C[C[C[C[C[C[C[C[C[C[C[C[C (join (map (lambda (dir) (get-graphical-model-variables dir)) *testdirs*)))[C[C(define *gm-vars*[Ktestdirs* (system-output (format #f "ls -d /net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))[C[C[Cload "codetection-test.sc")[K[C[C[K(load "codetection-test.sc")
+> [K> [K> (run-edgeboxes "20160212-test-edgeboxes")[C[C[C[13Pload "codetection-test.sc")[C[C[K(load "codetection-test.sc")
 MODULE form ignored
 INCLUDE form ignored
 INCLUDE form ignored
@@ -562,45 +128,29 @@ VITERBI-MULTIPLE
 *CAMERA-OFFSET*
 *CAMERA-OFFSET-MATRIX*
 *CAMERA-K-MATRIX*
-NUMBER->STRING-WITH-N-DECIMAL-PLACES
-FOLD-POLYNOMIAL
-LOG-BESSEL0
 ***** LOG-VON-MISES is redefined
 LOG-VON-MISES
-RENORMALIZED-VON-MISES
-CENTER-ANGLE-AT
-ANGLE-BETWEEN
-*VON-MISES-KAPPA*
-LEFT-OF
-RIGHT-OF
-IN-FRONT-OF
-BEHIND
-BETWEEN
-TOWARDS
-TANGENT-TO
-AWAY-FROM
-ANGLES-OPPOSITE-EACH-OTHER
-DISTANCES-EQUAL
-NEAR
-MIDDLE
-***** TRANSPOSE-LIST-OF-LISTS is redefined
-TRANSPOSE-LIST-OF-LISTS
-EVENLY-PICK-M
 SELECT-FRAMES
 RUN-CODETECTION-WITH-FRAMES
 RUN-CODETECTION-WITH-VIDEO
 ALIGN-FRAMES-WITH-POSES
 GET-POSES-THAT-MATCH-FRAMES
+GET-POSES-THAT-MATCH-FRAMES-NEW
 GET-CORRECTED-POSES-THAT-MATCH-FRAMES
 SAVE-POSES-HOUSE-TEST
+SAVE-UNCORRECTED-POSES-HOUSE-TEST
+SAVE-NEW-POSES-HOUSE-TEST
+SAVE-OLD-POSES-HOUSE-TEST
 FRAME-TEST
 SCOTT-PROPOSALS&SIMILARITY-WITH-FRAMES
 SCOTT-RUN-CODETECTION-FULL-VIDEO
 FRAME-TEST2
 MAKE-FRAMES
 GET-MATLAB-PROPOSALS-SIMILARITY
+GET-EDGEBOXES-PROPOSALS
 GET-MATLAB-PROPOSALS-SIMILARITY-BY-FRAME
 GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO
+GET-EDGEBOXES-PROPOSALS-FULL-VIDEO
 RUN-CODETECTION-WITH-PROPOSALS-SIMILARITY
 GET-MATLAB-DATA-HOUSE-TEST-NEW2
 RUN-CODETECTION-VITERBI
@@ -614,6 +164,7 @@ VISUALIZE-RESULTS-VITERBI-MULTIPLE
 RUN-FULL-RESULTS
 MATLAB-DATA-TO-FILES
 GET-MATLAB-DATA-TRAINING-OR-GENERATION-IMPROVED
+GET-EDGEBOXES-DATA-RALICRA2016
 GET-MATLAB-DATA-AUTO-DRIVE-IMPROVED
 GET-MATLAB-DATA-TRAINING-OR-GENERATION
 RESULTS-END-TO-END
@@ -647,9 +198,11 @@ GET-DETECTION-DATA-FOR-FLOORPLAN
 POINT-IN-TRIANGLE
 DETECT-SORT-LABEL-OBJECTS-SINGLE-FLOORPLAN
 GET-CODETECTION-RESULTS-TRAINING-OR-GENERATION
+GET-EDGEBOXES-DATA-MANY-SERVERS
 GET-CODETECTION-RESULTS-AUTO-DRIVE
 GET-OBJECT-DETECTIONS-ALL-FLOORPLANS
 CODETECT-SORT-TEMPLABEL-TRAINING-OR-GENERATION
+RUN-EDGEBOXES
 CODETECT-SORT-TEMPLABEL-AUTO-DRIVE
 GET-GROUND-TRUTH-FROM-DATASET-FILE
 GET-LABELED-GROUND-TRUTH-FROM-DATASET-FILE
@@ -722,6 +275,9 @@ PIXEL-AND-POSE->WORLD-LINE
 PIXEL-AND-POSE-6DOF->WORLD-LINE
 ALIGNED-TUBE-WITH-SCORE->LINES
 RAW-TUBE-WITH-SCORE-AND-POSE-LIST-6DOF->LINES
+*IMG-WIDTH*
+*IMG-HEIGHT*
+BOX-WITHIN-FRAME?
 RAW-TUBE-WITH-SCORE-AND-POSE-LIST->WORLD-CORNERS-LIST
 WORLD-CORNERS-LIST->WORLD-XYWH-LIST
 WORLD-XYWH-LIST->WORLD-MEAN-AND-VARIANCE
@@ -741,19 +297,31 @@ FIND-ABC-AND-FILTER
 *DISTANCE-THRESH*
 FIND-DEF-AND-FILTER
 FIND-ABCDEF
+PREPROCESS-TUBE
 FIND-LOW-VARIANCE-TUBES
 SAVE-LOW-VARIANCE-TUBES-HOUSE-TEST
 SPLIT-PATH-BY-ALIGNMENT
 GET-NOUN-PREPOSITION-PATHS
 GET-GRAPHICAL-MODEL-VARIABLES
+GET-GRAPHICAL-MODEL-VARIABLES-FOR-SIMPLE-GM
 FIND-UNARY-SCORE
+FIND-SIMPLE-UNARY-SCORE
+FIND-SIMPLE-VARIANCE-FACTOR
 FIND-UNARY-SCORES-FOR-ALL-TUBES
+FIND-SIMPLE-UNARY-SCORES-FOR-ALL-TUBES
 FIND-UNARY-SCORES-FOR-ONE-RUN
 FIND-UNARY-SCORE-MATRIX-FOR-FLOORPLAN
+FIND-UNARY-SCORE-MATRIX-FOR-GIVEN-TUBES
+FIND-SIMPLE-UNARY-SCORE-MATRIX-FOR-GIVEN-TUBES
+TUBES->TUBE-OBJECTNESS-SCORES
+FIND-SIMPLE-NOUN-LIST
 NUM-FUNC
 FIND-NUMBER
 NUMBER-NOUNS
 MAKE-HELPER-NOUN-LIST
+MAKE-SIMPLE-HELPER-NOUN-LIST
+MAKE-PHRASES
+CLEAN-PHRASES
 FIND-NOUN-TO-HELPER-NOUN-BINARY-SCORE
 FIND-NOUN-NOUN-BINARY-SCORE-MATRIX
 FIND-INDEX-IN-LIST
@@ -768,7 +336,21 @@ ELEMENTWISE-MULTIPLY-MATRICES
 FIND-BINARY-SCORE-BETWEEN-TUBES
 ALL-TUBES->PHOW-VISUAL-SIMILARITY-MATRIX
 GET-PHOW-HISTS-ALL-TUBES
-FIND-BINARY-SCORE-MATRICES-FOR-FLOORPLAN
+FIND-BINARY-SCORE-DATA-FOR-FLOORPLAN
+FIND-BINARY-SCORE-DATA-FOR-GIVEN-TUBES
+FIND-SIMPLE-BINARY-SCORE-DATA-FOR-GIVEN-TUBES
+FIND-GRAPHICAL-MODEL-DATA-FOR-FLOORPLAN
+FIND-GRAPHICAL-MODEL-DATA-FOR-GIVEN-TUBES
+FIND-SIMPLE-GRAPHICAL-MODEL-DATA-FOR-GIVEN-TUBES
+RUN-GRAPHICAL-MODEL
+RUN-SIMPLE-GRAPHICAL-MODEL
+GM-FULL-TEST
+GM-SMALL-EXAMPLE
+SIMPLE-GM-SMALL-EXAMPLE
+RENDER-GM-OUTPUT
+RENDER-GM-OUTPUT-SMALL-EXAMPLE
+RENDER-SIMPLE-GM-OUTPUT-SMALL-EXAMPLE
+RENDER-GOOD-TUBES
 RENDER-B-TUBES
 RENDER-D-TUBES
 RENDER-MULTIPLE-FILTERED-TUBES
@@ -779,6 +361,8 @@ POINT-LINE-SQUARED-DISTANCE
 FIND-POINT-FROM-LINES
 VISUALIZE-TWO-TRACKS
 CORRECT-THETA-DRIFT
+FIND-THETA-DRIFT-FROM-TRACK
+FIND-ALL-THETA-DRIFTS
 FIND-POINTS-AND-DELTAS
 FIND-POINTS-AND-DELTAS-OLD
 FIND-DELTAS-ONLY
@@ -803,23 +387,494 @@ MERGE-GIANT-VECTOR
 SPLIT-GIANT-VECTOR
 SPLIT-GIANT-VECTOR-FOUR-POINTS
 FIND-6DOF-POSES-LIST-FROM-DELTAS-VECTOR-AND-INITIAL-POSE
+MATLAB-PLOT-ONE-RUN
+MATLAB-PLOT-JUST-TRACES
+QUICK-PLOT-TRACES-ONLY
+MATLAB-PLOT-THREE-TRACES
+MATLAB-PLOT-ONE-RUN-WITH-ALL-TUBES
+PLOT-LINES-IN-MATLAB-WITH-SYMBOLS-NO-LEGEND
+MATLAB-PLOT-ARROWHEADS-ON-TRACE
+LIST-MEDIAN
 "codetection-test.sc"
-> [K> [K> (load "codetection-test.sc")[C[C[Cdefine *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))[C[C[C[C[C[C[C[C[C[C[Cvideos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[C[C[C[C[C[C[C[C[C[C[Chnbs-list* (map (lambda (l) (find-noun-noun-binary-score-matrix *few-tubes* l)) *hnl*))[C[C[C[C[C[C[C[C[C[C[C[18Pnnbs* (find-noun-noun-binary-score-matrix *all-tubes* (first *hnl*)))[C[C[C[C[C[C[C[C[C[C[C[23Ppos2* (subvector (first (first *tube2*)) 0 2))[C[C[C[C[C[C[C[C[C[C[C[C[C[C1* (subvector (first (first *tube1[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[18Ptube2* (second *few-tubes*))[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P1* (first[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Chnl* (make-helper-noun-list *ra*))[C[C[C[C[C[C[C[C[C[C[Cra* (join (map (lambda (d) (third (read-object-from-file (format #f "~a/alignment.sc" d)))) *testdirs*)))[C[C[C[C[C[C[C[C[C[C[C[55Pfew-tubes* (sublist (removeq #f *all-tubes*) 0 5))[C[C[C[C[C[C[C[C[C[C[Call-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) [C[C[C[C[C[C[C[C[C[C[C[48Pnoun-list* (map first *gm-vars*))[C[C[C[C[C[C[C[C[C[C[Csnl* (find-same-nouns[C[C[C[C[C[C[C[C[C[C[C[C[C[C (join (map (lambda (dir) (get-graphical-model-variables dir)) *testdirs*)))[C[C(define *gm-vars*[Ktestdirs* (system-output (format #f "ls -d /net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[1P[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K(define *testdirs* (system-output (format #f "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))
-*TESTDIRS*
-> [K> [K> (define *testdirs* (system-output (format #f "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))[C[C[Cload "codetection-test.sc")[K[C[C[Cdefine *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))[C[C[C[C[C[C[C[C[C[C[Cvideos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[C[C[C[C[C[C[C[C[C[C[Chnbs-list* (map (lambda (l) (find-noun-noun-binary-score-matrix *few-tubes* l)) *hnl*))[C[C[C[C[C[C[C[C[C[C[C[18Pnnbs* (find-noun-noun-binary-score-matrix *all-tubes* (first *hnl*)))[C[C[C[C[C[C[C[C[C[C[C[23Ppos2* (subvector (first (first *tube2*)) 0 2))[C[C[C[C[C[C[C[C[C[C[C[C[C[C1* (subvector (first (first *tube1[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[18Ptube2* (second *few-tubes*))[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P1* (first[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Chnl* (make-helper-noun-list *ra*))[C[C[C[C[C[C[C[C[C[C[Cra* (join (map (lambda (d) (third (read-object-from-file (format #f "~a/alignment.sc" d)))) *testdirs*)))[C[C[C[C[C[C[C[C[C[C[C[55Pfew-tubes* (sublist (removeq #f *all-tubes*) 0 5))[C[C[C[C[C[C[C[C[C[C[Call-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) [C[C[K(define *all-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) 
-[K*ALL-TUBES*
-> [K> [K> (define *all-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) [C[C[C[C[C[C[C[C[C[C[Ctestdirs* (system-output (format #f "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))[C[C[Cload "codetection-test.sc")[K[C[C[Cdefine *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))[C[C[C[C[C[C[C[C[C[C[Cvideos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[C[C[C[C[C[C[C[C[C[C[Chnbs-list* (map (lambda (l) (find-noun-noun-binary-score-matrix *few-tubes* l)) *hnl*))[C[C[C[C[C[C[C[C[C[C[C[18Pnnbs* (find-noun-noun-binary-score-matrix *all-tubes* (first *hnl*)))[C[C[C[C[C[C[C[C[C[C[C[23Ppos2* (subvector (first (first *tube2*)) 0 2))[C[C[C[C[C[C[C[C[C[C[C[C[C[C1* (subvector (first (first *tube1[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[18Ptube2* (second *few-tubes*))[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1P1* (first[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Chnl* (make-helper-noun-list *ra*))[C[C[C[C[C[C[C[C[C[C[Cra* (join (map (lambda (d) (third (read-object-from-file (format #f "~a/alignment.sc" d)))) *testdirs*)))[C[C[C[C[C[C[C[C[C[C[C[55Pfew-tubes* (sublist (removeq #f *all-tubes*) 0 5))[C[C[C[C[C[C[C[C[C[C[Call-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) [C[C[C[C[C[C[C[C[C[C[C[48Pnoun-list* (map first *gm-vars*))[C[C[C[C[C[C[C[C[C[C[Csnl* (find-same-nouns[C[C[C[C[C[C[C[C[C[C[C[C[C[C (join (map (lambda (dir) (get-graphical-model-variables dir)) *testdirs*)))[C[C(define *gm-vars*[Ktestdirs* (system-output (format #f "ls -d /net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))[C[C[Cload "codetection-test.sc")[K[C[C[CExit)[K[C[C[Cwrite-object-to-file *new-output-15* "/home/sbroniko/codetection/source/new-sentence-codetection/20160113-15-tubes.sc")[C[C*new-output-15*[K[C[C(system "date") (define *new-output-15* (find-points-and-deltas *test-track* (sublist *nms-tubes-with-scores* 0 15))) (system "date")[C[C*new-output-15*[K[C[C(write-object-to-file *new-output-15* "/home/sbroniko/codetection/source/new-sentence-codetection/20160113-15-tubes.sc")[C[C[CExit)[K[C[C[Cload "codetection-test.sc")[C[C[Cdefine *testdirs* (system-output (format #f "ls -d /net/seykhl/aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))[C[C[C[C[C[C[C[C[C[C[Cgm-vars*[K[C[C (join (map (lambda (dir) (get-graphical-model-variables dir)) *testdirs*)))[C[C[34P(define *snl* (find-same-nouns *gm-vars*))[C[C[C[C[C[C[C[C[C[C[Cnoun-list* (map first[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Call-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) [C[C[C[C[C[C[C[C[C[C[C[31Pfew-tubes* (sublist (removeq #f *all-tubes*) 0 5))[C[C[C[C[C[C[C[C[C[C[Cra* (join (map (lambda (d) (third (read-object-from-file (format #f "~a/alignment.sc" d)))) *testdirs*)))[C[C[C[C[C[C[C[C[C[C[Chnl* (make-helper-noun-list *ra*))[K[C[C[C[C[C[C[C[C[C[C[C[7Ptube1* (first *few-tubes*))[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[1@2* (second[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cpos1* (subvector (first (first *tube1*)) 0 2))[C[C[C[C[C[C[C[C[C[C[C[C[C[C2* (subvector (first (first *tube2[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cnnbs* (find-noun-noun-binary-score-matrix *all-tubes* (first *hnl*)))[C[C[C[C[C[C[C[C[C[C[Chnbs-list* (map (lambda (l) (find-noun-noun-binary-score-matrix *few-tubes* l)) *hnl*))[C[C[C[C[C[C[C[C[C[C[C[17Pvideos-list* (remove-duplicates (map third (removeq #f *all-tubes*))))[C[C[C[C[C[C[C[C[C[C[C[6Pall-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))[C[C[C[45Pload "codetection-test.sc")[C[C[Cdefine *testdirs* (system-output (format #f "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))[C[C[C[C[C[C[C[C[C[C[C[33Pall-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) [C[C[K(define *all-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) [C[C[C[C[C[C[C[C[C[C[Ctestdirs* (system-output (format #f "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*" "floorplan-0")))[C[C[C[C[C[C[C[C[C[C[C[33Pall-tubes* (join (map (lambda (dir) (find-low-variance-tubes dir)) *testdirs*))) [C[C[K(define *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K(define *all-sim* (all-tubes->phow-visual-similarity-matrix *all-tubes*))
-[K/usr/local/bin/matlab: 1: /aux/matlab/R2010a/bin/util/oscheck.sh: /lib64/libc.so.6: not found
-[Kstarting frames->matlab! load
-[KThu Jan 28 15:33:52 EST 2016
-[K7 videos loaded into matlab
-[KThu Jan 28 15:49:49 EST 2016
-starting histogram computation
-[KThu Jan 28 15:49:50 EST 2016
-[Khistograms computed for 1022 tubes
-[KThu Jan 28 16:02:50 EST 2016
-[Kphow similarity matrix computed
-[KThu Jan 28 17:41:42 EST 2016
-[K*ALL-SIM*
-> [K> [K> (exit)[C[C[C[C[C[C[C[C[C[C[K(exit)
-[K]0;sbroniko@buddhi: ~/codetection/source/new-sentence-codetection[01;32msbroniko@buddhi[00m:[01;36m[new-sentence-codetection][00m$ 
+> [K> [K> (load "codetection-test.sc")[C[C[Crun-edgeboxes "20160212-test-edgeboxes")[C[C[K(run-edgeboxes "20160212-test-edgeboxes")
+"dir-list" ("/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:31:11" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:32:22" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:33:30" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:34:43" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:35:58" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:36:52" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:39:13" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:41:51" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:43:15" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:46:10" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/detections-test20150618")
+"starting get-edgeboxes-data-many-servers" #F
+Fri Feb 12 17:36:51 EST 2016
+"unix command:" "ssh cuddwybodaeth \"mkdir -p /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"unix command:" "ssh istihbarat \"mkdir -p /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"unix command:" "ssh wywiad \"mkdir -p /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"starting matlab processing" #F
+Fri Feb 12 17:36:53 EST 2016
+[Krm: cannot remove `/net/seykhl//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.out': No such file or directory
+rm: cannot remove `/net/seykhl//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.err': No such file or directory
+rm: cannot remove `/net/seykhl//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//done-*': No such file or directory
+[Krm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.out': No such file or directory
+rm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.err': No such file or directory
+rm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//done-*': No such file or directory
+[Krm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.out': No such file or directory
+rm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.err': No such file or directory
+rm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//done-*': No such file or directory
+[Krm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.out': No such file or directory
+rm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.err': No such file or directory
+rm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//done-*': No such file or directory
+"rsync command:" "ssh cuddwybodaeth \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/\""
+[Kreceiving incremental file list
+[K
+sent 372 bytes  received 623835 bytes  1248414.00 bytes/sec
+total size is 19159240079  speedup is 30693.73
+"rsync command:" "ssh istihbarat \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/\""
+[Kreceiving incremental file list
+[K"rsync command:" "ssh wywiad \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/\""
+[K
+>>Error: Argument not a PAIR: ()
+DEBUGGER:
+>> [K>> 
+>>Interrupt:
+DEBUGGER:
+>>> [K>>> 
+>>Interrupt:
+DEBUGGER:
+>>>> [K>>>> [K>>>> 
+>>Interrupt:
+DEBUGGER:
+>>> [K>>> 
+>>Error: Argument not a PAIR: ()
+DEBUGGER:
+>> [K>> 
+Back to top level
+> [K> 
+[K]0;sbroniko@seykhl: ~/codetection/source/new-sentence-codetection[01;32msbroniko@seykhl[00m:[01;36m[new-sentence-codetection][00m$ rlwrap darpa-wrap run-dsci
+[K***** INITIALIZEVAR Duplicately defined symbol +
+***** INITIALIZEVAR Duplicately defined symbol -
+***** INITIALIZEVAR Duplicately defined symbol *
+***** INITIALIZEVAR Duplicately defined symbol /
+***** INITIALIZEVAR Duplicately defined symbol SQRT
+***** INITIALIZEVAR Duplicately defined symbol EXP
+***** INITIALIZEVAR Duplicately defined symbol LOG
+***** INITIALIZEVAR Duplicately defined symbol EXPT
+***** INITIALIZEVAR Duplicately defined symbol SIN
+***** INITIALIZEVAR Duplicately defined symbol COS
+***** INITIALIZEVAR Duplicately defined symbol ATAN
+***** INITIALIZEVAR Duplicately defined symbol =
+***** INITIALIZEVAR Duplicately defined symbol <
+***** INITIALIZEVAR Duplicately defined symbol >
+***** INITIALIZEVAR Duplicately defined symbol <=
+***** INITIALIZEVAR Duplicately defined symbol >=
+***** INITIALIZEVAR Duplicately defined symbol ZERO?
+***** INITIALIZEVAR Duplicately defined symbol POSITIVE?
+***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
+***** INITIALIZEVAR Duplicately defined symbol REAL?
+Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
+> [K> [K> (run-edgeboxes "20160212-test-edgeboxes")[C[C[C[13Pload "codetection-test.sc")[C[C[K(load "codetection-test.sc")
+MODULE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+*3G-AND-4G-SERVERS*
+*2G-SERVERS*
+*WORKSTATIONS*
+SERVER-NAME->NUMBER-OF-CPUS
+GET-SERVER-IDLE-PERCENT
+GET-APPROXIMATE-FREE-SERVER-CPUS
+GET-TOTAL-SERVER-FREE-CPUS
+REPEAT-LIST-TO-LENGTH-N
+DETERMINE-JOB-TO-SERVER-MAPPING
+DETERMINE-JOB-TO-SERVER-MAPPING-WITH-QUEUEING
+SANITIZE-STRING-FOR-SPAWNING
+CREATE-DSCI-JOB
+CREATE-DSCI-JOB2
+SPAWN-JOBS
+SPAWN-AND-WAIT-FOR-JOBS
+SPAWN-AND-WAIT-FOR-JOBS-WITH-QUEUEING
+SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL
+RSYNC-DIRECTORY-TO-SERVER
+RUN-UNIX-COMMAND-ON-SERVER
+SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL-WITH-QUEUEING
+"/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc"
+MODULE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+TRANSFORM-WORLD-POINT-TO-PIXEL
+TRANSFORM-WORLD-POINT-TO-PIXEL-WITH-TRANSFORMATION
+TRANSFORM-WORLD-POINT->PIXEL-GENERIC
+DRAW-POINT-PROJECTION
+DRAW-TEXT-PROJECTION
+DRAW-LINE-PROJECTION
+DRAW-ARROW-PROJECTION
+DRAW-AXIS-PROJECTION
+WORLD-FORWARD-PROJECT
+DRAW-3D-LINES-PROJECTION
+DRAW-CIRCLE-PROJECTION
+FACING-CAMERA?
+FIND-CYLINDER-LINES
+POINTS->SETS-OF-VISIBLE-POINTS
+DRAW-CYLINDER-PROJECTION
+DRAW-KING-BOTTOM-PROJECTION
+MAKE-CYLINDER-IMAGE
+MAKE-KING-BOTTOM-IMAGE
+TEST-MAKE-CYLINDER-IMAGE
+TEST-MAKE-KING-BOTTOM-IMAGE
+"/home/dpbarret/imitate/tool/toollib-perspective-projection.sc"
+LINSPACE
+V/S
+VECTORS->ANGLE
+MY-ROTATION-3D-X
+MY-ROTATION-3D-Y
+MY-ROTATION-3D-Z
+MY-MAKE-TRANSFORM-3D
+MY-ASIN
+MY-TRANSFORM->PARAMETERS
+INVERT-TX-MATRIX
+***** POINT->HOMOGENOUS is redefined
+POINT->HOMOGENOUS
+***** HOMOGENOUS->POINT is redefined
+HOMOGENOUS->POINT
+***** TRANSFORM-POINT-3D is redefined
+TRANSFORM-POINT-3D
+PIXEL-AND-HEIGHT->WORLD
+BOX-AT-HEIGHT->WORLD-CORNERS
+BOX-VECTOR-AT-HEIGHT-AND-POSE->WORLD-CORNERS
+READ-ROBOT-ESTIMATED-POSE-FROM-LOG-FILE
+INTERPOLATE-LINE
+DRAW-3D-LINES-PROJECTION-NICE
+ROBOT-POSE-TO-CAMERA->WORLD-TXF
+X-Y-THETA->6DOF
+SIX-DOF->X-Y-THETA
+ROBOT-6DOF->WORLD-6DOF
+WORLD-6DOF->ROBOT-6DOF
+ROBOT-POSE-6DOF-TO-CAMERA->WORLD-TXF
+READ-CAMERA-TIMING
+TEST
+"/home/sbroniko/codetection/source/rover-projection.sc"
+PLOT-BOX-SCORES
+PLOT-BOX-SCORES-PRELOADED
+PLOT-LINES-IN-MATLAB
+PLOT-LINES-IN-MATLAB-WITH-SYMBOLS
+READ-PROBABILITIES-FROM-BOX-LIST
+READ-FRAME-NUMBERS-FROM-BOX-LIST
+READ-FILENAMES-FROM-BOX-LIST
+OFFSET-VIDEO-FRAME-NUMBERS
+PLOT-PROBABILITIES-FROM-BOX-LIST
+PLOT-SCORES-FROM-TRAINING
+PLOT-HMM-LIKELIHOODS
+PLOT-TRACK-SCORES
+VISUALIZE-BEST-MODELS
+VISUALIZE-BEST-ROOTS
+VISUALIZE-STATE-ITERATIONS
+"/home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-plotting.sc"
+VITERBI-BOXES
+***** BOX-AT-HEIGHT->WORLD-CORNERS is redefined
+BOX-AT-HEIGHT->WORLD-CORNERS
+DISCOUNT-BOXES
+VITERBI-MULTIPLE
+"/home/sbroniko/codetection/source/new-sentence-codetection/viterbi.sc"
+*CAMERA-OFFSET*
+*CAMERA-OFFSET-MATRIX*
+*CAMERA-K-MATRIX*
+***** LOG-VON-MISES is redefined
+LOG-VON-MISES
+SELECT-FRAMES
+RUN-CODETECTION-WITH-FRAMES
+RUN-CODETECTION-WITH-VIDEO
+ALIGN-FRAMES-WITH-POSES
+GET-POSES-THAT-MATCH-FRAMES
+GET-POSES-THAT-MATCH-FRAMES-NEW
+GET-CORRECTED-POSES-THAT-MATCH-FRAMES
+SAVE-POSES-HOUSE-TEST
+SAVE-UNCORRECTED-POSES-HOUSE-TEST
+SAVE-NEW-POSES-HOUSE-TEST
+SAVE-OLD-POSES-HOUSE-TEST
+FRAME-TEST
+SCOTT-PROPOSALS&SIMILARITY-WITH-FRAMES
+SCOTT-RUN-CODETECTION-FULL-VIDEO
+FRAME-TEST2
+MAKE-FRAMES
+GET-MATLAB-PROPOSALS-SIMILARITY
+GET-EDGEBOXES-PROPOSALS
+GET-MATLAB-PROPOSALS-SIMILARITY-BY-FRAME
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO
+GET-EDGEBOXES-PROPOSALS-FULL-VIDEO
+RUN-CODETECTION-WITH-PROPOSALS-SIMILARITY
+GET-MATLAB-DATA-HOUSE-TEST-NEW2
+RUN-CODETECTION-VITERBI
+RUN-CODETECTION-VITERBI-MULTIPLE
+VISUALIZE-RESULTS-TEST
+VISUALIZE-RESULTS
+VISUALIZE-RESULTS-IMPROVED
+VISUALIZE-RESULTS-IMPROVED-NEW
+VISUALIZE-RESULTS-VITERBI
+VISUALIZE-RESULTS-VITERBI-MULTIPLE
+RUN-FULL-RESULTS
+MATLAB-DATA-TO-FILES
+GET-MATLAB-DATA-TRAINING-OR-GENERATION-IMPROVED
+GET-EDGEBOXES-DATA-RALICRA2016
+GET-MATLAB-DATA-AUTO-DRIVE-IMPROVED
+GET-MATLAB-DATA-TRAINING-OR-GENERATION
+RESULTS-END-TO-END
+JOIN-IMAGES
+JOIN-ALL-IMAGES
+RUN-MY-SHIT
+RUN-MY-SHIT-2
+GET-XY-FROM-RESULTS-FILE
+PLOT-OBJECTS-FROM-FILE
+*XMIN*
+*XMAX*
+*YMIN*
+*YMAX*
+*BOUNDARIES*
+*X-1*
+*X0*
+*X+1*
+*Y-1*
+*Y0*
+*Y+1*
+*Y+2*
+POINT-LOCATIONS
+PLOT-GRID
+PLOT-OBJECTS-FROM-FLOORPLAN
+PLOT-OBJECTS-FROM-FLOORPLAN-MULTICOLOR
+ENSURE-SCORES
+GET-SCORES-FROM-RESULTS-AND-FRAME-DATA-FILES
+GET-DETECTION-IMAGES
+MAKE-TEST-FILE
+GET-DETECTION-DATA-FOR-FLOORPLAN
+POINT-IN-TRIANGLE
+DETECT-SORT-LABEL-OBJECTS-SINGLE-FLOORPLAN
+GET-CODETECTION-RESULTS-TRAINING-OR-GENERATION
+GET-EDGEBOXES-DATA-MANY-SERVERS
+GET-CODETECTION-RESULTS-AUTO-DRIVE
+GET-OBJECT-DETECTIONS-ALL-FLOORPLANS
+CODETECT-SORT-TEMPLABEL-TRAINING-OR-GENERATION
+RUN-EDGEBOXES
+CODETECT-SORT-TEMPLABEL-AUTO-DRIVE
+GET-GROUND-TRUTH-FROM-DATASET-FILE
+GET-LABELED-GROUND-TRUTH-FROM-DATASET-FILE
+MAKE-SCHEME-FILE-OF-XYS
+MAKE-SCHEME-FILE-OF-XYS-SEPARATED
+SCOTT-PROPOSALS-ONLY
+RUN-CODETECTION-ONLY-HOUSE-TEST
+RUN-CODETECTION-ONLY-HOUSE-TEST-2
+GET-CODETECTION-RESULTS-HOUSE-TEST
+GET-CODETECTION-RESULTS-HOUSE-TEST-2
+GET-MATLAB-DATA-HOUSE-TEST
+QUICK-AND-DIRTY-TEST
+SINGLE-RUN-TEST
+SINGLE-RUN-TEST-NEW
+SINGLE-RUN-TEST-NEW2
+SINGLE-RUN-TEST-VITERBI
+SINGLE-RUN-TEST-VITERBI-MULTIPLE
+READ-CAMERA-TIMING-NEW
+GET-MATLAB-DATA-HOUSE-TEST-NEW
+***** GET-MATLAB-DATA-HOUSE-TEST-NEW2 is redefined
+GET-MATLAB-DATA-HOUSE-TEST-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-NEW
+GET-MATLAB-PROPOSALS-SIMILARITY-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-VITERBI
+GET-AND-SAVE-PROPOSAL-BOXES
+GET-AND-SAVE-PROPOSAL-BOXES-ALL-VIDEOS
+FRAMES-AND-POSES->MATLAB
+SIMPLE-RUN-AND-PLOT
+SIMPLE-TEST
+SIMPLE-RUN-AND-PLOT-NEW
+SIMPLE-RUN-AND-PLOT-VITERBI
+READ-AND-SORT-MATLAB-PROPOSALS
+GET-TLD-TUBE-FROM-BOX
+SCOTT-BOX->VOC4
+*VIDEO-PATH*
+*TEST-PATH*
+GET-FRAME-NUMBERS
+GENERATE-PROPOSALS
+FRAMES->MATLAB!
+FRAMES->MATLAB-NO-FREE!
+GET-MEDIANFLOW-TUBE-FROM-STARTING-FRAME-AND-PROPOSAL-BOX
+GET-ALL-TUBES
+GET-ALL-TUBES-SORTED
+RENDER-ONE-TUBE
+RENDER-ALL-TUBES
+SCOTT-BOX-X1
+SCOTT-BOX-X2
+SCOTT-BOX-Y1
+SCOTT-BOX-Y2
+SCOTT-BOX-AREA
+SCOTT-BOX-INTERSECTION-AREA
+SCOTT-BOX-UNION-AREA
+SCOTT-BOX-INTERSECTION-OVER-UNION
+TUBE-INTERSECTION-OVER-UNION
+TUBES-OVERLAP?
+TUBE-NMS
+TUBE-TEST-END-TO-END
+BIG-TUBE-TEST-END-TO-END
+BIG-TUBE-TEST-END-TO-END2
+GET-ALL-NMS-TUBES
+GET-ALL-NMS-TUBES-AND-RENDER-N
+GET-AND-RENDER-N-NMS-TUBES-HOUSE-TEST
+ALIGN-ONE-TUBE-WITH-POSES
+REMOVE-FALSE-BOXES
+ALIGN-ALL-TUBES-WITH-POSES-AND-REMOVE-FALSES
+READ-AND-ALIGN-SCORED-TUBES
+PIXEL-AND-POSE->WORLD-LINE
+PIXEL-AND-POSE-6DOF->WORLD-LINE
+ALIGNED-TUBE-WITH-SCORE->LINES
+RAW-TUBE-WITH-SCORE-AND-POSE-LIST-6DOF->LINES
+*IMG-WIDTH*
+*IMG-HEIGHT*
+BOX-WITHIN-FRAME?
+RAW-TUBE-WITH-SCORE-AND-POSE-LIST->WORLD-CORNERS-LIST
+WORLD-CORNERS-LIST->WORLD-XYWH-LIST
+WORLD-XYWH-LIST->WORLD-MEAN-AND-VARIANCE
+WORLD-XYWH-LIST->WORLD-MEAN-AND-DISTANCES
+WORLD-XYWHS-AND-POSES->WORLD-MEAN-VARIANCE-ROBOT
+FIND-WORLD-MEANS-AND-VARIANCES
+FIND-WORLD-MEANS-VARIANCES-ROBOTS
+FIND-AND-SAVE-WORLD-MEANS-AND-VARIANCES-HOUSE-TEST
+FIND-AND-SAVE-WORLD-MEANS-VARIANCES-ROBOTS-HOUSE-TEST
+FILTER-WORLD-MEANS-AND-VARIANCES
+FILTER-WORLD-MEANS-VARIANCES-ROBOTS
+*VAR-THRESH*
+*RATIO-THRESH*
+*LENGTH-THRESH*
+FILTER-TUBES-BY-LENGTH
+FIND-ABC-AND-FILTER
+*DISTANCE-THRESH*
+FIND-DEF-AND-FILTER
+FIND-ABCDEF
+PREPROCESS-TUBE
+FIND-LOW-VARIANCE-TUBES
+SAVE-LOW-VARIANCE-TUBES-HOUSE-TEST
+SPLIT-PATH-BY-ALIGNMENT
+GET-NOUN-PREPOSITION-PATHS
+GET-GRAPHICAL-MODEL-VARIABLES
+GET-GRAPHICAL-MODEL-VARIABLES-FOR-SIMPLE-GM
+FIND-UNARY-SCORE
+FIND-SIMPLE-UNARY-SCORE
+FIND-SIMPLE-VARIANCE-FACTOR
+FIND-UNARY-SCORES-FOR-ALL-TUBES
+FIND-SIMPLE-UNARY-SCORES-FOR-ALL-TUBES
+FIND-UNARY-SCORES-FOR-ONE-RUN
+FIND-UNARY-SCORE-MATRIX-FOR-FLOORPLAN
+FIND-UNARY-SCORE-MATRIX-FOR-GIVEN-TUBES
+FIND-SIMPLE-UNARY-SCORE-MATRIX-FOR-GIVEN-TUBES
+TUBES->TUBE-OBJECTNESS-SCORES
+FIND-SIMPLE-NOUN-LIST
+NUM-FUNC
+FIND-NUMBER
+NUMBER-NOUNS
+MAKE-HELPER-NOUN-LIST
+MAKE-SIMPLE-HELPER-NOUN-LIST
+MAKE-PHRASES
+CLEAN-PHRASES
+FIND-NOUN-TO-HELPER-NOUN-BINARY-SCORE
+FIND-NOUN-NOUN-BINARY-SCORE-MATRIX
+FIND-INDEX-IN-LIST
+FIND-ALL-INSTANCES
+FIND-SAME-NOUNS
+MAKE-LIST-OF-MATCHING-NOUNS
+*SIGMOID-CENTER*
+*SIGMOID-SLOPE*
+*SIG-WEIGHT*
+FIND-LOCATION-SIMILARITY-BETWEEN-TUBES
+ELEMENTWISE-MULTIPLY-MATRICES
+FIND-BINARY-SCORE-BETWEEN-TUBES
+ALL-TUBES->PHOW-VISUAL-SIMILARITY-MATRIX
+GET-PHOW-HISTS-ALL-TUBES
+FIND-BINARY-SCORE-DATA-FOR-FLOORPLAN
+FIND-BINARY-SCORE-DATA-FOR-GIVEN-TUBES
+FIND-SIMPLE-BINARY-SCORE-DATA-FOR-GIVEN-TUBES
+FIND-GRAPHICAL-MODEL-DATA-FOR-FLOORPLAN
+FIND-GRAPHICAL-MODEL-DATA-FOR-GIVEN-TUBES
+FIND-SIMPLE-GRAPHICAL-MODEL-DATA-FOR-GIVEN-TUBES
+RUN-GRAPHICAL-MODEL
+RUN-SIMPLE-GRAPHICAL-MODEL
+GM-FULL-TEST
+GM-SMALL-EXAMPLE
+SIMPLE-GM-SMALL-EXAMPLE
+RENDER-GM-OUTPUT
+RENDER-GM-OUTPUT-SMALL-EXAMPLE
+RENDER-SIMPLE-GM-OUTPUT-SMALL-EXAMPLE
+RENDER-GOOD-TUBES
+RENDER-B-TUBES
+RENDER-D-TUBES
+RENDER-MULTIPLE-FILTERED-TUBES
+RENDER-UNFILTERED-TUBES
+RENDER-FILTERED-TUBES-HOUSE-TEST
+RENDER-B-D-TUBES-HOUSE-TEST
+POINT-LINE-SQUARED-DISTANCE
+FIND-POINT-FROM-LINES
+VISUALIZE-TWO-TRACKS
+CORRECT-THETA-DRIFT
+FIND-THETA-DRIFT-FROM-TRACK
+FIND-ALL-THETA-DRIFTS
+FIND-POINTS-AND-DELTAS
+FIND-POINTS-AND-DELTAS-OLD
+FIND-DELTAS-ONLY
+GET-DELTAS-OF-WORLD-TRACK-3DOF
+WORLD-DELTA-AND-POSE-6DOF->ROBOT-DELTA-6DOF
+***** CORRECT-ANGLE is redefined
+CORRECT-ANGLE
+ANGLE-MINUS
+SUBTRACT-POSE
+WEIGHTED-SUBTRACT-POSE
+WORLD-POSE-AND-ROBOT-DELTA-6DOF->WORLD-POSE-6DOF
+ROBOT-DELTAS-LIST-AND-WORLD-START-3DOF->WORLD-TRACK-6DOF
+WORLD-TRACK-3DOF->WORLD-TRACK-6DOF
+WORLD-TRACK-6DOF->WORLD-TRACK-3DOF
+GET-DELTAS-LIST-FROM-WORLD-TRACK-6DOF
+GET-DELTAS-LIST-IN-ROBOT-6DOF
+SPLIT-DELTAS
+MERGE-DELTAS
+SPLIT-POINTS
+MERGE-POINTS
+MERGE-GIANT-VECTOR
+SPLIT-GIANT-VECTOR
+SPLIT-GIANT-VECTOR-FOUR-POINTS
+FIND-6DOF-POSES-LIST-FROM-DELTAS-VECTOR-AND-INITIAL-POSE
+MATLAB-PLOT-ONE-RUN
+MATLAB-PLOT-JUST-TRACES
+QUICK-PLOT-TRACES-ONLY
+MATLAB-PLOT-THREE-TRACES
+MATLAB-PLOT-ONE-RUN-WITH-ALL-TUBES
+PLOT-LINES-IN-MATLAB-WITH-SYMBOLS-NO-LEGEND
+MATLAB-PLOT-ARROWHEADS-ON-TRACE
+LIST-MEDIAN
+"codetection-test.sc"
+> [K> [K> (load "codetection-test.sc")[C[C[Crun-edgeboxes "20160212-test-edgeboxes")[C[C[K(run-edgeboxes "20160212-test-edgeboxes")
+"dir-list" ("/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:31:11" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:32:22" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:33:30" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:34:43" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:35:58" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:36:52" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:39:13" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:41:51" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:43:15" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:46:10" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/detections-test20150618")
+"starting get-edgeboxes-data-many-servers" #F
+Fri Feb 12 17:43:21 EST 2016
+"unix command:" "ssh cuddwybodaeth \"mkdir -p /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"unix command:" "ssh istihbarat \"mkdir -p /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"unix command:" "ssh wywiad \"mkdir -p /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"starting matlab processing" #F
+Fri Feb 12 17:43:23 EST 2016
+[Krm: cannot remove `/net/seykhl//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.out': No such file or directory
+rm: cannot remove `/net/seykhl//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.err': No such file or directory
+rm: cannot remove `/net/seykhl//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//done-*': No such file or directory
+[Krm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.out': No such file or directory
+rm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.err': No such file or directory
+rm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//done-*': No such file or directory
+[Krm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.out': No such file or directory
+rm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.err': No such file or directory
+rm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//done-*': No such file or directory
+[Krm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.out': No such file or directory
+rm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.err': No such file or directory
+rm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//done-*': No such file or directory
+"rsync command:" "ssh cuddwybodaeth \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/\""
+[Kreceiving incremental file list
+[K
+sent 372 bytes  received 623835 bytes  1248414.00 bytes/sec
+total size is 19159240079  speedup is 30693.73
+"rsync command:" "ssh istihbarat \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/\""
+[Kreceiving incremental file list
+[K
+sent 372 bytes  received 623835 bytes  416138.00 bytes/sec
+total size is 19159240079  speedup is 30693.73
+"rsync command:" "ssh wywiad \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/\""
+[Kreceiving incremental file list
+[K
+sent 372 bytes  received 623835 bytes  416138.00 bytes/sec
+total size is 19159240079  speedup is 30693.73
+[K"effective cpus" (0. 0. 0.)
+[K

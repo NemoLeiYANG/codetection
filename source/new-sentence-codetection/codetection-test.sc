@@ -727,6 +727,29 @@
 
   ))
 
+(define (get-edgeboxes-proposals top-k frames poses)
+ (let* ((num-frames (length frames))
+	(one-frame (first frames))
+	(height (imlib:height one-frame))
+	(width (imlib:width one-frame)))
+  ;;(list frames poses)
+  (start-matlab!)
+  (matlab "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection/'))")
+  (scheme->matlab! "poses" poses)
+  (frames->matlab! frames "frames")
+  ;; call matlab function
+  (dtrace "calling new-sentence-codetection/scott_proposals_penalties_edgeboxes" #f)
+  (matlab
+   (format
+    #f
+    "boxes_w_fscore = scott_proposals_penalties_edgeboxes(~a,frames,poses);"
+    top-k))
+  ;; convert matlab variables to scheme
+  (list (map-n (lambda (t)
+		(matlab (format #f "tmp=boxes_w_fscore(:,:,~a);" (+ t 1)))
+		(matlab-get-variable "tmp"))
+	       num-frames))))
+
 (define (get-matlab-proposals-similarity-by-frame top-k
 						  box-size
 						  data-path
@@ -780,6 +803,15 @@
 				   beta-norm
 				   gamma-norm
 				   delta-norm)))
+
+(define (get-edgeboxes-proposals-full-video top-k
+					    data-path)
+ (let* ((video-path (format #f "~a/video_front.avi" data-path))
+	(frames (video->frames 1 video-path))
+	(poses (align-frames-with-poses data-path (length frames))))
+  (dtrace
+   "in new-sentence-codetection/get-edgeboxes-proposals-full-video" #f)
+  (get-edgeboxes-proposals top-k frames poses)))
 
 (define (run-codetection-with-proposals-similarity proposals-similarity
 						   dummy-f
@@ -1400,6 +1432,17 @@
   (dtrace (format #f "wrote ~a/~a/frame-data-~a-~a.sc" path data-output-dir
 		  (number->padded-string-of-length dummy-f 3)
 		  (number->padded-string-of-length dummy-g 3)) #f)))
+
+(define (get-edgeboxes-data-ralicra2016 path top-k data-output-dir)
+ (let* ((log-to-track "/home/sbroniko/vader-rover/position/log-to-track.out"))
+  (unless ;;comment out this unless if doing autodrive
+    (file-exists? (format #f "~a/imu-log-with-estimates.txt" path))
+   (system (format #f "~a none ~a/imu-log.txt ~a/imu-log-with-estimates.txt ~a/imu-log-with-estimates.sc" log-to-track path path path)))
+  (mkdir-p (format #f "~a/~a" path data-output-dir))
+  (write-object-to-file
+   (get-matlab-proposals-similarity-full-video top-k  path)
+   (format #f "~a/~a/frame-data.sc" path data-output-dir))
+  (dtrace (format #f "wrote ~a/~a/frame-data.sc" path data-output-dir) #f)))
 
 (define (get-matlab-data-auto-drive-improved
 	 path top-k ssize alpha beta gamma delta dummy-f dummy-g data-output-dir)
@@ -2061,6 +2104,56 @@
   (dtrace "processing complete for get-codetection-results-training-or-generation" #f)
   (system "date")))
 
+(define (get-edgeboxes-data-many-servers
+	 data-directory ;; NEED slash on data-dir
+	 top-k
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 data-output-dir ;;this is just a DIR NAME that will be under each run dir
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+ (let* ((servers server-list)
+	(source source-machine)
+	(matlab-cpus-per-job 8);;4);; for under-the-hood matlab parallelism
+	(output-matlab (format #f "~a-matlab/" output-directory))
+	(plandirs (list (format #f "~a/plan0" data-directory)))
+	 ;;(system-output (format #f "ls ~a | grep plan" data-directory)))
+	(dir-list (dtrace "dir-list" (join
+		   (map
+		    (lambda (p)
+		     (map (lambda (d) (format #f "~a/~a" p d))
+			  (system-output
+			   (format #f "ls ~a | grep 201" p))))
+		    plandirs))))
+	(commands-matlab
+	 (map
+	  (lambda (dir) 
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (get-edgeboxes-data-ralicra2016 \"~a\" ~a  \"~a\") :n :n :n :n :b" dir top-k data-output-dir)) dir-list))
+	)
+  (dtrace "starting get-edgeboxes-data-many-servers" #f)
+  (system "date")
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
+		       servers))
+	    (list output-matlab))
+  (dtrace "starting matlab processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-matlab
+  						      servers
+  						      matlab-cpus-per-job
+  						      output-matlab
+  						      source
+  						      data-directory)
+  (dtrace "matlab processing complete" #f)
+  (system "date")
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "matlab results rsync'd, done" #f)
+  (system "date")))
+
 (define (get-codetection-results-auto-drive
 	 data-directory ;; NEED slash on data-dir
 	 top-k
@@ -2272,6 +2365,24 @@
 					server-list
 					source-machine)
   ))
+
+(define (run-edgeboxes data-output-dirname)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(top-k 10)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(server-list
+	 (list "cuddwybodaeth" "istihbarat" "wywiad"))
+	(source-machine "seykhl"))
+  (get-edgeboxes-data-many-servers data-directory 
+				   top-k
+				   output-directory 
+				   data-output-dir 
+				   server-list
+				   source-machine)))
 
 (define (codetect-sort-templabel-auto-drive data-output-dirname)
  (let* ((data-directory
@@ -4744,12 +4855,58 @@
 	  gm-vars))
 	(var-factor-list
 	 (map find-simple-variance-factor all-tubes))
+	;;should get and cons tube scores here
 	(scores-with-vars
 	 (map (lambda (t) (cons (list->vector var-factor-list) t)) raw-score-mat)))
   (list->vector
-   (map (lambda (s)
+   (map (lambda (s) ;;this multiplies all preposition scores together (with var score)
 	 (x (reduce elementwise-multiply-matrices (map vector s) identity)))
 	scores-with-vars))))
+
+(define (tubes->tube-objectness-scores tubes)
+ (let* ((videos-list (remove-duplicates (map third tubes)))
+	(video-frames (map (lambda (v) (video->frames 1 v)) videos-list)))
+  (start-matlab!)
+  (matlab "load('/home/sbroniko/codetection/source/new-sentence-codetection/objectness_params.mat');")
+  (matlab "enablePool")
+    (display "MATLAB setup complete, starting frames->matlab! load")
+  (newline)
+  (system "date")
+  (for-each-indexed
+   (lambda (fl i) (frames->matlab! fl (format #f "video_~a" i))) video-frames)
+  (display
+   (format #f "~a videos loaded into matlab, starting objectness score computation"
+	   (length videos-list)))
+  (newline)
+  (system "date")
+  ;;create structure to store score output
+  (matlab (format #f "obj_scores = zeros(~a,1);" (length tubes)))
+  ;;map over tubes
+  (map-indexed
+   (lambda (t j)
+    (let* ((frame-numbers
+	    (removeq #f (map-indexed (lambda (b i) (if b i)) (fourth t))))
+	   (boxes (removeq #f (fourth t)))
+	   (video-idx (find-index-in-list (third t) videos-list)))
+     (matlab (format #f "vid = video_~a;" video-idx))
+     (scheme->matlab! "framenums" frame-numbers)
+     (scheme->matlab! "boxes" boxes)
+     ;;call matlab function to compute tube obj score-->'params' is loaded above
+     (matlab
+      (format #f
+	      "obj_scores(~a) = compute_tube_objectness_score(vid,framenums,boxes,params);"
+	      (+ j 1)))))
+   tubes)
+  (display (format #f "objectness scores computed for ~a tubes" (length tubes)))
+  (newline)
+  (system "date")
+  (let ((outval (matlab-get-variable "obj_scores")))
+   (matlab "clear all;")
+   (map-vector x outval))))
+
+
+
+
 
 (define (find-simple-noun-list dirlist)
  (let* ((gm-vars

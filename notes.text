@@ -6617,16 +6617,29 @@ TO DO's
     out of matlab once, or like the old get-phow-hists-all-tubes that pulls each
     score out one at a time (might be pretty slow).
 
+----------------git commit a51d9da--------------
 
-***NEED TO LOOK MORE AT find-simple-unary-score-matrix-for-given-tubes 
-   THINK I've been using the tubes in test-floorplan-0-good-tubes-4-8feb16 as my
-   most recent tubes
+12 Feb 16
 
-***Look at all-tubes->phow-visual-similarity-matrix for how to get videos into
-   matlab and do stuff with them
-   **remember to clear matlab data when done
-   **might need to figure out a way to minimize the pulling of data back out
-     from matlab to scheme if it is slow
+--Relooked at find-simple-unary-score-matrix-for-given-tubes and remembered how
+  it worked.  Should be able to take list of tube scores and cons it onto the
+  matrix of scores for each tube with each preposition, the same way I cons on
+  the variation factor.
+
+--Have tubes->tube-objectness-scores working to produce a list of tube scores.
+  **NEXT STEP** call this from within
+  find-simple-unary-score-matrix-for-given-tubes (see comments there)
+
+--Paused on objectness work to talk about resubmitting ralicra to iros.  Wrote
+  run-edgeboxes and the functions called below it to generate proposals for
+  MSEE1-dataset/ralicra2016/plan0 runs with only penalties being behind camera
+  and out of bounds.  Want to feed that data into the scoring/scatter/surface
+  function to see if we get similar peaks without using the graphical model at
+  all-->trying to prove to Jeff that the graphical model actually does something
+  useful and meaningful.  Also wrote scott_proposals_penalties_edgeboxes.m to do
+  the matlab stuff for that.
+
+
 
 
 
