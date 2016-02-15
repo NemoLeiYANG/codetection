@@ -2083,10 +2083,12 @@
 				    matlab-output-filename)
   ;;don't think I need to load detection_data.mat here b/c matlab already has detection_data
   (matlab (format #f
-		  "[numobj, objxys,~] = find_objects(detection_data,~a,~a,~a,~a,~a,~a);"
+		  "[numobj, objxys,scores] = find_objects(detection_data,~a,~a,~a,~a,~a,~a);"
 		  *xmin* *xmax* *ymin* *ymax*
 		  5 ;; cm_between HARDCODED
 		  0.25));; gaussian_variance HARDCODED
+  (matlab (format #f
+		  "ralicra_plotting2(detection_data,scores,'~a');" img-dir))
   (matlab (format #f
 		  "cluster_data = cluster_detections_by_object(detection_data,objxys,~a);"
 		  0.5)) ;; threshold in m HARDCODED
@@ -2119,8 +2121,8 @@
 	 )
  (let* ((servers server-list)
 	(source source-machine)
-	(matlab-cpus-per-job 8);;4);; for under-the-hood matlab parallelism
-	(c-cpus-per-job 1)
+	(matlab-cpus-per-job 5);;4);; for under-the-hood matlab parallelism
+	(c-cpus-per-job 5)
 	(output-matlab (format #f "~a-matlab/" output-directory))
 	(output-c (format #f "~a-c/" output-directory))
 	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
@@ -2129,7 +2131,7 @@
 		    (lambda (p)
 		     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
 			  (system-output
-			   (format #f "ls ~a/~a | grep 201" data-directory p))))
+			   (format #f "ls ~a/~a | grep 2014-" data-directory p))))
 		    plandirs)))
 	(commands-matlab
 	 (map
@@ -2335,7 +2337,7 @@
 	 )
  (let* ((servers server-list)
 	(source source-machine)
-	(matlab-cpus-per-job 20);;12);;4) ;;for under-the-hood matlab parallelism and to spread out jobs among servers
+	(matlab-cpus-per-job 7);;12);;4) ;;for under-the-hood matlab parallelism and to spread out jobs among servers
 	(output-matlab (format #f "~a-detection/" output-directory))
 	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
 	;;TEMPORARY for re-run of auto-drive
@@ -2421,6 +2423,60 @@
 				     dummy-g))
 	(server-list
 	 (list "aruco" "save" "akili" "aql" "verstand" "arivu")) ;; "perisikan" acting weird, jobs dying without finishing
+	(source-machine "seykhl"))
+  (get-codetection-results-training-or-generation data-directory 
+						  top-k
+						  ssize
+						  alpha
+						  beta
+						  gamma
+						  delta
+						  dummy-f
+						  dummy-g
+						  output-directory 
+						  data-output-dir 
+						  server-list
+						  source-machine) 
+
+
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans data-directory 
+					output-directory 
+					results-filename ;;remember to add data-output-dir to this and frame-data...
+					frame-data-filename
+					data-output-dir
+					server-list
+					source-machine)
+  ))
+
+(define (codetect-sort-templabel-ralicra2016 data-output-dirname)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list
+	 (list "wywiad" "istihbarat" "cuddwybodaeth" "perisikan" "chino" "maniishaa" "alykkyys" "seulki" "faisneis"))
+	 ;;(list "aruco" "save" "akili" "aql" "verstand" "arivu")) ;; "perisikan" acting weird, jobs dying without finishing
 	(source-machine "seykhl"))
   (get-codetection-results-training-or-generation data-directory 
 						  top-k
@@ -4937,8 +4993,13 @@
 	(var-factor-list
 	 (map find-simple-variance-factor all-tubes))
 	;;should get and cons tube scores here
+	(obj-scores
+	 (tubes->tube-objectness-scores all-tubes))
 	(scores-with-vars
-	 (map (lambda (t) (cons (list->vector var-factor-list) t)) raw-score-mat)))
+	 (map (lambda (t) (cons obj-scores
+				(cons (list->vector var-factor-list)
+				      t)))
+	      raw-score-mat)))
   (list->vector
    (map (lambda (s) ;;this multiplies all preposition scores together (with var score)
 	 (x (reduce elementwise-multiply-matrices (map vector s) identity)))
@@ -4950,7 +5011,7 @@
   (start-matlab!)
   (matlab "load('/home/sbroniko/codetection/source/new-sentence-codetection/objectness_params.mat');")
   (matlab "enablePool")
-    (display "MATLAB setup complete, starting frames->matlab! load")
+  (display "MATLAB setup complete, starting frames->matlab! load")
   (newline)
   (system "date")
   (for-each-indexed

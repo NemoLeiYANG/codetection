@@ -45,7 +45,7 @@ end %for i
 
 fprintf('fvcell built\n');
 
-% % n_factor = 0.5; %used in condensing simi_matrix
+n_factor = 0.5; %used in condensing simi_matrix
 % m_factor = 0.5; 
 
 %now do comparison of feature vectors between each pair of temp labels
@@ -69,22 +69,26 @@ for i = 1:M
             end %for l
             simi_matrix(k,:) = temp_mat;
         end %for k
-%         %atempt 2: 1b, 2a
-%         [num_col_elements,num_row_elements] = size(simi_matrix);
-%         simi_sorted_cols = sort(simi_matrix,'descend');
-%         simi_sorted_rows = sort(simi_matrix,2,'descend');
-%         n_rows = round(n_factor*num_row_elements);
-%         n_cols = round(n_factor*num_col_elements);
-%         row_means = mean(simi_sorted_rows(:,1:n_rows),2);
-%         col_means = mean(simi_sorted_cols(1:n_cols,:),1);
-%         avg_simi = mean(row_means);
-%         avg_simi2 = mean(col_means);
         
-        %attempt 1: 1a, 2a WORKING AS OF 1 JUL 15
-        row_maxes = max(simi_matrix,[],2);
-        col_maxes = max(simi_matrix,[],1);
-        avg_simi = mean(row_maxes);
-        avg_simi2 = mean(col_maxes);
+%%TRYING THIS FOR RALICRA RE-RUN        
+        %atempt 2: 1b, 2a
+        [num_col_elements,num_row_elements] = size(simi_matrix);
+        simi_sorted_cols = sort(simi_matrix,'descend');
+        simi_sorted_rows = sort(simi_matrix,2,'descend');
+        n_rows = round(n_factor*num_row_elements);
+        n_cols = round(n_factor*num_col_elements);
+        row_means = mean(simi_sorted_rows(:,1:n_rows),2);
+        col_means = mean(simi_sorted_cols(1:n_cols,:),1);
+        avg_simi = mean(row_means);
+        avg_simi2 = mean(col_means);
+
+%%LAST WORKING VERSION FROM ORIGINAL RALICRA PAPER
+%         %attempt 1: 1a, 2a WORKING AS OF 1 JUL 15
+%         row_maxes = max(simi_matrix,[],2);
+%         col_maxes = max(simi_matrix,[],1);
+%         avg_simi = mean(row_maxes);
+%         avg_simi2 = mean(col_maxes);
+%%END last working version
         
 %         %MAYBE try something with 1a, 2b here.
 %         row_maxes = max(simi_matrix,[],2);

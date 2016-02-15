@@ -1,4 +1,4 @@
-function ralicra_plotting(detection_data, output_path)
+function ralicra_plotting2(detection_data,scores_out,output_path)
 
 %%%% slight mod to detection_data to smooth out spurious peak in plan0
 % detection_data_mod = detection_data;
@@ -39,7 +39,7 @@ title(scattername);
 saveas(hfig0,scattername);
     
 %surface plot
-tic;[numpeaks, peakxys,scores_out] = find_objects(detection_data, xmin,xmax, ymin, ymax, cm_between, gaussian_variance);toc
+%tic;[numpeaks, peakxys,scores_out] = find_objects(detection_data, xmin,xmax, ymin, ymax, cm_between, gaussian_variance);toc
 xpoints = xmin:(cm_between/100):xmax;
 ypoints = ymax:-(cm_between/100):ymin;
 [X,Y] = meshgrid(xpoints,ypoints);

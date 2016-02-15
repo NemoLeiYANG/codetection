@@ -1,0 +1,9 @@
+.   notes.text          348625  Text		  ~/codetection/notes.text
+  * *shell*              28518  Shell:run	  ~/codetection/
+    codetection-test.s: 264181  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+    house_make_plots.m    2108  MATLAB		  ~/codetection/source/new-sentence-codetection/house_make_plots.m
+    ralicra_plotting.m    3308  MATLAB		  ~/codetection/source/new-sentence-codetection/ralicra_plotting.m
+  * *scheme*             16748  Inferior Scheme:
+    find_objects.m        4298  MATLAB		  ~/codetection/source/new-sentence-codetection/find_objects.m
+    *scratch*              191  Lisp Interaction
+  * *Messages*            3235  Fundamental

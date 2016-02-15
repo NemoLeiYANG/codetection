@@ -47,7 +47,7 @@ fprintf('in new-sentence-codetection/scott_proposals_similarity2.m');
 gaussparam1 = [.25,0]; %setting sigma=.25,mu=0 for distance
 gaussparam2 = [.1,0]; %setting sigma=.1,mu=0 for width difference
 cam_offset = [-0.03 0.16 -0.2]; %estimated measurement, in m
-% world_boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
+world_boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
 distance_threshold = 0.5; %distance threshold for similarity score--in m
 binary_score_threshold = 1e-6; %threshold for a binary score to go into ouput--ARBITRARY, may need to change
 %dbox_fscore = 0.5; %dummy box fscore value
@@ -77,7 +77,7 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
     %now do adjust scores and add world x,y,w information to matrix
     new_boxes = zeros(top_k, 8);
     new_boxes(:,1:5) = bbs;
-%     boundary = world_boundary;
+    boundary = world_boundary;
     valid_locations = false(top_k,1);
     temp_phists = zeros(phist_size,'single');
     for i = 1:top_k %for each proposal
@@ -102,9 +102,17 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
         %             ((bbs(i,1) + bbs(i,3)) > (w - pixel_threshold)) || ...
         %             ((bbs(i,2) + bbs(i,4)) > (h - pixel_threshold)) ||...
         %             (locflag == 0)) %box is behind camera
-        if (locflag == 0) %box is behind camera
-            penalty = -10; %ARBITRARY penalty factor here--might need to adjust
-            new_boxes(i,5) = new_boxes(i,5)*exp(penalty);
+        %%ADDING BACK penalty for above horizon or out of bounds--15feb16
+        if ((loc(1) > boundary(2)) || ...%xpenalty
+            (loc(1) < boundary(1)))
+            locflag = 0;
+        end %if loc(1)
+        if ((loc(2) > boundary(4)) || ...%ypenalty
+            (loc(2) < boundary(3)))
+            locflag = 0;
+        end %if loc(2)
+        if (locflag == 0) %box is behind camera or out of bounds
+            new_boxes(i,5) = 0;
             continue; %done with this box
         end %if locflag
 %REMOVING arbitrary penalty terms
