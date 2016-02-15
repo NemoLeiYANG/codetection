@@ -6639,9 +6639,16 @@ TO DO's
   useful and meaningful.  Also wrote scott_proposals_penalties_edgeboxes.m to do
   the matlab stuff for that.
 
+----------------git commit 77392a7--------------
 
+14 Feb 16
 
+--Wrote get-detection-data-ralicra2016 to pull location data for ALL detections
+  (penalties only on behind camera and out of bounds) for plotting.  Started run
+  on chino at ~2010.
 
+--Wrote ralicra_plotting.m to plot and save the scatter/surface/contour plots
+  from the above detection_data.
 
 
 

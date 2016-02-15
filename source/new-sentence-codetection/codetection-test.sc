@@ -352,10 +352,10 @@
 (define (get-poses-that-match-frames datapath)
  (let* ((cam-timing (read-camera-timing-new
 		     (format #f "~a/camera_front.txt" datapath)))
-	(timing-file ;; (if (file-exists? (format #f "~a/imu-log-with-estimates.txt"
-		     ;; 			       datapath))
-		     ;; 	 (format #f "~a/imu-log-with-estimates.txt" datapath)
-			 (format #f "~a/imu-log.txt" datapath));;)
+	(timing-file (if (file-exists? (format #f "~a/imu-log-with-estimates.txt"
+		     			       datapath))
+		     	 (format #f "~a/imu-log-with-estimates.txt" datapath)
+			 (format #f "~a/imu-log.txt" datapath)))
 	(poses-with-timing (read-robot-estimated-pose-from-log-file timing-file)))
 ;;  (dtrace "length cam-timing" (length cam-timing))
 ;;  (dtrace "length poses-with-timing" (length poses-with-timing))
@@ -735,6 +735,7 @@
   ;;(list frames poses)
   (start-matlab!)
   (matlab "addpath(genpath('/home/sbroniko/codetection/source/new-sentence-codetection/'))")
+  (matlab "enablePool")
   (scheme->matlab! "poses" poses)
   (frames->matlab! frames "frames")
   ;; call matlab function
@@ -808,7 +809,9 @@
 					    data-path)
  (let* ((video-path (format #f "~a/video_front.avi" data-path))
 	(frames (video->frames 1 video-path))
-	(poses (align-frames-with-poses data-path (length frames))))
+	(poses (get-poses-that-match-frames data-path)
+	 ;; (align-frames-with-poses data-path (length frames))
+	       ))
   (dtrace
    "in new-sentence-codetection/get-edgeboxes-proposals-full-video" #f)
   (get-edgeboxes-proposals top-k frames poses)))
@@ -1440,7 +1443,7 @@
    (system (format #f "~a none ~a/imu-log.txt ~a/imu-log-with-estimates.txt ~a/imu-log-with-estimates.sc" log-to-track path path path)))
   (mkdir-p (format #f "~a/~a" path data-output-dir))
   (write-object-to-file
-   (get-matlab-proposals-similarity-full-video top-k  path)
+   (get-edgeboxes-proposals-full-video top-k  path)
    (format #f "~a/~a/frame-data.sc" path data-output-dir))
   (dtrace (format #f "wrote ~a/~a/frame-data.sc" path data-output-dir) #f)))
 
@@ -1945,6 +1948,84 @@
     (imlib:free-image-and-decache image))
     ;;(dtrace "saved image" (+ i 1)))
    image-list)		     			
+  (start-matlab!)
+  (scheme->matlab! "detection_data" matlab-data)
+  (matlab (format #f
+		  "save('~a/~a/~a','detection_data')"
+		  floorplan-dir
+		  output-dirname
+		  matlab-output-filename))))
+
+(define (get-detection-data-ralicra2016)
+ (let* ((floorplan-dir "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/plan0")
+	(frame-data-filename "frame-data.sc")
+	(output-dirname "20160212-edgeboxes-test")
+	(matlab-output-filename "detection_data.mat")
+	(rundirs (system-output (format #f "ls -d ~a/20*/" floorplan-dir)))
+	(boxdata
+	 (join
+	  (map
+	   (lambda (dir)
+	    (first (read-object-from-file
+		    (format #f "~a/~a/~a" dir output-dirname
+			    frame-data-filename))))
+	   rundirs)))
+	(all-boxes (join (map (lambda (l) (matrix->list-of-lists l))
+			      boxdata)))
+	(xys ;;(dtrace "xys"
+	 (map (lambda (l) (sublist l 5 7)) all-boxes))
+	(scores ;;(dtrace "scores"
+	 (map (lambda (l) (fifth l)) all-boxes))
+	;;use most of what's above here to pass this data back into matlab
+	;;put new triangle stuff here--want 1/visible to be 4th column of matlab-data
+	(all-poses (join (map (lambda (dir)
+			       (get-poses-that-match-frames dir)) rundirs)))
+	(left-limits
+	 (map
+	  (lambda (p)
+	   (pixel-and-height->world
+	    '#(0 205)
+	    (robot-pose-to-camera->world-txf p
+					     *camera-offset-matrix*)
+	    *camera-k-matrix* 0))
+	  all-poses))
+
+	(right-limits
+	 (map
+	  (lambda (p)
+	   (pixel-and-height->world
+	    '#(639 205)
+	    (robot-pose-to-camera->world-txf p
+					     *camera-offset-matrix*)
+	    *camera-k-matrix* 0))
+	  all-poses))
+
+	(triangles
+	 (map (lambda (c l r) (list
+			       (subvector c 0 2)
+			       (subvector l 0 2)
+			       (subvector r 0 2)))
+	      all-poses left-limits right-limits))
+	(frequencies
+	 (map (lambda (ll)
+	       (if (= ll 0)
+		   (dtrace "Error in get-detection-data-for-floorplan: detected box with count = 0" 0) ;;this shouldn't happen, since it means that a detected box was never counted as being in the field of view
+		   (/ 1 ll)))
+	      (map (lambda (l)
+		    (reduce + l 0))
+		   (map (lambda (p)
+			 (map (lambda (t)
+			       (point-in-triangle (list->vector p) t))
+			      triangles))
+			xys))))
+	(matlab-data ;;(dtrace "matlab-data"
+	 (map (lambda (xy score freq)
+			   (list->vector (append xy (list score freq))))
+			  xys
+			  scores
+			  frequencies))
+	)
+  (mkdir-p (format #f "~a/~a" floorplan-dir output-dirname))
   (start-matlab!)
   (scheme->matlab! "detection_data" matlab-data)
   (matlab (format #f

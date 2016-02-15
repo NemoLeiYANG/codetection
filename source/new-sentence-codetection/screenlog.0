@@ -877,4 +877,826 @@ total size is 19159240079  speedup is 30693.73
 sent 372 bytes  received 623835 bytes  416138.00 bytes/sec
 total size is 19159240079  speedup is 30693.73
 [K"effective cpus" (0. 0. 0.)
-[K
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"running for:" "0seconds"
+"started-jobs:" 0
+"waiting-jobs:" 11
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"running for:" "180seconds"
+"started-jobs:" 0
+"waiting-jobs:" 11
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"running for:" "360seconds"
+"started-jobs:" 0
+"waiting-jobs:" 11
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"running for:" "540seconds"
+"started-jobs:" 0
+"waiting-jobs:" 11
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"running for:" "720seconds"
+"started-jobs:" 0
+"waiting-jobs:" 11
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"running for:" "900seconds"
+"started-jobs:" 0
+"waiting-jobs:" 11
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"running for:" "1080seconds"
+"started-jobs:" 0
+"waiting-jobs:" 11
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"running for:" "1260seconds"
+"started-jobs:" 0
+"waiting-jobs:" 11
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"running for:" "1440seconds"
+"started-jobs:" 0
+"waiting-jobs:" 11
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  166.00 bytes/sec
+total size is 0  speedup is 0.00
+"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+./
+
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+"running for:" "1620seconds"
+"started-jobs:" 0
+"waiting-jobs:" 11
+"done-jobs:" 0
+[K"effective cpus" (0. 0. 0.)
+[K[K[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[Kreceiving incremental file list
+[K./
+[K
+sent 31 bytes  received 52 bytes  55.33 bytes/sec
+total size is 0  speedup is 0.00
+[K"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"running for:" "1800seconds"
+"started-jobs:" 0
+"waiting-jobs:" 11
+"done-jobs:" 0
+[K
+>>Error: Argument not a PAIR: ()
+DEBUGGER:
+>> [K>> 
+>>Interrupt:
+DEBUG[KDEBUGGER:
+>>> [K>>> 
+>>Interrupt:
+D[KDEBUGGER:
+>>>> [K>>>> 
+[K>>Interrupt:
+DEBUGGER:
+>>>>> [K>>>>> 
+>>Interrupt:
+DEBUGGER:
+>>>> [K>>>> 
+>>Interrupt:
+DEBUGGER:
+>>> [K>>> 
+>>Error: Argument not a PAIR: ()
+DEBUGGER:
+>> [K>> 
+Back to top level
+> [K> 
+[K]0;sbroniko@seykhl: ~/codetection/source/new-sentence-codetection[01;32msbroniko@seykhl[00m:[01;36m[new-sentence-codetection][00m$ ssh -[Kistihbarat
+Linux istihbarat 3.2.0-4-amd64 #1 SMP Debian 3.2.65-1+deb7u2 x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Fri Feb 12 17:42:15 2016 from wywiad.ecn.purdue.edu
+Identity added: /home/sbroniko/.ssh/id_rsa_github (/home/sbroniko/.ssh/id_rsa_github)
+]0;sbroniko@istihbarat: ~[01;32msbroniko@istihbarat[00m:[01;36m[~][00m$ ps -ef | grep sbroniko
+[01;31m[Ksbroniko[m[K  7150     1  0 16:49 ?        00:00:00 ssh-agent -s
+[01;31m[Ksbroniko[m[K  9523     1  0 Jan05 ?        00:00:00 ssh-agent -s
+[01;31m[Ksbroniko[m[K  9560     1  0 17:38 ?        00:00:00 ssh-agent -s
+[01;31m[Ksbroniko[m[K  9733     1  0 17:42 ?        00:00:00 ssh-agent -s
+root     11909  4145  0 18:18 ?        00:00:00 sshd: [01;31m[Ksbroniko[m[K [priv]
+[01;31m[Ksbroniko[m[K 11917 11909  0 18:18 ?        00:00:00 sshd: [01;31m[Ksbroniko[m[K@pts/0
+[01;31m[Ksbroniko[m[K 11918 11917  7 18:18 pts/0    00:00:00 -bash
+[01;31m[Ksbroniko[m[K 12038     1  0 18:18 ?        00:00:00 ssh-agent -s
+[01;31m[Ksbroniko[m[K 12040 11918  0 18:18 pts/0    00:00:00 ps -ef
+[01;31m[Ksbroniko[m[K 12041 11918  0 18:18 pts/0    00:00:00 grep --color=auto [01;31m[Ksbroniko[m[K
+]0;sbroniko@istihbarat: ~[01;32msbroniko@istihbarat[00m:[01;36m[~][00m$ pkill -u sbroniko
+Connection to istihbarat.ecn.purdue.edu closed by remote host.
+Connection to istihbarat.ecn.purdue.edu closed.
+]0;sbroniko@seykhl: ~/codetection/source/new-sentence-codetection[01;32msbroniko@seykhl[00m:[01;36m[new-sentence-codetection][00m$ ssh wywiad
+Last login: Fri Feb 12 17:44:08 2016 from seykhl.ecn.purdue.edu
+Identity added: /home/sbroniko/.ssh/id_rsa_github (/home/sbroniko/.ssh/id_rsa_github)
+]0;sbroniko@wywiad: ~[01;32msbroniko@wywiad[00m:[01;36m[~][00m$ pkill -u sbroniko[5@s -ef | grep[C[C[C[C[C[C[C[C[C
+root      5039  3957  0 17:37 ?        00:00:00 sshd: [01;31m[Ksbroniko[m[K [priv]
+[01;31m[Ksbroniko[m[K  5047  5039  0 17:37 ?        00:00:00 sshd: [01;31m[Ksbroniko[m[K@pts/0,pts/3,pts/4
+[01;31m[Ksbroniko[m[K  5048  5047  0 17:37 pts/0    00:00:00 -bash
+[01;31m[Ksbroniko[m[K  5240     1  0 17:37 ?        00:00:00 ssh-agent -s
+[01;31m[Ksbroniko[m[K  5545  5048  0 17:41 pts/0    00:00:00 ssh jalitusteabe
+[01;31m[Ksbroniko[m[K  5668     1  0 17:42 ?        00:00:00 ssh-agent -s
+[01;31m[Ksbroniko[m[K  5900  5047  0 17:44 pts/3    00:00:00 -bash
+[01;31m[Ksbroniko[m[K  6022     1  0 17:44 ?        00:00:00 ssh-agent -s
+[01;31m[Ksbroniko[m[K  6025  5900  1 17:45 pts/3    00:00:29 htop
+[01;31m[Ksbroniko[m[K  7640  5047  8 18:22 pts/4    00:00:00 -bash
+[01;31m[Ksbroniko[m[K  7759     1  0 18:22 ?        00:00:00 ssh-agent -s
+[01;31m[Ksbroniko[m[K  7761  7640  0 18:22 pts/4    00:00:00 ps -ef
+[01;31m[Ksbroniko[m[K  7762  7640  0 18:22 pts/4    00:00:00 grep --color=auto [01;31m[Ksbroniko[m[K
+]0;sbroniko@wywiad: ~[01;32msbroniko@wywiad[00m:[01;36m[~][00m$ pkill -u sbroniko
+Shared connection to wywiad.ecn.purdue.edu closed.
+]0;sbroniko@seykhl: ~/codetection/source/new-sentence-codetection[01;32msbroniko@seykhl[00m:[01;36m[new-sentence-codetection][00m$ ssh cuddwybodaeth
+Linux cuddwybodaeth 3.2.0-4-amd64 #1 SMP Debian 3.2.65-1+deb7u2 x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Fri Feb 12 17:42:36 2016 from istihbarat.ecn.purdue.edu
+Identity added: /home/sbroniko/.ssh/id_rsa_github (/home/sbroniko/.ssh/id_rsa_github)
+]0;sbroniko@cuddwybodaeth: ~[01;32msbroniko@cuddwybodaeth[00m:[01;36m[~][00m$ pkill -u sbroniko[5@s -ef | grep[C[C[C[C[C[C[C[C[C
+[01;31m[Ksbroniko[m[K  3151     1  0 16:47 ?        00:00:00 ssh-agent -s
+[01;31m[Ksbroniko[m[K  6129     1  0 17:38 ?        00:00:00 ssh-agent -s
+[01;31m[Ksbroniko[m[K  6342     1  0 17:42 ?        00:00:00 ssh-agent -s
+root      8792  4219  1 18:22 ?        00:00:00 sshd: [01;31m[Ksbroniko[m[K [priv]
+[01;31m[Ksbroniko[m[K  8800  8792  0 18:22 ?        00:00:00 sshd: [01;31m[Ksbroniko[m[K@pts/0
+[01;31m[Ksbroniko[m[K  8801  8800 11 18:22 pts/0    00:00:00 -bash
+[01;31m[Ksbroniko[m[K  8920     1  0 18:22 ?        00:00:00 ssh-agent -s
+[01;31m[Ksbroniko[m[K  8922  8801  0 18:22 pts/0    00:00:00 ps -ef
+[01;31m[Ksbroniko[m[K  8923  8801  0 18:22 pts/0    00:00:00 grep --color=auto [01;31m[Ksbroniko[m[K
+[01;31m[Ksbroniko[m[K 17694     1  0 Jan05 ?        00:00:00 ssh-agent -s
+]0;sbroniko@cuddwybodaeth: ~[01;32msbroniko@cuddwybodaeth[00m:[01;36m[~][00m$ pkill -u sbroniko
+Connection to cuddwybodaeth.ecn.purdue.edu closed by remote host.
+Connection to cuddwybodaeth.ecn.purdue.edu closed.
+]0;sbroniko@seykhl: ~/codetection/source/new-sentence-codetection[01;32msbroniko@seykhl[00m:[01;36m[new-sentence-codetection][00m$ ssh cuddwybodaeth[7Pwywiadistihbaratrlwrap darpa-wrap run-dsci[12Pm screenlog.0lwrap darpa-wrap run-dsci
+[K***** INITIALIZEVAR Duplicately defined symbol +
+***** INITIALIZEVAR Duplicately defined symbol -
+***** INITIALIZEVAR Duplicately defined symbol *
+***** INITIALIZEVAR Duplicately defined symbol /
+***** INITIALIZEVAR Duplicately defined symbol SQRT
+***** INITIALIZEVAR Duplicately defined symbol EXP
+***** INITIALIZEVAR Duplicately defined symbol LOG
+***** INITIALIZEVAR Duplicately defined symbol EXPT
+***** INITIALIZEVAR Duplicately defined symbol SIN
+***** INITIALIZEVAR Duplicately defined symbol COS
+***** INITIALIZEVAR Duplicately defined symbol ATAN
+***** INITIALIZEVAR Duplicately defined symbol =
+***** INITIALIZEVAR Duplicately defined symbol <
+***** INITIALIZEVAR Duplicately defined symbol >
+***** INITIALIZEVAR Duplicately defined symbol <=
+***** INITIALIZEVAR Duplicately defined symbol >=
+***** INITIALIZEVAR Duplicately defined symbol ZERO?
+***** INITIALIZEVAR Duplicately defined symbol POSITIVE?
+***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
+***** INITIALIZEVAR Duplicately defined symbol REAL?
+Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
+> [K> [K> (run-edgeboxes "20160212-test-edgeboxes")[C[C[C[13Pload "codetection-test.sc")[C[C[K(load "codetection-test.sc")
+MODULE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+*3G-AND-4G-SERVERS*
+*2G-SERVERS*
+*WORKSTATIONS*
+SERVER-NAME->NUMBER-OF-CPUS
+GET-SERVER-IDLE-PERCENT
+GET-APPROXIMATE-FREE-SERVER-CPUS
+GET-TOTAL-SERVER-FREE-CPUS
+REPEAT-LIST-TO-LENGTH-N
+DETERMINE-JOB-TO-SERVER-MAPPING
+DETERMINE-JOB-TO-SERVER-MAPPING-WITH-QUEUEING
+SANITIZE-STRING-FOR-SPAWNING
+CREATE-DSCI-JOB
+CREATE-DSCI-JOB2
+SPAWN-JOBS
+SPAWN-AND-WAIT-FOR-JOBS
+SPAWN-AND-WAIT-FOR-JOBS-WITH-QUEUEING
+SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL
+RSYNC-DIRECTORY-TO-SERVER
+RUN-UNIX-COMMAND-ON-SERVER
+SYNCHRONOUS-RUN-COMMANDS-IN-PARALLEL-WITH-QUEUEING
+"/home/sbroniko/darpa-collaboration/ideas/toollib-multi-process.sc"
+MODULE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+INCLUDE form ignored
+TRANSFORM-WORLD-POINT-TO-PIXEL
+TRANSFORM-WORLD-POINT-TO-PIXEL-WITH-TRANSFORMATION
+TRANSFORM-WORLD-POINT->PIXEL-GENERIC
+DRAW-POINT-PROJECTION
+DRAW-TEXT-PROJECTION
+DRAW-LINE-PROJECTION
+DRAW-ARROW-PROJECTION
+DRAW-AXIS-PROJECTION
+WORLD-FORWARD-PROJECT
+DRAW-3D-LINES-PROJECTION
+DRAW-CIRCLE-PROJECTION
+FACING-CAMERA?
+FIND-CYLINDER-LINES
+POINTS->SETS-OF-VISIBLE-POINTS
+DRAW-CYLINDER-PROJECTION
+DRAW-KING-BOTTOM-PROJECTION
+MAKE-CYLINDER-IMAGE
+MAKE-KING-BOTTOM-IMAGE
+TEST-MAKE-CYLINDER-IMAGE
+TEST-MAKE-KING-BOTTOM-IMAGE
+"/home/dpbarret/imitate/tool/toollib-perspective-projection.sc"
+LINSPACE
+V/S
+VECTORS->ANGLE
+MY-ROTATION-3D-X
+MY-ROTATION-3D-Y
+MY-ROTATION-3D-Z
+MY-MAKE-TRANSFORM-3D
+MY-ASIN
+MY-TRANSFORM->PARAMETERS
+INVERT-TX-MATRIX
+***** POINT->HOMOGENOUS is redefined
+POINT->HOMOGENOUS
+***** HOMOGENOUS->POINT is redefined
+HOMOGENOUS->POINT
+***** TRANSFORM-POINT-3D is redefined
+TRANSFORM-POINT-3D
+PIXEL-AND-HEIGHT->WORLD
+BOX-AT-HEIGHT->WORLD-CORNERS
+BOX-VECTOR-AT-HEIGHT-AND-POSE->WORLD-CORNERS
+READ-ROBOT-ESTIMATED-POSE-FROM-LOG-FILE
+INTERPOLATE-LINE
+DRAW-3D-LINES-PROJECTION-NICE
+ROBOT-POSE-TO-CAMERA->WORLD-TXF
+X-Y-THETA->6DOF
+SIX-DOF->X-Y-THETA
+ROBOT-6DOF->WORLD-6DOF
+WORLD-6DOF->ROBOT-6DOF
+ROBOT-POSE-6DOF-TO-CAMERA->WORLD-TXF
+READ-CAMERA-TIMING
+TEST
+"/home/sbroniko/codetection/source/rover-projection.sc"
+PLOT-BOX-SCORES
+PLOT-BOX-SCORES-PRELOADED
+PLOT-LINES-IN-MATLAB
+PLOT-LINES-IN-MATLAB-WITH-SYMBOLS
+READ-PROBABILITIES-FROM-BOX-LIST
+READ-FRAME-NUMBERS-FROM-BOX-LIST
+READ-FILENAMES-FROM-BOX-LIST
+OFFSET-VIDEO-FRAME-NUMBERS
+PLOT-PROBABILITIES-FROM-BOX-LIST
+PLOT-SCORES-FROM-TRAINING
+PLOT-HMM-LIKELIHOODS
+PLOT-TRACK-SCORES
+VISUALIZE-BEST-MODELS
+VISUALIZE-BEST-ROOTS
+VISUALIZE-STATE-ITERATIONS
+"/home/dpbarret/darpa-collaboration/pose-retraining/felz-baum-welch-plotting.sc"
+VITERBI-BOXES
+***** BOX-AT-HEIGHT->WORLD-CORNERS is redefined
+BOX-AT-HEIGHT->WORLD-CORNERS
+DISCOUNT-BOXES
+VITERBI-MULTIPLE
+"/home/sbroniko/codetection/source/new-sentence-codetection/viterbi.sc"
+*CAMERA-OFFSET*
+*CAMERA-OFFSET-MATRIX*
+*CAMERA-K-MATRIX*
+***** LOG-VON-MISES is redefined
+LOG-VON-MISES
+SELECT-FRAMES
+RUN-CODETECTION-WITH-FRAMES
+RUN-CODETECTION-WITH-VIDEO
+ALIGN-FRAMES-WITH-POSES
+GET-POSES-THAT-MATCH-FRAMES
+GET-POSES-THAT-MATCH-FRAMES-NEW
+GET-CORRECTED-POSES-THAT-MATCH-FRAMES
+SAVE-POSES-HOUSE-TEST
+SAVE-UNCORRECTED-POSES-HOUSE-TEST
+SAVE-NEW-POSES-HOUSE-TEST
+SAVE-OLD-POSES-HOUSE-TEST
+FRAME-TEST
+SCOTT-PROPOSALS&SIMILARITY-WITH-FRAMES
+SCOTT-RUN-CODETECTION-FULL-VIDEO
+FRAME-TEST2
+MAKE-FRAMES
+GET-MATLAB-PROPOSALS-SIMILARITY
+GET-EDGEBOXES-PROPOSALS
+GET-MATLAB-PROPOSALS-SIMILARITY-BY-FRAME
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO
+GET-EDGEBOXES-PROPOSALS-FULL-VIDEO
+RUN-CODETECTION-WITH-PROPOSALS-SIMILARITY
+GET-MATLAB-DATA-HOUSE-TEST-NEW2
+RUN-CODETECTION-VITERBI
+RUN-CODETECTION-VITERBI-MULTIPLE
+VISUALIZE-RESULTS-TEST
+VISUALIZE-RESULTS
+VISUALIZE-RESULTS-IMPROVED
+VISUALIZE-RESULTS-IMPROVED-NEW
+VISUALIZE-RESULTS-VITERBI
+VISUALIZE-RESULTS-VITERBI-MULTIPLE
+RUN-FULL-RESULTS
+MATLAB-DATA-TO-FILES
+GET-MATLAB-DATA-TRAINING-OR-GENERATION-IMPROVED
+GET-EDGEBOXES-DATA-RALICRA2016
+GET-MATLAB-DATA-AUTO-DRIVE-IMPROVED
+GET-MATLAB-DATA-TRAINING-OR-GENERATION
+RESULTS-END-TO-END
+JOIN-IMAGES
+JOIN-ALL-IMAGES
+RUN-MY-SHIT
+RUN-MY-SHIT-2
+GET-XY-FROM-RESULTS-FILE
+PLOT-OBJECTS-FROM-FILE
+*XMIN*
+*XMAX*
+*YMIN*
+*YMAX*
+*BOUNDARIES*
+*X-1*
+*X0*
+*X+1*
+*Y-1*
+*Y0*
+*Y+1*
+*Y+2*
+POINT-LOCATIONS
+PLOT-GRID
+PLOT-OBJECTS-FROM-FLOORPLAN
+PLOT-OBJECTS-FROM-FLOORPLAN-MULTICOLOR
+ENSURE-SCORES
+GET-SCORES-FROM-RESULTS-AND-FRAME-DATA-FILES
+GET-DETECTION-IMAGES
+MAKE-TEST-FILE
+GET-DETECTION-DATA-FOR-FLOORPLAN
+POINT-IN-TRIANGLE
+DETECT-SORT-LABEL-OBJECTS-SINGLE-FLOORPLAN
+GET-CODETECTION-RESULTS-TRAINING-OR-GENERATION
+GET-EDGEBOXES-DATA-MANY-SERVERS
+GET-CODETECTION-RESULTS-AUTO-DRIVE
+GET-OBJECT-DETECTIONS-ALL-FLOORPLANS
+CODETECT-SORT-TEMPLABEL-TRAINING-OR-GENERATION
+RUN-EDGEBOXES
+CODETECT-SORT-TEMPLABEL-AUTO-DRIVE
+GET-GROUND-TRUTH-FROM-DATASET-FILE
+GET-LABELED-GROUND-TRUTH-FROM-DATASET-FILE
+MAKE-SCHEME-FILE-OF-XYS
+MAKE-SCHEME-FILE-OF-XYS-SEPARATED
+SCOTT-PROPOSALS-ONLY
+RUN-CODETECTION-ONLY-HOUSE-TEST
+RUN-CODETECTION-ONLY-HOUSE-TEST-2
+GET-CODETECTION-RESULTS-HOUSE-TEST
+GET-CODETECTION-RESULTS-HOUSE-TEST-2
+GET-MATLAB-DATA-HOUSE-TEST
+QUICK-AND-DIRTY-TEST
+SINGLE-RUN-TEST
+SINGLE-RUN-TEST-NEW
+SINGLE-RUN-TEST-NEW2
+SINGLE-RUN-TEST-VITERBI
+SINGLE-RUN-TEST-VITERBI-MULTIPLE
+READ-CAMERA-TIMING-NEW
+GET-MATLAB-DATA-HOUSE-TEST-NEW
+***** GET-MATLAB-DATA-HOUSE-TEST-NEW2 is redefined
+GET-MATLAB-DATA-HOUSE-TEST-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW
+GET-MATLAB-PROPOSALS-SIMILARITY-FULL-VIDEO-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-NEW
+GET-MATLAB-PROPOSALS-SIMILARITY-NEW2
+GET-MATLAB-PROPOSALS-SIMILARITY-VITERBI
+GET-AND-SAVE-PROPOSAL-BOXES
+GET-AND-SAVE-PROPOSAL-BOXES-ALL-VIDEOS
+FRAMES-AND-POSES->MATLAB
+SIMPLE-RUN-AND-PLOT
+SIMPLE-TEST
+SIMPLE-RUN-AND-PLOT-NEW
+SIMPLE-RUN-AND-PLOT-VITERBI
+READ-AND-SORT-MATLAB-PROPOSALS
+GET-TLD-TUBE-FROM-BOX
+SCOTT-BOX->VOC4
+*VIDEO-PATH*
+*TEST-PATH*
+GET-FRAME-NUMBERS
+GENERATE-PROPOSALS
+FRAMES->MATLAB!
+FRAMES->MATLAB-NO-FREE!
+GET-MEDIANFLOW-TUBE-FROM-STARTING-FRAME-AND-PROPOSAL-BOX
+GET-ALL-TUBES
+GET-ALL-TUBES-SORTED
+RENDER-ONE-TUBE
+RENDER-ALL-TUBES
+SCOTT-BOX-X1
+SCOTT-BOX-X2
+SCOTT-BOX-Y1
+SCOTT-BOX-Y2
+SCOTT-BOX-AREA
+SCOTT-BOX-INTERSECTION-AREA
+SCOTT-BOX-UNION-AREA
+SCOTT-BOX-INTERSECTION-OVER-UNION
+TUBE-INTERSECTION-OVER-UNION
+TUBES-OVERLAP?
+TUBE-NMS
+TUBE-TEST-END-TO-END
+BIG-TUBE-TEST-END-TO-END
+BIG-TUBE-TEST-END-TO-END2
+GET-ALL-NMS-TUBES
+GET-ALL-NMS-TUBES-AND-RENDER-N
+GET-AND-RENDER-N-NMS-TUBES-HOUSE-TEST
+ALIGN-ONE-TUBE-WITH-POSES
+REMOVE-FALSE-BOXES
+ALIGN-ALL-TUBES-WITH-POSES-AND-REMOVE-FALSES
+READ-AND-ALIGN-SCORED-TUBES
+PIXEL-AND-POSE->WORLD-LINE
+PIXEL-AND-POSE-6DOF->WORLD-LINE
+ALIGNED-TUBE-WITH-SCORE->LINES
+RAW-TUBE-WITH-SCORE-AND-POSE-LIST-6DOF->LINES
+*IMG-WIDTH*
+*IMG-HEIGHT*
+BOX-WITHIN-FRAME?
+RAW-TUBE-WITH-SCORE-AND-POSE-LIST->WORLD-CORNERS-LIST
+WORLD-CORNERS-LIST->WORLD-XYWH-LIST
+WORLD-XYWH-LIST->WORLD-MEAN-AND-VARIANCE
+WORLD-XYWH-LIST->WORLD-MEAN-AND-DISTANCES
+WORLD-XYWHS-AND-POSES->WORLD-MEAN-VARIANCE-ROBOT
+FIND-WORLD-MEANS-AND-VARIANCES
+FIND-WORLD-MEANS-VARIANCES-ROBOTS
+FIND-AND-SAVE-WORLD-MEANS-AND-VARIANCES-HOUSE-TEST
+FIND-AND-SAVE-WORLD-MEANS-VARIANCES-ROBOTS-HOUSE-TEST
+FILTER-WORLD-MEANS-AND-VARIANCES
+FILTER-WORLD-MEANS-VARIANCES-ROBOTS
+*VAR-THRESH*
+*RATIO-THRESH*
+*LENGTH-THRESH*
+FILTER-TUBES-BY-LENGTH
+FIND-ABC-AND-FILTER
+*DISTANCE-THRESH*
+FIND-DEF-AND-FILTER
+FIND-ABCDEF
+PREPROCESS-TUBE
+FIND-LOW-VARIANCE-TUBES
+SAVE-LOW-VARIANCE-TUBES-HOUSE-TEST
+SPLIT-PATH-BY-ALIGNMENT
+GET-NOUN-PREPOSITION-PATHS
+GET-GRAPHICAL-MODEL-VARIABLES
+GET-GRAPHICAL-MODEL-VARIABLES-FOR-SIMPLE-GM
+FIND-UNARY-SCORE
+FIND-SIMPLE-UNARY-SCORE
+FIND-SIMPLE-VARIANCE-FACTOR
+FIND-UNARY-SCORES-FOR-ALL-TUBES
+FIND-SIMPLE-UNARY-SCORES-FOR-ALL-TUBES
+FIND-UNARY-SCORES-FOR-ONE-RUN
+FIND-UNARY-SCORE-MATRIX-FOR-FLOORPLAN
+FIND-UNARY-SCORE-MATRIX-FOR-GIVEN-TUBES
+FIND-SIMPLE-UNARY-SCORE-MATRIX-FOR-GIVEN-TUBES
+TUBES->TUBE-OBJECTNESS-SCORES
+FIND-SIMPLE-NOUN-LIST
+NUM-FUNC
+FIND-NUMBER
+NUMBER-NOUNS
+MAKE-HELPER-NOUN-LIST
+MAKE-SIMPLE-HELPER-NOUN-LIST
+MAKE-PHRASES
+CLEAN-PHRASES
+FIND-NOUN-TO-HELPER-NOUN-BINARY-SCORE
+FIND-NOUN-NOUN-BINARY-SCORE-MATRIX
+FIND-INDEX-IN-LIST
+FIND-ALL-INSTANCES
+FIND-SAME-NOUNS
+MAKE-LIST-OF-MATCHING-NOUNS
+*SIGMOID-CENTER*
+*SIGMOID-SLOPE*
+*SIG-WEIGHT*
+FIND-LOCATION-SIMILARITY-BETWEEN-TUBES
+ELEMENTWISE-MULTIPLY-MATRICES
+FIND-BINARY-SCORE-BETWEEN-TUBES
+ALL-TUBES->PHOW-VISUAL-SIMILARITY-MATRIX
+GET-PHOW-HISTS-ALL-TUBES
+FIND-BINARY-SCORE-DATA-FOR-FLOORPLAN
+FIND-BINARY-SCORE-DATA-FOR-GIVEN-TUBES
+FIND-SIMPLE-BINARY-SCORE-DATA-FOR-GIVEN-TUBES
+FIND-GRAPHICAL-MODEL-DATA-FOR-FLOORPLAN
+FIND-GRAPHICAL-MODEL-DATA-FOR-GIVEN-TUBES
+FIND-SIMPLE-GRAPHICAL-MODEL-DATA-FOR-GIVEN-TUBES
+RUN-GRAPHICAL-MODEL
+RUN-SIMPLE-GRAPHICAL-MODEL
+GM-FULL-TEST
+GM-SMALL-EXAMPLE
+SIMPLE-GM-SMALL-EXAMPLE
+RENDER-GM-OUTPUT
+RENDER-GM-OUTPUT-SMALL-EXAMPLE
+RENDER-SIMPLE-GM-OUTPUT-SMALL-EXAMPLE
+RENDER-GOOD-TUBES
+RENDER-B-TUBES
+RENDER-D-TUBES
+RENDER-MULTIPLE-FILTERED-TUBES
+RENDER-UNFILTERED-TUBES
+RENDER-FILTERED-TUBES-HOUSE-TEST
+RENDER-B-D-TUBES-HOUSE-TEST
+POINT-LINE-SQUARED-DISTANCE
+FIND-POINT-FROM-LINES
+VISUALIZE-TWO-TRACKS
+CORRECT-THETA-DRIFT
+FIND-THETA-DRIFT-FROM-TRACK
+FIND-ALL-THETA-DRIFTS
+FIND-POINTS-AND-DELTAS
+FIND-POINTS-AND-DELTAS-OLD
+FIND-DELTAS-ONLY
+GET-DELTAS-OF-WORLD-TRACK-3DOF
+WORLD-DELTA-AND-POSE-6DOF->ROBOT-DELTA-6DOF
+***** CORRECT-ANGLE is redefined
+CORRECT-ANGLE
+ANGLE-MINUS
+SUBTRACT-POSE
+WEIGHTED-SUBTRACT-POSE
+WORLD-POSE-AND-ROBOT-DELTA-6DOF->WORLD-POSE-6DOF
+ROBOT-DELTAS-LIST-AND-WORLD-START-3DOF->WORLD-TRACK-6DOF
+WORLD-TRACK-3DOF->WORLD-TRACK-6DOF
+WORLD-TRACK-6DOF->WORLD-TRACK-3DOF
+GET-DELTAS-LIST-FROM-WORLD-TRACK-6DOF
+GET-DELTAS-LIST-IN-ROBOT-6DOF
+SPLIT-DELTAS
+MERGE-DELTAS
+SPLIT-POINTS
+MERGE-POINTS
+MERGE-GIANT-VECTOR
+SPLIT-GIANT-VECTOR
+SPLIT-GIANT-VECTOR-FOUR-POINTS
+FIND-6DOF-POSES-LIST-FROM-DELTAS-VECTOR-AND-INITIAL-POSE
+MATLAB-PLOT-ONE-RUN
+MATLAB-PLOT-JUST-TRACES
+QUICK-PLOT-TRACES-ONLY
+MATLAB-PLOT-THREE-TRACES
+MATLAB-PLOT-ONE-RUN-WITH-ALL-TUBES
+PLOT-LINES-IN-MATLAB-WITH-SYMBOLS-NO-LEGEND
+MATLAB-PLOT-ARROWHEADS-ON-TRACE
+LIST-MEDIAN
+"codetection-test.sc"
+> [K> [K> (load "codetection-test.sc")[C[C[Crun-edgeboxes "20160212-test-edgeboxes")[C[C[K(run-edgeboxes "20160212-test-edgeboxes")
+"dir-list" ("/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:31:11" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:32:22" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:33:30" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:34:43" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:35:58" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:36:52" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:39:13" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:41:51" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:43:15" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/2014-11-20-02:46:10" "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016//plan0/detections-test20150618")
+"starting get-edgeboxes-data-many-servers" #F
+Fri Feb 12 18:22:50 EST 2016
+"unix command:" "ssh cuddwybodaeth \"mkdir -p /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"unix command:" "ssh istihbarat \"mkdir -p /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"unix command:" "ssh wywiad \"mkdir -p /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"starting matlab processing" #F
+Fri Feb 12 18:22:52 EST 2016
+[Krm: cannot remove `/net/seykhl//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.out': No such file or directory
+rm: cannot remove `/net/seykhl//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.err': No such file or directory
+rm: cannot remove `/net/seykhl//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//done-*': No such file or directory
+[Krm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.out': No such file or directory
+rm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.err': No such file or directory
+rm: cannot remove `/net/cuddwybodaeth//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//done-*': No such file or directory
+[Krm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.out': No such file or directory
+rm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.err': No such file or directory
+rm: cannot remove `/net/istihbarat//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//done-*': No such file or directory
+[Krm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.out': No such file or directory
+rm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//*.err': No such file or directory
+rm: cannot remove `/net/wywiad//aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab//done-*': No such file or directory
+"rsync command:" "ssh cuddwybodaeth \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/\""
+[Kreceiving incremental file list
+[K
+sent 372 bytes  received 623835 bytes  416138.00 bytes/sec
+total size is 19159240079  speedup is 30693.73
+"rsync command:" "ssh istihbarat \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/\""
+[Kreceiving incremental file list
+[K
+sent 372 bytes  received 623835 bytes  416138.00 bytes/sec
+total size is 19159240079  speedup is 30693.73
+"rsync command:" "ssh wywiad \" rsync -avzu seykhl:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/\""
+[Kreceiving incremental file list
+[K
+sent 372 bytes  received 623835 bytes  416138.00 bytes/sec
+total size is 19159240079  speedup is 30693.73
+[K"effective cpus" (0. 0. 0.)
+[K"rsync command:" "ssh seykhl \" rsync -avzu cuddwybodaeth:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"rsync command:" "ssh seykhl \" rsync -avzu istihbarat:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"rsync command:" "ssh seykhl \" rsync -avzu wywiad:/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/ --exclude \\*dets\\*.text /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160212-test-edgeboxes-matlab/\""
+[K"running for:" "0seconds"
+"started-jobs:" 0
+"waiting-jobs:" 11
+"done-jobs:" 0
+[K
+>>Error: Argument not a PAIR: ()
+DEBUGGER:
+>> [K>> 
+>>Interrupt:
+DEBUGGER:
+>>> [K>>> 
+>>Interrupt:
+DEBUGGER:
+>>>> [K>>>> 
+>>Interrupt:
+DEBUGGER:
+>>>>> [K>>>>> [K>>>>> 
+>>Interrupt:
+DEBUGGER:
+>>>> [K>>>> 
+>>Interrupt:
+DEBUGGER:
+>>> [K>>> 
+>>Error: Argument not a PAIR: ()
+DEBUGGER:
+>> [K>> 
+Back to top level
+> [K> 
+[K]0;sbroniko@seykhl: ~/codetection/source/new-sentence-codetection[01;32msbroniko@seykhl[00m:[01;36m[new-sentence-codetection][00m$ rlwrap darpa-wrap run-dsci
+[K***** INITIALIZEVAR Duplicately defined symbol +
+***** INITIALIZEVAR Duplicately defined symbol -
+***** INITIALIZEVAR Duplicately defined symbol *
+***** INITIALIZEVAR Duplicately defined symbol /
+***** INITIALIZEVAR Duplicately defined symbol SQRT
+***** INITIALIZEVAR Duplicately defined symbol EXP
+***** INITIALIZEVAR Duplicately defined symbol LOG
+***** INITIALIZEVAR Duplicately defined symbol EXPT
+***** INITIALIZEVAR Duplicately defined symbol SIN
+***** INITIALIZEVAR Duplicately defined symbol COS
+***** INITIALIZEVAR Duplicately defined symbol ATAN
+***** INITIALIZEVAR Duplicately defined symbol =
+***** INITIALIZEVAR Duplicately defined symbol <
+***** INITIALIZEVAR Duplicately defined symbol >
+***** INITIALIZEVAR Duplicately defined symbol <=
+***** INITIALIZEVAR Duplicately defined symbol >=
+***** INITIALIZEVAR Duplicately defined symbol ZERO?
+***** INITIALIZEVAR Duplicately defined symbol POSITIVE?
+***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
+***** INITIALIZEVAR Duplicately defined symbol REAL?
+Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
+> [K> 

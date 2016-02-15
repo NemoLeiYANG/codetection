@@ -50,6 +50,7 @@ cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
 % compute
 [~, ~, ~, T] = size(frames);
 bboxes = zeros(top_k, 8, T); %each row: [x y w h score xloc yloc wwidth]
+num_proposals = top_k;
 
 %t1=tic;
 parfor t = 1:T %main parfor loop to do proposals and histogram scores
@@ -77,7 +78,7 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
     new_boxes(:,1:5) = bbs;
     boundary = world_boundary;
     valid_locations = false(top_k,1);
-    temp_phists = zeros(phist_size,'single');
+    %temp_phists = zeros(phist_size,'single');
     for i = 1:top_k %for each proposal
         bc_point = [(bbs(i,1)+(bbs(i,3)/2)) (bbs(i,2)+bbs(i,4))]; %bottom center of box
         %assume box is on ground (height = 0) to find x,y location
@@ -115,10 +116,10 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
         end %if loc(2)
         new_boxes(i,5) = new_boxes(i,5)*exp(xpenalty)*exp(ypenalty);
         %compute histogram for box i (for s_score later)
-        x1 = bbs(i,1); x2 = bbs(i,3) + bbs(i,1) - 1;
-        y1 = bbs(i,2); y2 = bbs(i,4) + bbs(i,2) - 1;
-        hist_out = phow_hist(img(y1:y2,x1:x2,:),ssize);
-        temp_phists(i,:) = hist_out';
+        %  x1 = bbs(i,1); x2 = bbs(i,3) + bbs(i,1) - 1;
+        % y1 = bbs(i,2); y2 = bbs(i,4) + bbs(i,2) - 1;
+        % hist_out = phow_hist(img(y1:y2,x1:x2,:),ssize);
+        %temp_phists(i,:) = hist_out';
     end %for i
     bboxes(:,:,t) = new_boxes;
 %%unary scores complete
