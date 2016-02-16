@@ -1,0 +1,38 @@
+. * *shell*              38732  Shell:run	  ~/codetection/
+    codetection-test.s: 265422  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+    notes.text          360776  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+  * *scheme*             68508  Inferior Scheme:
+    screenlog-ralicra: 2558684  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/screenlog-ralicra-rerun.txt
+  * *scratch*             5986  Lisp Interaction
+  * *shell*<4>            7603  Shell:run	  ~/darpa-collaboration/ideas/
+    output-1.out          5627  Fundamental	  /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160215-ralicra-test-detection/output-1.out
+    output-1.err          1117  Fundamental	  /aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-20160215-ralicra-test-detection/output-1.err
+    QobiScheme-AD.sc    295402  Scheme		  ~/QobiScheme/source/QobiScheme-AD.sc
+    toollib-multi-proce: 11819  Scheme		  ~/darpa-collaboration/ideas/toollib-multi-process.sc
+    rendering-code.sc    71910  Scheme		  ~/codetection/rendering-code.sc
+    scheme-working-buf: 915090  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/scheme-working-buffer-8feb16.txt
+    scheme-working-buf: 495615  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-12feb16.txt
+    20160210-matlab-wo: 226956  Text		  ~/codetection/source/new-sentence-codetection/20160210-matlab-work.txt
+  * *shell*<2>            2248  Shell:run	  /aux/sbroniko/vader-rover/logs/house-test-12nov15/test-floorplan-0-good-tubes-4-8feb16/
+  * *shell*<3>            2495  Shell:run	  ~/codetection/source/new-sentence-codetection/objectness-release-v2.2/
+    20160209-matlab-work: 9625  Text		  ~/codetection/source/new-sentence-codetection/20160209-matlab-work.txt
+    README.txt           10346  Text		  ~/codetection/source/new-sentence-codetection/objectness-release-v2.2/README.txt
+    scheme-working-buf: 710891  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-4feb16.txt
+    scheme-working-buf: 889780  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-1feb16.txt
+    scheme-working-buf: 956937  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-5feb16.txt
+    rover-projection.sc  16197  Scheme		  ~/codetection/source/rover-projection.sc
+    toollib-codetection: 25104  Scheme		  ~/codetection/source/new-sentence-codetection/toollib-codetection.sc
+    inference.h           1905  C++/l		  ~/codetection/source/new-sentence-codetection/inference.h
+    open-files-7feb16.tx: 2349  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/open-files-7feb16.txt
+    inference.cpp        54250  C++/l		  ~/codetection/source/new-sentence-codetection/inference.cpp
+    scheme-working-buf: 111972  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-7feb16-1.txt
+    scheme-working-bu: 1353610  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-3feb16.txt
+    scheme-working-buff: 62953  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-7feb16-2.txt
+    log_to_track.cpp     16502  C++/l		  ~/vader-rover/position/log_to_track.cpp
+  * *Messages*            3412  Fundamental
+    *Help*                   0  Fundamental
+ %  *Disabled Command*     930  Help
+
+
+    labeling.sc          13692  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/labeling.sc
+    ralicra2016-labeling: 7261  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/ralicra2016-labeling.sc

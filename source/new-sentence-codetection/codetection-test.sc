@@ -297,7 +297,11 @@
 (define (align-frames-with-poses datapath num-frames)
  (let* ((cam-timing (read-camera-timing-new
 		     (format #f "~a/camera_front.txt" datapath)))
-	(timing-file (format #f "~a/imu-log.txt" datapath))
+	(timing-file ;; (format #f "~a/imu-log.txt" datapath)
+	 (if (file-exists? (format #f "~a/imu-log-with-estimates.txt"
+		     			       datapath))
+		     	 (format #f "~a/imu-log-with-estimates.txt" datapath)
+			 (format #f "~a/imu-log.txt" datapath)))
 	(poses-with-timing (read-robot-estimated-pose-from-log-file timing-file)))
   (begin
    ;; (dtrace "in align-frames-with-poses" #f)
@@ -531,7 +535,7 @@
 		  (y1 (second box))
 		  (w (- (third box) (first box)))
 		  (h (- (fourth box) (second box))))
-	    (imlib:draw-rectangle image x1 y1 w h (vector 0 255 0))
+	    (imlib:draw-rectangle image x1 y1 w h (vector 0 255 0) 1)
 	    ;;(show-image image)
 	    ;; ((c-function void ("imlib_context_set_image" imlib-image))
 	    ;;  (imlib-image-handle image))
@@ -652,7 +656,7 @@
 	      (y1 (second box))
 	      (w (- (third box) (first box)))
 	      (h (- (fourth box) (second box))))
-	(imlib:draw-rectangle image x1 y1 w h (vector 0 0 255))
+	(imlib:draw-rectangle image x1 y1 w h (vector 0 0 255) 1)
 	;;(show-image image)
 	;; ((c-function void ("imlib_context_set_image" imlib-image))
 	;;  (imlib-image-handle image))
@@ -788,7 +792,8 @@
 						    delta)
  (let* ((video-path (format #f "~a/video_front.avi" data-path))
 	(frames (video->frames 1 video-path))
-	(poses (align-frames-with-poses data-path (length frames)))
+	(poses (get-poses-that-match-frames data-path))
+	 ;;(align-frames-with-poses data-path (length frames)));;THIS might be the problem
 	(coeff-sum (+ alpha beta gamma delta))
 	(alpha-norm (/ alpha coeff-sum))
 	(beta-norm (/ beta coeff-sum))
@@ -1044,7 +1049,7 @@
 		   (y1 (second box))
 		   (w (- (third box) (first box)))
 		   (h (- (fourth box) (second box))))
-	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0))))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0) 1)))
 	(imlib:save image (format #f "~a/~a-~a.png"
 				  path name-prefix
 				  (number->padded-string-of-length n 5)))
@@ -1090,7 +1095,7 @@
 		   (y1 (second box))
 		   (w (- (third box) (first box)))
 		   (h (- (fourth box) (second box))))
-	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0))))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0) 3)))
 	(imlib:save image (format #f "~a/~a.png"
 				  img-path
 				  (number->padded-string-of-length n 5)))
@@ -1139,12 +1144,7 @@
 		   (y1 (second box))
 		   (w (- (third box) (first box)))
 		   (h (- (fourth box) (second box))))
-	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0))
-	     (imlib:draw-rectangle image (- x1 1) (- y1 1)
-				   (+ w 2) (+ h 2) (vector 255 0 0))
-	     (imlib:draw-rectangle image (- x1 2) (- y1 2)
-				   (+ w 4) (+ h 4) (vector 255 0 0))
-	     ))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0) 3)))
 	(imlib:save image (format #f "~a/~a.png"
 				  img-path
 				  (number->padded-string-of-length n 5)))
@@ -1203,12 +1203,7 @@
 		   (y1 (second box))
 		   (w (- (third box) (first box)))
 		   (h (- (fourth box) (second box))))
-	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0))
-	     (imlib:draw-rectangle image (- x1 1) (- y1 1)
-				   (+ w 2) (+ h 2) (vector 255 0 0))
-	     (imlib:draw-rectangle image (- x1 2) (- y1 2)
-				   (+ w 4) (+ h 4) (vector 255 0 0))
-	     ))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0) 3)))
 	(imlib:save image (format #f "~a/~a.png"
 				  img-path
 				  (number->padded-string-of-length n 5)))
@@ -1268,12 +1263,7 @@
 		   (y1 (second box))
 		   (w (- (third box) (first box)))
 		   (h (- (fourth box) (second box))))
-	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0))
-	     (imlib:draw-rectangle image (- x1 1) (- y1 1)
-				   (+ w 2) (+ h 2) (vector 255 0 0))
-	     (imlib:draw-rectangle image (- x1 2) (- y1 2)
-				   (+ w 4) (+ h 4) (vector 255 0 0))
-	     ))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0) 3)))
 	(imlib:save image (format #f "~a/~a.png"
 				  img-path
 				  (number->padded-string-of-length n 5)))
@@ -1337,12 +1327,7 @@
 		   (y1 (second box))
 		   (w (- (third box) (first box)))
 		   (h (- (fourth box) (second box))))
-	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0))
-	     (imlib:draw-rectangle image (- x1 1) (- y1 1)
-				   (+ w 2) (+ h 2) (vector 255 0 0))
-	     (imlib:draw-rectangle image (- x1 2) (- y1 2)
-				   (+ w 4) (+ h 4) (vector 255 0 0))
-	     ))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0) 3)))
 	(imlib:save image (format #f "~a/~a.png"
 				  img-path
 				  (number->padded-string-of-length n 5)))
@@ -1362,7 +1347,7 @@
 		     (map (lambda (d) (format #f "~a/~a/~a" rsync-directory p d))
 			  (system-output (format #f "ls ~a/~a" rsync-directory
 						 p)))) plandirs)))
-	(commands (map (lambda (arg) (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"
+	(commands (map (lambda (arg) (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"
 					     arg
 					     dummy-f
 					     dummy-g)) arg-list))
@@ -1522,10 +1507,10 @@
 		    plandirs)))
 	(commands-matlab (map
 			  (lambda (dir) ;;change get-matlab... command if using auto-drive
-			   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation \"~a\" ~a ~a ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta dummy-f dummy-g)) dir-list))
+			   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation \"~a\" ~a ~a ~a ~a ~a ~a ~a ~a) :n :n :n :n :b" dir top-k ssize alpha beta gamma delta dummy-f dummy-g)) dir-list))
 	(commands-c (map
 		     (lambda (dir)
-		      (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"
+		      (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (visualize-results \"~a\" ~a ~a) :n :n :n :n :b"
 					     dir
 					     dummy-f
 					     dummy-g)) dir-list))
@@ -1858,7 +1843,7 @@
 					  output-dirname ;;under floorplan-dir
 					  matlab-output-filename)
 ;;(define (make-test-file-new floorplan-dir results-file frame-data-file output-file)
- (let* ((rundirs (system-output (format #f "ls -d ~a/20*/" floorplan-dir)))
+ (let* ((rundirs (system-output (format #f "ls -d ~a/2014-*/" floorplan-dir)))
 	(xys ;;(dtrace "xys"
 	 (join
 	      (map
@@ -2136,11 +2121,11 @@
 	(commands-matlab
 	 (map
 	  (lambda (dir) ;;change get-matlab... command if using auto-drive
-	   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation-improved \"~a\" ~a ~a ~a ~a ~a ~a ~a ~a \"~a\") :n :n :n :n :b" dir top-k ssize alpha beta gamma delta dummy-f dummy-g data-output-dir)) dir-list))
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation-improved \"~a\" ~a ~a ~a ~a ~a ~a ~a ~a \"~a\") :n :n :n :n :b" dir top-k ssize alpha beta gamma delta dummy-f dummy-g data-output-dir)) dir-list))
 	(commands-c ;;if something breaks this might be it--not sure I have path changes right
 	 (map
 	  (lambda (dir)
-	   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results-improved \"~a\" ~a ~a \"~a\") :n :n :n :n :b"
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (visualize-results-improved \"~a\" ~a ~a \"~a\") :n :n :n :n :b"
 		   dir
 		   dummy-f
 		   dummy-g
@@ -2274,11 +2259,11 @@
 	(commands-matlab
 	 (map
 	  (lambda (dir) ;;change get-matlab... command if using auto-drive
-	   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (get-matlab-data-auto-drive-improved \"~a\" ~a ~a ~a ~a ~a ~a ~a ~a \"~a\") :n :n :n :n :b" dir top-k ssize alpha beta gamma delta dummy-f dummy-g data-output-dir)) dir-list))
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (get-matlab-data-auto-drive-improved \"~a\" ~a ~a ~a ~a ~a ~a ~a ~a \"~a\") :n :n :n :n :b" dir top-k ssize alpha beta gamma delta dummy-f dummy-g data-output-dir)) dir-list))
 	(commands-c ;;if something breaks this might be it--not sure I have path changes right
 	 (map
 	  (lambda (dir)
-	   (format #f "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (visualize-results-improved \"~a\" ~a ~a \"~a\") :n :n :n :n :b"
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (visualize-results-improved \"~a\" ~a ~a \"~a\") :n :n :n :n :b"
 		   dir
 		   dummy-f
 		   dummy-g
@@ -2355,7 +2340,7 @@
 	 (map
 	  (lambda (dir) 
 	   (format #f
-		   "(load \"/home/sbroniko/codetection/source/sentence-codetection/codetection-test.sc\") (detect-sort-label-objects-single-floorplan \"~a\" \"~a\" \"~a\" \"~a\") :n :n :n :n :b"
+		   "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (detect-sort-label-objects-single-floorplan \"~a\" \"~a\" \"~a\" \"~a\") :n :n :n :n :b"
 		   (format #f "~a/~a" data-directory dir)
 		   results-filename
 		   frame-data-filename
@@ -2475,7 +2460,7 @@
 				     dummy-f
 				     dummy-g))
 	(server-list
-	 (list "wywiad" "istihbarat" "cuddwybodaeth" "perisikan" "chino" "maniishaa" "alykkyys" "seulki" "faisneis"))
+	 (list "jalitusteabe" "wywiad" "istihbarat" "cuddwybodaeth" "perisikan" "chino" "maniishaa" "alykkyys" "seulki" "faisneis"))
 	 ;;(list "aruco" "save" "akili" "aql" "verstand" "arivu")) ;; "perisikan" acting weird, jobs dying without finishing
 	(source-machine "seykhl"))
   (get-codetection-results-training-or-generation data-directory 
@@ -4039,11 +4024,7 @@
 		   (w-val (- (z box) (x box)))
 		   (h-val (- (vector-ref box 3) (y box))))
 	     (imlib:draw-rectangle image x-val y-val w-val h-val
-				   (vector 0 0 255))
-	     (imlib:draw-rectangle image (+ x-val 1) (+ y-val 1) w-val h-val
-				   (vector 0 0 255))
-	     (imlib:draw-rectangle image (- x-val 1) (- y-val 1) w-val h-val
-				   (vector 0 0 255))))
+				   (vector 0 0 255) 3)))
 	(imlib:save image (format #f "~a/img-~a.png" temp-path
 				  (number->padded-string-of-length n 5)))
 	(imlib:free-image-and-decache image)
@@ -4994,7 +4975,9 @@
 	 (map find-simple-variance-factor all-tubes))
 	;;should get and cons tube scores here
 	(obj-scores
-	 (tubes->tube-objectness-scores all-tubes))
+	 ;; (tubes->tube-objectness-scores all-tubes) ;;takes too long and doesn't help
+	 (list->vector (map-n (lambda (f) 1) (length all-tubes))) ;;vector of 1s
+	 )
 	(scores-with-vars
 	 (map (lambda (t) (cons obj-scores
 				(cons (list->vector var-factor-list)

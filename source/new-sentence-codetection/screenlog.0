@@ -1699,4 +1699,5 @@ Back to top level
 ***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
 ***** INITIALIZEVAR Duplicately defined symbol REAL?
 Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
-> [K> 
+> [K> [K[K> (exit)[C[C[C[C[C[C[C[C[C[C[K(exit)
+[K]0;sbroniko@seykhl: ~/codetection/source/new-sentence-codetection[01;32msbroniko@seykhl[00m:[01;36m[new-sentence-codetection][00m$ Ak[K[K
