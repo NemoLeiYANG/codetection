@@ -61,6 +61,13 @@ cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
 
 % compute
 [~, ~, ~, T] = size(frames);
+[num_poses,~] = size(positions);
+%this fixes a num_poses < num_frames error discovered 17feb16
+if (num_poses < T)
+    for i = num_poses+1:T
+        positions(i,:) = positions(num_poses,:);
+    end %for
+end %if
 bboxes = zeros(top_k, 8, T); %each row: [x y w h score xloc yloc wwidth]
 phist_size = [top_k, 12000];
 phists = zeros([phist_size,T],'single'); %for storing histograms--HARDCODED 12000 as size of phow_hist 

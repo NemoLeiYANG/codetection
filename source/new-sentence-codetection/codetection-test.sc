@@ -4295,6 +4295,66 @@
    (format #f "get-and-render-n-nms-tubes-house-test complete in ~a with n = ~a"
 	   outdir N) #f)
   (system "date")))
+
+(define (get-nms-tubes-house-test2 K L tube-nms-threshold outdir)
+ (let* (;;(K 10) ;;top-k proposal tubes per frame
+	;;(L 10) ;;interval between frames
+	;;(tube-nms-threshold 0.5)
+	;;(servers (list "chino" "buddhi" "maniishaa" "alykkyys"))
+	;;(servers (list "chino" "buddhi" "maniishaa" "alykkyys" "seulki" "faisneis"))
+	;;(servers (list "alykkyys" "faisneis"))
+	;; (servers ;;(list "cuddwybodaeth" "istihbarat" "wywiad"))
+	;;  (list "cuddwybodaeth" "istihbarat" "wywiad" "faisneis" "seulki"
+	;;        "alykkyys" "maniishaa" "chino"))
+	(servers (list "aruco" "save" "akili" "upplysingaoflun"))
+	(source "seykhl")
+	(cpus-per-job 8)
+	;;(cpus-per-job 7) ;;for 2G servers
+	(data-directory "/aux/sbroniko/vader-rover/logs/house-test2-17feb16/")
+	(paths (system-output (format #f "ls -d ~afloor*/" data-directory)))
+	;; (paths
+	;;  (map (lambda (dir)
+	;;        (format #f "~a~a" data-directory dir))
+	;;       ;; (list "floorplan-0-sentence-0" "floorplan-0-sentence-1"
+	;;       ;; 	    "floorplan-3-sentence-4" "floorplan-4-sentence-5"
+	;;       ;; 	    "floorplan-5-sentence-1" "floorplan-5-sentence-2")
+	;;       (list "floorplan-4-sentence-5/" "floorplan-5-sentence-2/")
+	;;       ))
+	(output-c (format #f "~aresults-~a/" data-directory outdir))
+	;;(output-c (format #f "~aresults-~a-rerun3/" data-directory outdir))
+	(commands-c
+	 (map
+	  (lambda (dir)
+	   (format #f
+		   "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (get-all-nms-tubes \"~a\" \"~a\" ~a ~a ~a) :n :n :n :n :b"
+		   dir outdir K L tube-nms-threshold ))
+	  paths)))
+  (dtrace (format #f "starting get-nms-tubes-house-test2 with output in ~a"
+		  outdir) #f)
+  (system "date")
+  (mkdir-p output-c)
+  (for-each
+   (lambda (server)
+    (run-unix-command-on-server
+     (format #f "mkdir -p ~a" output-c) server))
+   servers)
+  (synchronous-run-commands-in-parallel-with-queueing commands-c
+						      servers
+						      cpus-per-job
+						      output-c
+						      source
+						      data-directory)
+  (dtrace "processing complete, beginning rsync of results" #f)
+  (system "date")
+  (for-each
+   (lambda (server)
+    (rsync-directory-to-server server data-directory source))
+   servers)
+  (dtrace "results rsync complete" #f)
+  (dtrace
+   (format #f "get-nms-tubes-house-test2 complete in ~a with"
+	   outdir) #f)
+  (system "date")))
 		   
   
 ;;------------backprojection stuff----------------

@@ -6860,7 +6860,29 @@ TO DO's
   perisikan, chino, maniishaa, alykkyys, seulki, faisneis.  Results should end
   up in test-20160216-ralicra-rerun. 
 
-**THINK ABOUT HOW TO SET UP NEW FLOORPLANS**
+----------------git commit 355989e--------------
+
+17 Feb 16
+
+--Fixed an error that occurred only once in the ralicra dataset
+  (plan8/2014-11-21-04:42:37/) where data got into matlab with one more frame
+  than pose.  Simply put a check in scott_proposals_similarity_2.m that copies
+  the last pose until the lengths are equal.  Ran and computed output.  Copied
+  file to seykhl/other machines so that the C part will run.  Not sure that file
+  was there before it was needed--will need to look at C output (or for hung
+  jobs on the C side).
+
+--Collected 25 more runs on each of 3 floor plans (dining room, kitchen, living
+  room) to try with new simple GM code.  Have a copy on seykhl, chino, buddhi.  Need
+  to write multiple sentences (3-5) for each run that are at least somewhat
+  distinct.  Also need to generate tubes for each of those runs (probably need
+  to increase number of proposals at the start).
+
+--Wrote get-nms-tubes-house-test2 and started running with K=50, L=10,
+  tube-nms-threshold=0.5 on aruco, save, akili, upplysingaoflun at 1732 (screen
+  session on seykhl).
+
+
 
 **What about bias towards tubes that occur earlier in runs?  Is that idea any good?
 
