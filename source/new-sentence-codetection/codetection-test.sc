@@ -390,6 +390,40 @@
 		 (first poses)
 		 frame-poses))))))
 
+(define (get-poses-that-match-frames-raw datapath)
+ (let* ((cam-timing (read-camera-timing-new
+		     (format #f "~a/camera_front.txt" datapath)))
+	(timing-file (format #f "~a/imu-log.txt" datapath))
+	(poses-with-timing (read-robot-estimated-pose-from-log-file timing-file)))
+;;  (dtrace "length cam-timing" (length cam-timing))
+;;  (dtrace "length poses-with-timing" (length poses-with-timing))
+  (let loop ((cam-timing cam-timing)
+	     (poses poses-with-timing)
+	     (previous-pose #f)
+	     (frame-poses '()))
+   (if (or (null? poses) (null? cam-timing))
+       (begin
+;;	(dtrace "length cam-timing" (length cam-timing))
+;;	(dtrace "length poses " (length poses))
+	(if (and (null? poses) (not (null? cam-timing)))
+	    (reverse (cons (second previous-pose) frame-poses))
+	    (reverse frame-poses))) ;; done
+       (if previous-pose
+	   (if (< (abs (- (first previous-pose) (first cam-timing)))
+		  (abs (- (first (first poses)) (first cam-timing))))
+	       (loop (rest cam-timing)
+		     (rest poses)
+		     (first poses)
+		     (cons (second previous-pose) frame-poses))
+	       (loop cam-timing
+		     (rest poses)
+		     (first poses)
+		     frame-poses))
+	   (loop cam-timing
+		 (rest poses)
+		 (first poses)
+		 frame-poses))))))
+
 (define (get-poses-that-match-frames-new datapath)
  (let* ((cam-timing (read-camera-timing-new
 		     (format #f "~a/camera_front.txt" datapath)))
@@ -477,6 +511,28 @@
    (lambda (dir)
     (write-object-to-file
      (get-corrected-poses-that-match-frames dir)
+     (format #f "~a/~a" dir outfile-name)))
+   dirlist)))
+
+(define (save-raw-poses-house-test2)
+ (let* ((dirlist
+	 (system-output "ls -d /aux/sbroniko/vader-rover/logs/house-test2-17feb16/floor*"))
+	(outfile-name "frame-poses-raw.sc"))
+  (for-each
+   (lambda (dir)
+    (write-object-to-file
+     (get-poses-that-match-frames-raw dir)
+     (format #f "~a/~a" dir outfile-name)))
+   dirlist)))
+
+(define (save-new-poses-house-test2)
+ (let* ((dirlist
+	 (system-output "ls -d /aux/sbroniko/vader-rover/logs/house-test2-17feb16/floor*"))
+	(outfile-name "frame-poses.sc"))
+  (for-each
+   (lambda (dir)
+    (write-object-to-file
+     (get-poses-that-match-frames dir)
      (format #f "~a/~a" dir outfile-name)))
    dirlist)))
 
@@ -7209,6 +7265,127 @@
 		  (number->padded-string-of-length idx 3)))
   (newline)
   ))
+
+(define (matlab-plot-house-test2-with-ground-truth track
+						   track2
+						   ground-truth-list
+						   output-dir)
+ (let* ((trace (map (lambda (p) (subvector p 0 2)) track)) ;;need to downsample?
+	(trace2 (if track2
+		    (map (lambda (p) (subvector p 0 2)) track2)
+		    (vector #f #f)))
+	(start (first trace))
+	(end (last trace))
+	(xvals (map x trace))
+	(yvals (map y trace))
+	(xvals2 (map x trace2))
+	(yvals2 (map y trace2))
+	(raw-arrow-trace
+	 (map-indexed
+	  (lambda (p i) (vector-append p (list-ref trace (+ i 1))))
+	  (but-last trace)))
+	(dist-interval 0.20) ;;20 cm
+	(arrow-trace
+	 (but-last (removeq
+		    #f
+		    (let loop ((poi (first raw-arrow-trace))
+			       (points (rest raw-arrow-trace))
+			       (out '()))
+		     (if (null? points)
+			 out
+			 (if (> (distance (subvector poi 0 2)
+					  (subvector (first points) 0 2))
+				dist-interval)
+			     (loop (first points) (rest points) (cons poi out))
+			     (loop poi (rest points) out)))))))
+
+	(object-names (map first ground-truth-list))
+	(object-xywh (map second ground-truth-list))
+	(object-x (map x object-xywh))
+	(object-y (map y object-xywh))
+	(xy-max (* 1.1 (maximum (list (maximum xvals)
+				      (maximum (removeq #f xvals2))
+				      (maximum yvals)
+				      (maximum (removeq #f yvals2))
+				      (maximum object-x)
+				      (maximum object-y)))))
+	(xy-min (* 1.1 (minimum (list (minimum xvals)
+				      (minimum (removeq #f xvals2))
+				      (minimum yvals)
+				      (minimum (removeq #f yvals2))
+				      (minimum object-x)
+				      (minimum object-y)))))
+	 )
+  (start-matlab!)
+  (matlab "clear all; close all;")
+  ;;(matlab "h=figure")
+  (matlab "h = figure('visible','off');")
+  (matlab "hold on")
+  (matlab (format #f "axis([~a ~a ~a ~a]);" xy-min xy-max xy-min xy-max))
+  ;;plot objects before traces
+  ;; (plot-lines-in-matlab-with-symbols-no-legend
+  ;;  (list (map x object-xy))
+  ;;  (list (map y object-xy))
+  ;;  (list "'objects'")
+  ;;  (list "'md','MarkerFaceColor','m'"))
+  (map (lambda (p)
+	(matlab (format #f "rectangle('Position',[~a ~a ~a ~a])"
+			(x p) (y p) (z p) (vector-ref p 3))))
+	object-xywh)
+  (map (lambda (oname oxy)
+	(matlab (format #f "text(~a,~a,'~a')" (+ (x oxy) 0.05)
+			(+ (y oxy) (/ (vector-ref oxy 3) 2)) oname)))
+       object-names object-xywh)
+  
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list xvals)
+   (list yvals)
+   (list "'trace'")
+   (list "'c-','LineWidth',2"))
+  (if track2
+      (plot-lines-in-matlab-with-symbols-no-legend
+       (list xvals2)
+       (list yvals2)
+       (list "'trace-alt'")
+       (list "'r-','LineWidth',1")))
+
+  
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (list (first (vector->list start))))
+   (list (list (second (vector->list start))))
+   (list "'start'" )
+   (list "'go','MarkerFaceColor','g'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (list (first (vector->list end))))
+   (list (list (second (vector->list end))))
+   (list "'end'" )
+   (list "'ro','MarkerFaceColor','r'"))
+  (matlab (format #f "text(~a,~a,'~a')" (x start) (y start) "start"))
+  (matlab (format #f "text(~a,~a,'~a')" (x end) (y end) "end"))
+
+  
+  (matlab-plot-arrowheads-on-trace arrow-trace) ;;this has to go last
+  (matlab "box on")
+  (matlab "hold off")
+  (matlab (format #f "saveas(h,'~a/ground-truth.png');" output-dir))
+  (display (format #f "saved ~a/ground-truth.png" output-dir))
+  (newline)))
+
+(define (house-test2-plot-floorplans floorplan-string)
+ (let* ((testdir "/aux/sbroniko/vader-rover/logs/house-test2-17feb16")
+	(ground-truth-list
+	 (read-object-from-file (format #f "~a/ground-truth-~a.sc"
+					testdir floorplan-string)))
+	(rundirs (system-output (format #f "ls -d ~a/~a*" testdir floorplan-string)))
+	(track-name "frame-poses.sc")
+	(track2-name "frame-poses-raw.sc"))
+  (map (lambda (dir)
+	(matlab-plot-house-test2-with-ground-truth
+	 (read-object-from-file (format #f "~a/~a" dir track-name))
+	 (read-object-from-file (format #f "~a/~a" dir track2-name))
+	 ground-truth-list
+	 dir))
+       rundirs)))
 
 (define (matlab-plot-just-traces raw-trace raw-trace-alt
 				 xy-max xy-min output-file)

@@ -1,0 +1,11 @@
+    notes.text          362931  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+.   ground-truth-floorpla: 295  Scheme		  /aux/sbroniko/vader-rover/logs/house-test2-17feb16/ground-truth-floorplan-2.sc
+    ground-truth-floorpla: 378  Scheme		  /aux/sbroniko/vader-rover/logs/house-test2-17feb16/ground-truth-floorplan-1.sc
+    codetection-test.s: 273677  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc
+    ground-truth-floorpla: 328  Scheme		  /aux/sbroniko/vader-rover/logs/house-test2-17feb16/ground-truth-floorplan-0.sc
+    house-test-sentences: 7109  Text		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/house-test-sentences.txt
+    alignments.sc|floorpl: 643  Scheme		  /aux/sbroniko/vader-rover/logs/house-test2-17feb16/floorplan-0-sentence-0/alignments.sc
+    alignment.sc           925  Scheme		  /aux/sbroniko/vader-rover/logs/house-test-12nov15/floorplan-0-sentence-0/alignment.sc
+  * *shell*                598  Shell:run	  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/
+  * *shell*<2>            7146  Shell:run	  /aux/sbroniko/vader-rover/logs/house-test2-17feb16/
+    alignments.sc|floorpl: 130  Scheme		  /aux/sbroniko/vader-rover/logs/house-test2-17feb16/floorplan-0-sentence-1/alignments.sc

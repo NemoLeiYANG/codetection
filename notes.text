@@ -6882,7 +6882,35 @@ TO DO's
   tube-nms-threshold=0.5 on aruco, save, akili, upplysingaoflun at 1732 (screen
   session on seykhl).
 
+----------------git commit e5615cf--------------
 
+18 Feb 16
+
+--Got k-means code from Dan in an email yesterday.  Need to run this on raw
+  proposals from ralicra to see if it gives anything reasonable.
+
+--Both ralicra-rerun and tube-gen jobs still running.
+
+--Working on sentences for house-test2 runs.  Putting them in alignmentS.sc
+  instead of alignment.sc for each run so that I can adapt my code to deal with
+  a list of alignments rather than a single alignment.
+
+--Talking with Dan, going to visualize all of yesterday's runs (with objects
+  drawn in as rectangles) to see if traces are good, if tubes are accurately on
+  objects, and to better see how to describe the traces in sentences.
+
+--Wrote house-test2-plot-floorplans, which calls
+  matlab-plot-house-test2-with-ground-truth to plot just objects (as rectangles)
+  and trace(s).  Ground truth is in a file ground-truth-floorplan-#.sc in the
+  main house-test2 directory. 
+
+
+TO DOs:
+*finish ground-truth for floorplan-2.
+*write sentences for each run; try to use as many different objects as possible
+ (many sentences) 
+*RUN K-MEANS ON RALICRA DATA
+*check on ralicra-rerun job--done-* files not getting put there automatically
 
 **What about bias towards tubes that occur earlier in runs?  Is that idea any good?
 
