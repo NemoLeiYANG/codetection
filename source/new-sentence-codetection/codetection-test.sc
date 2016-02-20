@@ -7302,13 +7302,15 @@
 	(object-names (map first ground-truth-list))
 	(object-xywh (map second ground-truth-list))
 	(object-x (map x object-xywh))
+	(object-x+w (map (lambda (v) (+ (x v) (z v))) object-xywh))
+	(object-y+h (map (lambda (v) (+ (y v) (vector-ref v 3))) object-xywh))
 	(object-y (map y object-xywh))
 	(xy-max (* 1.1 (maximum (list (maximum xvals)
 				      (maximum (removeq #f xvals2))
 				      (maximum yvals)
 				      (maximum (removeq #f yvals2))
-				      (maximum object-x)
-				      (maximum object-y)))))
+				      (maximum object-x+w)
+				      (maximum object-y+h)))))
 	(xy-min (* 1.1 (minimum (list (minimum xvals)
 				      (minimum (removeq #f xvals2))
 				      (minimum yvals)
@@ -7322,18 +7324,17 @@
   (matlab "h = figure('visible','off');")
   (matlab "hold on")
   (matlab (format #f "axis([~a ~a ~a ~a]);" xy-min xy-max xy-min xy-max))
+  (matlab "axis equal");;image");;equal")
   ;;plot objects before traces
-  ;; (plot-lines-in-matlab-with-symbols-no-legend
-  ;;  (list (map x object-xy))
-  ;;  (list (map y object-xy))
-  ;;  (list "'objects'")
-  ;;  (list "'md','MarkerFaceColor','m'"))
   (map (lambda (p)
 	(matlab (format #f "rectangle('Position',[~a ~a ~a ~a])"
 			(x p) (y p) (z p) (vector-ref p 3))))
 	object-xywh)
   (map (lambda (oname oxy)
-	(matlab (format #f "text(~a,~a,'~a')" (+ (x oxy) 0.05)
+	(matlab (format #f "text(~a,~a,'~a')" (+ (x oxy)
+						 (if (> (z oxy) 2)
+						     (/ (z oxy) 2)
+						     0.05))
 			(+ (y oxy) (/ (vector-ref oxy 3) 2)) oname)))
        object-names object-xywh)
   
@@ -7348,8 +7349,6 @@
        (list yvals2)
        (list "'trace-alt'")
        (list "'r-','LineWidth',1")))
-
-  
   (plot-lines-in-matlab-with-symbols-no-legend
    (list (list (first (vector->list start))))
    (list (list (second (vector->list start))))
@@ -7362,8 +7361,6 @@
    (list "'ro','MarkerFaceColor','r'"))
   (matlab (format #f "text(~a,~a,'~a')" (x start) (y start) "start"))
   (matlab (format #f "text(~a,~a,'~a')" (x end) (y end) "end"))
-
-  
   (matlab-plot-arrowheads-on-trace arrow-trace) ;;this has to go last
   (matlab "box on")
   (matlab "hold off")
@@ -7713,7 +7710,7 @@
                        [xaf,yaf] = ds2nfu(xa,ya)
                        ah = annotation('arrow',xaf,yaf,~a);
                    end;" arrow-linespec))
-  (matlab "set(gcf,'WindowStyle','normal'); set(gcf, 'Position', [0 0 900 800])")))
+  (matlab "set(gcf,'WindowStyle','normal'); set(gcf, 'Position', [0 0 800 800])")))
 
 ;;to find median of list--do I want to compile this into dsci?
 (define (list-median lst)
@@ -7725,3 +7722,126 @@
 	    (list-ref sorted-list (- (/ len 2) 1)))
 	 2))))
 
+;;-----------------proposal location stuff for Jeff 19feb16
+
+;; ;;setup for ralicra data
+;; (define *plandirs* (system-output "ls -d /net/seykhl/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/plan*"))
+;; (define *rundirs*
+;;  (join (map (lambda (d) (system-output (format #f "ls -d ~a/2014-*" d))) *plandirs*)))
+;; (define *testdir* "test20150618")
+;; (define *frame-file* "frame-data-0.6-0.6.sc")
+
+(define (get-and-save-proposal-data-from-frame-file
+	 rundir testdir frame-file outfile-name)
+ (let* ((filedata
+	 (read-object-from-file (format #f "~a/~a/~a" rundir testdir frame-file)))
+	(framedata (first filedata)))
+  (write-object-to-file framedata (format #f "~a/~a/~a" rundir testdir outfile-name))
+  (display (format #f "wrote ~a/~a/~a" rundir testdir outfile-name))
+  (newline)))
+
+;; ;;template for finding max unary score proposals and non-penalized
+;; (define (find-and-save-k-means-for-floorplan
+;; 	 plandir testdir proposal-file output-file)
+;;  (let* ((rundirs (system-output (format #f "ls -d ~a/2014-*" plandir)))
+;; 	(K 5) ;;number of objects
+;; 	(all-proposals
+;; 	 (join
+;; 	  (map (lambda (d)
+;; 		(read-object-from-file
+;; 		 (format #f "~a/~a/~a" d testdir proposal-file)))
+;; 	       rundirs)))
+;; 	(peaks (k-means all-proposals K)))
+;;   peaks))
+
+(define (find-max-score-each-frame-and-save-to-matlab plandir)
+ (let* ((testdir "test-20160216-ralicra-rerun") ;; old data was "test20150618")
+	(proposal-file "proposal-data.sc")
+	(matlab-outfile "best_unary_xy.mat")
+	   ;;"detections-test20150618/best_unary_xy.mat")
+	(rundirs (system-output (format #f "ls -d ~a/2014-*" plandir)))
+	(all-frames
+	 (join
+	  (map (lambda (d)
+		(read-object-from-file
+		 (format #f "~a/~a/~a" d testdir proposal-file)))
+	       rundirs)))
+	(all-scores
+	 (map (lambda (l)
+	       (map (lambda (ll) (vector-ref ll 4)) (vector->list l)))
+	      all-frames))
+	(best-scores (map maximum all-scores))
+	(best-positions (map (lambda (s l) (position s l)) best-scores all-scores))
+	(best-xys (map (lambda (fr pos) (subvector (vector-ref fr pos) 5 7))
+		       all-frames
+		       best-positions))
+	)
+  (start-matlab!)
+  (scheme->matlab! "best_unary_xy" best-xys)
+  (matlab (format #f "save('~a/~a/~a','best_unary_xy');"
+		  plandir testdir matlab-outfile))
+  (display (format #f "wrote ~a/~a/~a" plandir testdir matlab-outfile))
+  (newline)))
+
+(define (find-all-nonpenalized-proposals-and-save-to-matlab plandir)
+ (let* ((testdir "test-20160216-ralicra-rerun") ;; old data was "test20150618")
+	(proposal-file "proposal-data.sc")
+	(matlab-outfile "all_xy.mat")
+	   ;;"detections-test20150618/best_unary_xy.mat")
+	(rundirs (system-output (format #f "ls -d ~a/2014-*" plandir)))
+	(all-frames
+	 (join
+	  (map (lambda (d)
+		(join
+		 (map
+		  vector->list
+		  (read-object-from-file
+		   (format #f "~a/~a/~a" d testdir proposal-file)))))
+		rundirs)))
+	(all-xys
+	 (map (lambda (v)
+	       (if (> (vector-ref v 4) 1e-5)
+		   (subvector v 5 7)
+		   #f))
+	      all-frames))
+	(good-xys (removeq #f all-xys))
+
+
+	;; (all-scores
+	;;  (map (lambda (l)
+	;;        (map (lambda (ll) (vector-ref ll 4)) (vector->list l)))
+	;;       all-frames))
+	;; (best-scores (map maximum all-scores))
+	;; (best-positions (map (lambda (s l) (position s l)) best-scores all-scores))
+	;; (best-xys (map (lambda (fr pos) (subvector (vector-ref fr pos) 5 7))
+	;; 	       all-frames
+	;; 	       best-positions))
+	)
+  (start-matlab!)
+  (scheme->matlab! "all_xy" good-xys)
+  (matlab (format #f "save('~a/~a/~a','all_xy');"
+  		  plandir testdir matlab-outfile))
+  (display (format #f "wrote ~a/~a/~a" plandir testdir matlab-outfile))
+  (newline)
+  ))
+
+(define (matlab-scatter-plots-for-plan plandir)
+ (let* ((testdir "detections-test20150618")
+	(testdir2 "test-20160216-ralicra-rerun"))
+  (start-matlab!)
+  (matlab (format #f "load ~a/~a/detection_data.mat" plandir testdir))
+  (matlab (format #f "load ~a/~a/ground_truth.mat" plandir testdir))
+  (matlab (format #f "ralicra_scatter(detection_data,ground_truth,'~a/~a');"
+		  plandir testdir))
+  (display (format #f "saved ~a/~a/gm1-scatter.png" plandir testdir))
+  (newline)
+  (matlab (format #f "load ~a/~a/best_unary_xy.mat" plandir testdir2))
+  (matlab (format #f "ralicra_scatter2(best_unary_xy,ground_truth,'~a/~a');"
+		  plandir testdir2))
+  (display (format #f "saved ~a/~a/best-unary-scatter.png" plandir testdir2))
+  (newline)
+    (matlab (format #f "load ~a/~a/all_xy.mat" plandir testdir2))
+  (matlab (format #f "ralicra_scatter3(all_xy,ground_truth,'~a/~a');"
+		  plandir testdir2))
+  (display (format #f "saved ~a/~a/all-scatter.png" plandir testdir2))
+  (newline)))

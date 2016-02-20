@@ -6904,13 +6904,66 @@ TO DO's
   and trace(s).  Ground truth is in a file ground-truth-floorplan-#.sc in the
   main house-test2 directory. 
 
+----------------git commit ce44ec2--------------
+
+19 Feb 16
+
+--Finished ground-truth for floorplan-2.  All ground truths plotted.
+
+--Tube-gen job making progress, currently 28/75 jobs done, 17 running, 30
+  waiting.  Ralicra-rerun job still running, but stuck with 29/60 jobs done, 31
+  running.  Most still-running jobs seem to have their objective function scores
+  oscillating between 2 or 3 values--not sure why they're still going.
+
+--Ran k-means on ralicra data.  New file is k-means.sc, with k-means code from
+  Dan.  First wrote get-and-save-raw-xy-locations-from-frame-file to pull the xy
+  locations from frame-data-*.sc files since those are huge.  Wrote this data to
+  proposal-xy.sc in each test directory.  Wrote
+  find-and-save-k-means-for-floorplan to get means from proposal-xys.
+
+--Run of k-means on plan0 raw proposal locations gives the following means:
+  (#(5.325036816761942 20.32394035872665) 
+   #(-0.2084937162333535 -0.2922744021736169) 
+   #(-732.2780750225592 499.5282118455538) 
+   #(-522.3360301348552 -821.360026815945) 
+   #(881.2006792579559 -389.5891938831995))
+  This is obviously garbage.
+
+--Based on email from Jeff, working on the following:
+  > Can you send me three sets of scatter plots, one triple of scatter plots for
+  > each floorplan:
+  >
+  >  1. the floorplan location of the proposal selected by graphical model 1 in
+  >     each frame (i.e. what you originally used to compute the density in the
+  >     original ralicra submission)
+  >  2. the floorplan location of the single proposal in each frame with the
+  >     highest unary score after all penalties have been applied
+  >  3. the floorplan location of all proposals (not just the selected ones) in
+  >     all frames after removing any that would have had their unary scores
+  >     penalized by any appreciable amount (i.e. what the graphical model could
+  >     reasonably select from)
+  
+--Have ralicra_scatter.m for gm1 selections scatter plot, ralicra_scatter2.m for
+  best unary scatter plot, ralicra_scatter3.m for all nonpenalized proposals
+  scatter plot.  Plots done through matlab-scatter-plots-for-plan, while
+  get-and-save-proposal-data-from-frame-file, 
+  find-max-score-each-frame-and-save-to-matlab and
+  find-all-nonpenalized-proposals-and-save-to-matlab pull the data from scheme
+  to matlab.
+
+--Sent requested plots to Jeff.  Copies are in
+  MSEE1-dataset/ralicra2016/plan*/plan*-plot.png (created from
+  ./detections-test20150618/gm1-scatter.png
+  ./test-20160216-ralicra-rerun/best-unary-scatter.png
+  ./test-20160216-ralicra-rerun/all-scatter.png) 
+
+**remember: in detection_data, score is 3rd column, frequency is 4th
 
 TO DOs:
-*finish ground-truth for floorplan-2.
 *write sentences for each run; try to use as many different objects as possible
  (many sentences) 
-*RUN K-MEANS ON RALICRA DATA
 *check on ralicra-rerun job--done-* files not getting put there automatically
+*maybe do good/bad counts on ralicra image output
 
 **What about bias towards tubes that occur earlier in runs?  Is that idea any good?
 
