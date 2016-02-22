@@ -6968,16 +6968,57 @@ TO DO's
   didn't finish: f-0-s-9 (output-25), f-0-s-23(output-17).  Re-running s-23 on
   akili, s-9 on aruco, started ~1010 21Feb16. Expect output in ~12h (??)
 
+----------------git commit acc20f1--------------
+
+22 Feb 16
+
+--Rerun jobs on akili and aruco errored again with
+    p11-kit: couldn't open config file: /etc/pkcs11/modules/gnome-keyring-module: Too many open files
+    p11-kit: couldn't open config file: /etc/pkcs11/pkcs11.conf: Too many open files
+    >>Error: Illegal digit(s) in integer: [p]
+  Researching error to see how to fix.
+
+--Looks like the program is trying to collect too many tubes and runs out of
+  file handles--it's trying to get 50 tubes every 10 frames, but never reaches
+  the end of either video (both died after printing frame 810).  Found that I
+  call ffmpeg-open-video in
+  get-medianflow-tube-from-starting-frame-and-proposal-box, but then never call
+  ffmpeg-close-video.  Added the close call.  Also going to try getting slightly
+  fewer (40) tubes every 10th frame, since the video gets opened once for every
+  proposal box that generates a tube.  But keeping the output dir name with 50
+  to keep it the same as the others.  Restarting jobs on akili and aruco at
+  0915.
+
+--Based on email from Jeff, moved akili and aruco jobs to istihbarat and wywiad
+  at 0935.  Not sure how long those jobs will take on an 8-core server.
+
+--Working on alignment of frames to phrases.  Starting with floorplan-1 since
+  the two still-running tube generation jobs are both in floorplan-0. **REMEMBER
+  that for phrases that use towards/away-from, ONLY use the frames where the
+  robot is moving--will get bad scores if robot does not have a velocity.
+
+--Noticed that for some runs, there are fewer frame-poses than frames; I think
+  that the functions that use frame-poses (such as
+  raw-tube-with-score-and-pose-list->world-corners-list and
+  get-noun-preposition-paths) deal with this already.
+
+
+DONE ALIGNMENTS: f1s0-f1s15
 
 TO DOs:
-*write sentences for each run; try to use as many different objects as possible
- (many sentences) 
+*alignments of runs to sentences
 *check on ralicra-rerun job--done-* files not getting put there automatically
 *maybe do good/bad counts on ralicra image output
 
 **What about bias towards tubes that occur earlier in runs?  Is that idea any good?
 
-
+***commands for video alignment
+ cd ../floorplan-x-sentence-y
+ feh ground-truth.png &
+ mkdir ./tmp
+ ffmpeg -i video_front.avi ./tmp/front-%04d.png
+ ffmpeg -i video_pano.avi ./tmp/pano-%04d.png
+ rm -rf ./tmp
 
 **remember: in detection_data, score is 3rd column, frequency is 4th
 

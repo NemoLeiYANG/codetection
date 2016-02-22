@@ -4021,7 +4021,7 @@
 			     x-val y-val w-val h-val))))
 	     (join (map (lambda (f) (list no-box)) (enumerate num-frames))))) 
 	 (boxes (map (lambda (b) (if (equal? b no-box) #f b)) raw-boxes)))
-
+  (ffmpeg-close-video video)
   (list boxes score)))
 
 (define (get-all-tubes video-pathname K L)
