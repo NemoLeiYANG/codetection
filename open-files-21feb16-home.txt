@@ -1,0 +1,11 @@
+.   notes.text          366073  Text		  ~/codetection/notes.text
+  * *shell*               9473  Shell:run	  ~/codetection/
+  * *shell*<2>           29137  Shell:run	  /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/
+  * *Messages*            2876  Fundamental
+    rendering-code.sc    71910  Scheme		  ~/codetection/rendering-code.sc
+    inference.cpp        54250  C++/l		  ~/codetection/source/new-sentence-codetection/inference.cpp
+    codetection-test.s: 278324  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+  * *scheme*           1774398  Inferior Scheme:
+    ralicra_scatter3.m    1070  MATLAB		  ~/codetection/source/new-sentence-codetection/ralicra_scatter3.m
+    k-means.sc            3477  Scheme		  ~/codetection/source/new-sentence-codetection/k-means.sc
+    *scratch*              191  Lisp Interaction

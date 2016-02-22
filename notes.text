@@ -6957,7 +6957,17 @@ TO DO's
   ./test-20160216-ralicra-rerun/best-unary-scatter.png
   ./test-20160216-ralicra-rerun/all-scatter.png) 
 
-**remember: in detection_data, score is 3rd column, frequency is 4th
+----------------git commit fa6ae6b--------------
+
+21 Feb 16
+
+--Finished writing all sentences (3 per run) for new house-test2-17feb16
+  dataset.  Next need to parse/align the videos with the phrases.
+
+--Tube-gen job finished at ~0300 21 Feb.  Looks like 2 runs had errors and
+  didn't finish: f-0-s-9 (output-25), f-0-s-23(output-17).  Re-running s-23 on
+  akili, s-9 on aruco, started ~1010 21Feb16. Expect output in ~12h (??)
+
 
 TO DOs:
 *write sentences for each run; try to use as many different objects as possible
@@ -6966,6 +6976,10 @@ TO DOs:
 *maybe do good/bad counts on ralicra image output
 
 **What about bias towards tubes that occur earlier in runs?  Is that idea any good?
+
+
+
+**remember: in detection_data, score is 3rd column, frequency is 4th
 
 **ralicra2016/iros2016: 
   What is the function of the first graphical model?
