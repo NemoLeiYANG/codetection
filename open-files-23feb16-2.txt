@@ -1,0 +1,11 @@
+.   notes.text          370119  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+    codetection-test.s: 278352  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc
+  * *scheme*              1890  Inferior Scheme:
+    toollib-multi-proce: 11819  Scheme		  ~/darpa-collaboration/ideas/toollib-multi-process.sc
+  * *shell*               4006  Shell:run	  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/
+  * *scratch*              439  Lisp Interaction
+    toollib-codetection: 25104  Scheme		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/toollib-codetection.sc
+  * *shell*<2>            4167  Shell:run	  ~/QobiScheme/source/
+    idealib-stuff.sc    215317  Scheme		  ~/darpa-collaboration/ideas/idealib-stuff.sc
+    run_MF.cpp            8982  C++/l		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/source/new-sentence-codetection/run_MF.cpp
+  * *Messages*            4650  Fundamental

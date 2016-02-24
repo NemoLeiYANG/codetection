@@ -7002,11 +7002,86 @@ TO DO's
   raw-tube-with-score-and-pose-list->world-corners-list and
   get-noun-preposition-paths) deal with this already.
 
+----------------git commit 4daeb4b--------------
 
-DONE ALIGNMENTS: f1s0-f1s15
+23 Feb 16
+
+--Rerun of output-25 (f-0-s-9) finished on istihbarat at 1226.
+
+--Based on email from Jeff today, going to re-run the ralicra-rerun jobs with
+  some modifications:
+   1. A combination of #1&2 from the email (no filters except for above horizon
+      and out of bounds, and not adding labels for labels with 0 unary score).
+      **NEED TO QUANTIFY HOW MANY PROPOSALS ARE GETTING FILTERED**
+   2. #4 from email (eliminate unary score from first graphical model).
+   3. #3 from email (eliminate visual similarity from binary score in 1st GM).
+      Will need to write some new MATLAB code that takes in the saved proposals
+      with locations/widths and then computes their binary scores without
+      visual.
+  Will need to be careful to keep data segregated.  Should be able to run these
+  in parallel on multiple servers b/c the inference parts are single-threaded.
+
+--Job directories:
+   test-20160223-1and2: 1 from above
+   test-20160223-4: 2 from above
+   test-20160223-3with1and2, test-20160223-3with4: 3 from above (with both
+   previous mods)
+
+--Rerun of output-27 (f-0-s-23) finished on wywiad at 1828.
+
+--Wrote the following to do these tests:
+  - run-inference-1and2: call to c function to do new inference with no filters
+    except for above horizon and out of bounds, no 0 unary scores
+    **here totalLabels counts how many non-zero unary scores there are
+
+--run-inference-1and2 showed weird behavior (objective function value always 0,
+  list of boxes always 0s) when running as multiplier, so changed back to adder.
+  Looks to be running better that way.
+
+
+**NEED TO translate box list output back to indices of ALL proposal boxes, not
+  just non-zero unary scores--do I want to do this in C or scheme?
+
+
+**setup for test
+(define *data* (read-object-from-file "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/plan0/2014-11-20-02:31:11/test-20160223-1and2/frame-data-0.6-0.6.sc"))
+(define f (map (lambda (boxes) (map fifth (matrix->list-of-lists boxes))) (first *data*)))
+(define f-c (easy-ffi:double-to-c 2 f))
+(define num-g (exact-round (x (x (third *data*)))))
+(define boxes-c (list->c-exact-array (malloc (* c-sizeof-int (length f))) (map-n (lambda _ 0) (length f)) c-sizeof-int #t))
+(define g (matrix->list-of-lists (second *data*)))
+(define g-c (easy-ffi:double-to-c 2 g))
+
+(run-inference-1and2 f-c g-c (length f) 10 0.6 0.6 num-g boxes-c)
+
 
 TO DOs:
+*follow
+(codetect-sort-templabel-ralicra2016 "test-20160216-ralicra-rerun")
+to see calls for re-run...will probably have to make some modified functions to
+do pieces independently.
+
+*in run-inference-1and2, need to replace all calls to numLabels with different
+ label numbers for each variable
+
+**FIX GM to do multiply not add (fixed in run-inference-1and2, make sure it
+  copies over)
+**FIX iterations and convergence bound in GM (changed to 100 and 1e-7 in
+  run-inference-1and2, make sure it copies over)
+
+**SERVERS TO USE:
+  verstand
+  arivu
+  perisikan	
+  aruco
+  akili
+  save
+  (upplysingaoflun and aql low on /aux space)
+  could also use 2g: wywiad istihbarat cuddwybodaeth (jalitusteabe low on /aux)
+  could also use workstations...
+
 *alignments of runs to sentences
+   DONE ALIGNMENTS: f1s0-f1s15
 *check on ralicra-rerun job--done-* files not getting put there automatically
 *maybe do good/bad counts on ralicra image output
 

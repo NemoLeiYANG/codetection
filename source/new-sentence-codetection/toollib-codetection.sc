@@ -184,6 +184,11 @@
  (c-function double ("bp_sentence_codetection_inference_simple" int int pointer
 		     int pointer pointer pointer)))
 
+;;----new functions for 20160223 tests
+(define run-inference-1and2
+ (c-function double ("run_inference_1and2" pointer pointer int int
+		     double double int pointer)))
+
 
 ;;------these don't work
 (define bp-label-inference

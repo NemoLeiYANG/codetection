@@ -1,0 +1,50 @@
+***** INITIALIZEVAR Duplicately defined symbol +
+***** INITIALIZEVAR Duplicately defined symbol -
+***** INITIALIZEVAR Duplicately defined symbol *
+***** INITIALIZEVAR Duplicately defined symbol /
+***** INITIALIZEVAR Duplicately defined symbol SQRT
+***** INITIALIZEVAR Duplicately defined symbol EXP
+***** INITIALIZEVAR Duplicately defined symbol LOG
+***** INITIALIZEVAR Duplicately defined symbol EXPT
+***** INITIALIZEVAR Duplicately defined symbol SIN
+***** INITIALIZEVAR Duplicately defined symbol COS
+***** INITIALIZEVAR Duplicately defined symbol ATAN
+***** INITIALIZEVAR Duplicately defined symbol =
+***** INITIALIZEVAR Duplicately defined symbol <
+***** INITIALIZEVAR Duplicately defined symbol >
+***** INITIALIZEVAR Duplicately defined symbol <=
+***** INITIALIZEVAR Duplicately defined symbol >=
+***** INITIALIZEVAR Duplicately defined symbol ZERO?
+***** INITIALIZEVAR Duplicately defined symbol POSITIVE?
+***** INITIALIZEVAR Duplicately defined symbol NEGATIVE?
+***** INITIALIZEVAR Duplicately defined symbol REAL?
+Scheme->C -- 15mar93jfb -- Copyright 1989-1993 Digital Equipment Corporation
+> (define foo (list 0 1 2 3 4 5 6))
+FOO
+> (sublist foo 0 2)
+(0 1)
+> (sublist foo 4 9)
+
+>>Error: Argument not a PAIR: ()
+DEBUGGER:
+>> 
+Back to top level
+> (sublist foo 4 7)
+(4 5 6)
+> (sublist foo 4 8)
+
+>>Error: Argument not a PAIR: ()
+DEBUGGER:
+>> 
+Back to top level
+> (length (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test2-17feb16/floorplan-2-sentence-21/tubes-K-50-L-10-nms-0.5-20160217/nms-tubes.sc"))
+2005
+> (length (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test2-17feb16/floorplan-0-sentence-22/tubes-K-50-L-10-nms-0.5-20160217/nms-tubes.sc"))
+2450
+> (length (read-object-from-file "/aux/sbroniko/vader-rover/logs/house-test2-17feb16/floorplan-0-sentence-11/tubes-K-50-L-10-nms-0.5-20160217/nms-tubes.sc"))
+2477
+> (map-n (lambda _ 0) 3)
+(0 0 0)
+> (exit)
+
+Process scheme finished

@@ -18,6 +18,8 @@ double bp_sentence_codetection_inference_simple(int num_nouns, int num_tubes,
 						double ***helper_noun_scores_matrix,
 						int *output_tubes);
 
+double run_inference_1and2(double **f, double **g, int T, int top_k, double dummy_f, 
+			   double dummy_g,int num_gscores, int *boxes);
 
 void elementwise_2d_matrix_multiply(int rows, int cols, 
 				    double **mat1, double **mat2, double **outmat);

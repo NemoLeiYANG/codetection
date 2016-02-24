@@ -1,0 +1,9 @@
+  * *shell*<2>           40476  Shell:run	  ~/darpa-collaboration/ideas/x86_64-Linux-3.2.0-4-amd64/
+    inference.cpp        62487  C++/l		  ~/codetection/source/new-sentence-codetection/inference.cpp
+.   toollib-codetection: 25275  Scheme		  ~/codetection/source/new-sentence-codetection/toollib-codetection.sc
+  * *shell*              97627  Shell:run	  /aux/sbroniko/vader-rover/logs/house-test2-17feb16/floorplan-1-sentence-15/
+    inference.h           2042  C++/l		  ~/codetection/source/new-sentence-codetection/inference.h
+    alignments.sc|floorp: 1914  Scheme		  /aux/sbroniko/vader-rover/logs/house-test2-17feb16/floorplan-1-sentence-15/alignments.sc
+    alignments.sc|floorp: 1715  Scheme		  /aux/sbroniko/vader-rover/logs/house-test2-17feb16/floorplan-1-sentence-14/alignments.sc
+    *scratch*              191  Lisp Interaction
+  * *Messages*            2538  Fundamental
