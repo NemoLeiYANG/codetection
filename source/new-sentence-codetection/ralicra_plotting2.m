@@ -1,4 +1,4 @@
-function ralicra_plotting2(detection_data,scores_out,output_path)
+function ralicra_plotting2(detection_data,scores_out,output_path,peakxys)
 
 %%%% slight mod to detection_data to smooth out spurious peak in plan0
 % detection_data_mod = detection_data;

@@ -7038,9 +7038,83 @@ TO DO's
   list of boxes always 0s) when running as multiplier, so changed back to adder.
   Looks to be running better that way.
 
+----------------git commit 2a9af68--------------
 
-**NEED TO translate box list output back to indices of ALL proposal boxes, not
-  just non-zero unary scores--do I want to do this in C or scheme?
+24 Feb 16
+
+--After thinking more about the multiplier behavior, I think it's probably
+  because I'm multiplying together > 10^6 numbers that are all of the order
+  10^-1.  So I'd be getting numbers that are too small to store.  So instead of
+  just using an adder (which changes the math), I'll take the log of all the
+  scores, so that adding them is equivalent to multiplying.  Tested this on one
+  run and got the same output with logs as with the straight adder, so this
+  leads me to think it's correct.
+
+--At end of run_inference_1and2 (C++), added code to translate the indices that
+  come out of the inference back to the original indices (with zero-valued unary
+  score boxes).  
+
+--Other new functions:
+  -run-codetection-1and2: like run-codetection-with-proposals-similarity, but
+   calls run-inference-1and2 instead of bp-object-inference
+  -visualize-results-inference-1and2: like visualize-results-improved
+  -get-inference-results-1and2: does c inference on precomputed matlab data;
+   spreads out over servers
+  -ralicra2016-run-inference-1and2: main program to be called from seykhl
+
+--Started run of ralicra2016-run-inference-1and2 (using akili and save) at
+  1140. 
+
+--Wrote ralicra2016-run-inference-4 (eliminates proposal/unary score from
+  graphical model. 
+  -run_inference_4 (C++) / run-inference-4 (Scheme): similar to 1and2, but
+   uniform (log(1.0)) unary scores
+  -run-codetection-4: calls run-inference-4
+  -visualize-results-inference-4: calls run-codetection-4
+  -get-inference-results-4: spreads out over servers, calls
+   visualize-results-inference-4 
+  -ralicra2016-run-inference-4: main program
+
+--Started run of ralicra2016-run-inference-4 using aruco and perisikan at 1440. 
+
+--Wrote recompute_binary_scores.m to recompute binary scores using only
+  location similarity. 
+
+--Run of ralicra2016-run-inference-4 finished, but in the detections part, had
+  an error in computing/plotting contour plot.  Fixed bug that should allow
+  plot.  Also found that the change I tried in sort_clusters_single_floorplan.m
+  did not work--everything got put in a single cluster; changed back to last
+  working version from original ralicra paper.  Looks like I found and fixed it
+  in time for the 1and2 run to execute the new code; will have to redo this step
+  for the 4 run.  Starting rerun of detections part of 4 only with
+  ralicra2016-run-inference-4-detections-only. 
+
+--Bug fix in plotting stuff didn't work, trying again to redo detections step on
+  both runs.
+
+--Got plotting stuff to work.  The 1and2 run plotted and moved images
+  correctly.  The 4 run plotted correctly but had an error when moving images in
+  output-4.err (plan7).  Not sure why that happened.  Don't know if it's worth
+  figuring out.
+
+--Wrote new functions to do 3with1and2 and 3with4.  Didn't need to write any
+  more C++, just use the run-inference-1and2 and run-inference-4 already
+  written.  Just need to recompute the binary score values.  To do this, wrote
+  recompute-binary-scores, which takes boxes (first frame-data) / (first
+  proposals-similarity), recomputes new binary scores, and outputs new gscore
+  and num_gscores.
+
+--Also wrote the following to run the tests:
+   ralicra2016-run-inference-3with1and2
+   get-inference-results-3with1and2
+   visualize-results-inference-3with1and2
+   run-codetection-3with1and2
+   ralicra2016-run-inference-3with4
+   get-inference-results-3with4   
+   visualize-results-inference-3with4
+   run-codetection-3with4
+
+--Run of ralicra2016-run-inference-{3with1and2,3with4} started at 2110.
 
 
 **setup for test
@@ -7053,6 +7127,9 @@ TO DO's
 (define g-c (easy-ffi:double-to-c 2 g))
 
 (run-inference-1and2 f-c g-c (length f) 10 0.6 0.6 num-g boxes-c)
+
+visualize-results-improved -> visualize-results-inference-1and2
+run-codetection-with-proposals-similarity -> run-codetection-1and2
 
 
 TO DOs:
@@ -7082,7 +7159,6 @@ do pieces independently.
 
 *alignments of runs to sentences
    DONE ALIGNMENTS: f1s0-f1s15
-*check on ralicra-rerun job--done-* files not getting put there automatically
 *maybe do good/bad counts on ralicra image output
 
 **What about bias towards tubes that occur earlier in runs?  Is that idea any good?

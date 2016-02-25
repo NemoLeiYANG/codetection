@@ -189,6 +189,10 @@
  (c-function double ("run_inference_1and2" pointer pointer int int
 		     double double int pointer)))
 
+(define run-inference-4
+ (c-function double ("run_inference_4" pointer pointer int int
+		     double double int pointer)))
+
 
 ;;------these don't work
 (define bp-label-inference

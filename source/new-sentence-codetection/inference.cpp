@@ -444,7 +444,7 @@ extern "C" double run_inference_1and2(double **f, double **g,
   Space space(vars, vars + numVariables);
   GraphModel gm(space);
 
-  double default_f_score = dummy_f;
+  double default_f_score = log(dummy_f);
 
   // add unary score functions
   for (unsigned int t = 0; t < numVariables; t++){
@@ -457,7 +457,7 @@ extern "C" double run_inference_1and2(double **f, double **g,
       double temp_scores[vars[t]-1];
       for (int i = 0; i < top_k; i++){
 	if (f[t][i] > 0){
-	  temp_scores[j] = f[t][i];
+	  temp_scores[j] = log(f[t][i]);
 	  j++;
 	}
       }
@@ -482,7 +482,7 @@ extern "C" double run_inference_1and2(double **f, double **g,
 
   // add binary score functions
   size_t prevf1, prevf2;
-  double default_g_score = dummy_g;
+  double default_g_score = log(dummy_g);
 
   //first find indices into g matrix where frame change breaks are
   int numbreaks = (numVariables*(numVariables-1))/2; //nChoose2
@@ -562,7 +562,7 @@ extern "C" double run_inference_1and2(double **f, double **g,
     for (int i = start_ind; i < end_ind; i++) { //add score from each row of g
       box1 = size_t(g[i][1]) - 1;  //need a -1 here b/c MATLAB vs. C
       box2 = size_t(g[i][3]) - 1;
-      score = g[i][4];
+      score = log(g[i][4]);
       //      printf("box1=%zi, box2=%zi, score=%6.4f\n",box1,box2,score);
       bool f1flag = false;
       bool f2flag = false;
@@ -634,12 +634,295 @@ extern "C" double run_inference_1and2(double **f, double **g,
   std::cout << "OpenGM Belief Propagation " << bp.value() << std::endl;
   std::vector<size_t> labeling(T); 
   bp.arg(labeling);
-  for (unsigned int i = 0; i < labeling.size(); i ++)
-    boxes[i] = int(labeling[i]);
+  //need to translate box numbers back to the original indices here
+  int temp_boxes[labeling.size()];
+  //get temporary indices
+  for (unsigned int i = 0; i < labeling.size(); i++)
+    temp_boxes[i] = int(labeling[i]); 
+  //then loop over temporary indices and figure out original indices
+  for (unsigned int i = 0; i < labeling.size(); i++){
+    if (temp_boxes[i] == int(vars[i]-1)) //dummy box
+      boxes[i] = top_k;
+    else { //nondummy box
+      //  boxes[i] = 99;
+      int nonzero_count = 0;
+      for (int j = 0; j < top_k; j++){
+	if (f[i][j] != 0){
+	  nonzero_count++;
+	  if (nonzero_count == temp_boxes[i]){
+	    boxes[i] = j;
+	    break;
+	  }
+	}
+      }
+    }
+  }
+  //old way, should still be useful in 4
+  // for (unsigned int i = 0; i < labeling.size(); i ++)
+  //   boxes[i] = int(labeling[i]);
   delete [] vars;
+  mytime = time(NULL);
+  printf("--------------------\n");
+  printf("Finshed run_inference_1and2 at ");
+  printf(ctime(&mytime));
   return bp.value();
 }
 
+extern "C" double run_inference_4(double **f, double **g, 
+				  int T, int top_k, 
+				  double dummy_f, double dummy_g, 
+				  int num_gscores, int *boxes) {
+
+  typedef opengm::DiscreteSpace<> Space;
+  typedef opengm::ExplicitFunction<double> Function;
+  typedef opengm::GraphicalModel<double, opengm::Adder, Function, Space> GraphModel;
+  typedef GraphModel::FunctionIdentifier FID;
+  // typedef opengm::BeliefPropagationUpdateRules<GraphModel, opengm::Minimizer> UpdateRules;
+  // typedef opengm::MessagePassing<GraphModel, opengm::Minimizer, UpdateRules, opengm::MaxDistance> BP;
+  typedef opengm::BeliefPropagationUpdateRules<GraphModel, opengm::Maximizer> UpdateRules;
+  typedef opengm::MessagePassing<GraphModel, opengm::Maximizer, UpdateRules, opengm::MaxDistance> BP;
+
+  time_t mytime;
+  mytime = time(NULL);
+  printf("\nStarting run_inference_4 at ");
+  printf(ctime(&mytime));
+  printf("--------------------\n");
+
+  // each frame has a variable with AT MOST top_k+1 possible labels 
+  // (less if 0 unary scores)  
+  size_t numVariables = size_t(T);
+  size_t *vars = new size_t[numVariables];
+  
+  //need to find number of non-zero unary scores for each variable
+  size_t maxLabels = size_t(top_k) + 1;
+  size_t totalLabels = 0;
+  for (unsigned int t = 0; t < numVariables; t++){
+    size_t zero_count = 0;
+    for (int i = 0; i < top_k; i++){
+      if (f[t][i] == 0)
+	zero_count++;
+    }
+    vars[t] = maxLabels - zero_count;
+    //printf("vars[%u] = %lu\n", t, vars[t]);
+    totalLabels += vars[t] - 1; //don't count dummy label
+  }
+  printf("totalLabels = %zi \n", totalLabels);
+  printf("T*top_k = %d\n", T*top_k);
+  printf("Fraction of labels after filter = %6.4f\n", double(totalLabels)/(T * top_k));
+  Space space(vars, vars + numVariables);
+  GraphModel gm(space);
+
+  //double default_f_score = log(dummy_f);
+  double default_f_score = log(1.0); //all unary scores the same = no unary scores
+
+  // add unary score functions
+  for (unsigned int t = 0; t < numVariables; t++){
+    FID fid;
+    size_t fshape[] = {vars[t]}; 
+    Function ff(fshape, fshape+1, default_f_score); 
+    //all labels get same unary score
+    fid = gm.addFunction(ff);
+    // add factors
+    size_t fv[] = {size_t(t)};
+    gm.addFactor(fid, fv, fv+1);
+
+    // //debugging
+    // printf("ff values for t = %u: ",t);
+    // for (unsigned int i = 0; i < vars[t]; i++){
+    //   printf("%f ",ff(i));
+    // }
+    // printf("\n");
+
+  }
+  printf("Unary functions added\n");
+
+  // add binary score functions
+  size_t prevf1, prevf2;
+  double default_g_score = log(dummy_g);
+
+  //first find indices into g matrix where frame change breaks are
+  int numbreaks = (numVariables*(numVariables-1))/2; //nChoose2
+  int breaks[numbreaks];// can't do = {0} b/c variably-sized array
+  memset(breaks, 0, numbreaks*sizeof(int)); //manually initializing array
+  breaks[0] = 0;
+  int b_ind = 1;
+  prevf1 = size_t(g[0][0]);
+  prevf2 = size_t(g[0][2]);
+  for (int i = 0; i < num_gscores; i++) {
+    if ((prevf1 != (size_t(g[i][0]))) ||
+  	(prevf2 != (size_t(g[i][2])))) 
+    {
+      breaks[b_ind] = i;
+      b_ind++;
+      prevf1 = size_t(g[i][0]);
+      prevf2 = size_t(g[i][2]);
+    }
+  }
+
+  // //print for debug
+  // printf("Break indices: ");
+  // for (int i = 0; i < b_ind; i++) {
+  //   printf("%d ", breaks[i]);
+  // }
+  // printf(" ; numbreaks = %d, b_ind = %d\n",numbreaks,b_ind);	      
+
+  //then loop through breaks, declare new gg every time, and add only the scores within that break
+  for (int j = 0; j < b_ind; j++) {
+    size_t frame1, box1, frame2, box2;
+    double score;
+    int start_ind = breaks[j];
+    int end_ind;
+    if (j == (b_ind - 1))
+      end_ind = num_gscores;
+    else
+      end_ind = breaks[j+1];
+    frame1 = size_t(g[start_ind][0]) - 1;  //need a -1 here b/c MATLAB vs. C
+    frame2 = size_t(g[start_ind][2]) - 1;
+    size_t gshape[]={vars[frame1],vars[frame2]}; //different for each frame pair
+
+    Function gg(gshape, gshape + 2, default_g_score);
+    //debugging initialization
+    // printf("frame1 = %zi, frame2 = %zi, vars[frame1] = %lu, vars[frame2] = %lu\n",
+    // 	   frame1, frame2, vars[frame1],vars[frame2]);
+    // for (unsigned int l = 0; l < vars[frame1]; l++){
+    // 	for (unsigned int k = 0; k < vars[frame2]; k++){
+    // 	  printf("%.4f ",gg(l,k));
+    // 	}
+    // 	printf("\n");
+    // }
+    
+    //need to find indices of nonzero unary scores to find the right binary scores
+    size_t frame1_ind[(vars[frame1]-1)];
+    unsigned int idx1 = 0;
+    //    printf("frame1 = %zi, ind: ",frame1); 
+    for (unsigned int k = 0; k < size_t(top_k); k++){
+      if (f[frame1][k] > 0){
+	frame1_ind[idx1] = k;
+	//	printf("%lu ",frame1_ind[idx1]);
+	idx1++;
+      }
+    }
+    //    printf("\n");
+    size_t frame2_ind[(vars[frame2]-1)];
+    unsigned int idx2 = 0;
+    //    printf("frame2 = %zi, ind: ", frame2);
+    for (unsigned int k = 0; k < size_t(top_k); k++){
+      if (f[frame2][k] > 0){
+	frame2_ind[idx2] = k;
+	//	printf("%lu ", frame2_ind[idx2]);
+	idx2++;
+      }
+    }
+    //    printf("\n");
+    //add score after checking if it is valid in both frames
+    for (int i = start_ind; i < end_ind; i++) { //add score from each row of g
+      box1 = size_t(g[i][1]) - 1;  //need a -1 here b/c MATLAB vs. C
+      box2 = size_t(g[i][3]) - 1;
+      score = log(g[i][4]);
+      //      printf("box1=%zi, box2=%zi, score=%6.4f\n",box1,box2,score);
+      bool f1flag = false;
+      bool f2flag = false;
+      unsigned int f1indval = 0;
+      unsigned int f2indval = 0;
+      //check frame1
+      for (unsigned int k = 0; k < (vars[frame1] - 1); k++){
+	if (frame1_ind[k] == box1){
+	  f1flag = true;
+	  f1indval = k;
+	  break;
+	}
+      }
+      //check frame2 (only if frame1 true)
+      if (f1flag){
+	for (unsigned int k = 0; k < (vars[frame2] - 1); k++){
+	  if (frame2_ind[k] == box2){
+	    f2flag = true;
+	    f2indval = k;
+	    break;
+	  }
+	}
+      }
+      if (f1flag && f2flag)
+	gg(f1indval,f2indval) = score;
+    }
+    // //debugging after score add
+    // printf("frame1 = %zi, frame2 = %zi, vars[frame1] = %lu, vars[frame2] = %lu\n",
+    // 	   frame1, frame2, vars[frame1],vars[frame2]);
+    // for (unsigned int l = 0; l < vars[frame1]; l++){
+    // 	for (unsigned int k = 0; k < vars[frame2]; k++){
+    // 	  printf("%.4f ",gg(l,k));
+    // 	}
+    // 	printf("\n");
+    // } 
+    
+    //add function
+    FID gid = gm.addFunction(gg);
+    //add factors
+    size_t gv[] = {size_t(frame1),size_t(frame2)};
+    gm.addFactor(gid, gv, gv+2);
+  }
+  printf("Binary scores complete\n");
+
+  //  inference
+  const size_t maxIterations=100;//10000;
+  const double damping=0.0;
+  //const double tolerance=1e-5;
+  const double convergenceBound = 1e-7;//1e-10;
+  // libdaiBp::UpdateRule = PARALL | SEQFIX | SEQRND | SEQMAX
+  //libdaiBP::UpdateRule updateRule = libdaiBP::PARALL;
+  //size_t verboseLevel=0;
+  //libdaiBP::Parameter parameter(maxIterations, damping, tolerance, updateRule,verboseLevel);
+  BP::Parameter parameter(maxIterations,convergenceBound,damping);
+  BP::VerboseVisitorType visitor;
+  printf("before bp call\n");
+  //libdaiBP bp(gm, parameter);
+  BP bp(gm, parameter);
+  printf("after bp call\n");
+  // optimize (approximately)
+  clock_t t1, t2;
+  printf("before bp.infer\n");
+  t1 = clock();
+  //  bp.infer();
+  bp.infer(visitor);
+  t2 = clock();
+  printf("after bp.infer\n");
+  std::cout << (double(t2) - double(t1))/CLOCKS_PER_SEC*1000 << " ms" << std::endl;
+  std::cout << "OpenGM Belief Propagation " << bp.value() << std::endl;
+  std::vector<size_t> labeling(T); 
+  bp.arg(labeling);
+  //need to translate box numbers back to the original indices here
+  int temp_boxes[labeling.size()];
+  //get temporary indices
+  for (unsigned int i = 0; i < labeling.size(); i++)
+    temp_boxes[i] = int(labeling[i]); 
+  //then loop over temporary indices and figure out original indices
+  for (unsigned int i = 0; i < labeling.size(); i++){
+    if (temp_boxes[i] == int(vars[i]-1)) //dummy box
+      boxes[i] = top_k;
+    else { //nondummy box
+      //  boxes[i] = 99;
+      int nonzero_count = 0;
+      for (int j = 0; j < top_k; j++){
+	if (f[i][j] != 0){
+	  nonzero_count++;
+	  if (nonzero_count == temp_boxes[i]){
+	    boxes[i] = j;
+	    break;
+	  }
+	}
+      }
+    }
+  }
+  //old way, should still be useful in 4
+  // for (unsigned int i = 0; i < labeling.size(); i ++)
+  //   boxes[i] = int(labeling[i]);
+  delete [] vars;
+  mytime = time(NULL);
+  printf("--------------------\n");
+  printf("Finshed run_inference_4 at ");
+  printf(ctime(&mytime));
+  return bp.value();
+}
 
 
 //-----------------------END NEW FUNCTIONS FOR 20160223 TESTS----------------

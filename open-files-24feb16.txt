@@ -1,0 +1,15 @@
+. * *shell*<3>           79745  Shell:run	  ~/darpa-collaboration/ideas/x86_64-Linux-3.2.0-4-amd64/
+    inference.cpp        63026  C++/l		  ~/codetection/source/new-sentence-codetection/inference.cpp
+    notes.text          371921  Text		  ~/codetection/notes.text
+    codetection-test.s: 278352  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+  * *scheme*           3340453  Inferior Scheme:
+    scheme-working-buff: 65241  Text		  ~/codetection/source/new-sentence-codetection/scheme-working-buffer-23feb16-1.txt
+  * *shell*              10848  Shell:run	  ~/codetection/
+    open-files-23feb16-2: 1040  Text		  ~/codetection/open-files-23feb16-2.txt
+    open-files-23feb16-1.: 886  Text		  ~/codetection/open-files-23feb16-1.txt
+    toollib-codetection: 25275  Scheme		  ~/codetection/source/new-sentence-codetection/toollib-codetection.sc
+    inference.h           2042  C++/l		  ~/codetection/source/new-sentence-codetection/inference.h
+    open-files-21feb16-ho: 857  Text		  ~/codetection/open-files-21feb16-home.txt
+  * *shell*<2>           29137  Shell:run	  /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/
+  * *Messages*            4714  Fundamental
+    *scratch*              191  Lisp Interaction

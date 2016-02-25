@@ -928,10 +928,210 @@
 	     boxes 
 	     ;;(map (lambda (scores) (append scores '(())))
 	     (map (lambda (scores) (append scores (list dummy-f)))
-		  f))
-	
-	     )
+		  f)))
+  ;;(list boxes) ;;just box indices
+  ))
 
+(define (run-codetection-1and2 proposals-similarity dummy-f dummy-g)
+ (let* ((top-k (vector-length (first (first proposals-similarity))))
+	(proposals-boxes (map (lambda (boxes) (map (lambda (x) (sublist x 0 4))
+						   (matrix->list-of-lists boxes)))
+			      (first proposals-similarity)))
+	(proposals-xy (map (lambda (boxes) (map (lambda (x) (sublist x 5 7))
+						(matrix->list-of-lists boxes)))
+			   (first proposals-similarity)))
+	(f (map (lambda (boxes) (map fifth (matrix->list-of-lists boxes)))
+		(first proposals-similarity)))
+	(g (matrix->list-of-lists (second proposals-similarity)))
+	(f-c (easy-ffi:double-to-c 2 f))
+	(g-c (easy-ffi:double-to-c 2 g))
+	(num-g (exact-round (x (x (third proposals-similarity)))))
+	(boxes-c (list->c-exact-array (malloc (* c-sizeof-int (length f)))
+				      (map-n (lambda _ 0) (length f))
+				      c-sizeof-int #t))	
+	(score (run-inference-1and2 f-c g-c (length f)
+				    top-k dummy-f dummy-g num-g boxes-c))
+	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t)))
+  (free boxes-c)
+  (easy-ffi:free 2 f f-c)
+  (easy-ffi:free 2 g g-c);;
+  ;;output
+  (list boxes ;;box numbers
+	(map (lambda  ;;xy locations as list (empty list if dummy)
+	       (b prop-xy) (list-ref prop-xy b))
+	     boxes
+	     (map (lambda (prop-xy) (append prop-xy '(())))
+		  proposals-xy))
+	(map (lambda ;;pixel locations as list (empty list if dummy)
+	       (b prop-boxes) (list-ref prop-boxes b))
+	     boxes
+	     (map (lambda (prop-boxes) (append prop-boxes '(())))
+		  proposals-boxes))
+	;;(ensure-scores ) is the function to make sure that the below list is
+	;;included in the results file
+	(map (lambda ;;f-score value (NOT A LIST) (dummy-f, not empty list, if dummy)
+	       (b scores) (list-ref scores b))
+	     boxes 
+	     ;;(map (lambda (scores) (append scores '(())))
+	     (map (lambda (scores) (append scores (list dummy-f)))
+		  f)))
+  ;;(list boxes) ;;just box indices
+  ))
+
+(define (recompute-binary-scores boxes)
+ (let* ((T (length boxes))
+	(top-k (vector-length (first boxes)))
+	(num-vals (vector-length (x (first boxes)))))
+  (start-matlab!)
+  (matlab (format #f "proposals = zeros(~a,~a,~a);" top-k num-vals T))
+  (for-each-indexed
+   (lambda (p i) (scheme->matlab! (format #f "proposals(:,:,~a)" (+ i 1)) p))
+   boxes)
+  (matlab "[gscore, num_gscore] = recompute_binary_scores(proposals);")
+  (list (matlab-get-variable "gscore")
+	(matlab-get-variable "num_gscore"))))
+
+(define (run-codetection-3with1and2 proposals-similarity dummy-f dummy-g)
+ (let* ((top-k (vector-length (first (first proposals-similarity))))
+	(proposals-boxes (map (lambda (boxes) (map (lambda (x) (sublist x 0 4))
+						   (matrix->list-of-lists boxes)))
+			      (first proposals-similarity)))
+	(proposals-xy (map (lambda (boxes) (map (lambda (x) (sublist x 5 7))
+						(matrix->list-of-lists boxes)))
+			   (first proposals-similarity)))
+	(f (map (lambda (boxes) (map fifth (matrix->list-of-lists boxes)))
+		(first proposals-similarity)))
+	(new-binary-scores (recompute-binary-scores (first proposals-similarity)))
+	;;(g (matrix->list-of-lists (second proposals-similarity)))
+	(g (matrix->list-of-lists (first new-binary-scores)))
+	(f-c (easy-ffi:double-to-c 2 f))
+	(g-c (easy-ffi:double-to-c 2 g))
+	;;(num-g (exact-round (x (x (third proposals-similarity)))))
+	(num-g (exact-round (x (x (second new-binary-scores)))))
+	(boxes-c (list->c-exact-array (malloc (* c-sizeof-int (length f)))
+				      (map-n (lambda _ 0) (length f))
+				      c-sizeof-int #t))	
+	(score (run-inference-1and2 f-c g-c (length f)
+				    top-k dummy-f dummy-g num-g boxes-c))
+	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t)))
+  (free boxes-c)
+  (easy-ffi:free 2 f f-c)
+  (easy-ffi:free 2 g g-c);;
+  ;;output
+  (list boxes ;;box numbers
+	(map (lambda  ;;xy locations as list (empty list if dummy)
+	       (b prop-xy) (list-ref prop-xy b))
+	     boxes
+	     (map (lambda (prop-xy) (append prop-xy '(())))
+		  proposals-xy))
+	(map (lambda ;;pixel locations as list (empty list if dummy)
+	       (b prop-boxes) (list-ref prop-boxes b))
+	     boxes
+	     (map (lambda (prop-boxes) (append prop-boxes '(())))
+		  proposals-boxes))
+	;;(ensure-scores ) is the function to make sure that the below list is
+	;;included in the results file
+	(map (lambda ;;f-score value (NOT A LIST) (dummy-f, not empty list, if dummy)
+	       (b scores) (list-ref scores b))
+	     boxes 
+	     ;;(map (lambda (scores) (append scores '(())))
+	     (map (lambda (scores) (append scores (list dummy-f)))
+		  f)))
+  ;;(list boxes) ;;just box indices
+  ))
+
+(define (run-codetection-4 proposals-similarity dummy-f dummy-g)
+ (let* ((top-k (vector-length (first (first proposals-similarity))))
+	(proposals-boxes (map (lambda (boxes) (map (lambda (x) (sublist x 0 4))
+						   (matrix->list-of-lists boxes)))
+			      (first proposals-similarity)))
+	(proposals-xy (map (lambda (boxes) (map (lambda (x) (sublist x 5 7))
+						(matrix->list-of-lists boxes)))
+			   (first proposals-similarity)))
+	(f (map (lambda (boxes) (map fifth (matrix->list-of-lists boxes)))
+		(first proposals-similarity)))
+	(g (matrix->list-of-lists (second proposals-similarity)))
+	(f-c (easy-ffi:double-to-c 2 f))
+	(g-c (easy-ffi:double-to-c 2 g))
+	(num-g (exact-round (x (x (third proposals-similarity)))))
+	(boxes-c (list->c-exact-array (malloc (* c-sizeof-int (length f)))
+				      (map-n (lambda _ 0) (length f))
+				      c-sizeof-int #t))	
+	(score (run-inference-4 f-c g-c (length f)
+				top-k dummy-f dummy-g num-g boxes-c))
+	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t)))
+  (free boxes-c)
+  (easy-ffi:free 2 f f-c)
+  (easy-ffi:free 2 g g-c);;
+  ;;output
+  (list boxes ;;box numbers
+	(map (lambda  ;;xy locations as list (empty list if dummy)
+	       (b prop-xy) (list-ref prop-xy b))
+	     boxes
+	     (map (lambda (prop-xy) (append prop-xy '(())))
+		  proposals-xy))
+	(map (lambda ;;pixel locations as list (empty list if dummy)
+	       (b prop-boxes) (list-ref prop-boxes b))
+	     boxes
+	     (map (lambda (prop-boxes) (append prop-boxes '(())))
+		  proposals-boxes))
+	;;(ensure-scores ) is the function to make sure that the below list is
+	;;included in the results file
+	(map (lambda ;;f-score value (NOT A LIST) (dummy-f, not empty list, if dummy)
+	       (b scores) (list-ref scores b))
+	     boxes 
+	     ;;(map (lambda (scores) (append scores '(())))
+	     (map (lambda (scores) (append scores (list dummy-f)))
+		  f)))
+  ;;(list boxes) ;;just box indices
+  ))
+
+(define (run-codetection-3with4 proposals-similarity dummy-f dummy-g)
+ (let* ((top-k (vector-length (first (first proposals-similarity))))
+	(proposals-boxes (map (lambda (boxes) (map (lambda (x) (sublist x 0 4))
+						   (matrix->list-of-lists boxes)))
+			      (first proposals-similarity)))
+	(proposals-xy (map (lambda (boxes) (map (lambda (x) (sublist x 5 7))
+						(matrix->list-of-lists boxes)))
+			   (first proposals-similarity)))
+	(f (map (lambda (boxes) (map fifth (matrix->list-of-lists boxes)))
+		(first proposals-similarity)))
+	(new-binary-scores (recompute-binary-scores (first proposals-similarity)))
+	;;(g (matrix->list-of-lists (second proposals-similarity)))
+	(g (matrix->list-of-lists (first new-binary-scores)))
+	(f-c (easy-ffi:double-to-c 2 f))
+	(g-c (easy-ffi:double-to-c 2 g))
+	;;(num-g (exact-round (x (x (third proposals-similarity)))))
+	(num-g (exact-round (x (x (second new-binary-scores)))))
+	(boxes-c (list->c-exact-array (malloc (* c-sizeof-int (length f)))
+				      (map-n (lambda _ 0) (length f))
+				      c-sizeof-int #t))	
+	(score (run-inference-4 f-c g-c (length f)
+				top-k dummy-f dummy-g num-g boxes-c))
+	(boxes (c-exact-array->list boxes-c c-sizeof-int (length f) #t)))
+  (free boxes-c)
+  (easy-ffi:free 2 f f-c)
+  (easy-ffi:free 2 g g-c);;
+  ;;output
+  (list boxes ;;box numbers
+	(map (lambda  ;;xy locations as list (empty list if dummy)
+	       (b prop-xy) (list-ref prop-xy b))
+	     boxes
+	     (map (lambda (prop-xy) (append prop-xy '(())))
+		  proposals-xy))
+	(map (lambda ;;pixel locations as list (empty list if dummy)
+	       (b prop-boxes) (list-ref prop-boxes b))
+	     boxes
+	     (map (lambda (prop-boxes) (append prop-boxes '(())))
+		  proposals-boxes))
+	;;(ensure-scores ) is the function to make sure that the below list is
+	;;included in the results file
+	(map (lambda ;;f-score value (NOT A LIST) (dummy-f, not empty list, if dummy)
+	       (b scores) (list-ref scores b))
+	     boxes 
+	     ;;(map (lambda (scores) (append scores '(())))
+	     (map (lambda (scores) (append scores (list dummy-f)))
+		  f)))
   ;;(list boxes) ;;just box indices
   ))
 
@@ -1172,6 +1372,192 @@
 	(video-path (format #f "~a/video_front.avi" path))
 	(frames (video->frames 1 video-path))
 	)
+  (write-object-to-file results (format #f "~a/~a/results-~a-~a.sc"
+					path
+					data-output-dir
+					(number->padded-string-of-length dummy-f 3)
+					(number->padded-string-of-length dummy-g 3)))
+ ;; (dtrace "img-path" img-path)
+  (mkdir-p img-path)
+  (let loop ((images (map (lambda (f) (imlib:clone f)) frames))
+	     (boxes boxes)
+	     (n 0))
+   (if (or (null? images)
+	   (null? boxes))
+       (dtrace (format #f "finished in ~a" path) #f)
+       (let* ((box (first boxes))
+	      (image (first images)))
+	(if (null? box)
+	    (imlib-draw-text-on-image image ;;we have a dummy box
+				      "DUMMY BOX" ;;string
+				      (vector 255 0 0) ;;text color
+				      18 ;;font size?
+				      320 ;; x?
+				      240 ;; y?
+				      (vector 255 255 255) ;;bg color
+				      ) 
+	    (let* ((x1 (first box)) ;;we have a real box
+		   (y1 (second box))
+		   (w (- (third box) (first box)))
+		   (h (- (fourth box) (second box))))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0) 3)))
+	(imlib:save image (format #f "~a/~a.png"
+				  img-path
+				  (number->padded-string-of-length n 5)))
+	(dtrace "saved image" n)
+	(loop (rest images) (rest boxes) (+ n 1)))))))
+
+(define (visualize-results-inference-1and2 path dummy-f dummy-g data-output-dir)
+ (let* ((data (read-object-from-file
+	       (format #f "~a/~a/frame-data-~a-~a.sc"
+		       path data-output-dir dummy-f dummy-g)))
+	(img-path (format #f "~a/~a/images-~a-~a" path data-output-dir
+			  (number->padded-string-of-length dummy-f 3)
+			  (number->padded-string-of-length dummy-g 3)))
+	(results (run-codetection-1and2 data dummy-f dummy-g))
+	(boxes (third results))
+	(video-path (format #f "~a/video_front.avi" path))
+	(frames (video->frames 1 video-path)))
+  (write-object-to-file results (format #f "~a/~a/results-~a-~a.sc"
+					path
+					data-output-dir
+					(number->padded-string-of-length dummy-f 3)
+					(number->padded-string-of-length dummy-g 3)))
+ ;; (dtrace "img-path" img-path)
+  (mkdir-p img-path)
+  (let loop ((images (map (lambda (f) (imlib:clone f)) frames))
+	     (boxes boxes)
+	     (n 0))
+   (if (or (null? images)
+	   (null? boxes))
+       (dtrace (format #f "finished in ~a" path) #f)
+       (let* ((box (first boxes))
+	      (image (first images)))
+	(if (null? box)
+	    (imlib-draw-text-on-image image ;;we have a dummy box
+				      "DUMMY BOX" ;;string
+				      (vector 255 0 0) ;;text color
+				      18 ;;font size?
+				      320 ;; x?
+				      240 ;; y?
+				      (vector 255 255 255) ;;bg color
+				      ) 
+	    (let* ((x1 (first box)) ;;we have a real box
+		   (y1 (second box))
+		   (w (- (third box) (first box)))
+		   (h (- (fourth box) (second box))))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0) 3)))
+	(imlib:save image (format #f "~a/~a.png"
+				  img-path
+				  (number->padded-string-of-length n 5)))
+	(dtrace "saved image" n)
+	(loop (rest images) (rest boxes) (+ n 1)))))))
+
+(define (visualize-results-inference-3with1and2
+	 path dummy-f dummy-g data-output-dir)
+ (let* ((data (read-object-from-file
+	       (format #f "~a/~a/frame-data-~a-~a.sc"
+		       path data-output-dir dummy-f dummy-g)))
+	(img-path (format #f "~a/~a/images-~a-~a" path data-output-dir
+			  (number->padded-string-of-length dummy-f 3)
+			  (number->padded-string-of-length dummy-g 3)))
+	(results (run-codetection-3with1and2 data dummy-f dummy-g))
+	(boxes (third results))
+	(video-path (format #f "~a/video_front.avi" path))
+	(frames (video->frames 1 video-path)))
+  (write-object-to-file results (format #f "~a/~a/results-~a-~a.sc"
+					path
+					data-output-dir
+					(number->padded-string-of-length dummy-f 3)
+					(number->padded-string-of-length dummy-g 3)))
+ ;; (dtrace "img-path" img-path)
+  (mkdir-p img-path)
+  (let loop ((images (map (lambda (f) (imlib:clone f)) frames))
+	     (boxes boxes)
+	     (n 0))
+   (if (or (null? images)
+	   (null? boxes))
+       (dtrace (format #f "finished in ~a" path) #f)
+       (let* ((box (first boxes))
+	      (image (first images)))
+	(if (null? box)
+	    (imlib-draw-text-on-image image ;;we have a dummy box
+				      "DUMMY BOX" ;;string
+				      (vector 255 0 0) ;;text color
+				      18 ;;font size?
+				      320 ;; x?
+				      240 ;; y?
+				      (vector 255 255 255) ;;bg color
+				      ) 
+	    (let* ((x1 (first box)) ;;we have a real box
+		   (y1 (second box))
+		   (w (- (third box) (first box)))
+		   (h (- (fourth box) (second box))))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0) 3)))
+	(imlib:save image (format #f "~a/~a.png"
+				  img-path
+				  (number->padded-string-of-length n 5)))
+	(dtrace "saved image" n)
+	(loop (rest images) (rest boxes) (+ n 1)))))))
+
+(define (visualize-results-inference-3with4
+	 path dummy-f dummy-g data-output-dir)
+ (let* ((data (read-object-from-file
+	       (format #f "~a/~a/frame-data-~a-~a.sc"
+		       path data-output-dir dummy-f dummy-g)))
+	(img-path (format #f "~a/~a/images-~a-~a" path data-output-dir
+			  (number->padded-string-of-length dummy-f 3)
+			  (number->padded-string-of-length dummy-g 3)))
+	(results (run-codetection-3with4 data dummy-f dummy-g))
+	(boxes (third results))
+	(video-path (format #f "~a/video_front.avi" path))
+	(frames (video->frames 1 video-path)))
+  (write-object-to-file results (format #f "~a/~a/results-~a-~a.sc"
+					path
+					data-output-dir
+					(number->padded-string-of-length dummy-f 3)
+					(number->padded-string-of-length dummy-g 3)))
+ ;; (dtrace "img-path" img-path)
+  (mkdir-p img-path)
+  (let loop ((images (map (lambda (f) (imlib:clone f)) frames))
+	     (boxes boxes)
+	     (n 0))
+   (if (or (null? images)
+	   (null? boxes))
+       (dtrace (format #f "finished in ~a" path) #f)
+       (let* ((box (first boxes))
+	      (image (first images)))
+	(if (null? box)
+	    (imlib-draw-text-on-image image ;;we have a dummy box
+				      "DUMMY BOX" ;;string
+				      (vector 255 0 0) ;;text color
+				      18 ;;font size?
+				      320 ;; x?
+				      240 ;; y?
+				      (vector 255 255 255) ;;bg color
+				      ) 
+	    (let* ((x1 (first box)) ;;we have a real box
+		   (y1 (second box))
+		   (w (- (third box) (first box)))
+		   (h (- (fourth box) (second box))))
+	     (imlib:draw-rectangle image x1 y1 w h (vector 255 0 0) 3)))
+	(imlib:save image (format #f "~a/~a.png"
+				  img-path
+				  (number->padded-string-of-length n 5)))
+	(dtrace "saved image" n)
+	(loop (rest images) (rest boxes) (+ n 1)))))))
+
+(define (visualize-results-inference-4 path dummy-f dummy-g data-output-dir)
+ (let* ((data (read-object-from-file
+	       (format #f "~a/~a/frame-data-~a-~a.sc"
+		       path data-output-dir dummy-f dummy-g)))
+	(img-path (format #f "~a/~a/images-~a-~a" path data-output-dir
+			  (number->padded-string-of-length dummy-f 3)
+			  (number->padded-string-of-length dummy-g 3)))
+	(results (run-codetection-4 data dummy-f dummy-g))
+	(boxes (third results))
+	(video-path (format #f "~a/video_front.avi" path))
+	(frames (video->frames 1 video-path)))
   (write-object-to-file results (format #f "~a/~a/results-~a-~a.sc"
 					path
 					data-output-dir
@@ -1997,6 +2383,21 @@
 		  output-dirname
 		  matlab-output-filename))))
 
+(define (plot-old-ralicra-data floorplan-dir)
+ (let* ((data-output-dir "test20150618")
+	(output-dirname (format #f "detections-~a" data-output-dir))
+	(img-dir (format #f "~a/~a/" floorplan-dir output-dirname)))
+  (start-matlab!)
+  (matlab "clear all")
+  (matlab (format #f "load('~a/detection_data.mat');" img-dir))
+  (matlab (format #f
+		  "[numobj, objxys,scores] = find_objects(detection_data,~a,~a,~a,~a,~a,~a);"
+		  *xmin* *xmax* *ymin* *ymax*
+		  5 ;; cm_between HARDCODED
+		  0.25));; gaussian_variance HARDCODED
+  (matlab (format #f
+		  "ralicra_plotting2(detection_data,scores,'~a',objxys);" img-dir))))
+
 (define (get-detection-data-ralicra2016)
  (let* ((floorplan-dir "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/plan0")
 	(frame-data-filename "frame-data.sc")
@@ -2129,7 +2530,7 @@
 		  5 ;; cm_between HARDCODED
 		  0.25));; gaussian_variance HARDCODED
   (matlab (format #f
-		  "ralicra_plotting2(detection_data,scores,'~a');" img-dir))
+		  "ralicra_plotting2(detection_data,scores,'~a',objxys);" img-dir))
   (matlab (format #f
 		  "cluster_data = cluster_detections_by_object(detection_data,objxys,~a);"
 		  0.5)) ;; threshold in m HARDCODED
@@ -2226,6 +2627,262 @@
 	     (rsync-directory-to-server server data-directory source))
 	    servers) ;;copy results back to source
   (dtrace "processing complete for get-codetection-results-training-or-generation" #f)
+  (system "date")))
+
+(define (get-inference-results-1and2
+	 data-directory ;; NEED slash on data-dir
+	 top-k
+	 ssize
+	 alpha
+	 beta
+	 gamma
+	 delta
+	 dummy-f
+	 dummy-g
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 data-output-dir ;;this is just a DIR NAME that will be under each run dir
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+ (let* ((servers server-list)
+	(source source-machine)
+	(c-cpus-per-job 1)
+	(output-c (format #f "~a-c/" output-directory))
+	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	(dir-list (join
+		   (map
+		    (lambda (p)
+		     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+			  (system-output
+			   (format #f "ls ~a/~a | grep 2014-" data-directory p))))
+		    plandirs)))
+	(commands-c ;;if something breaks this might be it--not sure I have path changes right
+	 (map
+	  (lambda (dir)
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (visualize-results-inference-1and2 \"~a\" ~a ~a \"~a\") :n :n :n :n :b"
+		   dir
+		   dummy-f
+		   dummy-g
+		   data-output-dir)) dir-list))
+	)
+  (dtrace "starting get-inference-results-1and2" #f)
+  (system "date")
+  ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
+  ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
+  ;; (for-each (lambda (dir)
+  ;; 	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  ;; 		       servers))
+  ;; 	    (list output-matlab output-c))  ;;NOT NECESSARY
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-c))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
+		       servers))
+	    (list output-c))
+  (dtrace "starting c processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-c
+  						      servers
+  						      c-cpus-per-job
+  						      output-c
+  						      source
+  						      data-directory)
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "processing complete for get-inference-results-1and2" #f)
+  (system "date")))
+
+(define (get-inference-results-3with1and2
+	 data-directory ;; NEED slash on data-dir
+	 top-k
+	 ssize
+	 alpha
+	 beta
+	 gamma
+	 delta
+	 dummy-f
+	 dummy-g
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 data-output-dir ;;this is just a DIR NAME that will be under each run dir
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+ (let* ((servers server-list)
+	(source source-machine)
+	(c-cpus-per-job 1)
+	(output-c (format #f "~a-c/" output-directory))
+	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	(dir-list (join
+		   (map
+		    (lambda (p)
+		     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+			  (system-output
+			   (format #f "ls ~a/~a | grep 2014-" data-directory p))))
+		    plandirs)))
+	(commands-c ;;if something breaks this might be it--not sure I have path changes right
+	 (map
+	  (lambda (dir)
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (visualize-results-inference-3with1and2 \"~a\" ~a ~a \"~a\") :n :n :n :n :b"
+		   dir
+		   dummy-f
+		   dummy-g
+		   data-output-dir)) dir-list))
+	)
+  (dtrace "starting get-inference-results-3with1and2" #f)
+  (system "date")
+  ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
+  ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
+  ;; (for-each (lambda (dir)
+  ;; 	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  ;; 		       servers))
+  ;; 	    (list output-matlab output-c))  ;;NOT NECESSARY
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-c))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
+		       servers))
+	    (list output-c))
+  (dtrace "starting c processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-c
+  						      servers
+  						      c-cpus-per-job
+  						      output-c
+  						      source
+  						      data-directory)
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "processing complete for get-inference-results-3with1and2" #f)
+  (system "date")))
+
+(define (get-inference-results-4
+	 data-directory ;; NEED slash on data-dir
+	 top-k
+	 ssize
+	 alpha
+	 beta
+	 gamma
+	 delta
+	 dummy-f
+	 dummy-g
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 data-output-dir ;;this is just a DIR NAME that will be under each run dir
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+ (let* ((servers server-list)
+	(source source-machine)
+	(c-cpus-per-job 1)
+	(output-c (format #f "~a-c/" output-directory))
+	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	(dir-list (join
+		   (map
+		    (lambda (p)
+		     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+			  (system-output
+			   (format #f "ls ~a/~a | grep 2014-" data-directory p))))
+		    plandirs)))
+	(commands-c ;;if something breaks this might be it--not sure I have path changes right
+	 (map
+	  (lambda (dir)
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (visualize-results-inference-4 \"~a\" ~a ~a \"~a\") :n :n :n :n :b"
+		   dir
+		   dummy-f
+		   dummy-g
+		   data-output-dir)) dir-list))
+	)
+  (dtrace "starting get-inference-results-4" #f)
+  (system "date")
+  ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
+  ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
+  ;; (for-each (lambda (dir)
+  ;; 	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  ;; 		       servers))
+  ;; 	    (list output-matlab output-c))  ;;NOT NECESSARY
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-c))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
+		       servers))
+	    (list output-c))
+  (dtrace "starting c processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-c
+  						      servers
+  						      c-cpus-per-job
+  						      output-c
+  						      source
+  						      data-directory)
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "processing complete for get-inference-results-4" #f)
+  (system "date")))
+
+(define (get-inference-results-3with4
+	 data-directory ;; NEED slash on data-dir
+	 top-k
+	 ssize
+	 alpha
+	 beta
+	 gamma
+	 delta
+	 dummy-f
+	 dummy-g
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 data-output-dir ;;this is just a DIR NAME that will be under each run dir
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+ (let* ((servers server-list)
+	(source source-machine)
+	(c-cpus-per-job 1)
+	(output-c (format #f "~a-c/" output-directory))
+	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	(dir-list (join
+		   (map
+		    (lambda (p)
+		     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+			  (system-output
+			   (format #f "ls ~a/~a | grep 2014-" data-directory p))))
+		    plandirs)))
+	(commands-c ;;if something breaks this might be it--not sure I have path changes right
+	 (map
+	  (lambda (dir)
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (visualize-results-inference-3with4 \"~a\" ~a ~a \"~a\") :n :n :n :n :b"
+		   dir
+		   dummy-f
+		   dummy-g
+		   data-output-dir)) dir-list))
+	)
+  (dtrace "starting get-inference-results-3with4" #f)
+  (system "date")
+  ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
+  ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
+  ;; (for-each (lambda (dir)
+  ;; 	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  ;; 		       servers))
+  ;; 	    (list output-matlab output-c))  ;;NOT NECESSARY
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-c))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
+		       servers))
+	    (list output-c))
+  (dtrace "starting c processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-c
+  						      servers
+  						      c-cpus-per-job
+  						      output-c
+  						      source
+  						      data-directory)
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "processing complete for get-inference-results-3with4" #f)
   (system "date")))
 
 (define (get-edgeboxes-data-many-servers
@@ -2534,6 +3191,300 @@
 						  source-machine) 
 
 
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans data-directory 
+					output-directory 
+					results-filename ;;remember to add data-output-dir to this and frame-data...
+					frame-data-filename
+					data-output-dir
+					server-list
+					source-machine)
+  ))
+
+(define (ralicra2016-run-inference-1and2)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(data-output-dirname "test-20160223-1and2")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list
+	 (list "save" "akili"))
+	 
+	(source-machine "seykhl"))
+  (get-inference-results-1and2 data-directory 
+			       top-k
+			       ssize
+			       alpha
+			       beta
+			       gamma
+			       delta
+			       dummy-f
+			       dummy-g
+			       output-directory 
+			       data-output-dir 
+			       server-list
+			       source-machine) 
+
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans data-directory 
+					output-directory 
+					results-filename ;;remember to add data-output-dir to this and frame-data...
+					frame-data-filename
+					data-output-dir
+					server-list
+					source-machine)
+  ))
+
+(define (ralicra2016-run-inference-3with1and2)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(data-output-dirname "test-20160223-3with1and2")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list
+	 (list "save" "akili"))
+	 
+	(source-machine "seykhl"))
+  (get-inference-results-3with1and2 data-directory 
+			       top-k
+			       ssize
+			       alpha
+			       beta
+			       gamma
+			       delta
+			       dummy-f
+			       dummy-g
+			       output-directory 
+			       data-output-dir 
+			       server-list
+			       source-machine) 
+
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans data-directory 
+					output-directory 
+					results-filename ;;remember to add data-output-dir to this and frame-data...
+					frame-data-filename
+					data-output-dir
+					server-list
+					source-machine)
+  ))
+
+(define (ralicra2016-run-inference-1and2-detections-only)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(data-output-dirname "test-20160223-1and2")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list
+	 (list "save" "akili"))
+	(source-machine "seykhl"))
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans data-directory 
+					output-directory 
+					results-filename ;;remember to add data-output-dir to this and frame-data...
+					frame-data-filename
+					data-output-dir
+					server-list
+					source-machine)
+  ))
+
+(define (ralicra2016-run-inference-4)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(data-output-dirname "test-20160223-4")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list
+	 (list "aruco" "perisikan"))
+	 
+	(source-machine "seykhl"))
+  (get-inference-results-4 data-directory 
+			       top-k
+			       ssize
+			       alpha
+			       beta
+			       gamma
+			       delta
+			       dummy-f
+			       dummy-g
+			       output-directory 
+			       data-output-dir 
+			       server-list
+			       source-machine) 
+
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans data-directory 
+					output-directory 
+					results-filename ;;remember to add data-output-dir to this and frame-data...
+					frame-data-filename
+					data-output-dir
+					server-list
+					source-machine)
+  ))
+
+(define (ralicra2016-run-inference-3with4)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(data-output-dirname "test-20160223-3with4")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list
+	 (list "aruco" "perisikan"))
+	 
+	(source-machine "seykhl"))
+  (get-inference-results-3with4 data-directory 
+			       top-k
+			       ssize
+			       alpha
+			       beta
+			       gamma
+			       delta
+			       dummy-f
+			       dummy-g
+			       output-directory 
+			       data-output-dir 
+			       server-list
+			       source-machine) 
+
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans data-directory 
+					output-directory 
+					results-filename ;;remember to add data-output-dir to this and frame-data...
+					frame-data-filename
+					data-output-dir
+					server-list
+					source-machine)
+  ))
+
+(define (ralicra2016-run-inference-4-detections-only)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(data-output-dirname "test-20160223-4")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list
+	 (list "aruco" "perisikan"))
+	(source-machine "seykhl"))
 ;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
   (get-object-detections-all-floorplans data-directory 
 					output-directory 
