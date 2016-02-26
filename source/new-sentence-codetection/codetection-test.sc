@@ -2571,7 +2571,7 @@
 			(format #f "~axy_with_label.sc" img-dir))
   ))
 
-(define (detect-sort-label-objects-single-floorplan-6 floorplan-dir
+(define (detect-sort-label-objects-single-floorplan-6floorplan-dir
 						      results-filename
 						      frame-data-filename
 						      data-output-dir)
@@ -2785,6 +2785,89 @@
 	     (rsync-directory-to-server server data-directory source))
 	    servers) ;;copy results back to source
   (dtrace "processing complete for get-codetection-results-training-or-generation" #f)
+  (system "date")))
+
+(define (get-codetection-results-iros2016
+	 data-directory ;; NEED slash on data-dir
+	 top-k
+	 ssize
+	 alpha
+	 beta
+	 gamma
+	 delta
+	 dummy-f
+	 dummy-g
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 data-output-dir ;;this is just a DIR NAME that will be under each run dir
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+ (let* ((servers server-list)
+	(source source-machine)
+	(matlab-cpus-per-job 5);;4);; for under-the-hood matlab parallelism
+	(c-cpus-per-job 5)
+	(output-matlab (format #f "~a-matlab/" output-directory))
+	(output-c (format #f "~a-c/" output-directory))
+	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	(dir-list (join
+		   (map
+		    (lambda (p)
+		     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+			  (system-output
+			   (format #f "ls ~a/~a | grep 2014-" data-directory p))))
+		    plandirs)))
+	(commands-matlab
+	 (map
+	  (lambda (dir) ;;change get-matlab... command if using auto-drive
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (get-matlab-data-training-or-generation-improved \"~a\" ~a ~a ~a ~a ~a ~a ~a ~a \"~a\") :n :n :n :n :b" dir top-k ssize alpha beta gamma delta dummy-f dummy-g data-output-dir)) dir-list))
+	(commands-c ;;if something breaks this might be it--not sure I have path changes right
+	 (map
+	  (lambda (dir)
+	   (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (visualize-results-inference-1and2 \"~a\" ~a ~a \"~a\") :n :n :n :n :b"
+		   dir
+		   dummy-f
+		   dummy-g
+		   data-output-dir)) dir-list))
+	)
+  (dtrace "starting get-codetection-results-iros2016" #f)
+  (system "date")
+  ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
+  ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
+  ;; (for-each (lambda (dir)
+  ;; 	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  ;; 		       servers))
+  ;; 	    (list output-matlab output-c))  ;;NOT NECESSARY
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab output-c))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
+		       servers))
+	    (list output-matlab output-c))
+  (dtrace "starting matlab processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-matlab
+  						      servers
+  						      matlab-cpus-per-job
+  						      output-matlab
+  						      source
+  						      data-directory)
+  (dtrace "matlab processing complete" #f)
+  (system "date")
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "matlab results rsync'd, starting c processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-c
+  						      servers
+  						      c-cpus-per-job
+  						      output-c
+  						      source
+  						      data-directory)
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+  (dtrace "processing complete for get-codetection-results-iros2016" #f)
   (system "date")))
 
 (define (get-inference-results-1and2
@@ -3562,6 +3645,69 @@
 					source-machine)
   ))
 
+
+(define (codetect-sort-templabel-asm-iros2016)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(data-output-dirname "test-20160226-iros")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list
+	 (list "akili" "save" "aruco" "perisikan" "arivu"))
+	(source-machine "seykhl"))
+  ;;NEED NEW HERE
+  ;;  (get-codetection-results-training-or-generation
+  (get-codetection-results-iros2016 data-directory 
+				    top-k
+				    ssize
+				    alpha
+				    beta
+				    gamma
+				    delta
+				    dummy-f
+				    dummy-g
+				    output-directory 
+				    data-output-dir 
+				    server-list
+				    source-machine) 
+
+
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans data-directory 
+					output-directory 
+					results-filename ;;remember to add data-output-dir to this and frame-data...
+					frame-data-filename
+					data-output-dir
+					server-list
+					source-machine)
+  (run-compute-and-save-asm-iros2016-on-server data-directory
+					       data-output-dir
+					       (list (first server-list))
+					       source-machine
+					       output-directory)
+				      
+  ))
+
 (define (ralicra2016-run-inference-1and2)
  (let* ((data-directory
 	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
@@ -3939,6 +4085,11 @@
  (start-matlab!)
  (matlab (format #f "compute_and_save_asm('~a','~a');" dir-suffix typenum)))
 
+(define (compute-and-save-asm-iros2016 data-directory data-output-dirname )
+ (start-matlab!)
+ (matlab (format #f "compute_and_save_asm_iros2016('~a','detections-~a');"
+		 data-directory data-output-dirname)))
+
 (define (run-compute-and-save-asm-on-server data-directory
 					    server-list
 					    source-machine
@@ -3967,6 +4118,36 @@
 	     (rsync-directory-to-server server data-directory source-machine))
 	    server-list)
   (display "run-compute-and-save-asm-on-server complete")
+  (newline)
+  (system "date")))
+
+(define (run-compute-and-save-asm-iros2016-on-server data-directory
+						     data-output-dir
+						     server-list
+						     source-machine
+						     output-directory)
+ (let* ((cpus-per-job 8)	
+	(outdir (format #f "~a-asm/" output-directory))
+	(run-command
+	 (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (compute-and-save-asm-iros2016 \"~a\" \"~a\") :n :n :n :n :b"
+		 data-directory data-output-dir)))
+  (display "starting run-compute-and-save-asm-iros2016-on-server")
+  (newline)
+  (system "date")
+  (mkdir-p outdir)
+  (for-each (lambda (server) (run-unix-command-on-server
+			      (format #f "mkdir -p ~a" outdir) server))
+	    server-list)
+  (synchronous-run-commands-in-parallel-with-queueing (list run-command)
+						      server-list
+						      cpus-per-job
+						      outdir
+						      source-machine
+						      data-directory)
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source-machine))
+	    server-list)
+  (display "run-compute-and-save-asm-iros2016-on-server complete")
   (newline)
   (system "date")))
 	
@@ -4000,16 +4181,17 @@
 				     dummy-g))
 	(server-list (list server-name))
 	(source-machine "seykhl"))
-;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
-  (get-object-detections-all-floorplans-6 data-directory 
-					  output-directory 
-					  results-filename ;;remember to add data-output-dir to this and frame-data...
-					  frame-data-filename
-					  data-output-dir
-					  server-list
-					  source-machine)
-  (display "get-object-detections-all-floorplans-6 complete")
-  (newline)
+;; ;;commented the below out for asm-only rerun, 26feb16
+;; ;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+;;   (get-object-detections-all-floorplans-6 data-directory 
+;; 					  output-directory 
+;; 					  results-filename ;;remember to add data-output-dir to this and frame-data...
+;; 					  frame-data-filename
+;; 					  data-output-dir
+;; 					  server-list
+;; 					  source-machine)
+;;   (display "get-object-detections-all-floorplans-6 complete")
+;;   (newline)
   (system "date")
   ;;compute asm here
   (run-compute-and-save-asm-on-server data-directory
@@ -4052,16 +4234,17 @@
 				     dummy-g))
 	(server-list (list server-name))
 	(source-machine "seykhl"))
-;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
-  (get-object-detections-all-floorplans-7 data-directory 
-					  output-directory 
-					  results-filename ;;remember to add data-output-dir to this and frame-data...
-					  frame-data-filename
-					  data-output-dir
-					  server-list
-					  source-machine)
-  (display "get-object-detections-all-floorplans-7 complete")
-  (newline)
+;; ;;commented the below out for asm-only rerun, 26feb16
+;; ;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+;;   (get-object-detections-all-floorplans-7 data-directory 
+;; 					  output-directory 
+;; 					  results-filename ;;remember to add data-output-dir to this and frame-data...
+;; 					  frame-data-filename
+;; 					  data-output-dir
+;; 					  server-list
+;; 					  source-machine)
+;;   (display "get-object-detections-all-floorplans-7 complete")
+;;   (newline)
   (system "date")
   ;;compute asm here
   (run-compute-and-save-asm-on-server data-directory
@@ -4104,16 +4287,17 @@
 				     dummy-g))
 	(server-list (list server-name))
 	(source-machine "seykhl"))
-;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
-  (get-object-detections-all-floorplans-8 data-directory 
-					  output-directory 
-					  results-filename ;;remember to add data-output-dir to this and frame-data...
-					  frame-data-filename
-					  data-output-dir
-					  server-list
-					  source-machine)
-  (display "get-object-detections-all-floorplans-8 complete")
-  (newline)
+;; ;;commented the below out for asm-only rerun, 26feb16
+;; ;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+;;   (get-object-detections-all-floorplans-8 data-directory 
+;; 					  output-directory 
+;; 					  results-filename ;;remember to add data-output-dir to this and frame-data...
+;; 					  frame-data-filename
+;; 					  data-output-dir
+;; 					  server-list
+;; 					  source-machine)
+;;   (display "get-object-detections-all-floorplans-8 complete")
+;;   (newline)
   (system "date")
   ;;compute asm here
   (run-compute-and-save-asm-on-server data-directory

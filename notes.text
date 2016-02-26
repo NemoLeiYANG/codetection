@@ -7161,6 +7161,56 @@ TO DO's
   akili: 3with4 7
   save: 3with4 8
 
+----------------git commit 630c845--------------
+
+26 Feb 16
+
+--Found bug in compute_and_save_asm.m where I forgot a dash in the
+  data-output-dirname.  Going to re-run all--tried the ASM build in an
+  interactive MATLAB window on save, and it only took ~15 minutes.  Modified
+  ralicra2016-detect-and-compute-{6,7,8} to only run the asm part.  Split is:
+  There are screens on:
+	37395.save-3with1and2-6	(02/26/2016 09:53:46 AM)	(Detached)
+	59974.akili-3with4-7	(02/25/2016 10:28:06 PM)	(Detached)
+	54610.arivu-3with1and2-7	(02/25/2016 10:09:43 PM)	(Detached)
+	53999.perisikan-3with1and2-8	(02/25/2016 10:08:16 PM)	(Detached)
+	53580.aruco-3with4-6	(02/25/2016 10:06:15 PM)	(Detached)
+	52628.save-3with4-8	(02/25/2016 10:02:00 PM)	(Detached)
+  6 Sockets in /var/run/screen/S-sbroniko.
+
+--Had error trying to start matlabpool on multiple machines at once--apparently
+  matlabpool accesses some file in my home dir, so all the machines were trying
+  to access it at the same time.  Just commented out the matlabpool open and
+  close lines in step_4_build_similarity_matrix.m.  Tried a quick run on save,
+  and it used all available cores.  Retrying the above.
+
+--ASM generation looks like it's working, but without matlabpool taking closer
+  to 2+ hours.  Not a showstopper, but will be a pain if I want to play around
+  with the m_factor (percent to compare) parameter.
+
+--Probably need to build a list/spreadsheet of what the found objects actually
+  are (and thus a correct labeling) for each of the 6 configurations
+  {3with1and2,3with4}x{6,7,8}.
+
+--After starting to build the ground truth above and looking at the plots with
+  Dan, figured out that all of the new methods yield too many false positives,
+  and labeling will most likely break because of these.  So instead going to go
+  back to the beginning and reimplement all old assumptions, but just penalize
+  with a 0 unary score (and not put into GM#1).
+
+--Making changes to the codetect-sort-templabel-ralicra2016 run stuff from 16
+  Feb.  Now have codetect-sort-templabel-iros2016 as the main call.  Changed
+  scott_proposals_similarity2.m to put filter (unary score = 0) for out of
+  bounds, w/in 5px of image edge, > world width thresh (2m)
+
+--Re-running (again) the job for iros (codetect-sort-templabel-asm-iros2016).
+  Should go automatically all the way through to the ASM, then can do labeling
+  on that.  Hopefully the plots and images will be identical to previous, so can
+  just use those.
+	
+
+
+
 **look at notes around 24 Aug 15 and earlier for GM#2 stuff
 
 **setup for test

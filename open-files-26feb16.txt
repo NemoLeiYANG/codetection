@@ -1,0 +1,6 @@
+    notes.text          379283  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+    codetection-test.s: 341004  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+.   ralicra2016-labeling: 7261  Scheme		  ~/codetection/source/sentence-codetection/ralicra2016-labeling.sc
+    open-files-25feb16-2: 3041  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/open-files-25feb16-2.txt
+    *scratch*              191  Lisp Interaction
+  * *Messages*            3904  Fundamental

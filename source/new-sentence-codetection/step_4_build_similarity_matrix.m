@@ -7,7 +7,7 @@ function ... %[fv_dsift, fv_color_hist, similarity_matrix] = ...
 
 % %add paths for phow stuff (not sure this is necessary)
 addpath(genpath('vlfeat/toolbox'));
-run('/home/sbroniko/codetection/source/sentence-codetection/vlfeat/toolbox/vl_setup');
+run('/home/sbroniko/codetection/source/new-sentence-codetection/vlfeat/toolbox/vl_setup');
 
 % TRY NOT explicitly setting up parfor to use default?
 % enable parfor
@@ -48,9 +48,10 @@ temp_labels_by_floorplan = zeros(num_floorplans,1);
 fplabel_dir_names = cell(num_floorplans,1);
 for i = 1:num_floorplans
     fplabel_dir_names{i} = [];
+    %display(strcat(dataset_dir,dir_names(i,:),'/',data_output_dirname))
     tmp_names = dir(strcat(dataset_dir,dir_names(i,:),'/',data_output_dirname));
     for j = 1:length(tmp_names)
-        if ((tmp_names(j).isdir) && (strncmp(tmp_names(j).name,'fplabel',7)))
+        if ((tmp_names(j).isdir) && (strncmp(tmp_names(j).name,'tmp',3)))%'fplabel',7)))
             %display(tmp_names(j).name);
             fplabel_dir_names{i} = [fplabel_dir_names{i};tmp_names(j).name];
         end
@@ -63,7 +64,8 @@ end %for i
 % temp_labels_by_floorplan
 % fv_dsift
 % fv_color_hist
-
+fprintf('Starting feature vector build\n');
+system('date');
 
 % then load up fv_dsift and fv_color_hist from images
 ssize = 64; %HARDCODED ssize: the size to which each proposal is rescaled 

@@ -51,8 +51,8 @@ world_boundary = [-3 3.05 -2.62 3.93]; %[x1 x2 y1 y2] in m
 distance_threshold = 0.5; %distance threshold for similarity score--in m
 binary_score_threshold = 1e-6; %threshold for a binary score to go into ouput--ARBITRARY, may need to change
 %dbox_fscore = 0.5; %dummy box fscore value
-% width_threshold = 1.5; %threshold on wwidth of boxes (world with of object) in m -- ARBITRARY, may need to change
-% pixel_threshold = 10; %threshold on pixel distance from edges of frame -- ARBITRARY, may need to change
+width_threshold = 2.0;%1.5; %threshold on wwidth of boxes (world with of object) in m -- ARBITRARY, may need to change
+pixel_threshold = 5; %threshold on pixel distance from edges of frame -- ARBITRARY, may need to change
 % pct_threshold = 0.65; %threshold on percent of height/width a box takes up -- ARBITRARY, may need to change
 %camera calibration data
 cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
@@ -60,7 +60,7 @@ cam_k = [7.2434508362823397e+02 0.0 3.1232994017160644e+02;...
         0.0 0.0 1.0]; %not sure of units here
 
 % compute
-[~, ~, ~, T] = size(frames);
+[h, w, ~, T] = size(frames);
 [num_poses,~] = size(positions);
 %this fixes a num_poses < num_frames error discovered 17feb16
 if (num_poses < T)
@@ -118,6 +118,25 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
             (loc(2) < boundary(3)))
             locflag = 0;
         end %if loc(2)
+        %%ADDING BACK penalties for out of bounds, image edges, world width
+        if (bbs(i,1) < pixel_threshold) 
+            locflag = 0; end
+        if (bbs(i,2) < pixel_threshold)
+            locflag = 0; end
+        if ((bbs(i,1) + bbs(i,3) - 1) > (w - pixel_threshold))
+            locflag = 0; end
+        if ((bbs(i,2) + bbs(i,4) - 1) > (h - pixel_threshold))
+            locflag = 0; end
+        if (loc(1) > boundary(2)) %xpenalty
+            locflag = 0; end
+        if (loc(1) < boundary(1))
+            locflag = 0; end
+        if (loc(2) > boundary(4)) %ypenalty
+            locflag = 0; end
+        if (loc(2) < boundary(3))
+            locflag = 0; end
+        if (wwidth > width_threshold) %wpenalty
+            locflag = 0; end     
         if (locflag == 0) %box is behind camera or out of bounds
             new_boxes(i,5) = 0;
             continue; %done with this box
@@ -125,14 +144,6 @@ parfor t = 1:T %main parfor loop to do proposals and histogram scores
 %REMOVING arbitrary penalty terms
 %         do penalty for boundaries/width/height
 %         bad_r = 0; bad_l = 0; bad_t = 0; bad_b = 0; bad_w = 0; bad_h = 0;
-%         if (bbs(i,1) < pixel_threshold) 
-%             bad_l = 1; end
-%         if (bbs(i,2) < pixel_threshold)
-%             bad_t = 1; end
-%         if ((bbs(i,1) + bbs(i,3) - 1) > (w - pixel_threshold))
-%             bad_r = 1; end
-%         if ((bbs(i,2) + bbs(i,4) - 1) > (h - pixel_threshold))
-%             bad_b = 1; end
 %         if (bbs(i,3) > (pct_threshold * w))
 %             bad_w = 1; end
 %         if (bbs(i,4) > (pct_threshold * h))
