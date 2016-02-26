@@ -1,4 +1,4 @@
-function ralicra_plotting2(detection_data,scores_out,output_path,peakxys)
+function ralicra_plotting2(detection_data,scores_out,ground_truth,output_path,peakxys)
 
 %%%% slight mod to detection_data to smooth out spurious peak in plan0
 % detection_data_mod = detection_data;
@@ -77,17 +77,8 @@ ylabel('World Y (meters)')
 %plot contour
 contour(X,Y,scores_out)
 colorbar
-%plot ground truth (plan0 generation)
-plot(1.37,0,'d','MarkerEdgeColor','m','MarkerFaceColor','m')
-text(1.37,-0.20,'CONE','FontWeight','bold')
-plot(-1.37,0,'d','MarkerEdgeColor','m','MarkerFaceColor','m')
-text(-1.37,-0.20,'BAG','FontWeight','bold')
-plot(-1.37,-1.304,'d','MarkerEdgeColor','m','MarkerFaceColor','m')
-text(-1.37,-1.504,'CHAIR','FontWeight','bold')
-text(1.37,-1.504,'CHAIR','FontWeight','bold')
-plot(1.37,-1.304,'d','MarkerEdgeColor','m','MarkerFaceColor','m')
-plot(0,-1.304,'d','MarkerEdgeColor','m','MarkerFaceColor','m')
-text(0,-1.504,'TABLE','FontWeight','bold')
+%ground truth
+scatter(ground_truth(:,1),ground_truth(:,2),'d','MarkerEdgeColor','m','MarkerFaceColor','m')
 %plot centroids
 for i = 1:length(peakxys)
 plot(peakxys(i,1),peakxys(i,2),'s','MarkerEdgeColor','b','MarkerFaceColor','b')

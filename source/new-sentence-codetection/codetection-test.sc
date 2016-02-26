@@ -2507,6 +2507,26 @@
       1
       0)))
 
+(define (contour-plot-only detections-dir)
+ (start-matlab!)
+ (matlab (format #f "load('~a/detection_data.mat');" detections-dir))
+ (matlab (format #f "load('~a/ground_truth.mat');" detections-dir))
+ (matlab (format #f "contour_plot(detection_data,ground_truth,'~a');" detections-dir)))
+
+(define (new-contour-plots detections-dir)
+ (start-matlab!)
+ (matlab (format #f "load('~a/detection_data.mat');" detections-dir))
+ (matlab (format #f "load('~a/ground_truth.mat');" detections-dir))
+ (matlab (format #f "new_contour_plots(detection_data,ground_truth,'~a');"
+		 detections-dir)))
+
+(define (contour-plot-with-v-no-gauss-f detections-dir)
+ (start-matlab!)
+ (matlab (format #f "load('~a/detection_data.mat');" detections-dir))
+ (matlab (format #f "load('~a/ground_truth.mat');" detections-dir))
+ (matlab (format #f "contour_plot_with_v_no_gauss_f(detection_data,ground_truth,'~a');"
+		 detections-dir)))
+
 (define (detect-sort-label-objects-single-floorplan floorplan-dir
 						    results-filename
 						    frame-data-filename
@@ -2529,17 +2549,155 @@
 		  *xmin* *xmax* *ymin* *ymax*
 		  5 ;; cm_between HARDCODED
 		  0.25));; gaussian_variance HARDCODED
+  (matlab (format #f "load('~a/ground_truth.mat');" img-dir))
   (matlab (format #f
-		  "ralicra_plotting2(detection_data,scores,'~a',objxys);" img-dir))
+		  "ralicra_plotting2(detection_data,scores,ground_truth,'~a',objxys);" img-dir))
   (matlab (format #f
 		  "cluster_data = cluster_detections_by_object(detection_data,objxys,~a);"
 		  0.5)) ;; threshold in m HARDCODED
   (matlab (format #f
 		  "sort_by_cluster(cluster_data,'~a');"
 		  img-dir))
+  ;;This caused problems with sorting within floorplan, so just removing
+  ;;new function below just puts a within-floorplan number (same as tmpN) with
+  ;;each xy location
+  ;; (matlab (format #f
+  ;; 		  "xy_with_label = sort_clusters_single_floorplan(objxys,'~a');"
+  ;; 		  img-dir ))
   (matlab (format #f
-		  "xy_with_label = sort_clusters_single_floorplan(objxys,'~a');"
-		  img-dir ))
+  		  "xy_with_label = create_xy_with_label(objxys,'~a');" img-dir ))
+  ;;write xy_with_label to scheme-style file
+  (write-object-to-file (matlab-get-variable "xy_with_label")
+			(format #f "~axy_with_label.sc" img-dir))
+  ))
+
+(define (detect-sort-label-objects-single-floorplan-6 floorplan-dir
+						      results-filename
+						      frame-data-filename
+						      data-output-dir)
+ ;;this is the wrapper function that calls get-detection-data-for-floorplan
+ ;;and matlab functions find_objects, cluster_detections_by_object,
+ ;;sort_by_cluster, and sort_clusters_single_floorplan
+ (let* ((output-dirname (format #f "detections-~a" data-output-dir)) ;;under floorplan-dir
+	(matlab-output-filename "detection_data.mat")
+	(img-dir (format #f "~a/~a/" floorplan-dir output-dirname)))
+  (start-matlab!)
+  (get-detection-data-for-floorplan floorplan-dir
+				    results-filename
+				    frame-data-filename
+				    output-dirname 
+				    matlab-output-filename)
+  ;;don't think I need to load detection_data.mat here b/c matlab already has detection_data
+  (matlab (format #f
+		  "[numobj, objxys,scores] = find_objects_no_v_f(detection_data,~a,~a,~a,~a,~a,~a);"
+		  *xmin* *xmax* *ymin* *ymax*
+		  5 ;; cm_between HARDCODED
+		  0.25));; gaussian_variance HARDCODED
+  (matlab (format #f "load('~a/ground_truth.mat');" img-dir))
+  (matlab (format #f
+		  "ralicra_plotting2(detection_data,scores,ground_truth,'~a',objxys);" img-dir))
+  (matlab (format #f
+		  "cluster_data = cluster_detections_by_object(detection_data,objxys,~a);"
+		  0.5)) ;; threshold in m HARDCODED
+  (matlab (format #f
+		  "sort_by_cluster(cluster_data,'~a');"
+		  img-dir))
+  ;;This caused problems with sorting within floorplan, so just removing
+  ;;new function below just puts a within-floorplan number (same as tmpN) with
+  ;;each xy location
+  ;; (matlab (format #f
+  ;; 		  "xy_with_label = sort_clusters_single_floorplan(objxys,'~a');"
+  ;; 		  img-dir ))
+  (matlab (format #f
+  		  "xy_with_label = create_xy_with_label(objxys,'~a');" img-dir ))
+  ;;write xy_with_label to scheme-style file
+  (write-object-to-file (matlab-get-variable "xy_with_label")
+			(format #f "~axy_with_label.sc" img-dir))
+  ))
+
+(define (detect-sort-label-objects-single-floorplan-7 floorplan-dir
+						      results-filename
+						      frame-data-filename
+						      data-output-dir)
+ ;;this is the wrapper function that calls get-detection-data-for-floorplan
+ ;;and matlab functions find_objects, cluster_detections_by_object,
+ ;;sort_by_cluster, and sort_clusters_single_floorplan
+ (let* ((output-dirname (format #f "detections-~a" data-output-dir)) ;;under floorplan-dir
+	(matlab-output-filename "detection_data.mat")
+	(img-dir (format #f "~a/~a/" floorplan-dir output-dirname)))
+  (start-matlab!)
+  (get-detection-data-for-floorplan floorplan-dir
+				    results-filename
+				    frame-data-filename
+				    output-dirname 
+				    matlab-output-filename)
+  ;;don't think I need to load detection_data.mat here b/c matlab already has detection_data
+  (matlab (format #f
+		  "[numobj, objxys,scores] = find_objects_no_gauss_v_f(detection_data,~a,~a,~a,~a,~a,~a);"
+		  *xmin* *xmax* *ymin* *ymax*
+		  5 ;; cm_between HARDCODED
+		  0.25));; gaussian_variance HARDCODED
+  (matlab (format #f "load('~a/ground_truth.mat');" img-dir))
+  (matlab (format #f
+		  "ralicra_plotting2(detection_data,scores,ground_truth,'~a',objxys);" img-dir))
+  (matlab (format #f
+		  "cluster_data = cluster_detections_by_object(detection_data,objxys,~a);"
+		  0.5)) ;; threshold in m HARDCODED
+  (matlab (format #f
+		  "sort_by_cluster(cluster_data,'~a');"
+		  img-dir))
+  ;;This caused problems with sorting within floorplan, so just removing
+  ;;new function below just puts a within-floorplan number (same as tmpN) with
+  ;;each xy location
+  ;; (matlab (format #f
+  ;; 		  "xy_with_label = sort_clusters_single_floorplan(objxys,'~a');"
+  ;; 		  img-dir ))
+  (matlab (format #f
+  		  "xy_with_label = create_xy_with_label(objxys,'~a');" img-dir ))
+  ;;write xy_with_label to scheme-style file
+  (write-object-to-file (matlab-get-variable "xy_with_label")
+			(format #f "~axy_with_label.sc" img-dir))
+  ))
+
+(define (detect-sort-label-objects-single-floorplan-8 floorplan-dir
+						      results-filename
+						      frame-data-filename
+						      data-output-dir)
+ ;;this is the wrapper function that calls get-detection-data-for-floorplan
+ ;;and matlab functions find_objects, cluster_detections_by_object,
+ ;;sort_by_cluster, and sort_clusters_single_floorplan
+ (let* ((output-dirname (format #f "detections-~a" data-output-dir)) ;;under floorplan-dir
+	(matlab-output-filename "detection_data.mat")
+	(img-dir (format #f "~a/~a/" floorplan-dir output-dirname)))
+  (start-matlab!)
+  (get-detection-data-for-floorplan floorplan-dir
+				    results-filename
+				    frame-data-filename
+				    output-dirname 
+				    matlab-output-filename)
+  ;;don't think I need to load detection_data.mat here b/c matlab already has detection_data
+  (matlab (format #f
+		  "[numobj, objxys,scores] = find_objects_with_v_no_gauss_f(detection_data,~a,~a,~a,~a,~a,~a);"
+		  *xmin* *xmax* *ymin* *ymax*
+		  5 ;; cm_between HARDCODED
+		  0.25));; gaussian_variance HARDCODED
+  (matlab (format #f "load('~a/ground_truth.mat');" img-dir))
+  (matlab (format #f
+		  "ralicra_plotting2(detection_data,scores,ground_truth,'~a',objxys);" img-dir))
+  (matlab (format #f
+		  "cluster_data = cluster_detections_by_object(detection_data,objxys,~a);"
+		  0.5)) ;; threshold in m HARDCODED
+  (matlab (format #f
+		  "sort_by_cluster(cluster_data,'~a');"
+		  img-dir))
+  ;;This caused problems with sorting within floorplan, so just removing
+  ;;new function below just puts a within-floorplan number (same as tmpN) with
+  ;;each xy location
+  ;; (matlab (format #f
+  ;; 		  "xy_with_label = sort_clusters_single_floorplan(objxys,'~a');"
+  ;; 		  img-dir ))
+  (matlab (format #f
+  		  "xy_with_label = create_xy_with_label(objxys,'~a');" img-dir ))
   ;;write xy_with_label to scheme-style file
   (write-object-to-file (matlab-get-variable "xy_with_label")
 			(format #f "~axy_with_label.sc" img-dir))
@@ -3092,6 +3250,209 @@
   (dtrace "processing complete for get-object-detections-all-floorplans" #f)
   (system "date")))
 
+(define (get-object-detections-all-floorplans-6
+	 data-directory ;; NEED slash on data-dir
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 results-filename ;;remember to add data-output-dir to this and frame-data...
+	 frame-data-filename
+	 data-output-dir
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+ (let* ((servers server-list)
+	(source source-machine)
+	(matlab-cpus-per-job 7);;12);;4) ;;for under-the-hood matlab parallelism and to spread out jobs among servers
+	(output-matlab (format #f "~a-detection/" output-directory))
+	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	;;TEMPORARY for re-run of auto-drive
+	;;(plandirs (list "plan0" "plan1"))
+	;;(plandirs (list "plan5" "plan8"))
+
+	;; (dir-list (join
+	;; 	   (map
+	;; 	    (lambda (p)
+	;; 	     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+	;; 		  (system-output
+	;; 		   (format #f "ls ~a/~a | grep 201" data-directory p))))
+	;; 	    plandirs)))
+	(commands-matlab
+	 (map
+	  (lambda (dir) 
+	   (format #f
+		   "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (detect-sort-label-objects-single-floorplan-6 \"~a\" \"~a\" \"~a\" \"~a\") :n :n :n :n :b"
+		   (format #f "~a/~a" data-directory dir)
+		   results-filename
+		   frame-data-filename
+		   data-output-dir))
+	  plandirs));;dir-list))
+
+	)
+  (dtrace "starting get-object-detections-all-floorplans-6" #f)
+  (system "date")
+  ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
+  ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
+  (for-each (lambda (dir)
+  	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  		       servers))
+  	    (list output-matlab));; output-c))
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab));; output-c))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
+		       servers))
+	    (list output-matlab));; output-c))
+  (dtrace "starting matlab processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-matlab
+  						      servers
+  						      matlab-cpus-per-job
+  						      output-matlab
+  						      source
+  						      data-directory)
+  (dtrace "matlab processing complete" #f)
+  (system "date")
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+
+  (dtrace "processing complete for get-object-detections-all-floorplans-6" #f)
+  (system "date")))
+
+(define (get-object-detections-all-floorplans-7
+	 data-directory ;; NEED slash on data-dir
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 results-filename ;;remember to add data-output-dir to this and frame-data...
+	 frame-data-filename
+	 data-output-dir
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+ (let* ((servers server-list)
+	(source source-machine)
+	(matlab-cpus-per-job 7);;12);;4) ;;for under-the-hood matlab parallelism and to spread out jobs among servers
+	(output-matlab (format #f "~a-detection/" output-directory))
+	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	;;TEMPORARY for re-run of auto-drive
+	;;(plandirs (list "plan0" "plan1"))
+	;;(plandirs (list "plan5" "plan8"))
+
+	;; (dir-list (join
+	;; 	   (map
+	;; 	    (lambda (p)
+	;; 	     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+	;; 		  (system-output
+	;; 		   (format #f "ls ~a/~a | grep 201" data-directory p))))
+	;; 	    plandirs)))
+	(commands-matlab
+	 (map
+	  (lambda (dir) 
+	   (format #f
+		   "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (detect-sort-label-objects-single-floorplan-7 \"~a\" \"~a\" \"~a\" \"~a\") :n :n :n :n :b"
+		   (format #f "~a/~a" data-directory dir)
+		   results-filename
+		   frame-data-filename
+		   data-output-dir))
+	  plandirs));;dir-list))
+
+	)
+  (dtrace "starting get-object-detections-all-floorplans-7" #f)
+  (system "date")
+  ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
+  ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
+  (for-each (lambda (dir)
+  	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  		       servers))
+  	    (list output-matlab));; output-c))
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab));; output-c))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
+		       servers))
+	    (list output-matlab));; output-c))
+  (dtrace "starting matlab processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-matlab
+  						      servers
+  						      matlab-cpus-per-job
+  						      output-matlab
+  						      source
+  						      data-directory)
+  (dtrace "matlab processing complete" #f)
+  (system "date")
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+
+  (dtrace "processing complete for get-object-detections-all-floorplans-7" #f)
+  (system "date")))
+
+(define (get-object-detections-all-floorplans-8
+	 data-directory ;; NEED slash on data-dir
+	 output-directory ;;NO slash on output-dir--this is a full path
+	 results-filename ;;remember to add data-output-dir to this and frame-data...
+	 frame-data-filename
+	 data-output-dir
+	 server-list
+	 source-machine ;;just a string, i.e., "seykhl"
+	 )
+ (let* ((servers server-list)
+	(source source-machine)
+	(matlab-cpus-per-job 7);;12);;4) ;;for under-the-hood matlab parallelism and to spread out jobs among servers
+	(output-matlab (format #f "~a-detection/" output-directory))
+	(plandirs (system-output (format #f "ls ~a | grep plan" data-directory)))
+	;;TEMPORARY for re-run of auto-drive
+	;;(plandirs (list "plan0" "plan1"))
+	;;(plandirs (list "plan5" "plan8"))
+
+	;; (dir-list (join
+	;; 	   (map
+	;; 	    (lambda (p)
+	;; 	     (map (lambda (d) (format #f "~a/~a/~a" data-directory p d))
+	;; 		  (system-output
+	;; 		   (format #f "ls ~a/~a | grep 201" data-directory p))))
+	;; 	    plandirs)))
+	(commands-matlab
+	 (map
+	  (lambda (dir) 
+	   (format #f
+		   "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (detect-sort-label-objects-single-floorplan-8 \"~a\" \"~a\" \"~a\" \"~a\") :n :n :n :n :b"
+		   (format #f "~a/~a" data-directory dir)
+		   results-filename
+		   frame-data-filename
+		   data-output-dir))
+	  plandirs));;dir-list))
+
+	)
+  (dtrace "starting get-object-detections-all-floorplans-8" #f)
+  (system "date")
+  ;; (for-each (lambda (server dir) (mkdir-p (format #f "/net/~a~a" server dir)))
+  ;; 	    servers (list output-matlab output-c)) ;;this had problems using /net
+  (for-each (lambda (dir)
+  	     (for-each (lambda (server) (rsync-directory-to-server source dir server))
+  		       servers))
+  	    (list output-matlab));; output-c))
+  (for-each (lambda (dir) (mkdir-p dir)) (list output-matlab));; output-c))
+  (for-each (lambda (dir)
+	     (for-each (lambda (server) (run-unix-command-on-server
+					 (format #f "mkdir -p ~a" dir) server))
+		       servers))
+	    (list output-matlab));; output-c))
+  (dtrace "starting matlab processing" #f)
+  (system "date")
+  (synchronous-run-commands-in-parallel-with-queueing commands-matlab
+  						      servers
+  						      matlab-cpus-per-job
+  						      output-matlab
+  						      source
+  						      data-directory)
+  (dtrace "matlab processing complete" #f)
+  (system "date")
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source))
+	    servers) ;;copy results back to source
+
+  (dtrace "processing complete for get-object-detections-all-floorplans-8" #f)
+  (system "date")))
 
 ;;this is the wrapper function that calls codetection, sorts/labels objects in a single floorplan, and then ???
 (define (codetect-sort-templabel-training-or-generation data-output-dirname)
@@ -3309,6 +3670,46 @@
 					source-machine)
   ))
 
+(define (ralicra2016-run-inference-3with1and2-detections-only)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(data-output-dirname "test-20160223-3with1and2")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list
+	 (list "save" "akili"))
+	 
+	(source-machine "seykhl"))
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans data-directory 
+					output-directory 
+					results-filename ;;remember to add data-output-dir to this and frame-data...
+					frame-data-filename
+					data-output-dir
+					server-list
+					source-machine)
+  ))
+
 (define (ralicra2016-run-inference-1and2-detections-only)
  (let* ((data-directory
 	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
@@ -3456,6 +3857,45 @@
 					source-machine)
   ))
 
+(define (ralicra2016-run-inference-3with4-detections-only)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(data-output-dirname "test-20160223-3with4")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list
+	 (list "aruco" "perisikan"))
+	(source-machine "seykhl"))
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans data-directory 
+					output-directory 
+					results-filename ;;remember to add data-output-dir to this and frame-data...
+					frame-data-filename
+					data-output-dir
+					server-list
+					source-machine)
+  ))
+
 (define (ralicra2016-run-inference-4-detections-only)
  (let* ((data-directory
 	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
@@ -3493,6 +3933,198 @@
 					data-output-dir
 					server-list
 					source-machine)
+  ))
+
+(define (compute-and-save-asm dir-suffix typenum)
+ (start-matlab!)
+ (matlab (format #f "compute_and_save_asm('~a','~a');" dir-suffix typenum)))
+
+(define (run-compute-and-save-asm-on-server data-directory
+					    server-list
+					    source-machine
+					    output-directory
+					    dir-suffix
+					    typenum)
+ (let* ((cpus-per-job 8)	
+	(outdir (format #f "~a-asm/" output-directory))
+	(run-command
+	 (format #f "(load \"/home/sbroniko/codetection/source/new-sentence-codetection/codetection-test.sc\") (compute-and-save-asm \"~a\" \"~a\") :n :n :n :n :b"
+		 dir-suffix typenum)))
+  (display "starting run-compute-and-save-asm-on-server")
+  (newline)
+  (system "date")
+  (mkdir-p outdir)
+  (for-each (lambda (server) (run-unix-command-on-server
+			      (format #f "mkdir -p ~a" outdir) server))
+	    server-list)
+  (synchronous-run-commands-in-parallel-with-queueing (list run-command)
+						      server-list
+						      cpus-per-job
+						      outdir
+						      source-machine
+						      data-directory)
+  (for-each (lambda (server)
+	     (rsync-directory-to-server server data-directory source-machine))
+	    server-list)
+  (display "run-compute-and-save-asm-on-server complete")
+  (newline)
+  (system "date")))
+	
+
+(define (ralicra2016-detect-and-compute-asm-6 dir-suffix server-name)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(data-output-dirname (format #f "test-20160223-~a-6" dir-suffix))
+	(typenum "6")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list (list server-name))
+	(source-machine "seykhl"))
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans-6 data-directory 
+					  output-directory 
+					  results-filename ;;remember to add data-output-dir to this and frame-data...
+					  frame-data-filename
+					  data-output-dir
+					  server-list
+					  source-machine)
+  (display "get-object-detections-all-floorplans-6 complete")
+  (newline)
+  (system "date")
+  ;;compute asm here
+  (run-compute-and-save-asm-on-server data-directory
+				      server-list
+				      source-machine
+				      output-directory
+				      dir-suffix
+				      typenum)
+  (display "ralicra2016-detect-and-compute-asm-6 complete")
+  (newline)
+  (system "date")  
+  ))
+
+(define (ralicra2016-detect-and-compute-asm-7 dir-suffix server-name)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(data-output-dirname (format #f "test-20160223-~a-7" dir-suffix))
+	(typenum "7")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list (list server-name))
+	(source-machine "seykhl"))
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans-7 data-directory 
+					  output-directory 
+					  results-filename ;;remember to add data-output-dir to this and frame-data...
+					  frame-data-filename
+					  data-output-dir
+					  server-list
+					  source-machine)
+  (display "get-object-detections-all-floorplans-7 complete")
+  (newline)
+  (system "date")
+  ;;compute asm here
+  (run-compute-and-save-asm-on-server data-directory
+				      server-list
+				      source-machine
+				      output-directory
+				      dir-suffix
+				      typenum)
+  (display "ralicra2016-detect-and-compute-asm-7 complete")
+  (newline)
+  (system "date")
+  ))
+
+(define (ralicra2016-detect-and-compute-asm-8 dir-suffix server-name)
+ (let* ((data-directory
+	 "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/")
+	(data-output-dirname (format #f "test-20160223-~a-8" dir-suffix))
+	(typenum "8")
+	(top-k 10)
+	(ssize 64)
+	(alpha 1)
+	(beta 1)
+	(gamma 1)
+	(delta 0)
+	(dummy-f 0.6)
+	(dummy-g 0.6)
+	(output-directory
+	 (format #f  "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/results-~a"
+		 data-output-dirname))
+	(data-output-dir data-output-dirname)
+	(results-filename (format #f
+				  "~a/results-~a-~a.sc"
+				  data-output-dir
+				  dummy-f
+				  dummy-g))
+	(frame-data-filename (format #f
+				     "~a/frame-data-~a-~a.sc"
+				     data-output-dir
+				     dummy-f
+				     dummy-g))
+	(server-list (list server-name))
+	(source-machine "seykhl"))
+;;when calling detect-sort-label..., need to remember to add data-output-dir to results-filename and frame-data-filename
+  (get-object-detections-all-floorplans-8 data-directory 
+					  output-directory 
+					  results-filename ;;remember to add data-output-dir to this and frame-data...
+					  frame-data-filename
+					  data-output-dir
+					  server-list
+					  source-machine)
+  (display "get-object-detections-all-floorplans-8 complete")
+  (newline)
+  (system "date")
+  ;;compute asm here
+  (run-compute-and-save-asm-on-server data-directory
+				      server-list
+				      source-machine
+				      output-directory
+				      dir-suffix
+				      typenum)
+  (display "ralicra2016-detect-and-compute-asm-8 complete")
+  (newline)
+  (system "date")
   ))
 
 (define (run-edgeboxes data-output-dirname)

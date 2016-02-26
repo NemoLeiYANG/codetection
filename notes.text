@@ -7116,6 +7116,52 @@ TO DO's
 
 --Run of ralicra2016-run-inference-{3with1and2,3with4} started at 2110.
 
+----------------git commit 19b60fb--------------
+
+25 Feb 16
+
+--Found errors in moving files for both 3with1and2 and 3with4, both on output-4
+  (plan7), both trying to move a file to an fplabel0 folder, which doesn't
+  exist.  Going to figure out why that is happening and rerun.
+
+--Looks like the error is happening in sort_clusters_single_floorplan.m.  Some
+  thresholds in there are causing peaks to be given the same label when they
+  shouldn't.  Probably should remove this step and just use the tmp dirs as the
+  input to computing the similarity matrix for the final labeling.
+
+--Reran the detection step on all previous data (1and2, 4, 3with1and2, 3with4)
+  with sort_clusters_single_floorplan removed.  Now images should stay in the
+  tmpN directories, so will have to modify the function that computes avg
+  similarity matrix (step_4_build_similarity_matrix.m) to use the tmp dirs
+  instead of fplabel dirs.
+
+--Found bug in ralicra_plotting2 where I plotted the plan0 ground truth every
+  time.  Fixed it to get ground truth for each plan and plot.  Also fixed in
+  detect-sort-label-objects-single-floorplan.  Regenerated contour plots.
+
+--Wrote find_objects_no_f.m, find_objects_no_v_f.m, find_objects_no_gauss_v_f.m
+  to compute the 5, 6, 7 changes to the density function.  Have
+  new_contour_plots.m and new-contour-plots that does all 3 for a given dir.
+
+--Trying a version of find_objects that has no proposal score (f) but keeps the
+  visibility measure (v) and uses the distance as 1/d instead of the gaussian.
+  Calling this 8.
+
+--Writing code to run detections and compute asm for each of 6, 7, 8.  Calling
+  these ralicra2016-detect-and-compute-asm-{6,7,8}, have variations of
+  detect-sort-label-objects-single-floorplan (and everything in between) for
+  each. 
+
+--Starting run on servers at ~2215: 
+  istihbarat: 3with1and2 6 (also on verstand, but /aux/sbroniko/vader-rover
+        symlinked to /net/seykhl/aux/sbroniko/vader-rover b/c /aux was full)
+  arivu: 3with1and2 7
+  perisikan: 3with1and2 8
+  aruco: 3with4 6
+  akili: 3with4 7
+  save: 3with4 8
+
+**look at notes around 24 Aug 15 and earlier for GM#2 stuff
 
 **setup for test
 (define *data* (read-object-from-file "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/plan0/2014-11-20-02:31:11/test-20160223-1and2/frame-data-0.6-0.6.sc"))

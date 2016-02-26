@@ -1,0 +1,30 @@
+.   codetection-test.s: 334436  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+    toollib-multi-proce: 11819  Scheme		  ~/darpa-collaboration/ideas/toollib-multi-process.sc
+    compute_and_save_asm.: 639  MATLAB		  ~/codetection/source/new-sentence-codetection/compute_and_save_asm.m
+    step_4_build_simila: 15100  MATLAB		  ~/codetection/source/new-sentence-codetection/step_4_build_similarity_matrix.m
+  * notes.text          376525  Text		  ~/codetection/notes.text
+  * *shell*<2>            2338  Shell:run	  /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/plan0/
+    ralicra2016-labeling: 7261  Scheme		  ~/codetection/source/new-sentence-codetection/ralicra2016-labeling.sc
+    contour_plot_with_v_: 1485  MATLAB		  ~/codetection/source/new-sentence-codetection/contour_plot_with_v_no_gauss_f.m
+    find_objects_with_v_: 4400  MATLAB		  ~/codetection/source/new-sentence-codetection/find_objects_with_v_no_gauss_f.m
+    new_contour_plots.m   3742  MATLAB		  ~/codetection/source/new-sentence-codetection/new_contour_plots.m
+  * *shell*<3>           22001  Shell:run	  ~/codetection/source/new-sentence-codetection/
+    ralicra_plotting2.m   2920  MATLAB		  ~/codetection/source/new-sentence-codetection/ralicra_plotting2.m
+    find_objects_no_v_f.: 4366  MATLAB		  ~/codetection/source/new-sentence-codetection/find_objects_no_v_f.m
+    find_objects_no_f.m   4386  MATLAB		  ~/codetection/source/new-sentence-codetection/find_objects_no_f.m
+    ralicra_scatter.m     1471  MATLAB		  ~/codetection/source/new-sentence-codetection/ralicra_scatter.m
+    ralicra_plotting.m    3361  MATLAB		  ~/codetection/source/new-sentence-codetection/ralicra_plotting.m
+    cluster_detections_by: 840  MATLAB		  ~/codetection/source/new-sentence-codetection/cluster_detections_by_object.m
+    sort_by_cluster.m      944  MATLAB		  ~/codetection/source/new-sentence-codetection/sort_by_cluster.m
+    sort_clusters_single: 7509  MATLAB		  ~/codetection/source/new-sentence-codetection/sort_clusters_single_floorplan.m
+    create_xy_with_label.: 465  MATLAB		  ~/codetection/source/new-sentence-codetection/create_xy_with_label.m
+    labeling.sc          13692  Scheme		  ~/codetection/source/new-sentence-codetection/labeling.sc
+    labels_from_avg_simi: 3005  MATLAB		  ~/codetection/source/new-sentence-codetection/labels_from_avg_similarity_matrix_step3.m
+  * *shell*               9466  Shell:run	  ~/codetection/
+    recompute_binary_sco: 4230  MATLAB		  ~/codetection/source/new-sentence-codetection/recompute_binary_scores.m
+    inference.cpp        71654  C++/l		  ~/codetection/source/new-sentence-codetection/inference.cpp
+    toollib-codetection: 25399  Scheme		  ~/codetection/source/new-sentence-codetection/toollib-codetection.sc
+    inference.h           2176  C++/l		  ~/codetection/source/new-sentence-codetection/inference.h
+    open-files-24feb16.t: 1249  Text		  ~/codetection/open-files-24feb16.txt
+    *scratch*              191  Lisp Interaction
+  * *Messages*            3964  Fundamental

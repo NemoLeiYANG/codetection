@@ -1,0 +1,7 @@
+. * *scheme*            649495  Inferior Scheme:
+  * *shell*<2>            4923  Shell:run	  ~/codetection/source/new-sentence-codetection/
+  * *shell*             556665  Shell:run	  /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/plan0/detections-test-20160223-3with4/
+    20160224-binary-scor: 4235  Scheme		  ~/codetection/source/new-sentence-codetection/20160224-binary-score-test.sc
+    frame-data-0.6-0: 89916403  Scheme		  /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/plan0/2014-11-20-02:31:11/test-20160223-1and2/frame-data-0.6-0.6.sc
+  * *scratch*              421  Lisp Interaction
+  * *Messages*            1741  Fundamental
