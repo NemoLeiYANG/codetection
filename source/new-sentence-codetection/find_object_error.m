@@ -10,6 +10,8 @@ function [mean_error, error_by_object] = ...
 %                           ground truth objecct; will include errors for
 %                           objects ignored by mean_error
 
+detected_objects = detected_objects(:,1:2);
+
 D = length(detected_objects);
 G = length(ground_truth);
 

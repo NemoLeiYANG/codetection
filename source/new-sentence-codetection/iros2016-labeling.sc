@@ -22,7 +22,8 @@
 ;; (define asm-full (read-object-from-file "ralicra2016-asm.sc"))
 
 ;;First test of 3with4-8
-(define asm-3with4-8 (read-object-from-file "asm-test-3with4-8.sc"))
+;;(define asm-3with4-8 (read-object-from-file "asm-test-3with4-8.sc"))
+(define asm-3with4-8 (read-object-from-file "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/asm-detections-test-20160226-iros.sc"))
 (define num-peaks (vector-length asm-3with4-8))
 
 
@@ -78,62 +79,71 @@
 
 
 (define (run-6)
- (time-thunk "~as " (lambda ()
-		     (find-labels infinity
-				  '(0 )
-				  tables-full-6
-				  num-peaks
-				  0
-				  msv-full-6))))
+ (time-thunk "6 labels ~as " (lambda ()
+			      (find-labels infinity
+					   '(0 )
+					   tables-full-6
+					   num-peaks
+					   0
+					   msv-full-6))))
 
 (define (run-7)
- (time-thunk "~as " (lambda ()
-		     (find-labels infinity
-				  '(0 )
-				  tables-full-7
-				  num-peaks
-				  0
-				  msv-full-7))))
+ (time-thunk "7 labels ~as " (lambda ()
+			      (find-labels infinity
+					   '(0 )
+					   tables-full-7
+					   num-peaks
+					   0
+					   msv-full-7))))
 (define (run-8)
- (time-thunk "~as " (lambda ()
-		     (find-labels infinity
-				  '(0 )
-				  tables-full-8
-				  num-peaks
-				  0
-				  msv-full-8))))
+ (time-thunk "8 labels ~as " (lambda ()
+			      (find-labels infinity
+					   '(0 )
+					   tables-full-8
+					   num-peaks
+					   0
+					   msv-full-8))))
 (define (run-9)
- (time-thunk "~as " (lambda ()
-		     (find-labels infinity
-				  '(0 )
-				  tables-full-9
-				  num-peaks
-				  0
-				  msv-full-9))))
+ (time-thunk "9 labels ~as " (lambda ()
+			    (find-labels infinity
+					 '(0 )
+					 tables-full-9
+					 num-peaks
+					 0
+					 msv-full-9))))
 (define (run-10)
- (time-thunk "~as " (lambda ()
-		     (find-labels infinity
-				  '(0 )
-				  tables-full-10
-				  num-peaks
-				  0
-				  msv-full-10))))
+ (time-thunk "10 labels ~as " (lambda ()
+			    (find-labels infinity
+					 '(0 )
+					 tables-full-10
+					 num-peaks
+					 0
+					 msv-full-10))))
 (define (run-11)
- (time-thunk "~as " (lambda ()
-		     (find-labels infinity
-				  '(0 )
-				  tables-full-11
-				  num-peaks
-				  0
-				  msv-full-11))))
+ (time-thunk "11 labels ~as " (lambda ()
+			    (find-labels infinity
+					 '(0 )
+					 tables-full-11
+					 num-peaks
+					 0
+					 msv-full-11))))
 (define (run-12)
- (time-thunk "~as " (lambda ()
-		     (find-labels infinity
-				  '(0 )
-				  tables-full-12
-				  num-peaks
-				  0
-				  msv-full-12))))
+ (time-thunk "12 labels ~as " (lambda ()
+			    (find-labels infinity
+					 '(0 )
+					 tables-full-12
+					 num-peaks
+					 0
+					 msv-full-12))))
+
+(define (run-all)
+ (run-12)
+ (run-11)
+ (run-10)
+ (run-9)
+ (run-8)
+ (run-7)
+ (run-6))
 
 ;; (define (run-4)
 ;;  (time-thunk "~as " (lambda ()

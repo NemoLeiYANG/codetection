@@ -2527,6 +2527,27 @@
  (matlab (format #f "contour_plot_with_v_no_gauss_f(detection_data,ground_truth,'~a');"
 		 detections-dir)))
 
+(define (make-iros2016-plots-single-floorplan floorplan-dir)
+ ;;this is the wrapper function that calls get-detection-data-for-floorplan
+ ;;and matlab functions find_objects, cluster_detections_by_object,
+ ;;sort_by_cluster, and sort_clusters_single_floorplan
+ (let* ((output-dirname "detections-test-20160226-iros" ) 
+	(matlab-output-filename "detection_data.mat")
+	(img-dir (format #f "~a/~a/" floorplan-dir output-dirname)))
+  (start-matlab!)
+  (dtrace "img-dir" img-dir)
+  (matlab (format #f "load('~a/detection_data.mat');" img-dir))
+  ;; (matlab (format #f
+  ;; 		  "[numobj, objxys,scores] = find_objects(detection_data,~a,~a,~a,~a,~a,~a);"
+  ;; 		  *xmin* *xmax* *ymin* *ymax*
+  ;; 		  5 ;; cm_between HARDCODED
+  ;; 		  0.25));; gaussian_variance HARDCODED
+  ;; (matlab (format #f "save('~a/find_objects.mat','numobj','objxys','scores');" img-dir))
+  (matlab (format #f "load('~a/find_objects.mat');" img-dir))
+  (matlab (format #f "load('~a/ground_truth.mat');" img-dir))
+  (matlab (format #f
+		  "ralicra_plotting2(detection_data,scores,ground_truth,'~a',objxys);" img-dir))))
+
 (define (detect-sort-label-objects-single-floorplan floorplan-dir
 						    results-filename
 						    frame-data-filename

@@ -15,6 +15,8 @@ function ralicra_plotting2(detection_data,scores_out,ground_truth,output_path,pe
 xmin = -3; xmax = 3.05; ymin = -2.62; ymax = 3.93;
 cm_between = 5; gaussian_variance = 0.25;
     
+close all;
+
 %scatter plot
 hfig0=figure('visible','off');
 set(hfig0,'Position',[0 0 1600 1200]);

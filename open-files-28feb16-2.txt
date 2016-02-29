@@ -1,0 +1,10 @@
+. * notes.text          380251  Text		  /amd/upplysingaoflun/root/aux/home/sbroniko/codetection/notes.text
+  * *shell*            2558497  Shell:run	  ~/darpa-collaboration/documentation/iros2016/
+    iros2016.tex         43521  LaTeX		  ~/darpa-collaboration/documentation/iros2016/iros2016.tex
+    root.tex             17037  LaTeX		  ~/darpa-collaboration/documentation/iros2016/ieeeconf/root.tex
+  * *scratch*              261  Lisp Interaction
+    iros2016.bib         12131  BibTeX		  ~/darpa-collaboration/documentation/iros2016/iros2016.bib
+    csvt2014.bib         15729  BibTeX		  ~/darpa-collaboration/documentation/csvt2014/csvt2014.bib
+  * *scheme*             14168  Inferior Scheme:
+    codetection-test.s: 342093  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+  * *Messages*            4860  Fundamental

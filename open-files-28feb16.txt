@@ -1,0 +1,12 @@
+.   notes.text          380222  Text		  ~/codetection/notes.text
+  * *shell*<3>           44519  Shell:run	  ~/codetection/source/new-sentence-codetection/
+    ralicra_plotting2.m   2932  MATLAB		  ~/codetection/source/new-sentence-codetection/ralicra_plotting2.m
+  * *scheme*            183970  Inferior Scheme:
+    startup.m              966  MATLAB		  ~/Documents/MATLAB/startup.m
+    codetection-test.s: 342005  Scheme		  ~/codetection/source/new-sentence-codetection/codetection-test.sc
+  * *shell*              14135  Shell:run	  ~/codetection/
+    scott_proposals_sim: 17510  MATLAB		  ~/codetection/source/new-sentence-codetection/scott_proposals_similarity2.m
+    iros2016-labeling.sc  9948  Scheme		  ~/codetection/source/new-sentence-codetection/iros2016-labeling.sc
+  * *shell*<2>            2338  Shell:run	  /aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/plan0/
+    *scratch*              191  Lisp Interaction
+  * *Messages*            1822  Fundamental

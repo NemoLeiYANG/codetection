@@ -7208,7 +7208,24 @@ TO DO's
   on that.  Hopefully the plots and images will be identical to previous, so can
   just use those.
 	
+----------------git commit edbb53d--------------
 
+28 Feb 16
+
+--Re-run for iros finished and plots look good.  Found 23/31 objects (counting
+  errant chair in plan0--need to add this to ground truth).  Labeling results:
+12 labels 0.08s (107.9005515895551 (0 1 2 3 4 1 5 2 4 2 6 3 4 7 8 9 10 11 2 8 10 3 9))
+11 labels 0.31s (108.3001313961768 (0 0 1 2 3 0 4 1 3 1 5 2 3 6 7 8 9 10 1 7 9 2 8))
+10 labels 1.59s (108.8923572130534 (0 0 1 2 3 0 4 1 3 1 5 2 3 6 7 8 9 5 1 7 9 2 8))
+9 labels 8.10s (109.7224372104882 (0 0 1 2 3 0 4 1 3 1 5 2 3 6 6 7 8 7 1 5 8 2 7))
+8 labels 35.98s (110.8294935362032 (0 0 1 2 3 0 4 1 3 1 4 2 3 5 5 6 7 6 1 5 7 2 6))
+7 labels 285.94s (112.980970759578 (0 0 0 1 2 3 4 0 2 0 5 1 2 3 3 6 4 6 0 5 4 1 6))
+6 labels 1684.83s (115.9673265810131 (0 0 0 1 2 3 4 0 2 0 2 1 2 3 3 5 4 5 0 3 4 1 5))
+
+--Having massive problems trying to get surface plots to save correctly via
+  remote.  Going down to campus to try locally.
+
+--Got plots to work locally.  
 
 
 **look at notes around 24 Aug 15 and earlier for GM#2 stuff
