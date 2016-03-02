@@ -39,6 +39,7 @@ for i = 1:num_ypoints
             end %if
         end % for n
     end %for j
+    fprintf('done with i = %d\n',i);
 end %for i
 scores_out = scores;
 % numpeaks = 0;

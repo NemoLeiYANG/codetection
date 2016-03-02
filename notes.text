@@ -6831,6 +6831,8 @@ TO DO's
   LARGER dataset: more sentences (2-4 per run) and more runs.  Do another house
   test for 3-4 floor plans, with more runs per floor plan (how many??)
 
+--OBJECTNESS SCORES REMOVED FROM SIMPLE-GM
+
 --Rerun on ralicra dataset completed in ~18 hours.  For some reason, plan0
   results did not get computed/rsynced, and no plots were made for any of the
   other plans.  Also the object_xy files weren't there either--need to look at
@@ -7227,52 +7229,39 @@ TO DO's
 
 --Got plots to work locally.  
 
+----------------git commit e48bba4--------------
 
-**look at notes around 24 Aug 15 and earlier for GM#2 stuff
+2 Mar 16
 
-**setup for test
-(define *data* (read-object-from-file "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/plan0/2014-11-20-02:31:11/test-20160223-1and2/frame-data-0.6-0.6.sc"))
-(define f (map (lambda (boxes) (map fifth (matrix->list-of-lists boxes))) (first *data*)))
-(define f-c (easy-ffi:double-to-c 2 f))
-(define num-g (exact-round (x (x (third *data*)))))
-(define boxes-c (list->c-exact-array (malloc (* c-sizeof-int (length f))) (map-n (lambda _ 0) (length f)) c-sizeof-int #t))
-(define g (matrix->list-of-lists (second *data*)))
-(define g-c (easy-ffi:double-to-c 2 g))
+--Getting back to new house dataset stuff.
 
-(run-inference-1and2 f-c g-c (length f) 10 0.6 0.6 num-g boxes-c)
+--Finished alignments for all of floorplan-1.  Next need to find places where I
+  need to modify the simple-gm code to use alignments.sc over alignment.sc, as
+  well as using multiple sentences/alignments for the same video.
 
-visualize-results-improved -> visualize-results-inference-1and2
-run-codetection-with-proposals-similarity -> run-codetection-1and2
+
+
+
+
+**Thinking I can probably just modify the functions that access alignment.sc to
+  do one thing if that file is present and another if alignments.sc is present.
+
+**refamiliarize with simple-gm-small-example structure/usage--I *THINK* I can
+  control how big the example is by giving it more or fewer tubes--might need to
+  write a new wrapper that also controls which dirs are used
+
+**look at last simple-gm run ~15 Feb.  The objectness stuff mentioned there has
+  already been removed 
+
+
+
+
 
 
 TO DOs:
-*follow
-(codetect-sort-templabel-ralicra2016 "test-20160216-ralicra-rerun")
-to see calls for re-run...will probably have to make some modified functions to
-do pieces independently.
-
-*in run-inference-1and2, need to replace all calls to numLabels with different
- label numbers for each variable
-
-**FIX GM to do multiply not add (fixed in run-inference-1and2, make sure it
-  copies over)
-**FIX iterations and convergence bound in GM (changed to 100 and 1e-7 in
-  run-inference-1and2, make sure it copies over)
-
-**SERVERS TO USE:
-  verstand
-  arivu
-  perisikan	
-  aruco
-  akili
-  save
-  (upplysingaoflun and aql low on /aux space)
-  could also use 2g: wywiad istihbarat cuddwybodaeth (jalitusteabe low on /aux)
-  could also use workstations...
 
 *alignments of runs to sentences
-   DONE ALIGNMENTS: f1s0-f1s15
-*maybe do good/bad counts on ralicra image output
+   DONE ALIGNMENTS: f1s0-f1s24
 
 **What about bias towards tubes that occur earlier in runs?  Is that idea any good?
 
@@ -7284,40 +7273,16 @@ do pieces independently.
  ffmpeg -i video_pano.avi ./tmp/pano-%04d.png
  rm -rf ./tmp
 
-**remember: in detection_data, score is 3rd column, frequency is 4th
 
-**ralicra2016/iros2016: 
-  What is the function of the first graphical model?
-  -Enforce consistency (visual/location/width) between object proposals
-   -Lots of proposals will be random noise, not on objects
-   -Proposals that are on the same object will tend to have high visual
-    similarity, be located close together, and have small width difference
-   -Graphical model is fully connected b/c it is possible for an object to be in
-    the robot's field of view at any time during a run, not just in temporally
-    adjacent frames (i.e., the robot could see the cone at both the beginning
-    and end of a run); proposals that lie on the same object will have similar
-    visual/location/width properties regardless of how far apart they are
-    temporally within the video
-**EVIDENCE: plot of non-gm data (only behind and out of bounds penalties) can
-  only detect 3/5 object locations; peaks where other objects should be are down
-  in the noise. 
-  Also, if we were to look at the images associate with each peak (which I
-  didn't generate to save time/effort), we would have no way of sorting true
-  detection images that are on objects from well-located garbage.
-**From Jeff, 16feb16:
-  -Keep simplifying GM #1--remove other 2 filters (behind & out), take binary
-   score down to just distance measure (no sim/width) 
-  -Could k-means clustering on raw proposals replace GM #1?
-   -This could also replace the scoring/density function...
-   -What would GM #2 do here?
-  **ME: could trying the above prove my intuition further up?
-  -Need to have some sort of objective judgment of what % of images selected by
-   system are of actual object (AMT?)
-  -Run against existing methods--HOW THE HELL WOULD THIS WORK? What data would I
-   use as input?  Could these run on raw video?  And if so, there still is no
-   way to compare the ability to get 3D world locations (that I know of)
-
-
+TO DO:
+**try to incorporate proposal score into unary score (just multiply?) OBJECTNESS
+  MEASURE did I try this already?
+**think more about confidence score based on where tube occurs in run (relative
+  or absolute?) 
+**what about a score boost for longer tubes??  or maybe just a sigmoided
+  discount for shorter tubes, like in distance variation
+**look at objectness score-->can we get it running off the shelf?  if so,
+  combine that into unary score 
 
 
 **THOUGHTS on how to make unary score better:
@@ -7326,15 +7291,7 @@ do pieces independently.
   --try something that gives preference to tubes that occur earlier in a run,
     since the locations tend to be more accurate--how??
 
-TO DO:
-**try to incorporate proposal score into unary score (just multiply?) OBJECTNESS
-  MEASURE 
-**think more about confidence score based on where tube occurs in run (relative
-  or absolute?) 
-**what about a score boost for longer tubes??  or maybe just a sigmoided
-  discount for shorter tubes, like in distance variation
-**look at objectness score-->can we get it running off the shelf?  if so,
-  combine that into unary score 
+
 
 **HOG for visual similarity between floorplans
 **split test floorplan into runs of 2-2-3 and put visual similarity linking the
@@ -7554,6 +7511,83 @@ The screenlog.n.cleaned file will now contain a hardcopy of the cat output and w
       into the proposal generation step.  
       --What happens if number of post-NMS tubes is less than num-tubes?  Can we
       deal with that?
+
+
+
+------------------OLD iros2016 stuff-----------------------------
+*follow
+(codetect-sort-templabel-ralicra2016 "test-20160216-ralicra-rerun")
+to see calls for re-run...will probably have to make some modified functions to
+do pieces independently.
+
+*in run-inference-1and2, need to replace all calls to numLabels with different
+ label numbers for each variable
+
+**FIX GM to do multiply not add (fixed in run-inference-1and2, make sure it
+  copies over)
+**FIX iterations and convergence bound in GM (changed to 100 and 1e-7 in
+  run-inference-1and2, make sure it copies over)
+
+**SERVERS TO USE:
+  verstand
+  arivu
+  perisikan	
+  aruco
+  akili
+  save
+  (upplysingaoflun and aql low on /aux space)
+  could also use 2g: wywiad istihbarat cuddwybodaeth (jalitusteabe low on /aux)
+  could also use workstations...
+**setup for test (ralicra2016->iros2016 stuff)
+(define *data* (read-object-from-file "/aux/sbroniko/vader-rover/logs/MSEE1-dataset/ralicra2016/plan0/2014-11-20-02:31:11/test-20160223-1and2/frame-data-0.6-0.6.sc"))
+(define f (map (lambda (boxes) (map fifth (matrix->list-of-lists boxes))) (first *data*)))
+(define f-c (easy-ffi:double-to-c 2 f))
+(define num-g (exact-round (x (x (third *data*)))))
+(define boxes-c (list->c-exact-array (malloc (* c-sizeof-int (length f))) (map-n (lambda _ 0) (length f)) c-sizeof-int #t))
+(define g (matrix->list-of-lists (second *data*)))
+(define g-c (easy-ffi:double-to-c 2 g))
+
+(run-inference-1and2 f-c g-c (length f) 10 0.6 0.6 num-g boxes-c)
+
+visualize-results-improved -> visualize-results-inference-1and2
+run-codetection-with-proposals-similarity -> run-codetection-1and2
+
+
+**remember: in detection_data, score is 3rd column, frequency is 4th
+
+**ralicra2016/iros2016: 
+  What is the function of the first graphical model?
+  -Enforce consistency (visual/location/width) between object proposals
+   -Lots of proposals will be random noise, not on objects
+   -Proposals that are on the same object will tend to have high visual
+    similarity, be located close together, and have small width difference
+   -Graphical model is fully connected b/c it is possible for an object to be in
+    the robot's field of view at any time during a run, not just in temporally
+    adjacent frames (i.e., the robot could see the cone at both the beginning
+    and end of a run); proposals that lie on the same object will have similar
+    visual/location/width properties regardless of how far apart they are
+    temporally within the video
+**EVIDENCE: plot of non-gm data (only behind and out of bounds penalties) can
+  only detect 3/5 object locations; peaks where other objects should be are down
+  in the noise. 
+  Also, if we were to look at the images associate with each peak (which I
+  didn't generate to save time/effort), we would have no way of sorting true
+  detection images that are on objects from well-located garbage.
+**From Jeff, 16feb16:
+  -Keep simplifying GM #1--remove other 2 filters (behind & out), take binary
+   score down to just distance measure (no sim/width) 
+  -Could k-means clustering on raw proposals replace GM #1?
+   -This could also replace the scoring/density function...
+   -What would GM #2 do here?
+  **ME: could trying the above prove my intuition further up?
+  -Need to have some sort of objective judgment of what % of images selected by
+   system are of actual object (AMT?)
+  -Run against existing methods--HOW THE HELL WOULD THIS WORK? What data would I
+   use as input?  Could these run on raw video?  And if so, there still is no
+   way to compare the ability to get 3D world locations (that I know of)
+
+----------------END OLD iros2016 notes---------------------------------------
+
 
 
 

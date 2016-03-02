@@ -2087,6 +2087,15 @@
 	   (loop xys (rest raw-xys))
 	   (loop (cons (first raw-xys) xys) (rest raw-xys)))))))
 
+(define (get-xy-and-score-from-frame-data-file file)
+ (let* ((filedata (read-object-from-file file))
+	(props-by-frame (first filedata)))
+  (map (lambda (p)
+	(map (lambda (v)
+	      (list (vector-ref v 5) (vector-ref v 6) (vector-ref v 4)))
+	     (vector->list p)))
+       props-by-frame)))
+
 (define (plot-objects-from-file file)
  (let* ((xys (get-xy-from-results-file file))
 	(xs (map first xys))
@@ -2375,6 +2384,83 @@
     (imlib:free-image-and-decache image))
     ;;(dtrace "saved image" (+ i 1)))
    image-list)		     			
+  (start-matlab!)
+  (scheme->matlab! "detection_data" matlab-data)
+  (matlab (format #f
+		  "save('~a/~a/~a','detection_data')"
+		  floorplan-dir
+		  output-dirname
+		  matlab-output-filename))))
+
+
+(define (get-raw-detection-data-iros2016 floorplan-dir)			 
+ (let* ((frame-data-filename "test-20160226-iros/frame-data-0.6-0.6.sc")
+	(output-dirname "detections-test-20160226-iros")
+	(matlab-output-filename "detection_data_raw.mat")
+	(rundirs (system-output (format #f "ls -d ~a/2014-*/" floorplan-dir)))
+	(xy-and-score
+	 (join 
+	      (map
+	       (lambda (f)
+		(get-xy-and-score-from-frame-data-file
+		 (format #f "~a~a" f frame-data-filename)))
+	       rundirs)))
+	;;put new triangle stuff here--want 1/visible to be 4th column of matlab-data
+	(all-poses (join (map (lambda (dir)
+			       (get-poses-that-match-frames dir)) rundirs)))
+	(left-limits
+	 (map
+	  (lambda (p)
+	   (pixel-and-height->world
+	    '#(0 205)
+	    (robot-pose-to-camera->world-txf p
+					     *camera-offset-matrix*)
+	    *camera-k-matrix* 0))
+	  all-poses))
+
+	(right-limits
+	 (map
+	  (lambda (p)
+	   (pixel-and-height->world
+	    '#(639 205)
+	    (robot-pose-to-camera->world-txf p
+					     *camera-offset-matrix*)
+	    *camera-k-matrix* 0))
+	  all-poses))
+
+	(triangles
+	 (map (lambda (c l r) (list
+			       (subvector c 0 2)
+			       (subvector l 0 2)
+			       (subvector r 0 2)))
+	      all-poses left-limits right-limits))
+	(foo (dtrace "got triangles" #f))
+	(frequencies
+	 (map (lambda (xys)
+	       (map (lambda (ll)
+		     (if (= ll 0)
+			 (dtrace "Error in get-detection-data-for-floorplan: detected box with count = 0" 0) ;;this shouldn't happen, since it means that a detected box was never counted as being in the field of view--can happen on raw b/c of behind-the-camera
+			 (/ 1 ll)))
+		    (map (lambda (l)
+			  (reduce + l 0))
+			 (map (lambda (p)
+			       (map (lambda (t)
+				     (point-in-triangle
+				      (subvector (list->vector p) 0 2)
+				      t))
+				    triangles))
+			      xys))))
+	      xy-and-score))
+	(bar (dtrace "got frequencies" #f))
+	(matlab-data ;;(dtrace "matlab-data"
+	 (map (lambda (xys freq)
+			   (list->vector (append xys (list freq))))
+			  (join xy-and-score)
+			  (join frequencies))))
+  ;;(mkdir-p (format #f "~a/~a" floorplan-dir output-dirname))
+  (write-object-to-file matlab-data (format #f "~a/~a/detection-data-raw.sc"
+					    floorplan-dir
+					    output-dirname))
   (start-matlab!)
   (scheme->matlab! "detection_data" matlab-data)
   (matlab (format #f

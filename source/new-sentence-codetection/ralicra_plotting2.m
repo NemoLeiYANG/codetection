@@ -49,7 +49,8 @@ hfig = figure('visible','off');
 set(hfig,'Position',[0 0 1600 1400])
 surf(X,Y,scores_out,'Edgecolor','none');
 maxscore = max(max(scores_out));
-axis([-4 4 -4 4 -0.002 (maxscore + 0.01)]);
+minscore = min(min(scores_out));
+axis([-4 4 -4 4 (minscore - 0.01*maxscore) (maxscore + 0.01*maxscore)]);
 colorbar;
 xlabel('World X (meters)');
 ylabel('World Y (meters)');
