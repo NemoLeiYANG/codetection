@@ -6769,6 +6769,67 @@
 	      tube-scores)))
   output))
 
+(define (find-low-variance-tubes-new path tubepath)
+ ;;this is the old d-filter (>5 frames, distance from mean < 50 cm)
+ ;;modified to use the nms-tubes.sc in the base path
+ ;;output is: a list with an entry for each tube,
+ ;;  #f if the tube doesn't pass the filter, or ((#(x y w h) #(xv yv wv hv)) dist-var
+ ;;  video-name (list tubepixels))
+ (let* ((tubes-with-scores
+	 (map preprocess-tube (read-object-from-file
+			       (format #f "~a/~a/nms-tubes.sc" path tubepath))))
+	(tubes-no-scores (map first tubes-with-scores))
+	(tube-scores (map second tubes-with-scores))
+	(length-thresh 5)
+	(length-filter (filter-tubes-by-length tubes-no-scores length-thresh))
+	(pose-list (read-object-from-file
+		    (format #f "~a/frame-poses.sc" path)))
+	(video-name (format #f "~a/video_front.avi" path))
+	(world-xywh-lists
+	 (map (lambda (t)
+	       (world-corners-list->world-xywh-list
+		(raw-tube-with-score-and-pose-list->world-corners-list t pose-list)))
+	      tubes-with-scores))
+	(wmv
+	 (map (lambda (t)
+	       (world-xywh-list->world-mean-and-variance t))
+	      world-xywh-lists))
+	(ground-plane-filter
+	 (map (lambda (tube)
+	       (if (< (vector-ref (first tube) 3) 0) #f #t)) wmv))
+	(distance-lists
+	 (map third
+	      (map (lambda (l)
+		    (world-xywh-list->world-mean-and-distances l))
+		   world-xywh-lists)))
+	(distance-means
+	 (map (lambda (l) (list-mean l)) distance-lists))
+	(distance-variances
+	 (map (lambda (l) (list-variance l)) distance-lists))
+	(distance-thresh *distance-thresh*);;0.50) ;;50cm
+	(first-distance-filter
+	 (map (lambda (l)
+	       (map (lambda (d) (if (< d distance-thresh) d #f)) l))
+	      distance-lists))
+	(final-distance-filter
+	 (map (lambda (l) (if (= (length l) (length (removeq #f l)))
+			      (list-mean l)
+			      #f))
+	      first-distance-filter))
+	(output
+	 (map (lambda (l1 l2 l3 l4 l5 l6 l7 l8)
+	       (if (and l1 l2 l7)
+		   (list l3 (vector l4 l5) video-name l6 l8)
+		   #f))
+	      length-filter final-distance-filter
+	      wmv
+	      distance-means
+	      distance-variances
+	      tubes-no-scores
+	      ground-plane-filter
+	      tube-scores)))
+  output))
+
 
 
 (define (save-low-variance-tubes-house-test)
@@ -6785,8 +6846,9 @@
 (define (split-path-by-alignment dir)
  (let* ((path (read-object-from-file
 	       (format #f "~a/frame-poses.sc" dir)))
-	(alignment (second (read-object-from-file
-			    (format #f "~a/alignment.sc" dir)))))
+	(alignment ;; (second (read-object-from-file
+		   ;; 	    (format #f "~a/alignment.sc" dir)))
+	 (second (read-one-alignment-and-join-sections-if-necessary dir))))
   (list (map (lambda (l) (sublist path (first l) (+ 1 (second l))))
 	     alignment)
 	alignment)))
@@ -6794,8 +6856,9 @@
 (define (get-noun-preposition-paths dir)
  (let* ((path (read-object-from-file
 	       (format #f "~a/frame-poses.sc" dir)))
-	(alignment-file (read-object-from-file
-			 (format #f "~a/alignment.sc" dir))))
+	(alignment-file ;; (read-object-from-file
+			;;  (format #f "~a/alignment.sc" dir))
+	 (read-one-alignment-and-join-sections-if-necessary dir)))
   (map (lambda (a)
 	(if (> (length a) 3)
 	    (begin
@@ -7455,10 +7518,11 @@
  ;;-----SCRATCH-----
  
  (let* ((raw-alignment
-	 (join (map (lambda (dir)
-		     (third (read-object-from-file
-			     (format #f "~a/alignment.sc" dir))))
-		    dirlist)))
+	 ;; (join (map (lambda (dir)
+	 ;; 	     (third (read-object-from-file
+	 ;; 		     (format #f "~a/alignment.sc" dir))))
+	 ;; 	    dirlist))
+	 (join (map third (read-alignments dirlist))))
 	(all-tubes
 	 (join (map (lambda (dir) (find-low-variance-tubes dir)) dirlist)))
 	(good-tubes (removeq #f all-tubes))
@@ -7492,10 +7556,11 @@
  ;;this does the same thing as find-binary-score-data-for-floorplan, except it
  ;;uses only the given tubes
  (let* ((raw-alignment
-	 (join (map (lambda (dir)
-		     (third (read-object-from-file
-			     (format #f "~a/alignment.sc" dir))))
-		    dirlist)))
+	 ;; (join (map (lambda (dir)
+	 ;; 	     (third (read-object-from-file
+	 ;; 		     (format #f "~a/alignment.sc" dir))))
+	 ;; 	    dirlist))
+	 (join (map third (read-alignments dirlist))))
 	(all-tubes tubes)
 	(good-tubes (removeq #f all-tubes))
 	(gm-vars
@@ -7538,10 +7603,11 @@
 
 (define (find-simple-binary-score-data-for-given-tubes tubes dirlist)
  (let* ((raw-alignment
-	 (join (map (lambda (dir)
-		     (third (read-object-from-file
-			     (format #f "~a/alignment.sc" dir))))
-		    dirlist)))
+	 ;; (join (map (lambda (dir)
+	 ;; 	     (third (read-object-from-file
+	 ;; 		     (format #f "~a/alignment.sc" dir))))
+	 ;; 	    dirlist))
+	 (join (map third (read-alignments dirlist))))
 	(all-tubes tubes)
 	(good-tubes (removeq #f all-tubes))
 	(gm-vars
@@ -7674,12 +7740,12 @@
 	(gmdata (find-graphical-model-data-for-given-tubes tubes dirlist)))
   (run-graphical-model gmdata)))
 
-(define (simple-gm-small-example tubes)
- (let* ((dirlist (system-output
-		  (format
-		   #f
-		   "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*"
-		   "floorplan-0")))
+(define (simple-gm-small-example tubes dirlist)
+ (let* (;; (dirlist (system-output
+	;; 	  (format
+	;; 	   #f
+	;; 	   "ls -d /aux/sbroniko/vader-rover/logs/house-test-12nov15/~a*"
+	;; 	   "floorplan-0")))
 	(gmdata (find-simple-graphical-model-data-for-given-tubes tubes dirlist)))
   (run-simple-graphical-model gmdata)))
 
@@ -7820,9 +7886,10 @@
 	 (* 1.1 (minimum (list (minimum xvals) (minimum yvals)))))
 	;;get alignments
 	(alignments
-	 (map (lambda (dir)
-	       (read-object-from-file (format #f "~a/alignment.sc" dir)))
-	      dirlist))
+	 ;; (map (lambda (dir)
+	 ;;       (read-object-from-file (format #f "~a/alignment.sc" dir)))
+	 ;;      dirlist)
+	 (read-alignments dirlist))
 	;;parse object-names-and-locations
 	(num-objects
 	 ;; (dtrace "num-objects" 
@@ -7974,9 +8041,10 @@
 	 (* 1.1 (minimum (list (minimum xvals) (minimum yvals)))))
 	;;get alignments
 	(alignments
-	 (map (lambda (dir)
-	       (read-object-from-file (format #f "~a/alignment.sc" dir)))
-	      dirlist))
+	 ;; (map (lambda (dir)
+	 ;;       (read-object-from-file (format #f "~a/alignment.sc" dir)))
+	 ;;      dirlist)
+	 (read-alignments dirlist))
 	;;find nouns present in each run
 	(nouns-by-run
 	 (map (lambda (l)
@@ -8141,8 +8209,30 @@
 	(join all-video-frames))) ;;length to prevent output of long list of #f
    ))
 
+;;----------------new house-test2 alignment stuff, 3mar15-----------
+(define (read-alignments dirlist)
+ (if (file-exists? (format #f "~a/alignment.sc" (first dirlist)))
+     (map (lambda (dir)
+	       (read-object-from-file (format #f "~a/alignment.sc" dir)))
+	      dirlist)
+     (if (file-exists? (format #f "~a/alignments.sc" (first dirlist)))
+	 (join (map (lambda (dir)
+		     (read-object-from-file (format #f "~a/alignments.sc" dir)))
+		    dirlist))
+	 (dtrace "neither alignment.sc or alignments.sc found" #f))))
+
+(define (read-one-alignment-and-join-sections-if-necessary dir)
+ (if (file-exists? (format #f "~a/alignment.sc" dir))
+     (read-object-from-file (format #f "~a/alignment.sc" dir))
+     (if (file-exists? (format #f "~a/alignments.sc" dir))
+	 (let ((raw-file (read-object-from-file (format #f "~a/alignments.sc" dir))))
+	  (list (join (map first raw-file))
+		(join (map second raw-file))
+		(join (map third raw-file))))
+	 (dtrace "no valid alignment file found" #f))))
 
 
+;;----------------end new house-test2 alignment stuff
 
 ;;----------------rendering/filtering----------------
 (define (render-b-tubes path subdir)

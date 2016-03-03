@@ -7239,12 +7239,40 @@ TO DO's
   need to modify the simple-gm code to use alignments.sc over alignment.sc, as
   well as using multiple sentences/alignments for the same video.
 
+----------------git commit 15b1fae--------------
+
+3 Mar 15
+
+--Wrote read-alignments and read-one-alignment-and-join-sections-if-necessary to
+  replace all places where I had been reading in alignment.sc directly.  Looks
+  like these work.
+  alignment.sc was accessed in:
+    split-path-by-alignment FIXED --> read-one-alignment-and-join-sections-if-necessary
+    get-noun-preposition-paths FIXED --> read-one-alignment-and-join-sections-if-necessary
+    find-binary-score-data-for-floorplan FIXED --> (join (map third (read-alignments...)))
+    find-binary-score-data-for-given-tubes FIXED --> (join (map third (read-alignments...)))
+    find-simple-binary-score-data-for-given-tubes FIXED --> (join (map third (read-alignments...)))
+    render-gm-output-small-example FIXED --> read-alignments
+    render-simple-gm-output-small-example FIXED --> read-alignments
+
+--Wrote find-low-variance-tubes-new to deal with the fact that nms-tubes.sc and
+  frame-poses.sc are no longer in the same dir.  Should probably write a single
+  wrapper to get nms tubes for a given list of dirs.
+
+--Saved good tubes for floorplan-1 to good-tubes-floorplan-1.sc.  Using
+  (evenly-pick-m lst m) to get smaller number of tubes for testing.
+
+--Had to change simple-gm-small-example to take dirlist as an argument.
+
+--Problem in render-simple-gm-output-small-example-->list of
+  sentences/alignments not matching up with right traces.
+
+--Look at modifying matlab-plot-house-test2-with-ground-truth and
+  house-test2-plot-floorplans to show where objects actually are.  Will also
+  have to modify structure of render-simple-gm-output-small-example (probably
+  create a new version) to deal with multiple sentences per trace.
 
 
-
-
-**Thinking I can probably just modify the functions that access alignment.sc to
-  do one thing if that file is present and another if alignments.sc is present.
 
 **refamiliarize with simple-gm-small-example structure/usage--I *THINK* I can
   control how big the example is by giving it more or fewer tubes--might need to
@@ -7252,6 +7280,7 @@ TO DO's
 
 **look at last simple-gm run ~15 Feb.  The objectness stuff mentioned there has
   already been removed 
+
 
 
 
