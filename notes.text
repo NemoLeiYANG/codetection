@@ -7272,19 +7272,55 @@ TO DO's
   have to modify structure of render-simple-gm-output-small-example (probably
   create a new version) to deal with multiple sentences per trace.
 
+----------------git commit ed1ee09--------------
+
+4 Mar 15
+
+--Run of full ~6000 tube set on floorplan-1 took ~4 hours to complete. 
+  > (time-thunk "~a sec " (lambda () (define *fulloutput* (simple-gm-small-example *good-tubes* *testdirs*))))
+  Starting bp_sentence_codetection_inference at Thu Mar  3 20:17:40 2016
+  --------------------
+  Unary scores added at Thu Mar  3 20:17:40 2016
+  Binary scores added at Thu Mar  3 20:19:24 2016
+  before bp call
+  after bp call
+  before bp.infer
+  begin: value 7.35711e-255 bound inf
+  step: 1 value 1.39244e-90 bound inf
+  step: 2 value 2.38583e-107 bound inf
+  step: 3 value 2.07305e-72 bound inf
+  step: 4 value 1.67294e-70 bound inf
+  step: 5 value 4.0817e-66 bound inf
+  step: 6 value 4.0817e-66 bound inf
+  value 4.0817e-66 bound inf
+  after bp.infer
+  2.75848e+06 ms
+  OpenGM Belief Propagation 4.0817e-66
+  --------------------
+  Finshed bp_sentence_codetection_inference_simple at Thu Mar  3 21:15:35 2016
+  13877.20 sec (4.081699872551069e-66 (2798 3256 1682 358 1019 1981 1383 4576 3562))
+  (**NOTE: the time-thunk and define don't work together)  
+
+--Wrote render-simple-gm-output-small-example-new.  It computes number of
+  sentences per run from number of alignments it reads in.  Also renders ALL
+  tube images, not just the first one.  Changed structure so that each video is
+  loaded before its frames are rendered, instead of loading all videos ahead of
+  time--this should enable it to run on the workstations and not just the
+  servers. 
+
+--Wrote matlab-plot-one-run-with-ground-truth(-and-all-tubes) to plot the
+  traces/alignments in the new format (list of alignments per trace instead of a
+  single alignment list per trace).  Changed structure of
+  render-simple-gm-output-small-example-new to loop over each trace for as many
+  sentences as are in the alignments (**ALL TRACES MUST HAVE THE SAME NUMBER OF
+  SENTENCES FOR THIS TO WORK**).
+
+--Since inference and output rendering seem to work, turning back to turning the
+  sentences into alignments for floorplan-0 and floorplan-2
 
 
-**refamiliarize with simple-gm-small-example structure/usage--I *THINK* I can
-  control how big the example is by giving it more or fewer tubes--might need to
-  write a new wrapper that also controls which dirs are used
 
-**look at last simple-gm run ~15 Feb.  The objectness stuff mentioned there has
-  already been removed 
-
-
-
-
-
+(only useful open files as of 4mar16: this one, codetection-test.sc)
 
 
 TO DOs:

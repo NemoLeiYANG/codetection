@@ -8143,6 +8143,178 @@
   
   ))
 
+(define (render-simple-gm-output-small-example-new tubes
+						   dirlist
+						   gm-output
+						   output-dir)
+ (let* ((all-tubes tubes)
+	(good-tubes (removeq #f all-tubes))
+	(gm-outfile-name (format #f "~a/gm-output.sc" output-dir))
+	(tubedata-outfile-name (format #f "~a/gm-output-tubes.sc" output-dir))
+	(objects-outfile-name (format #f
+				      "~a/gm-output-unique-objects.sc"
+				      output-dir))
+	(selected-tubes (second gm-output))
+	(gm-vars
+	 (get-graphical-model-variables-for-simple-gm dirlist))
+	(noun-list (find-simple-noun-list dirlist))
+	(all-tube-locations
+	 (map (lambda (l) (subvector (first (first l)) 0 2)) good-tubes))
+	(object-names-and-locations
+	 (map (lambda (noun sel)
+	       (list noun sel (first (first (list-ref good-tubes sel)))))
+	      noun-list selected-tubes))
+	(nouns-with-selections
+	 (remove-duplicates
+	  (map (lambda (a b) (list a b)) noun-list selected-tubes)))
+	;; (videos-list
+	;;  (remove-duplicates (map third good-tubes)))
+	;; (all-video-frames
+	;;  (map (lambda (v) (video->frames 1 v))
+	;;       videos-list))
+	;;get traces (frame-poses.sc)
+	(raw-traces
+	 (map (lambda (dir)
+	       (read-object-from-file (format #f "~a/frame-poses.sc" dir)))
+	      dirlist))
+	;; (raw-traces-uncorrected
+	;;  (map (lambda (dir)
+	;;        (map list->vector (read-object-from-file (format #f "~a/new-track.sc" dir)
+	;; 	;; (format #f "~a/frame-poses-uncorrected.sc" dir)
+	;; 			      )))
+	;;       dirlist))
+	;;figure out xy-max and xy-min
+	(xvals
+	 (join (cons (map (lambda (l) (x (third l)))
+			  object-names-and-locations)
+		     (map (lambda (lst) (map (lambda (l) (x l)) lst))
+			  raw-traces))))
+	(yvals
+	 (join (cons (map (lambda (l) (y (third l)))
+			  object-names-and-locations)
+		     (map (lambda (lst) (map (lambda (l) (y l)) lst))
+			  raw-traces))))
+	;; (xy-max
+	;;  (* 1.1 (maximum (list (maximum xvals) (maximum yvals)))))
+	;; (xy-min
+	;;  (* 1.1 (minimum (list (minimum xvals) (minimum yvals)))))
+	;;get alignments
+	(alignments
+	 ;; (map (lambda (dir)
+	 ;;       (read-object-from-file (format #f "~a/alignment.sc" dir)))
+	 ;;      dirlist)
+	 (read-alignments dirlist))
+	(num-alignments-per-run (/ (length alignments) (length dirlist)))
+	;;find nouns present in each run
+	(nouns-by-run
+	 (map (lambda (l)
+	       (remove-duplicates (map first l))) (map third alignments)))
+	;;get just names from object-names-and-locations
+	(object-names (map first object-names-and-locations))
+	;;find each noun's position in o-n-l
+	(noun-indices-by-run
+	 (map (lambda (l)
+	       (map (lambda (ll)
+		     (position ll object-names)) l)) nouns-by-run))
+	;;now make a list for each run of the objects & locations
+	(object-names-and-locations-lists
+	 (map (lambda (l)
+	       (map (lambda (ll)
+		     (list-ref object-names-and-locations ll)) l))
+	      noun-indices-by-run))
+	(ground-truth-lists
+	 (map (lambda (dir)
+	       (read-object-from-file (format #f "~a/ground-truth.sc" dir)))
+	      dirlist))
+	       
+	)
+  (mkdir-p output-dir)
+  ;;write gm-output to file
+  (write-object-to-file gm-output gm-outfile-name)
+  ;;write tube names & locations to file
+  (write-object-to-file object-names-and-locations tubedata-outfile-name)
+  (write-object-to-file (remove-duplicates object-names-and-locations)
+			objects-outfile-name)
+  ;;get ALL images from each winning tube, render boxes, then
+  ;;save image with name noun-object-#-tube-#-#.png 
+  (map-indexed (lambda (sel i)
+  		(let* ((noun (first sel))
+  		       (sel-num (second sel))
+  		       (tube (list-ref good-tubes sel-num))
+  		       (video-pathname (third tube))
+  		       (tube-frames (fourth tube))
+  		       (color-cyan (vector 0 255 255))
+  		       (color-blue (vector 0 0 255))
+  		       (outname-root
+  			(format #f "~a/~a-object-~a-tube-~a"
+  				output-dir
+  				noun
+  				(number->padded-string-of-length i 3)
+  				(number->padded-string-of-length sel-num 5)))
+  		       (frames (video->frames 1 video-pathname))
+  		       ;; (video-idx (find-index-in-list (third tube) videos-list))
+  		       ;; (frames (list-ref all-video-frames video-idx))
+  		       )
+  		 (let loop ((tube tube-frames)
+  			    (images frames)
+  			    (idx 0))
+  		  (if (or (null? tube)
+  			  (null? images))
+  		      #f ;;done
+  		      (if (first tube)
+  			  (let* ((image (imlib:clone (first images)))
+  				 (box (first tube))
+  				 (x-val (x box))
+  				 (y-val (y box))
+  				 (w-val (- (z box) (x box)))
+  				 (h-val (- (vector-ref box 3) (y box)))
+  				 (outname
+  				  (format #f "~a-~a.png"
+  					  outname-root
+  					  (number->padded-string-of-length idx 4))))
+  			   (imlib:draw-rectangle image x-val y-val w-val
+  						 h-val color-blue 3)
+  			   (imlib:save image outname)
+  			   (imlib:free-image-and-decache image)
+  			   (display (format #f "saved ~a" outname))
+  			   (newline)
+  			   (loop (rest tube) (rest images) (+ idx 1)))
+  			  (loop (rest tube) (rest images) idx))))))
+  	       nouns-with-selections)
+  ;;render traces for each sentence
+  (map-indexed (lambda (dir i)
+		(let* ((trace (list-ref raw-traces i))
+		       (ground-truth-list (list-ref ground-truth-lists i)))
+		 (let loop ((sidx 0))
+		  (if (>= sidx num-alignments-per-run)
+		      #f ;;done
+		      (let* ((the-alignment (list-ref alignments
+						      (+ (* i num-alignments-per-run)
+							 sidx)))
+			     (the-objects (list-ref object-names-and-locations-lists
+						    (+ (* i num-alignments-per-run)
+						       sidx))))
+		       (matlab-plot-one-run-with-ground-truth trace
+							      i
+							      sidx
+							      the-objects
+							      the-alignment
+							      ground-truth-list
+							      output-dir)
+		       (matlab-plot-one-run-with-ground-truth-and-all-tubes
+			all-tube-locations
+			trace
+			i
+			sidx
+			the-objects
+			the-alignment
+			ground-truth-list
+			output-dir)
+		       (loop (+ sidx 1)))))))
+  	       dirlist)
+  
+  ))
+
 (define (render-good-tubes dirlist output-dir)
   (let* ((all-tubes
 	 (join (map (lambda (dir) (find-low-variance-tubes dir)) dirlist)))
@@ -9227,6 +9399,288 @@
   (display (format #f "saved ~a/sentence-~a.png"
 		  output-dir
 		  (number->padded-string-of-length idx 3)))
+  (newline)
+  ))
+
+(define (matlab-plot-one-run-with-ground-truth raw-trace 
+					       idx
+					       sentence-idx
+					       object-names-and-locations
+					       alignment
+					       ground-truth-list
+					       output-dir)
+ ;;this is meant to be called from within render-gm-output(-small-example)
+ ;;object-names-and-locations should be JUST the objects for this run-->
+ ;;  HOW do we do that?
+ (let* ((trace (map (lambda (p) (subvector p 0 2)) raw-trace)) ;;need to downsample?
+	(start (first trace))
+	(end (last trace))
+	(xvals (map x trace))
+	(yvals (map y trace))
+	(raw-arrow-trace
+	 (map-indexed
+	  (lambda (p i) (vector-append p (list-ref trace (+ i 1))))
+	  (but-last trace)))
+	(dist-interval 0.20) ;;20 cm
+	(arrow-trace
+	 (but-last (removeq
+		    #f
+		    (let loop ((poi (first raw-arrow-trace))
+			       (points (rest raw-arrow-trace))
+			       (out '()))
+		     (if (null? points)
+			 out
+			 (if (> (distance (subvector poi 0 2)
+					  (subvector (first points) 0 2))
+				dist-interval)
+			     (loop (first points) (rest points) (cons poi out))
+			     (loop poi (rest points) out)))))))
+	(unique-objects
+	 (remove-duplicates object-names-and-locations))
+	(object-names (map first unique-objects))
+	(object-xy (map (lambda (v) (subvector (third v) 0 2)) unique-objects))
+	(phrases (clean-phrases (make-phrases (third alignment))))
+	(break-point-indices
+	 (remove-duplicates
+	  (but-last
+	   (map (lambda (l) (second (third l))) (third alignment)))))
+	(break-point-xy
+	 (map (lambda (p) (list-ref trace (minimum (list p
+							 (- (length trace) 1)))))
+	      break-point-indices))
+	(gt-object-names (map first ground-truth-list))
+	(object-xywh (map second ground-truth-list))
+	(object-x (map x object-xywh))
+	(object-x+w (map (lambda (v) (+ (x v) (z v))) object-xywh))
+	(object-y+h (map (lambda (v) (+ (y v) (vector-ref v 3))) object-xywh))
+	(object-y (map y object-xywh))
+	(xy-max (* 1.1 (maximum (list (maximum xvals)
+				      (maximum yvals)
+				      (maximum object-x+w)
+				      (maximum object-y+h)))))
+	(xy-min (* 1.1 (minimum (list (minimum xvals)
+				      (minimum yvals)
+				      (minimum object-x)
+				      (minimum object-y)))))
+	)
+  (start-matlab!)
+  (matlab "clear all; close all;")
+  ;;  (matlab "h=figure")
+  (matlab "h = figure('visible','off');")
+  ;;use something like "h=figure('visible','off');" to just save file
+  ;;see house_make_plots_new.m
+  (matlab "hold on")
+  (matlab (format #f "axis([~a ~a ~a ~a]);" xy-min xy-max xy-min xy-max))
+  ;;(matlab "axis equal");;image");;equal")
+  ;;plot objects before traces
+  (map (lambda (p)
+	(matlab (format #f "rectangle('Position',[~a ~a ~a ~a])"
+			(x p) (y p) (z p) (vector-ref p 3))))
+	object-xywh)
+  (map (lambda (oname oxy)
+	(matlab (format #f "text(~a,~a,'~a')" (+ (x oxy)
+						 (if (> (z oxy) 2)
+						     (/ (z oxy) 2)
+						     0.05))
+			(+ (y oxy) (/ (vector-ref oxy 3) 2)) oname)))
+       gt-object-names object-xywh)  
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list xvals)
+   (list yvals)
+   (list "'trace'")
+   (list "'c-','LineWidth',2"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (map x object-xy))
+   (list (map y object-xy))
+   (list "'objects'")
+   (list "'md','MarkerFaceColor','m'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (map x break-point-xy))
+   (list (map y break-point-xy))
+   (list "'breaks'")
+   (list "'ko','MarkerFaceColor','k'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (list (first (vector->list start))))
+   (list (list (second (vector->list start))))
+   (list "'start'" )
+   (list "'go','MarkerFaceColor','g'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (list (first (vector->list end))))
+   (list (list (second (vector->list end))))
+   (list "'end'" )
+   (list "'ro','MarkerFaceColor','r'"))
+  (map (lambda (oname oxy)
+	(matlab (format #f "text(~a,~a,'~a')" (x oxy) (y oxy)
+			oname)))
+       object-names object-xy)
+  (map-indexed (lambda (pxy i) ;;phrase indices
+		(matlab (format #f "text(~a,~a,'~a')"
+				(+ (x pxy) 0.05)
+				(+ (y pxy) 0.05) (+ i 1))))
+	       (cons (vector 0. 0.) break-point-xy))
+  (matlab "strcell = {};")
+  (map-indexed (lambda (ph i)
+		(matlab (format #f "str = sprintf('~a. ~a');" (+ i 1) (second ph)))
+		(matlab (format #f "strcell(~a) = {str};" (+ i 1))))
+	       phrases)
+  (matlab (format #f "text(~a,~a,strcell)" (+ xy-min 0.5) (+ xy-min 1)))
+  (matlab-plot-arrowheads-on-trace arrow-trace) ;;this has to go last
+  (matlab "box on")
+  (matlab "hold off")
+  (matlab (format #f "saveas(h,'~a/sentence-~a-~a.png');"
+		  output-dir
+		  (number->padded-string-of-length idx 3)
+		  (number->padded-string-of-length sentence-idx 2)))
+  (display (format #f "saved ~a/sentence-~a-~a.png"
+		  output-dir
+		  (number->padded-string-of-length idx 3)
+		  (number->padded-string-of-length sentence-idx 2)))
+  (newline)
+  ))
+
+(define (matlab-plot-one-run-with-ground-truth-and-all-tubes all-tube-locs
+							     raw-trace 
+							     idx
+							     sentence-idx
+							     object-names-and-locations
+							     alignment
+							     ground-truth-list
+							     output-dir)
+ ;;this is meant to be called from within render-gm-output(-small-example)
+ ;;object-names-and-locations should be JUST the objects for this run-->
+ ;;  HOW do we do that?
+ (let* ((trace (map (lambda (p) (subvector p 0 2)) raw-trace)) ;;need to downsample?
+	(start (first trace))
+	(end (last trace))
+	(xvals (map x trace))
+	(yvals (map y trace))
+	(raw-arrow-trace
+	 (map-indexed
+	  (lambda (p i) (vector-append p (list-ref trace (+ i 1))))
+	  (but-last trace)))
+	(dist-interval 0.20) ;;20 cm
+	(arrow-trace
+	 (but-last (removeq
+		    #f
+		    (let loop ((poi (first raw-arrow-trace))
+			       (points (rest raw-arrow-trace))
+			       (out '()))
+		     (if (null? points)
+			 out
+			 (if (> (distance (subvector poi 0 2)
+					  (subvector (first points) 0 2))
+				dist-interval)
+			     (loop (first points) (rest points) (cons poi out))
+			     (loop poi (rest points) out)))))))
+	(unique-objects
+	 (remove-duplicates object-names-and-locations))
+	(object-names (map first unique-objects))
+	(object-xy (map (lambda (v) (subvector (third v) 0 2)) unique-objects))
+	(phrases (clean-phrases (make-phrases (third alignment))))
+	(break-point-indices
+	 (remove-duplicates
+	  (but-last
+	   (map (lambda (l) (second (third l))) (third alignment)))))
+	(break-point-xy
+	 (map (lambda (p) (list-ref trace (minimum (list p
+							 (- (length trace) 1)))))
+	      break-point-indices))
+	(gt-object-names (map first ground-truth-list))
+	(object-xywh (map second ground-truth-list))
+	(object-x (map x object-xywh))
+	(object-x+w (map (lambda (v) (+ (x v) (z v))) object-xywh))
+	(object-y+h (map (lambda (v) (+ (y v) (vector-ref v 3))) object-xywh))
+	(object-y (map y object-xywh))
+	(xy-max (* 1.1 (maximum (list (maximum xvals)
+				      (maximum yvals)
+				      (maximum object-x+w)
+				      (maximum object-y+h)))))
+	(xy-min (* 1.1 (minimum (list (minimum xvals)
+				      (minimum yvals)
+				      (minimum object-x)
+				      (minimum object-y)))))
+	)
+  (start-matlab!)
+  (matlab "clear all; close all;")
+  ;;  (matlab "h=figure")
+  (matlab "h = figure('visible','off');")
+  ;;use something like "h=figure('visible','off');" to just save file
+  ;;see house_make_plots_new.m
+  (matlab "hold on")
+  ;; (matlab (format #f "axis([~a ~a ~a ~a]);" xy-min xy-max xy-min xy-max))
+  ;; (matlab "axis equal");;image");;equal")
+  ;;plot raw tubes first
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (map x all-tube-locs))
+   (list (map y all-tube-locs))
+   (list "'tubes'")
+   (list "'b.','MarkerFaceColor','b'"))
+  (matlab (format #f "axis([~a ~a ~a ~a]);" xy-min xy-max xy-min xy-max))
+  ;;(dtrace (format #f "xy-min ~a xy-max ~a" xy-min xy-max) #f)
+  ;;(matlab "axis equal");;image");;equal")
+  ;;plot objects before traces
+  (map (lambda (p)
+	(matlab (format #f "rectangle('Position',[~a ~a ~a ~a])"
+			(x p) (y p) (z p) (vector-ref p 3))))
+	object-xywh)
+  (map (lambda (oname oxy)
+	(matlab (format #f "text(~a,~a,'~a')" (+ (x oxy)
+						 (if (> (z oxy) 2)
+						     (/ (z oxy) 2)
+						     0.05))
+			(+ (y oxy) (/ (vector-ref oxy 3) 2)) oname)))
+       gt-object-names object-xywh)  
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list xvals)
+   (list yvals)
+   (list "'trace'")
+   (list "'c-','LineWidth',2"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (map x object-xy))
+   (list (map y object-xy))
+   (list "'objects'")
+   (list "'md','MarkerFaceColor','m'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (map x break-point-xy))
+   (list (map y break-point-xy))
+   (list "'breaks'")
+   (list "'ko','MarkerFaceColor','k'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (list (first (vector->list start))))
+   (list (list (second (vector->list start))))
+   (list "'start'" )
+   (list "'go','MarkerFaceColor','g'"))
+  (plot-lines-in-matlab-with-symbols-no-legend
+   (list (list (first (vector->list end))))
+   (list (list (second (vector->list end))))
+   (list "'end'" )
+   (list "'ro','MarkerFaceColor','r'"))
+  (map (lambda (oname oxy)
+	(matlab (format #f "text(~a,~a,'~a')" (x oxy) (y oxy)
+			oname)))
+       object-names object-xy)
+  (map-indexed (lambda (pxy i) ;;phrase indices
+		(matlab (format #f "text(~a,~a,'~a')"
+				(+ (x pxy) 0.05)
+				(+ (y pxy) 0.05) (+ i 1))))
+	       (cons (vector 0. 0.) break-point-xy))
+  (matlab "strcell = {};")
+  (map-indexed (lambda (ph i)
+		(matlab (format #f "str = sprintf('~a. ~a');" (+ i 1) (second ph)))
+		(matlab (format #f "strcell(~a) = {str};" (+ i 1))))
+	       phrases)
+  (matlab (format #f "text(~a,~a,strcell)" (+ xy-min 0.5) (+ xy-min 1)))
+  (matlab-plot-arrowheads-on-trace arrow-trace) ;;this has to go last
+  (matlab "box on")
+  (matlab "hold off")
+  (matlab (format #f "saveas(h,'~a/sentence-~a-~a-all-tubes.png');"
+		  output-dir
+		  (number->padded-string-of-length idx 3)
+		  (number->padded-string-of-length sentence-idx 2)))
+  (display (format #f "saved ~a/sentence-~a-~a-all-tubes.png"
+		  output-dir
+		  (number->padded-string-of-length idx 3)
+		  (number->padded-string-of-length sentence-idx 2)))
   (newline)
   ))
 
