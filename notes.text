@@ -7274,7 +7274,7 @@ TO DO's
 
 ----------------git commit ed1ee09--------------
 
-4 Mar 15
+4 Mar 16
 
 --Run of full ~6000 tube set on floorplan-1 took ~4 hours to complete. 
   > (time-thunk "~a sec " (lambda () (define *fulloutput* (simple-gm-small-example *good-tubes* *testdirs*))))
@@ -7318,15 +7318,62 @@ TO DO's
 --Since inference and output rendering seem to work, turning back to turning the
   sentences into alignments for floorplan-0 and floorplan-2
 
+----------------git commit 80a2be4--------------
+
+7 Mar 16
+
+--Still working on finishing up alignments.  Have floorplan-0 complete, working
+  on floorplan-2.
+
+--Attempted to run GM on floorplan-0.  First step was to get good-tubes
+  (find-low-variance-tubes-new).  Had an error when doing this in
+  floorplan-0-sentence-22.  Turns out all the tubes in that file are empty
+  lists.  Implemented a fix with a let outside the previous let to make sure
+  that the max length of the tubes (with #f removed) is > 0.  Appears to work.
+
+--Started full run (>7000 tubes) on floorplan-0 at 1218.  Expect it to take > 4
+  hours.
+    (system "date") 
+    (define *seoutput* (simple-gm-small-example *good-tubes* *testdirs*)) 
+    (system "date") 
+    (render-simple-gm-output-small-example-new *good-tubes* *testdirs* *seoutput* "/aux/sbroniko/vader-rover/logs/house-test2-17feb16/output-7mar16-floorplan-0") 
+    (system "date")
+    Mon Mar  7 12:18:16 EST 2016
+    0
+    Starting bp_sentence_codetection_inference at Mon Mar  7 15:14:57 2016
+    --------------------
+    Unary scores added at Mon Mar  7 15:14:57 2016
+    Binary scores added at Mon Mar  7 15:16:29 2016
+    before bp call
+    after bp call
+    before bp.infer
+    begin: value 0 bound inf
+    step: 1 value 2.43218e-153 bound inf
+    step: 2 value 2.18668e-153 bound inf
+    step: 3 value 2.43218e-153 bound inf
+    value 2.43218e-153 bound inf
+    after bp.infer
+    1.86449e+06 ms
+    OpenGM Belief Propagation 2.43218e-153
+    --------------------
+    Finshed bp_sentence_codetection_inference_simple at Mon Mar  7 15:53:20 2016
+    *SEOUTPUT*
+    Mon Mar  7 15:56:14 EST 2016
+    ...(image saving output)...
+    Mon Mar  7 16:28:34 EST 2016
+
+
 
 
 (only useful open files as of 4mar16: this one, codetection-test.sc)
+(rsync new pngs from save to seykhl/hda -- rsync -avrzu
+save:/aux/sbroniko/vader-rover/logs/house-test2-17feb16/ ...
 
 
 TO DOs:
 
 *alignments of runs to sentences
-   DONE ALIGNMENTS: f1s0-f1s24
+   DONE ALIGNMENTS: f1s0-f1s24, f0s0-f0s24, f2s0-f2s17
 
 **What about bias towards tubes that occur earlier in runs?  Is that idea any good?
 
@@ -7341,7 +7388,7 @@ TO DOs:
 
 TO DO:
 **try to incorporate proposal score into unary score (just multiply?) OBJECTNESS
-  MEASURE did I try this already?
+  MEASURE did I try this already?  DIDN'T WORK
 **think more about confidence score based on where tube occurs in run (relative
   or absolute?) 
 **what about a score boost for longer tubes??  or maybe just a sigmoided

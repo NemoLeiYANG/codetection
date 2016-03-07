@@ -6775,60 +6775,64 @@
  ;;output is: a list with an entry for each tube,
  ;;  #f if the tube doesn't pass the filter, or ((#(x y w h) #(xv yv wv hv)) dist-var
  ;;  video-name (list tubepixels))
- (let* ((tubes-with-scores
-	 (map preprocess-tube (read-object-from-file
+ (let ((rawtubes (read-object-from-file
 			       (format #f "~a/~a/nms-tubes.sc" path tubepath))))
-	(tubes-no-scores (map first tubes-with-scores))
-	(tube-scores (map second tubes-with-scores))
-	(length-thresh 5)
-	(length-filter (filter-tubes-by-length tubes-no-scores length-thresh))
-	(pose-list (read-object-from-file
-		    (format #f "~a/frame-poses.sc" path)))
-	(video-name (format #f "~a/video_front.avi" path))
-	(world-xywh-lists
-	 (map (lambda (t)
-	       (world-corners-list->world-xywh-list
-		(raw-tube-with-score-and-pose-list->world-corners-list t pose-list)))
-	      tubes-with-scores))
-	(wmv
-	 (map (lambda (t)
-	       (world-xywh-list->world-mean-and-variance t))
-	      world-xywh-lists))
-	(ground-plane-filter
-	 (map (lambda (tube)
-	       (if (< (vector-ref (first tube) 3) 0) #f #t)) wmv))
-	(distance-lists
-	 (map third
+  (if (equal? 0
+	      (maximum (map (lambda (t) (length (removeq #f (first t)))) rawtubes)))
+      (list #f)
+      (let* ((tubes-with-scores
+	      (map preprocess-tube rawtubes))
+	     (tubes-no-scores (map first tubes-with-scores))
+	     (tube-scores (map second tubes-with-scores))
+	     (length-thresh 5)
+	     (length-filter (filter-tubes-by-length tubes-no-scores length-thresh))
+	     (pose-list (read-object-from-file
+			 (format #f "~a/frame-poses.sc" path)))
+	     (video-name (format #f "~a/video_front.avi" path))
+	     (world-xywh-lists
+	      (map (lambda (t)
+		    (world-corners-list->world-xywh-list
+		     (raw-tube-with-score-and-pose-list->world-corners-list t pose-list)))
+		   tubes-with-scores))
+	     (wmv
+	      (map (lambda (t)
+		    (world-xywh-list->world-mean-and-variance t))
+		   world-xywh-lists))
+	     (ground-plane-filter
+	      (map (lambda (tube)
+		    (if (< (vector-ref (first tube) 3) 0) #f #t)) wmv))
+	     (distance-lists
+	      (map third
+		   (map (lambda (l)
+			 (world-xywh-list->world-mean-and-distances l))
+			world-xywh-lists)))
+	     (distance-means
+	      (map (lambda (l) (list-mean l)) distance-lists))
+	     (distance-variances
+	      (map (lambda (l) (list-variance l)) distance-lists))
+	     (distance-thresh *distance-thresh*);;0.50) ;;50cm
+	     (first-distance-filter
 	      (map (lambda (l)
-		    (world-xywh-list->world-mean-and-distances l))
-		   world-xywh-lists)))
-	(distance-means
-	 (map (lambda (l) (list-mean l)) distance-lists))
-	(distance-variances
-	 (map (lambda (l) (list-variance l)) distance-lists))
-	(distance-thresh *distance-thresh*);;0.50) ;;50cm
-	(first-distance-filter
-	 (map (lambda (l)
-	       (map (lambda (d) (if (< d distance-thresh) d #f)) l))
-	      distance-lists))
-	(final-distance-filter
-	 (map (lambda (l) (if (= (length l) (length (removeq #f l)))
-			      (list-mean l)
-			      #f))
-	      first-distance-filter))
-	(output
-	 (map (lambda (l1 l2 l3 l4 l5 l6 l7 l8)
-	       (if (and l1 l2 l7)
-		   (list l3 (vector l4 l5) video-name l6 l8)
-		   #f))
-	      length-filter final-distance-filter
-	      wmv
-	      distance-means
-	      distance-variances
-	      tubes-no-scores
-	      ground-plane-filter
-	      tube-scores)))
-  output))
+		    (map (lambda (d) (if (< d distance-thresh) d #f)) l))
+		   distance-lists))
+	     (final-distance-filter
+	      (map (lambda (l) (if (= (length l) (length (removeq #f l)))
+				   (list-mean l)
+				   #f))
+		   first-distance-filter))
+	     (output
+	      (map (lambda (l1 l2 l3 l4 l5 l6 l7 l8)
+		    (if (and l1 l2 l7)
+			(list l3 (vector l4 l5) video-name l6 l8)
+			#f))
+		   length-filter final-distance-filter
+		   wmv
+		   distance-means
+		   distance-variances
+		   tubes-no-scores
+		   ground-plane-filter
+		   tube-scores)))
+       output))))
 
 
 
@@ -9456,10 +9460,14 @@
 	(object-y (map y object-xywh))
 	(xy-max (* 1.1 (maximum (list (maximum xvals)
 				      (maximum yvals)
+				      (maximum (map x object-xy))
+				      (maximum (map y object-xy))
 				      (maximum object-x+w)
 				      (maximum object-y+h)))))
 	(xy-min (* 1.1 (minimum (list (minimum xvals)
 				      (minimum yvals)
+				      (minimum (map x object-xy))
+				      (minimum (map y object-xy))
 				      (minimum object-x)
 				      (minimum object-y)))))
 	)
@@ -9593,10 +9601,14 @@
 	(object-y (map y object-xywh))
 	(xy-max (* 1.1 (maximum (list (maximum xvals)
 				      (maximum yvals)
+				      (maximum (map x object-xy))
+				      (maximum (map y object-xy))
 				      (maximum object-x+w)
 				      (maximum object-y+h)))))
 	(xy-min (* 1.1 (minimum (list (minimum xvals)
 				      (minimum yvals)
+				      (minimum (map x object-xy))
+				      (minimum (map y object-xy))
 				      (minimum object-x)
 				      (minimum object-y)))))
 	)
