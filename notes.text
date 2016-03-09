@@ -7362,29 +7362,89 @@ TO DO's
     ...(image saving output)...
     Mon Mar  7 16:28:34 EST 2016
 
+----------------git commit 6668f4d--------------
 
+8 Mar 16
 
+--Finished all run alignments for all floor plans.
 
-(only useful open files as of 4mar16: this one, codetection-test.sc)
-(rsync new pngs from save to seykhl/hda -- rsync -avrzu
-save:/aux/sbroniko/vader-rover/logs/house-test2-17feb16/ ...
+--Started full run (~5800 tubes) on  floorplan-2 at 1537.  Expect it to take ~4
+  hours to complete.
+    (system "date") 
+    (define *seoutput* (simple-gm-small-example *good-tubes* *testdirs*)) 
+    (system "date") 
+    (render-simple-gm-output-small-example-new *good-tubes* *testdirs* *seoutput* "/aux/sbroniko/vader-rover/logs/house-test2-17feb16/output-8mar16-floorplan-2") 
+    (system "date")			       
+    Tue Mar  8 15:37:02 EST 2016
+    0
+    Starting bp_sentence_codetection_inference at Tue Mar  8 19:19:42 2016
+    --------------------
+    Unary scores added at Tue Mar  8 19:19:42 2016
+    Binary scores added at Tue Mar  8 19:22:22 2016
+    before bp call
+    after bp call
+    before bp.infer
+    begin: value 0 bound inf
+    step: 1 value 8.20526e-75 bound inf
+    step: 2 value 1.29429e-74 bound inf
+    step: 3 value 1.29429e-74 bound inf
+    step: 4 value 1.29429e-74 bound inf
+    step: 5 value 1.29429e-74 bound inf
+    value 1.29429e-74 bound inf
+    after bp.infer
+    5.45463e+06 ms
+    OpenGM Belief Propagation 1.29429e-74
+    --------------------
+    Finshed bp_sentence_codetection_inference_simple at Tue Mar  8 21:06:02 2016
+    *SEOUTPUT*
+    Tue Mar  8 21:12:29 EST 2016
+    ...(image saving output)...
+    Tue Mar  8 21:36:35 EST 2016
+
+9 Mar 16
+
+--Looking at output from floorplan-2, I can see that for the most part the
+  locations chosen were reasonable, but the actual objects in those locations
+  was sometimes way off (bookcase, tv-stand especially).  I think this tells me
+  that we're getting too much error in our localization as the runs get longer.
+  Maybe put in a preference for tubes that occur earlier in the run?  Maybe also
+  preference for tubes that are longer (absolute or % of run length)?
+
+--Thinking about how to hook floorplans together to correctly label common
+  objects across different floorplans.  Should be able to compute visual
+  similarity between tubes--think I already have some code for this
+  (all-tubes->phow-visual-similarity-matrix).  If I'm thinking about it
+  correctly, I should only need similarity between tubes in fp0-fp1, fp0-fp2,
+  fp1-fp2, i.e., not within each floorplan, so it should be a smaller
+  computation.  Should probably be able to get this computation running while I
+  figure out how to do the rest of the GM stuff.
+
+--Codetections on results are no good--small boxes on just a portion of object,
+  not the whole object.  I think this problem goes all the way back to the
+  proposal generation mechanism (edgeBoxes here, in place of MCG on the iros
+  stuff).  Could also have to do with the perspective of the robot, and the
+  small field of view of the front camera.  Definitely don't have time to
+  correct either of these and re-run the experiments.  Will need to write up
+  what I've done so far as a final chapter to the thesis, possibly with some
+  tips for anyone picking up this work after me.
+
+--Ideas from talking with Dan:
+  --Try rendering tubes (probably just ones located near ground truth) to see if
+    better objects exist in our dataset.
+  --If yes to above, then look at implementing a preference for tubes that occur
+    earlier in runs (something like 1/(1+distance traveled)) or longer tubes
+    (probably absolute, but how...??)
+
+--Need to decide in fairly short order if I'm going to try any of the above or
+  just write it up as it is.
+
 
 
 TO DOs:
 
-*alignments of runs to sentences
-   DONE ALIGNMENTS: f1s0-f1s24, f0s0-f0s24, f2s0-f2s17
-
 **What about bias towards tubes that occur earlier in runs?  Is that idea any good?
-
-***commands for video alignment
- cd ../floorplan-x-sentence-y
- feh ground-truth.png &
- mkdir ./tmp
- ffmpeg -i video_front.avi ./tmp/front-%04d.png
- ffmpeg -i video_pano.avi ./tmp/pano-%04d.png
- rm -rf ./tmp
-
+**Maybe put in a preference for tubes that occur earlier in the run?  
+**Maybe also preference for tubes that are longer (absolute or % of run length)? 
 
 TO DO:
 **try to incorporate proposal score into unary score (just multiply?) OBJECTNESS
@@ -7420,6 +7480,15 @@ TO DO:
 **plot all low-variance tubes that are on same objects-->try to use this as a
   measure of odometry drift (??)
 **finish redoing the run-gm and render with the scores as a filter
+
+
+***commands for video alignment
+ cd ../floorplan-x-sentence-y
+ feh ground-truth.png &
+ mkdir ./tmp
+ ffmpeg -i video_front.avi ./tmp/front-%04d.png
+ ffmpeg -i video_pano.avi ./tmp/pano-%04d.png
+ rm -rf ./tmp
 
 
 discussion w/Jeff 4feb16:
